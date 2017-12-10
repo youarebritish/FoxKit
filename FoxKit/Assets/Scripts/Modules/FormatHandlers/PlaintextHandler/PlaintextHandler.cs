@@ -13,7 +13,7 @@ public class PlaintextHandler : IFormatHandler
 
     public void Import(Stream input, string path)
     {
-        using (var outputStream = File.Create(path))
+        using (var outputStream = new FileStream(path, FileMode.Create))
         {
             input.CopyTo(outputStream);
         }

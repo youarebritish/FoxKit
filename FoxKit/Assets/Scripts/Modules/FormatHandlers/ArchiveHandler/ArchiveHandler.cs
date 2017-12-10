@@ -96,8 +96,8 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
                 }
                 FileRegistry.RegisterFile(exportedFile);
 
-                OnBeginExtractingFile.Invoke(exportedFile.FileName, exportFileCount, IncrementExtractedFileCount, GetExtractingArchiveFilename);
-                ExtractFile(exportedFile.FileName, exportedFile.DataStream, outputDirectory);
+                //OnBeginExtractingFile.Invoke(exportedFile.FileName, exportFileCount, IncrementExtractedFileCount, GetExtractingArchiveFilename);
+                //ExtractFile(exportedFile.FileName, exportedFile.DataStream, outputDirectory);
             }
         }
 

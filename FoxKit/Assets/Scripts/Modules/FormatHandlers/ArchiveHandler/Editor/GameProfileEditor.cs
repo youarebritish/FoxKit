@@ -119,25 +119,18 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
         /// <param name="desiredArchiveFilenames">Filenames of the archives to extract.</param>
         /// <param name="gameDirectory">Directory to the game to extract.</param>
         /// <param name="archiveHandler">Format handler for archives.</param>
-        private static void UnpackArchives(List<string> desiredArchiveFilenames, string gameDirectory, ArchiveHandler archiveHandler, BeginExtractingArchiveDelegate onBeginExtractingArchive, ResetExtractedFileCountDelegate resetExtractedFileCountDelegate, SetExtractingArchiveFilenameDelegate setExtractingArchiveFilenameDelegate)
+        private static void UnpackArchives(List<ArchiveStream> archiveStreams, string gameDirectory, ArchiveHandler archiveHandler, BeginExtractingArchiveDelegate onBeginExtractingArchive, ResetExtractedFileCountDelegate resetExtractedFileCountDelegate, SetExtractingArchiveFilenameDelegate setExtractingArchiveFilenameDelegate)
         {
-            Assert.IsNotNull(desiredArchiveFilenames, "desiredArchiveFilenames must not be null.");
+            Assert.IsNotNull(archiveStreams, "archiveStreams must not be null.");
             Assert.IsNotNull(archiveHandler, "archiveHandler must not be null.");
             Assert.IsNotNull(onBeginExtractingArchive, "onBeginExtractingArchive must not be null.");
             Assert.IsNotNull(resetExtractedFileCountDelegate, "resetExtractedFileCountDelegate must not be null.");
             Assert.IsNotNull(setExtractingArchiveFilenameDelegate, "setExtractingArchiveFilenameDelegate must not be null.");
 
-            foreach (var desiredArchiveFilename in desiredArchiveFilenames)
+            foreach (var archiveStream in archiveStreams)
             {
-                var archivePath = Path.Combine(gameDirectory, desiredArchiveFilename);
-                if (!File.Exists(archivePath))
-                {
-                    Debug.Log("Archive not found in game directory: " + desiredArchiveFilename);
-                    return;
-                }
-
-                onBeginExtractingArchive.Invoke(desiredArchiveFilename, resetExtractedFileCountDelegate, setExtractingArchiveFilenameDelegate);
-                UnpackArchive(archivePath, archiveHandler);
+                onBeginExtractingArchive.Invoke(archiveStream.Path, resetExtractedFileCountDelegate, setExtractingArchiveFilenameDelegate);
+                UnpackArchive(archiveStream, archiveHandler);
             }
         }
 
@@ -146,12 +139,9 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
         /// </summary>
         /// <param name="archivePath">Path to the archive to be extracted.</param>
         /// <param name="archiveHandler">Format handler for archives.</param>
-        private static void UnpackArchive(string archivePath, ArchiveHandler archiveHandler)
+        private static void UnpackArchive(ArchiveStream archiveStream, ArchiveHandler archiveHandler)
         {
-            using (var inputStream = new FileStream(archivePath, FileMode.Open))
-            {
-                archiveHandler.Import(inputStream, archivePath);
-            }
+            archiveStream.Read(archiveHandler);
         }
         
         /// <summary>
@@ -214,6 +204,26 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
                         (float)extractedFileCount / (float)totalFileCount);
         }
 
+        private static List<ArchiveStream> CreateArchiveStreams(List<string> desiredArchiveFilenames, string gameDirectory)
+        {
+            var archiveStreams = new List<ArchiveStream>();
+
+            foreach (var archiveFilename in desiredArchiveFilenames)
+            {
+                var archivePath = Path.Combine(gameDirectory, archiveFilename);
+                if (!File.Exists(archivePath))
+                {
+                    Debug.Log("Archive not found in game directory: " + archiveFilename);
+                    return null;
+                }
+
+                var inputStream = new FileStream(archivePath, FileMode.Open);
+                archiveStreams.Add(new ArchiveStream(inputStream, archiveFilename));
+            }
+
+            return archiveStreams;
+        }
+
         /// <summary>
         /// Unpacks a game's files.
         /// </summary>
@@ -228,12 +238,29 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
             ReadQarDictionaries(profile.QarDictionaries);
 
             var fileRegistry = new FileRegistry();
-            var archiveHandler = new ArchiveHandler(MakeExtractedFilesDirectory(profile.DisplayName), fileRegistry, OnBeginExtractingFile, IncrementExtractedFileCount, GetExtractingArchiveFilename);
-            var desiredArchiveFilenames = profile.ArchiveFiles;
+            var extractedFilesDirectory = MakeExtractedFilesDirectory(profile.DisplayName);
+            var archiveHandler = new ArchiveHandler(extractedFilesDirectory, fileRegistry, OnBeginExtractingFile, IncrementExtractedFileCount, GetExtractingArchiveFilename);
+            var archiveStreams = CreateArchiveStreams(profile.ArchiveFiles, gameDirectory);
 
-            UnpackArchives(desiredArchiveFilenames, gameDirectory, archiveHandler, OnBeginExtractingArchive, ResetExtractedFileCount, SetExtractingArchiveFilename);
+            UnpackArchives(archiveStreams, gameDirectory, archiveHandler, OnBeginExtractingArchive, ResetExtractedFileCount, SetExtractingArchiveFilename);
 
             fileRegistry.PrintExtensions();
+
+            var textHandler = new PlaintextHandler();
+            foreach (var extension in textHandler.Extensions)
+            {
+                if (!fileRegistry.ContainsExtension(extension))
+                {
+                    continue;
+                }
+
+                foreach (var file in fileRegistry.GetFilesWithExtension(extension))
+                {
+                    var outputFilePath = Path.Combine(extractedFilesDirectory, file.FileName);
+                    Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath));
+                    textHandler.Import(file.DataStream(), outputFilePath);
+                }
+            }
 
             EditorUtility.ClearProgressBar();
         }

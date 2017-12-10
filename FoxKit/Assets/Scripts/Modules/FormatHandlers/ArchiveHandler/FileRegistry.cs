@@ -50,6 +50,11 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
             return HasFileAlreadyBeenRegistered(file, extension, FileMap);
         }
 
+        public bool ContainsExtension(string extension)
+        {
+            return FileMap.ContainsKey(extension);
+        }
+
         public void PrintExtensions()
         {
             foreach(var extension in FileMap.Keys)
