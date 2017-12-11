@@ -19,7 +19,8 @@ namespace FoxKit.Core
         /// </summary>
         /// <param name="input">Binary stream of a Fox asset.</param>
         /// <param name="path">Filename of the importing asset.</param>
-        void Import(Stream input, string path);
+        /// <returns>The converted asset.</returns>
+        object Import(Stream input, string path);
 
         /// <summary>
         /// Export a Unity asset to Fox Engine format.

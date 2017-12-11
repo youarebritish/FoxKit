@@ -11,9 +11,24 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
     public class FileRegistry
     {
         /// <summary>
+        /// Total number of registered files.
+        /// </summary>
+        public int FileCount { get; private set; }
+
+        /// <summary>
         /// Maps extension (without a dot) to files with that extension.
         /// </summary>
         private readonly Dictionary<string, HashSet<FileDataStreamContainer>> FileMap = new Dictionary<string, HashSet<FileDataStreamContainer>>();
+
+        /// <summary>
+        /// List of supported file extensions.
+        /// </summary>
+        private readonly HashSet<string> SupportedExtensions;
+
+        public FileRegistry(HashSet<string> supportedExtensions)
+        {
+            SupportedExtensions = supportedExtensions;
+        }
 
         /// <summary>
         /// Registers a unique file.
@@ -35,6 +50,8 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
                 var contents = new HashSet<FileDataStreamContainer> { file };
                 FileMap.Add(extension, contents);
             }
+
+            FileCount++;
         }
 
         /// <summary>
@@ -50,17 +67,24 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
             return HasFileAlreadyBeenRegistered(file, extension, FileMap);
         }
 
+        /// <summary>
+        /// Determines whether or not a file extension has already been registered.
+        /// </summary>
+        /// <param name="extension">Extension to check.</param>
+        /// <returns>True if the file extension is already present in the map, otherwise false.</returns>
         public bool ContainsExtension(string extension)
         {
             return FileMap.ContainsKey(extension);
         }
 
-        public void PrintExtensions()
+        /// <summary>
+        /// Determines whether or not a file extension is supported.
+        /// </summary>
+        /// <param name="extension">Extension to check.</param>
+        /// <returns>True if the file extension is supported, else false.</returns>
+        public bool SupportsExtension(string extension)
         {
-            foreach(var extension in FileMap.Keys)
-            {
-                UnityEngine.Debug.Log(extension + ": " + FileMap[extension].Count);
-            }
+            return SupportedExtensions.Contains(extension);
         }
 
         /// <summary>
@@ -78,7 +102,7 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
         /// </summary>
         /// <param name="filename">Filename, including extension.</param>
         /// <returns>The file extension (without leading dot).</returns>
-        private static string GetExtension(string filename)
+        public static string GetExtension(string filename)
         {
             return Regex.Match(filename, @"\..*").Value.Remove(0, 1);
         }

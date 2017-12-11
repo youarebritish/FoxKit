@@ -1,6 +1,8 @@
-﻿using GzsTool.Core.Utility;
+﻿using FoxKit.Core;
+using GzsTool.Core.Utility;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -237,29 +239,25 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
 
             ReadQarDictionaries(profile.QarDictionaries);
 
-            var fileRegistry = new FileRegistry();
+            var textHandler = new PlaintextHandler();
+            var formatHandlers = new List<IFormatHandler>() { textHandler };
+            var supportedExtensions = new HashSet<string>(formatHandlers.SelectMany(handler => handler.Extensions));
+            
+            var fileRegistry = new FileRegistry(supportedExtensions);
             var extractedFilesDirectory = MakeExtractedFilesDirectory(profile.DisplayName);
-            var archiveHandler = new ArchiveHandler(extractedFilesDirectory, fileRegistry, OnBeginExtractingFile, IncrementExtractedFileCount, GetExtractingArchiveFilename);
+
+            var archiveHandler = new ArchiveHandler(fileRegistry);
             var archiveStreams = CreateArchiveStreams(profile.ArchiveFiles, gameDirectory);
 
-            UnpackArchives(archiveStreams, gameDirectory, archiveHandler, OnBeginExtractingArchive, ResetExtractedFileCount, SetExtractingArchiveFilename);
+            UnpackArchives(archiveStreams, gameDirectory, archiveHandler, OnBeginExtractingArchive, ResetExtractedFileCount, SetExtractingArchiveFilename);            
+            
+            var fileExtractor = new FileExtractor(extractedFilesDirectory, formatHandlers, OnBeginExtractingFile, IncrementExtractedFileCount, GetExtractingArchiveFilename);
 
-            fileRegistry.PrintExtensions();
+            fileExtractor.ExtractFiles(fileRegistry);
 
-            var textHandler = new PlaintextHandler();
-            foreach (var extension in textHandler.Extensions)
+            foreach(var archiveStream in archiveStreams)
             {
-                if (!fileRegistry.ContainsExtension(extension))
-                {
-                    continue;
-                }
-
-                foreach (var file in fileRegistry.GetFilesWithExtension(extension))
-                {
-                    var outputFilePath = Path.Combine(extractedFilesDirectory, file.FileName);
-                    Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath));
-                    textHandler.Import(file.DataStream(), outputFilePath);
-                }
+                archiveStream.Close();
             }
 
             EditorUtility.ClearProgressBar();

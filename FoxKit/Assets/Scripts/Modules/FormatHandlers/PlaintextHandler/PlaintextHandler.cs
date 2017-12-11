@@ -11,11 +11,12 @@ public class PlaintextHandler : IFormatHandler
 
     private readonly List<string> SupportedExtensions = new List<string>() { "lua", "json", "dat" };
 
-    public void Import(Stream input, string path)
+    public object Import(Stream input, string path)
     {
         using (var outputStream = new FileStream(path, FileMode.Create))
         {
             input.CopyTo(outputStream);
+            return outputStream;
         }
     }
 

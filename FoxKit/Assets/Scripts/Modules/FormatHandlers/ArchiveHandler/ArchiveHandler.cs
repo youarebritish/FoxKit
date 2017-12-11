@@ -7,6 +7,7 @@ using GzsTool.Core.Common;
 using System.Linq;
 using UnityEngine.Assertions;
 using System;
+using UnityEngine;
 
 namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
 {
@@ -18,28 +19,13 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
         #region Fields
         public List<string> Extensions => SupportedExtensions;
 
-        private readonly List<string> SupportedExtensions = new List<string>() { "dat", "g0s" };
-        
-        private readonly string ExtractedFilesDirectory;
+        private readonly List<string> SupportedExtensions = new List<string>() { "dat", "g0s" };        
         private readonly FileRegistry FileRegistry;
-
-        private readonly BeginExtractingFileDelegate OnBeginExtractingFile;
-        private readonly IncrementExtractedFileCountDelegate IncrementExtractedFileCount;
-        private readonly GetExtractingArchiveFilenameDelegate GetExtractingArchiveFilename;
         #endregion
 
-        public ArchiveHandler(string extractedFilesDirectory, FileRegistry fileRegistry, BeginExtractingFileDelegate onBeginExtractingFile, IncrementExtractedFileCountDelegate incrementExtractedFileCountDelegate, GetExtractingArchiveFilenameDelegate getExtractingArchiveFilenameDelegate)
+        public ArchiveHandler(FileRegistry fileRegistry)
         {
-            Assert.IsNotNull(onBeginExtractingFile, "onBeginExtractingFile must not be null.");
-            Assert.IsNotNull(incrementExtractedFileCountDelegate, "IncrementExtractedFileCount must not be null.");
-            Assert.IsNotNull(getExtractingArchiveFilenameDelegate, "GetExtractingArchiveFilename must not be null.");
-
-            ExtractedFilesDirectory = extractedFilesDirectory;
-            FileRegistry = fileRegistry;
-
-            OnBeginExtractingFile = onBeginExtractingFile;
-            IncrementExtractedFileCount = incrementExtractedFileCountDelegate;
-            GetExtractingArchiveFilename = getExtractingArchiveFilenameDelegate;            
+            FileRegistry = fileRegistry;           
         }
 
         #region Delegates
@@ -76,16 +62,13 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
         public delegate void SetExtractingArchiveFilenameDelegate(string archiveFilename);
         #endregion
 
-        public void Import(Stream input, string path)
+        public object Import(Stream input, string path)
         {
             Assert.IsNotNull(input, "input stream must not be null.");
             Assert.IsNotNull(path, "input path must not be null.");
             
-            var outputDirectory = MakeOutputDirectory(ExtractedFilesDirectory);
             var archiveFile = ReadArchive(path, input);
-
             var exportFiles = archiveFile.ExportFiles(input);
-            var exportFileCount = exportFiles.Count();
 
             foreach (var exportedFile in exportFiles)
             {
@@ -94,21 +77,20 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
                 {
                     continue;
                 }
+                // Don't add files whose extension we can't do anything with.
+                if (!FileRegistry.SupportsExtension(FileRegistry.GetExtension(exportedFile.FileName)))
+                {
+                    continue;
+                }
                 FileRegistry.RegisterFile(exportedFile);
-
-                //OnBeginExtractingFile.Invoke(exportedFile.FileName, exportFileCount, IncrementExtractedFileCount, GetExtractingArchiveFilename);
-                //ExtractFile(exportedFile.FileName, exportedFile.DataStream, outputDirectory);
             }
+
+            return exportFiles;
         }
 
         public void Export(object asset, string path)
         {
             throw new System.NotImplementedException();
-        }
-
-        private static IDirectory MakeOutputDirectory(string outputDirectoryPath)
-        {
-            return new FileSystemDirectory(outputDirectoryPath);
         }
 
         private static ArchiveFile ReadArchive(string path, Stream inputStream)
@@ -117,11 +99,6 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
             file.Name = Path.GetFileName(path);
             file.Read(inputStream);
             return file;
-        }
-
-        private static void ExtractFile(string filename, Func<Stream> dataStream, IDirectory outputDirectory)
-        {
-            outputDirectory.WriteFile(filename, dataStream);
         }
     }
 }
