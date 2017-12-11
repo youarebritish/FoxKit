@@ -51,6 +51,8 @@ namespace FoxKit.Core
         {
             Assert.IsNotNull(fileRegistry, "fileRegistry must not be null.");
 
+            var extractedFiles = new Dictionary<string, object>();
+
             foreach (var formatHandler in FormatHandlers)
             {
                 foreach (var extension in formatHandler.Extensions)
@@ -62,11 +64,16 @@ namespace FoxKit.Core
 
                     foreach (var file in fileRegistry.GetFilesWithExtension(extension))
                     {
+                        if (extractedFiles.ContainsKey(file.FileName))
+                        {
+                            continue;
+                        }
+
                         OnBeginExtractingFile.Invoke(file.FileName, fileRegistry.FileCount, IncrementExtractedFileCount, GetExtractingArchiveFilename);
 
                         var outputFilePath = MakeOutputPath(OutputDirectory, file.FileName);
                         Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath));
-                        formatHandler.Import(file.DataStream(), outputFilePath);
+                        extractedFiles.Add(file.FileName, formatHandler.Import(file.DataStream(), outputFilePath));
                     }
                 }
             }
@@ -82,7 +89,7 @@ namespace FoxKit.Core
         /// <param name="fileRegistry">Registry of all discovered files.</param>
         /// <param name="formatHandlers">Set of format handlers to use.</param>
         /// <returns>The extracted file.</returns>
-        private static object ExtractFile(Stream input, string filename, string extension, string outputDirectory, FileRegistry fileRegistry, List<IFormatHandler> formatHandlers)
+        private static object ExtractFile(Stream input, string filename, string extension, string outputDirectory, FileRegistry fileRegistry, List<IFormatHandler> formatHandlers, Dictionary<string, object> extractedFiles)
         {
             Assert.IsNotNull(input, "Input stream must not be null.");
             Assert.IsNotNull(filename, "Input filename must not be null.");
@@ -90,9 +97,18 @@ namespace FoxKit.Core
             Assert.IsNotNull(outputDirectory, "outputDirectory must not be null.");
             Assert.IsNotNull(fileRegistry, "fileRegistry must not be null.");
             Assert.IsNotNull(formatHandlers, "formatHandlers must not be null.");
+            Assert.IsNotNull(extractedFiles, "extractedFiles must not be null.");
+
+            if (extractedFiles.ContainsKey(filename))
+            {
+                return extractedFiles[filename];
+            }
 
             var formatHandler = FindFormatHandlerForExtension(extension, formatHandlers);
-            return formatHandler.Import(input, MakeOutputPath(outputDirectory, filename));
+            var extractedFile = formatHandler.Import(input, MakeOutputPath(outputDirectory, filename));
+
+            extractedFiles.Add(filename, extractedFile);
+            return extractedFile;
         }
 
         /// <summary>

@@ -206,6 +206,12 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
                         (float)extractedFileCount / (float)totalFileCount);
         }
 
+        /// <summary>
+        /// Create streams for each archive so they can be unpacked.
+        /// </summary>
+        /// <param name="desiredArchiveFilenames">Filenames of the archives to unpack.</param>
+        /// <param name="gameDirectory">Directory of the game files.</param>
+        /// <returns>The archive streams.</returns>
         private static List<ArchiveStream> CreateArchiveStreams(List<string> desiredArchiveFilenames, string gameDirectory)
         {
             var archiveStreams = new List<ArchiveStream>();
@@ -227,6 +233,16 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
         }
 
         /// <summary>
+        /// Make the file format handlers.
+        /// </summary>
+        /// <returns>The file format handlers.</returns>
+        private static List<IFormatHandler> MakeFormatHandlers()
+        {
+            var textHandler = new PlaintextHandler();
+            return new List<IFormatHandler>() { textHandler };
+        }
+
+        /// <summary>
         /// Unpacks a game's files.
         /// </summary>
         /// <param name="profile">Configuration profile for the game to unpack.</param>
@@ -238,19 +254,17 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
             if (gameDirectory == string.Empty) return;
 
             ReadQarDictionaries(profile.QarDictionaries);
-
-            var textHandler = new PlaintextHandler();
-            var formatHandlers = new List<IFormatHandler>() { textHandler };
+            
+            var formatHandlers = MakeFormatHandlers();
             var supportedExtensions = new HashSet<string>(formatHandlers.SelectMany(handler => handler.Extensions));
             
             var fileRegistry = new FileRegistry(supportedExtensions);
-            var extractedFilesDirectory = MakeExtractedFilesDirectory(profile.DisplayName);
-
             var archiveHandler = new ArchiveHandler(fileRegistry);
             var archiveStreams = CreateArchiveStreams(profile.ArchiveFiles, gameDirectory);
 
-            UnpackArchives(archiveStreams, gameDirectory, archiveHandler, OnBeginExtractingArchive, ResetExtractedFileCount, SetExtractingArchiveFilename);            
-            
+            UnpackArchives(archiveStreams, gameDirectory, archiveHandler, OnBeginExtractingArchive, ResetExtractedFileCount, SetExtractingArchiveFilename);
+
+            var extractedFilesDirectory = MakeExtractedFilesDirectory(profile.DisplayName);
             var fileExtractor = new FileExtractor(extractedFilesDirectory, formatHandlers, OnBeginExtractingFile, IncrementExtractedFileCount, GetExtractingArchiveFilename);
 
             fileExtractor.ExtractFiles(fileRegistry);
