@@ -23,12 +23,19 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
         /// <summary>
         /// List of supported file extensions.
         /// </summary>
-        private readonly HashSet<string> SupportedExtensions;
+        private readonly HashSet<string> SupportedExtensions = new HashSet<string>();
+        
+        /// <summary>
+        /// Delegate for when a file is registered.
+        /// </summary>
+        /// <param name="filename">Filename of the file registered.</param>
+        /// <param name="extension">Extension of the file registered.</param>
+        public delegate void OnFileRegisteredDelegate(FileDataStreamContainer file, string extension);
 
-        public FileRegistry(HashSet<string> supportedExtensions)
-        {
-            SupportedExtensions = supportedExtensions;
-        }
+        /// <summary>
+        /// Event raised when a file is registered.
+        /// </summary>
+        public event OnFileRegisteredDelegate OnFileRegistered;
 
         /// <summary>
         /// Registers a unique file.
@@ -52,6 +59,11 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
             }
 
             FileCount++;
+
+            if (OnFileRegistered != null)
+            {
+                OnFileRegistered.Invoke(file, extension);
+            }
         }
 
         /// <summary>
@@ -95,6 +107,19 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
         public HashSet<FileDataStreamContainer> GetFilesWithExtension(string extension)
         {
             return FileMap[extension];
+        }
+
+        public void AddSupportedExtension(string extension)
+        {
+            SupportedExtensions.Add(extension);
+        }
+
+        public void PrintFiles()
+        {
+            foreach(var extension in FileMap.Keys)
+            {
+                UnityEngine.Debug.Log(extension + ": " + FileMap[extension].Count + " files extracted.");
+            }
         }
 
         /// <summary>

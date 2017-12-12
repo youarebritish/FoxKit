@@ -14,7 +14,7 @@ MonoBehaviour:
   DisplayName: TPP
   HashingAlgorithm: 0
   ArchiveFiles:
-  - chunk3.dat
+  - chunk4.dat
   QarDictionaries:
   - {fileID: 4900000, guid: 2dd760812e187f24e841aead45351947, type: 3}
   FpkDictionaries:

@@ -115,6 +115,16 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
             }
         }
 
+        private static void ReadFpkDictionaries(List<TextAsset> fpkDictionaries)
+        {
+            Assert.IsNotNull(fpkDictionaries, "fpkDictionaries must not be null.");
+
+            foreach (var dictionary in fpkDictionaries)
+            {
+                Hashing.ReadMd5Dictionary(dictionary);
+            }
+        }
+
         /// <summary>
         /// Unpack game archives.
         /// </summary>
@@ -236,10 +246,11 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
         /// Make the file format handlers.
         /// </summary>
         /// <returns>The file format handlers.</returns>
-        private static List<IFormatHandler> MakeFormatHandlers()
+        private static List<IFormatHandler> MakeFormatHandlers(FileRegistry fileRegistry)
         {
+            var archiveHandler = new ArchiveHandler(fileRegistry);
             var textHandler = new PlaintextHandler();
-            return new List<IFormatHandler>() { textHandler };
+            return new List<IFormatHandler>() { textHandler, archiveHandler };
         }
 
         /// <summary>
@@ -254,11 +265,17 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
             if (gameDirectory == string.Empty) return;
 
             ReadQarDictionaries(profile.QarDictionaries);
-            
-            var formatHandlers = MakeFormatHandlers();
+            ReadFpkDictionaries(profile.FpkDictionaries);
+
+            var fileRegistry = new FileRegistry();
+            var formatHandlers = MakeFormatHandlers(fileRegistry);
+
             var supportedExtensions = new HashSet<string>(formatHandlers.SelectMany(handler => handler.Extensions));
+            foreach(var extension in supportedExtensions)
+            {
+                fileRegistry.AddSupportedExtension(extension);
+            }
             
-            var fileRegistry = new FileRegistry(supportedExtensions);
             var archiveHandler = new ArchiveHandler(fileRegistry);
             var archiveStreams = CreateArchiveStreams(profile.ArchiveFiles, gameDirectory);
 
@@ -275,6 +292,8 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
             }
 
             EditorUtility.ClearProgressBar();
+
+            fileRegistry.PrintFiles();
         }
 
         /// <summary>

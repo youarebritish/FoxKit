@@ -48,7 +48,7 @@ namespace GzsTool.Core.Qar
 
             // Determines the alignment block size.
             int blockShiftBits = (Flags & 0x800) > 0 ? 12 : 10;
-
+                        
             byte[] sectionsData = reader.ReadBytes((int)(8 * fileCount));
             ulong[] sections = DecryptSectionList(fileCount, sectionsData);
             byte[] unknownSectionData = reader.ReadBytes((int)(16 * unknownCount));

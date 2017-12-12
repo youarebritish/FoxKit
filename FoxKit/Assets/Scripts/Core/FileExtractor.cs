@@ -1,9 +1,11 @@
 ﻿using FoxKit.Modules.FormatHandlers.ArchiveHandler;
+using GzsTool.Core.Common;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine.Assertions;
 using static FoxKit.Modules.FormatHandlers.ArchiveHandler.ArchiveHandler;
+using static FoxKit.Modules.FormatHandlers.ArchiveHandler.FileRegistry;
 
 namespace FoxKit.Core
 {
@@ -50,8 +52,11 @@ namespace FoxKit.Core
         public void ExtractFiles(FileRegistry fileRegistry)
         {
             Assert.IsNotNull(fileRegistry, "fileRegistry must not be null.");
-
+            
             var extractedFiles = new Dictionary<string, object>();
+
+            var onFileRegisteredWhileExtracting = MakeOnFileRegisteredWhileExtractingDelegate(OutputDirectory, FormatHandlers, extractedFiles);
+            fileRegistry.OnFileRegistered += onFileRegisteredWhileExtracting;
 
             foreach (var formatHandler in FormatHandlers)
             {
@@ -64,19 +69,30 @@ namespace FoxKit.Core
 
                     foreach (var file in fileRegistry.GetFilesWithExtension(extension))
                     {
-                        if (extractedFiles.ContainsKey(file.FileName))
-                        {
-                            continue;
-                        }
-
+                        // TODO Should OnBeginExtractingFile go inside ExtractFile? Otherwise the progress bar UI won't be extracting when loading required files.
                         OnBeginExtractingFile.Invoke(file.FileName, fileRegistry.FileCount, IncrementExtractedFileCount, GetExtractingArchiveFilename);
-
-                        var outputFilePath = MakeOutputPath(OutputDirectory, file.FileName);
-                        Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath));
-                        extractedFiles.Add(file.FileName, formatHandler.Import(file.DataStream(), outputFilePath));
+                        ExtractFile(file.DataStream(), file.FileName, OutputDirectory, formatHandler, extractedFiles);
                     }
                 }
             }
+
+            fileRegistry.OnFileRegistered -= onFileRegisteredWhileExtracting;
+        }
+
+        private static OnFileRegisteredDelegate MakeOnFileRegisteredWhileExtractingDelegate(string outputDirectory, List<IFormatHandler> formatHandlers, Dictionary<string, object> extractedFiles)
+        {
+            return delegate (FileDataStreamContainer file, string extension)
+            {
+                OnFileRegisteredWhileExtracting(file.DataStream(), file.FileName, extension, outputDirectory, formatHandlers, extractedFiles);
+            };
+        }
+
+        private static void OnFileRegisteredWhileExtracting(Stream input, string filename, string extension, string outputDirectory, List<IFormatHandler> formatHandlers, Dictionary<string, object> extractedFiles)
+        {
+            var formatHandler = FindFormatHandlerForExtension(extension, formatHandlers);
+            Assert.IsNotNull(formatHandler, "No format handler found for extension " + extension);
+
+            ExtractFile(input, filename, outputDirectory, formatHandler, extractedFiles);
         }
 
         /// <summary>
@@ -84,28 +100,25 @@ namespace FoxKit.Core
         /// </summary>
         /// <param name="input">Input stream.</param>
         /// <param name="filename">Filename of the file to extract.</param>
-        /// <param name="extension">Extension of the file to extract.</param>
         /// <param name="outputDirectory">Output directory to write the file.</param>
-        /// <param name="fileRegistry">Registry of all discovered files.</param>
-        /// <param name="formatHandlers">Set of format handlers to use.</param>
+        /// <param name="formatHandler">Format handler to use.</param>
         /// <returns>The extracted file.</returns>
-        private static object ExtractFile(Stream input, string filename, string extension, string outputDirectory, FileRegistry fileRegistry, List<IFormatHandler> formatHandlers, Dictionary<string, object> extractedFiles)
+        private static object ExtractFile(Stream input, string filename, string outputDirectory, IFormatHandler formatHandler, Dictionary<string, object> extractedFiles)
         {
             Assert.IsNotNull(input, "Input stream must not be null.");
             Assert.IsNotNull(filename, "Input filename must not be null.");
-            Assert.IsNotNull(extension, "Input extension must not be null.");
             Assert.IsNotNull(outputDirectory, "outputDirectory must not be null.");
-            Assert.IsNotNull(fileRegistry, "fileRegistry must not be null.");
-            Assert.IsNotNull(formatHandlers, "formatHandlers must not be null.");
+            Assert.IsNotNull(formatHandler, "formatHandler must not be null.");
             Assert.IsNotNull(extractedFiles, "extractedFiles must not be null.");
-
+            
             if (extractedFiles.ContainsKey(filename))
             {
                 return extractedFiles[filename];
             }
 
-            var formatHandler = FindFormatHandlerForExtension(extension, formatHandlers);
-            var extractedFile = formatHandler.Import(input, MakeOutputPath(outputDirectory, filename));
+            var outputFilePath = MakeOutputPath(outputDirectory, filename);
+            Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath));
+            var extractedFile = formatHandler.Import(input, outputFilePath);
 
             extractedFiles.Add(filename, extractedFile);
             return extractedFile;

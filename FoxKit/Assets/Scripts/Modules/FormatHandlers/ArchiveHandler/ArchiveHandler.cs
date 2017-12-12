@@ -2,12 +2,11 @@
 using System.IO;
 using FoxKit.Core;
 using GzsTool.Core.Qar;
-using GzsTool.Core.Common.Interfaces;
 using GzsTool.Core.Common;
-using System.Linq;
 using UnityEngine.Assertions;
-using System;
-using UnityEngine;
+using GzsTool.Core.Fpk;
+using GzsTool.Core.Pftxs;
+using GzsTool.Core.Sbp;
 
 namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
 {
@@ -19,7 +18,7 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
         #region Fields
         public List<string> Extensions => SupportedExtensions;
 
-        private readonly List<string> SupportedExtensions = new List<string>() { "dat", "g0s" };        
+        private readonly List<string> SupportedExtensions = new List<string>() { "pftxs", "fpk", "fpkd", "sbp" };        
         private readonly FileRegistry FileRegistry;
         #endregion
 
@@ -95,7 +94,26 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
 
         private static ArchiveFile ReadArchive(string path, Stream inputStream)
         {
-            var file = new QarFile();
+            // TODO THIS SUCKS
+            var extension = FileRegistry.GetExtension(path);
+            ArchiveFile file = null;
+            if (extension == "fpk" || extension == "fpkd")
+            {
+                file = new FpkFile();
+            }
+            else if (extension == "dat")
+            {
+                file = new QarFile();
+            }
+            else if (extension == "pftxs")
+            {
+                file = new PftxsFile();
+            }
+            else if (extension == "sbp")
+            {
+                file = new SbpFile();
+            }
+
             file.Name = Path.GetFileName(path);
             file.Read(inputStream);
             return file;

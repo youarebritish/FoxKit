@@ -316,9 +316,10 @@ namespace GzsTool.Core.Utility
             return Md5.ComputeHash(Encoding.Default.GetBytes(text));
         }
 
-        public static void ReadMd5Dictionary(string path)
+        public static void ReadMd5Dictionary(TextAsset dictionary)
         {
-            foreach (var line in File.ReadAllLines(path))
+            var linesInFile = dictionary.text.Split('\n');
+            foreach (var line in linesInFile)
             {
                 byte[] md5Hash = Md5HashText(line);
                 if (Md5HashNameDictionary.ContainsKey(md5Hash) == false)
