@@ -34,9 +34,14 @@
         private const string SelectGameDirectoryPanelTitle = "Select game directory";
 
         /// <summary>
-        /// Text to display in the title of the game unpacking progress bar.
+        /// Text to display in the title of the progress bar while reading an archive.
         /// </summary>
-        private const string UnpackingGameProgressBarTitle = "Extracting {0}...";
+        private const string ReadingArchiveProgressBarTitle = "Reading {0}...";
+
+        /// <summary>
+        /// Text to display in the title of the progress bar while extracting files.
+        /// </summary>
+        private const string ExtractingFilesProgressBarTitle = "Extracting files...";
 
         /// <summary>
         /// Text to display in the text of the progress bar while extracting a file.
@@ -64,19 +69,18 @@
         private int extractedFileCount;
 
         /// <summary>
-        /// Filename ofthe archive currently being extracted.
+        /// Filename of the archive currently being extracted.
         /// </summary>
-        private string extractingArchiveFilename;
+        private string readingArchiveFilename;
         #endregion
 
         #region Delegates
         /// <summary>
-        /// Delegate for a callback invoked when an archive begins being extracted.
+        /// Delegate for a callback invoked when an archive begins being read.
         /// </summary>
-        /// <param name="archiveFilename">Filename of the archive beginning extraction.</param>
-        /// <param name="resetExtractedFileCountDelegate">Delegate to reset the count of extracted files.</param>
-        /// <param name="setExtractingArchiveFilenameDelegate">Delegate to set the filename of the extracting archive.</param>
-        private delegate void BeginExtractingArchiveDelegate(string archiveFilename, ArchiveHandler.ResetExtractedFileCountDelegate resetExtractedFileCountDelegate, ArchiveHandler.SetExtractingArchiveFilenameDelegate setExtractingArchiveFilenameDelegate);
+        /// <param name="archiveFilename">Filename of the archive beginning to be read.</param>
+        /// <param name="setReadingArchiveFilenameDelegate">Delegate to set the filename of the archive being read.</param>
+        private delegate void BeginReadingArchiveDelegate(string archiveFilename, ArchiveHandler.SetReadingArchiveFilenameDelegate setReadingArchiveFilenameDelegate);
         #endregion
 
         /// <inheritdoc />
@@ -152,26 +156,22 @@
         /// <param name="archiveHandler">
         /// Format handler for archives.
         /// </param>
-        /// <param name="onBeginExtractingArchive">
+        /// <param name="onBeginReadingArchive">
         /// Callback to invoke when an archive begins being extracted.
         /// </param>
-        /// <param name="resetExtractedFileCountDelegate">
-        /// Delegate to reset the count of extracted files.
-        /// </param>
-        /// <param name="setExtractingArchiveFilenameDelegate">
+        /// <param name="setReadingArchiveFilenameDelegate">
         /// Delegate to set the name of the extracting archive.
         /// </param>
-        private static void UnpackArchives(ICollection<ArchiveStream> archiveStreams, ArchiveHandler archiveHandler, BeginExtractingArchiveDelegate onBeginExtractingArchive, ArchiveHandler.ResetExtractedFileCountDelegate resetExtractedFileCountDelegate, ArchiveHandler.SetExtractingArchiveFilenameDelegate setExtractingArchiveFilenameDelegate)
+        private static void UnpackArchives(ICollection<ArchiveStream> archiveStreams, ArchiveHandler archiveHandler, BeginReadingArchiveDelegate onBeginReadingArchive, ArchiveHandler.SetReadingArchiveFilenameDelegate setReadingArchiveFilenameDelegate)
         {
             Assert.IsNotNull(archiveStreams, "archiveStreams must not be null.");
             Assert.IsNotNull(archiveHandler, "archiveHandler must not be null.");
-            Assert.IsNotNull(onBeginExtractingArchive, "onBeginExtractingArchive must not be null.");
-            Assert.IsNotNull(resetExtractedFileCountDelegate, "resetExtractedFileCountDelegate must not be null.");
-            Assert.IsNotNull(setExtractingArchiveFilenameDelegate, "setExtractingArchiveFilenameDelegate must not be null.");
+            Assert.IsNotNull(onBeginReadingArchive, "onBeginReadingArchive must not be null.");
+            Assert.IsNotNull(setReadingArchiveFilenameDelegate, "setReadingArchiveFilenameDelegate must not be null.");
 
             foreach (var archiveStream in archiveStreams)
             {
-                onBeginExtractingArchive.Invoke(archiveStream.Path, resetExtractedFileCountDelegate, setExtractingArchiveFilenameDelegate);
+                onBeginReadingArchive.Invoke(archiveStream.Path, setReadingArchiveFilenameDelegate);
                 UnpackArchive(archiveStream, archiveHandler);
             }
         }
@@ -194,12 +194,10 @@
         /// Called when an archive begins being unpacked.
         /// </summary>
         /// <param name="archiveFilename">Filename of the archive.</param>
-        /// /// <param name="resetExtractedFileCountDelegate">Delegate to reset the count of extracted files.</param>
-        /// /// <param name="setExtractingArchiveFilenameDelegate">Delegate to set the filename of the archive being extracted.</param>
-        private static void OnBeginExtractingArchive(string archiveFilename, ArchiveHandler.ResetExtractedFileCountDelegate resetExtractedFileCountDelegate, ArchiveHandler.SetExtractingArchiveFilenameDelegate setExtractingArchiveFilenameDelegate)
+        /// <param name="setReadingArchiveFilenameDelegate">Delegate to set the filename of the archive being read.</param>
+        private static void OnBeginReadingArchive(string archiveFilename, ArchiveHandler.SetReadingArchiveFilenameDelegate setReadingArchiveFilenameDelegate)
         {
-            resetExtractedFileCountDelegate.Invoke();
-            setExtractingArchiveFilenameDelegate.Invoke(archiveFilename);
+            setReadingArchiveFilenameDelegate.Invoke(archiveFilename);
             ShowReadingEntriesProgressBar(archiveFilename);
         }
         
@@ -212,21 +210,21 @@
         private static void ShowReadingEntriesProgressBar(string currentArchiveFilename)
         {
             EditorUtility.DisplayProgressBar(
-                        MakeProgressBarTitleText(currentArchiveFilename),
+                MakeReadingEntriesProgressBarTitleText(currentArchiveFilename),
                         ReadingEntriesText,
                         0);
         }
-        
-        /// <summary>
-        /// Make the text for the progress bar title.
-        /// </summary>
-        /// <param name="currentArchiveFilename">Filename of the archive currently being extracted.</param>
-        /// <returns>Text to display in the progress bar title.</returns>
-        private static string MakeProgressBarTitleText(string currentArchiveFilename)
-        {
-            return string.Format(UnpackingGameProgressBarTitle, currentArchiveFilename);
-        }
 
+        /// <summary>
+        /// Make the text for the progress bar title while reading archive entries.
+        /// </summary>
+        /// <param name="currentArchiveFilename">Filename of the archive currently being read.</param>
+        /// <returns>Text to display in the progress bar title.</returns>
+        private static string MakeReadingEntriesProgressBarTitleText(string currentArchiveFilename)
+        {
+            return string.Format(ReadingArchiveProgressBarTitle, currentArchiveFilename);
+        }
+        
         /// <summary>
         /// Called when a file begins being extracted.
         /// </summary>
@@ -268,9 +266,18 @@
         private static void ShowExtractingFileProgressBar(string currentArchiveFilename, string currentFile, int extractedFileCount, int totalFileCount)
         {
             EditorUtility.DisplayProgressBar(
-                        MakeProgressBarTitleText(currentArchiveFilename),
+                        MakeExtractingFileProgressBarTitleText(),
                         string.Format(UnpackingFileText, currentFile),
                         (float)extractedFileCount / (float)totalFileCount);
+        }
+
+        /// <summary>
+        /// Make the text for the progress bar title while extracting a file.
+        /// </summary>
+        /// <returns>Text to display in the progress bar title.</returns>
+        private static string MakeExtractingFileProgressBarTitleText()
+        {
+            return ExtractingFilesProgressBarTitle;
         }
 
         /// <summary>
@@ -344,7 +351,7 @@
             var archiveHandler = new ArchiveHandler(fileRegistry);
             var archiveStreams = CreateArchiveStreams(profile.ArchiveFiles, gameDirectory);
 
-            UnpackArchives(archiveStreams, archiveHandler, OnBeginExtractingArchive, this.ResetExtractedFileCount, this.SetExtractingArchiveFilename);
+            UnpackArchives(archiveStreams, archiveHandler, OnBeginReadingArchive, this.SetReadingArchiveFilename);
 
             var extractedFilesDirectory = MakeExtractedFilesDirectory(profile.DisplayName);
             var fileExtractor = new FileExtractor(extractedFilesDirectory, formatHandlers, OnBeginExtractingFile, this.IncrementExtractedFileCount, this.GetExtractingArchiveFilename);
@@ -357,8 +364,9 @@
             }
 
             EditorUtility.ClearProgressBar();
-
             fileRegistry.PrintStats();
+
+            this.ResetExtractedFileCount();
         }
 
         /// <summary>
@@ -385,16 +393,16 @@
         /// <returns>The filename of the archive currently being extracted.</returns>
         private string GetExtractingArchiveFilename()
         {
-            return this.extractingArchiveFilename;
+            return this.readingArchiveFilename;
         }
 
         /// <summary>
         /// Sets the filename of the archive currently being extracted.
         /// </summary>
         /// <param name="archiveFilename">Filename of the archive.</param>
-        private void SetExtractingArchiveFilename(string archiveFilename)
+        private void SetReadingArchiveFilename(string archiveFilename)
         {
-            this.extractingArchiveFilename = archiveFilename;
+            this.readingArchiveFilename = archiveFilename;
         }
     }
 }

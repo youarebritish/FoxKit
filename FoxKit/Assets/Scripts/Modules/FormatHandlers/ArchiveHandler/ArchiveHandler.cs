@@ -62,12 +62,12 @@
         public delegate string GetExtractingArchiveFilenameDelegate();
 
         /// <summary>
-        /// Delegate for setting the filename of the archive currently being extracted.
+        /// Delegate for setting the filename of the archive currently being read.
         /// </summary>
         /// <param name="archiveFilename">
         /// The archive filename.
         /// </param>
-        public delegate void SetExtractingArchiveFilenameDelegate(string archiveFilename);
+        public delegate void SetReadingArchiveFilenameDelegate(string archiveFilename);
 
         /// <inheritdoc />
         public List<string> Extensions { get; } = new List<string> { "pftxs", "fpk", "fpkd", "sbp" };
