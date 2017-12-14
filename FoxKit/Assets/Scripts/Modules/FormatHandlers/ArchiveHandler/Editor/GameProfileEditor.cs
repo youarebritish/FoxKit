@@ -117,7 +117,7 @@
         /// <param name="qarDictionaries">
         /// QAR dictionaries to load.
         /// </param>
-        private static void ReadQarDictionaries(IEnumerable<TextAsset> qarDictionaries)
+        private static void ReadQarDictionaries(ICollection<TextAsset> qarDictionaries)
         {
             Assert.IsNotNull(qarDictionaries, "qarDictionaries must not be null.");
 
@@ -128,12 +128,12 @@
         }
 
         /// <summary>
-        /// Read the fpk dictionaries so that fpk filenames can be un-hashed.
+        /// Read the FPK dictionaries so that FPK filenames can be un-hashed.
         /// </summary>
         /// <param name="fpkDictionaries">
-        /// Fpk dictionaries to load.
+        /// FPK dictionaries to load.
         /// </param>
-        private static void ReadFpkDictionaries(IEnumerable<TextAsset> fpkDictionaries)
+        private static void ReadFpkDictionaries(ICollection<TextAsset> fpkDictionaries)
         {
             Assert.IsNotNull(fpkDictionaries, "fpkDictionaries must not be null.");
 
