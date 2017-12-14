@@ -77,9 +77,9 @@ namespace GzsTool.Core.Fpk
         {
             BinaryWriter writer = new BinaryWriter(output, Encoding.Default, true);
             writer.Write(StringOffset);
-            writer.WriteZeros(4);
+            writer.WriteZeroes(4);
             writer.Write(StringLength);
-            writer.WriteZeros(4);
+            writer.WriteZeroes(4);
         }
     }
 }

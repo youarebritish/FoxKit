@@ -1,41 +1,53 @@
-﻿using GzsTool.Core.Common;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using UnityEngine.Assertions;
-
-namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
+﻿namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
 {
+    using System.Collections.Generic;
+    using System.Text.RegularExpressions;
+
+    using GzsTool.Core.Common;
+
+    using UnityEngine.Assertions;
+
     /// <summary>
     /// Sorts archive files by their file extension.
     /// </summary>
     public class FileRegistry
     {
         /// <summary>
-        /// Total number of registered files.
-        /// </summary>
-        public int FileCount { get; private set; }
-
-        /// <summary>
         /// Maps extension (without a dot) to files with that extension.
         /// </summary>
-        private readonly Dictionary<string, HashSet<FileDataStreamContainer>> FileMap = new Dictionary<string, HashSet<FileDataStreamContainer>>();
+        private readonly Dictionary<string, HashSet<FileDataStreamContainer>> fileMap = new Dictionary<string, HashSet<FileDataStreamContainer>>();
 
         /// <summary>
         /// List of supported file extensions.
         /// </summary>
-        private readonly HashSet<string> SupportedExtensions = new HashSet<string>();
-        
+        private readonly HashSet<string> supportedExtensions = new HashSet<string>();
+
         /// <summary>
         /// Delegate for when a file is registered.
         /// </summary>
-        /// <param name="filename">Filename of the file registered.</param>
-        /// <param name="extension">Extension of the file registered.</param>
+        /// <param name="file">File that was registered.</param>
+        /// <param name="extension">Extension of the file.</param>
         public delegate void OnFileRegisteredDelegate(FileDataStreamContainer file, string extension);
 
         /// <summary>
         /// Event raised when a file is registered.
         /// </summary>
         public event OnFileRegisteredDelegate OnFileRegistered;
+
+        /// <summary>
+        /// Gets total number of registered files.
+        /// </summary>
+        public int FileCount { get; private set; }
+
+        /// <summary>
+        /// Gets the file extension (without leading dot) for a filename.
+        /// </summary>
+        /// <param name="filename">Filename, including extension.</param>
+        /// <returns>The file extension (without leading dot).</returns>
+        public static string GetExtension(string filename)
+        {
+            return Regex.Match(filename, @"\..*").Value.Remove(0, 1);
+        }
 
         /// <summary>
         /// Registers a unique file.
@@ -47,23 +59,20 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
 
             var extension = GetExtension(file.FileName);
 
-            if (HasExtensionAlreadyBeenRegistered(extension, FileMap))
+            if (HasExtensionAlreadyBeenRegistered(extension, this.fileMap))
             {
-                var extensionEntry = FileMap[extension];
+                var extensionEntry = this.fileMap[extension];
                 extensionEntry.Add(file);
             }
             else
             {
                 var contents = new HashSet<FileDataStreamContainer> { file };
-                FileMap.Add(extension, contents);
+                this.fileMap.Add(extension, contents);
             }
 
-            FileCount++;
+            this.FileCount++;
 
-            if (OnFileRegistered != null)
-            {
-                OnFileRegistered.Invoke(file, extension);
-            }
+            this.OnFileRegistered?.Invoke(file, extension);
         }
 
         /// <summary>
@@ -76,7 +85,7 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
             Assert.IsNotNull(file, "Input file must not be null.");
 
             var extension = GetExtension(file.FileName);
-            return HasFileAlreadyBeenRegistered(file, extension, FileMap);
+            return HasFileAlreadyBeenRegistered(file, extension, this.fileMap);
         }
 
         /// <summary>
@@ -86,7 +95,7 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
         /// <returns>True if the file extension is already present in the map, otherwise false.</returns>
         public bool ContainsExtension(string extension)
         {
-            return FileMap.ContainsKey(extension);
+            return this.fileMap.ContainsKey(extension);
         }
 
         /// <summary>
@@ -96,7 +105,7 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
         /// <returns>True if the file extension is supported, else false.</returns>
         public bool SupportsExtension(string extension)
         {
-            return SupportedExtensions.Contains(extension);
+            return this.supportedExtensions.Contains(extension);
         }
 
         /// <summary>
@@ -106,32 +115,31 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
         /// <returns>The set of registered files with the given extension.</returns>
         public HashSet<FileDataStreamContainer> GetFilesWithExtension(string extension)
         {
-            return FileMap[extension];
-        }
-
-        public void AddSupportedExtension(string extension)
-        {
-            SupportedExtensions.Add(extension);
-        }
-
-        public void PrintFiles()
-        {
-            foreach(var extension in FileMap.Keys)
-            {
-                UnityEngine.Debug.Log(extension + ": " + FileMap[extension].Count + " files extracted.");
-            }
+            return this.fileMap[extension];
         }
 
         /// <summary>
-        /// Gets the file extension (without leading dot) for a filename.
+        /// Add a file extension that's supported for extraction.
         /// </summary>
-        /// <param name="filename">Filename, including extension.</param>
-        /// <returns>The file extension (without leading dot).</returns>
-        public static string GetExtension(string filename)
+        /// <param name="extension">
+        /// The extension (without a leading dot).
+        /// </param>
+        public void AddSupportedExtension(string extension)
         {
-            return Regex.Match(filename, @"\..*").Value.Remove(0, 1);
+            this.supportedExtensions.Add(extension);
         }
 
+        /// <summary>
+        /// Print the registered extensions and number of files with each extension.
+        /// </summary>
+        public void PrintStats()
+        {
+            foreach (var extension in this.fileMap.Keys)
+            {
+                UnityEngine.Debug.Log(extension + ": " + this.fileMap[extension].Count + " files registered.");
+            }
+        }
+        
         /// <summary>
         /// Determines whether or not a file extension has already been registered.
         /// </summary>
@@ -152,12 +160,7 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
         /// <returns>True if the file is already present in the map, otherwise false.</returns>
         private static bool HasFileAlreadyBeenRegistered(FileDataStreamContainer file, string extension, Dictionary<string, HashSet<FileDataStreamContainer>> map)
         {
-            if (!HasExtensionAlreadyBeenRegistered(extension, map))
-            {
-                return false;
-            }
-
-            return map[extension].Contains(file);
+            return HasExtensionAlreadyBeenRegistered(extension, map) && map[extension].Contains(file);
         }
     }
 }

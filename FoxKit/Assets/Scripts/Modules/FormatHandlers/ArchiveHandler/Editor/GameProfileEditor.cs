@@ -1,17 +1,25 @@
-﻿using FoxKit.Core;
-using GzsTool.Core.Utility;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using UnityEditor;
-using UnityEngine;
-using UnityEngine.Assertions;
-using static FoxKit.Modules.FormatHandlers.ArchiveHandler.ArchiveHandler;
-
-namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
+﻿namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
 {
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
+    using FoxKit.Core;
+    using FoxKit.Modules.FormatHandlers.PlaintextHandler;
+
+    using GzsTool.Core.Utility;
+
+    using UnityEditor;
+
+    using UnityEngine;
+    using UnityEngine.Assertions;
+
+    /// <inheritdoc />
+    /// <summary>
+    /// Custom editor for GameProfiles.
+    /// </summary>
     [CustomEditor(typeof(GameProfile))]
-    public class GameProfileEditor : UnityEditor.Editor
+    public class GameProfileEditor : Editor
     {
         #region Constants
         #region UI strings
@@ -53,27 +61,30 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
         /// <summary>
         /// Number of files that have already been extracted.
         /// </summary>
-        int ExtractedFileCount;
+        private int extractedFileCount;
 
         /// <summary>
         /// Filename ofthe archive currently being extracted.
         /// </summary>
-        string ExtractingArchiveFilename;
+        private string extractingArchiveFilename;
         #endregion
-        
+
         #region Delegates
         /// <summary>
         /// Delegate for a callback invoked when an archive begins being extracted.
         /// </summary>
         /// <param name="archiveFilename">Filename of the archive beginning extraction.</param>
-        private delegate void BeginExtractingArchiveDelegate(string archiveFilename, ResetExtractedFileCountDelegate resetExtractedFileCountDelegate, SetExtractingArchiveFilenameDelegate setExtractingArchiveFilenameDelegate);
+        /// <param name="resetExtractedFileCountDelegate">Delegate to reset the count of extracted files.</param>
+        /// <param name="setExtractingArchiveFilenameDelegate">Delegate to set the filename of the extracting archive.</param>
+        private delegate void BeginExtractingArchiveDelegate(string archiveFilename, ArchiveHandler.ResetExtractedFileCountDelegate resetExtractedFileCountDelegate, ArchiveHandler.SetExtractingArchiveFilenameDelegate setExtractingArchiveFilenameDelegate);
         #endregion
 
+        /// <inheritdoc />
         public override void OnInspectorGUI()
         {
             if (GUILayout.Button(UnpackButtonLabel))
             {
-                UnpackGame(target as GameProfile);
+                this.UnpackGame(target as GameProfile);
             }
             GUILayout.Space(UnpackButtonSpacing);            
 
@@ -87,7 +98,7 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
         /// <returns>The (absolute) path of the directory the user selected, or empty if none.</returns>
         private static string SelectGameDirectory()
         {
-            return EditorUtility.OpenFolderPanel(SelectGameDirectoryPanelTitle, "", "");
+            return EditorUtility.OpenFolderPanel(SelectGameDirectoryPanelTitle, string.Empty, string.Empty);
         }
         
         /// <summary>
@@ -101,11 +112,12 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
         }
 
         /// <summary>
-        /// Read the QAR dictionaries so that filenames can be unhashed.
+        /// Read the QAR dictionaries so that filenames can be un-hashed.
         /// </summary>
-        /// <param name="qarDictionaries">List of QAR dictionaries to load.</param>
-        /// <returns>The total number of files in the dictionaries.</returns>
-        private static void ReadQarDictionaries(List<TextAsset> qarDictionaries)
+        /// <param name="qarDictionaries">
+        /// QAR dictionaries to load.
+        /// </param>
+        private static void ReadQarDictionaries(IEnumerable<TextAsset> qarDictionaries)
         {
             Assert.IsNotNull(qarDictionaries, "qarDictionaries must not be null.");
 
@@ -115,7 +127,13 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
             }
         }
 
-        private static void ReadFpkDictionaries(List<TextAsset> fpkDictionaries)
+        /// <summary>
+        /// Read the fpk dictionaries so that fpk filenames can be un-hashed.
+        /// </summary>
+        /// <param name="fpkDictionaries">
+        /// Fpk dictionaries to load.
+        /// </param>
+        private static void ReadFpkDictionaries(IEnumerable<TextAsset> fpkDictionaries)
         {
             Assert.IsNotNull(fpkDictionaries, "fpkDictionaries must not be null.");
 
@@ -128,10 +146,22 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
         /// <summary>
         /// Unpack game archives.
         /// </summary>
-        /// <param name="desiredArchiveFilenames">Filenames of the archives to extract.</param>
-        /// <param name="gameDirectory">Directory to the game to extract.</param>
-        /// <param name="archiveHandler">Format handler for archives.</param>
-        private static void UnpackArchives(List<ArchiveStream> archiveStreams, string gameDirectory, ArchiveHandler archiveHandler, BeginExtractingArchiveDelegate onBeginExtractingArchive, ResetExtractedFileCountDelegate resetExtractedFileCountDelegate, SetExtractingArchiveFilenameDelegate setExtractingArchiveFilenameDelegate)
+        /// <param name="archiveStreams">
+        /// Archive streams to unpack.
+        /// </param>
+        /// <param name="archiveHandler">
+        /// Format handler for archives.
+        /// </param>
+        /// <param name="onBeginExtractingArchive">
+        /// Callback to invoke when an archive begins being extracted.
+        /// </param>
+        /// <param name="resetExtractedFileCountDelegate">
+        /// Delegate to reset the count of extracted files.
+        /// </param>
+        /// <param name="setExtractingArchiveFilenameDelegate">
+        /// Delegate to set the name of the extracting archive.
+        /// </param>
+        private static void UnpackArchives(ICollection<ArchiveStream> archiveStreams, ArchiveHandler archiveHandler, BeginExtractingArchiveDelegate onBeginExtractingArchive, ArchiveHandler.ResetExtractedFileCountDelegate resetExtractedFileCountDelegate, ArchiveHandler.SetExtractingArchiveFilenameDelegate setExtractingArchiveFilenameDelegate)
         {
             Assert.IsNotNull(archiveStreams, "archiveStreams must not be null.");
             Assert.IsNotNull(archiveHandler, "archiveHandler must not be null.");
@@ -149,8 +179,12 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
         /// <summary>
         /// Unpack an archive.
         /// </summary>
-        /// <param name="archivePath">Path to the archive to be extracted.</param>
-        /// <param name="archiveHandler">Format handler for archives.</param>
+        /// <param name="archiveStream">
+        /// The archive stream to unpack.
+        /// </param>
+        /// <param name="archiveHandler">
+        /// Format handler for archives.
+        /// </param>
         private static void UnpackArchive(ArchiveStream archiveStream, ArchiveHandler archiveHandler)
         {
             archiveStream.Read(archiveHandler);
@@ -162,7 +196,7 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
         /// <param name="archiveFilename">Filename of the archive.</param>
         /// /// <param name="resetExtractedFileCountDelegate">Delegate to reset the count of extracted files.</param>
         /// /// <param name="setExtractingArchiveFilenameDelegate">Delegate to set the filename of the archive being extracted.</param>
-        private static void OnBeginExtractingArchive(string archiveFilename, ResetExtractedFileCountDelegate resetExtractedFileCountDelegate, SetExtractingArchiveFilenameDelegate setExtractingArchiveFilenameDelegate)
+        private static void OnBeginExtractingArchive(string archiveFilename, ArchiveHandler.ResetExtractedFileCountDelegate resetExtractedFileCountDelegate, ArchiveHandler.SetExtractingArchiveFilenameDelegate setExtractingArchiveFilenameDelegate)
         {
             resetExtractedFileCountDelegate.Invoke();
             setExtractingArchiveFilenameDelegate.Invoke(archiveFilename);
@@ -170,8 +204,11 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
         }
         
         /// <summary>
-        /// Show the progress bar, indicating that the QAR entries are beign read
+        /// Show the progress bar, indicating that the QAR entries are being read.
         /// </summary>
+        /// <param name="currentArchiveFilename">
+        /// Filename of the archive currently being read.
+        /// </param>
         private static void ShowReadingEntriesProgressBar(string currentArchiveFilename)
         {
             EditorUtility.DisplayProgressBar(
@@ -193,8 +230,19 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
         /// <summary>
         /// Called when a file begins being extracted.
         /// </summary>
-        /// <param name="filename">Filename of the file that is being extracted.</param>
-        private static void OnBeginExtractingFile(string filename, int totalFileCount, IncrementExtractedFileCountDelegate incrementExtractedFileCountDelegate, GetExtractingArchiveFilenameDelegate getExtractingArchiveFilenameDelegate)
+        /// <param name="filename">
+        /// Filename of the file that is being extracted.
+        /// </param>
+        /// <param name="totalFileCount">
+        /// Total count of files to extract.
+        /// </param>
+        /// <param name="incrementExtractedFileCountDelegate">
+        /// Delegate to increment the count of extracted files by one.
+        /// </param>
+        /// <param name="getExtractingArchiveFilenameDelegate">
+        /// Delegate to get the filename of the archive currently being extracted.
+        /// </param>
+        private static void OnBeginExtractingFile(string filename, int totalFileCount, ArchiveHandler.IncrementExtractedFileCountDelegate incrementExtractedFileCountDelegate, ArchiveHandler.GetExtractingArchiveFilenameDelegate getExtractingArchiveFilenameDelegate)
         {
             var extractedFileCount = incrementExtractedFileCountDelegate.Invoke();
             var extractingArchivefilename = getExtractingArchiveFilenameDelegate.Invoke();
@@ -205,9 +253,18 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
         /// <summary>
         /// Show the progress bar, indicating what file is currently being extracted.
         /// </summary>
-        /// <param name="currentFile">Filename of the file currently being extracted.</param>
-        /// <param name="extractedFileCount">Number of already extracted files.</param>
-        /// <param name="totalFileCount">Total number of files to extract.</param>
+        /// <param name="currentArchiveFilename">
+        /// Filename of the archive currently being extracted.
+        /// </param>
+        /// <param name="currentFile">
+        /// Filename of the file currently being extracted.
+        /// </param>
+        /// <param name="extractedFileCount">
+        /// Number of already extracted files.
+        /// </param>
+        /// <param name="totalFileCount">
+        /// Total number of files to extract.
+        /// </param>
         private static void ShowExtractingFileProgressBar(string currentArchiveFilename, string currentFile, int extractedFileCount, int totalFileCount)
         {
             EditorUtility.DisplayProgressBar(
@@ -245,12 +302,17 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
         /// <summary>
         /// Make the file format handlers.
         /// </summary>
-        /// <returns>The file format handlers.</returns>
+        /// <param name="fileRegistry">
+        /// Table of registered files.
+        /// </param>
+        /// <returns>
+        /// The newly-created file format handlers.
+        /// </returns>
         private static List<IFormatHandler> MakeFormatHandlers(FileRegistry fileRegistry)
         {
             var archiveHandler = new ArchiveHandler(fileRegistry);
             var textHandler = new PlaintextHandler();
-            return new List<IFormatHandler>() { textHandler, archiveHandler };
+            return new List<IFormatHandler> { textHandler, archiveHandler };
         }
 
         /// <summary>
@@ -262,7 +324,10 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
             Assert.IsNotNull(profile, "profile must be a non-null GameProfile.");
 
             var gameDirectory = SelectGameDirectory();
-            if (gameDirectory == string.Empty) return;
+            if (gameDirectory == string.Empty)
+            {
+                return;
+            }
 
             ReadQarDictionaries(profile.QarDictionaries);
             ReadFpkDictionaries(profile.FpkDictionaries);
@@ -271,7 +336,7 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
             var formatHandlers = MakeFormatHandlers(fileRegistry);
 
             var supportedExtensions = new HashSet<string>(formatHandlers.SelectMany(handler => handler.Extensions));
-            foreach(var extension in supportedExtensions)
+            foreach (var extension in supportedExtensions)
             {
                 fileRegistry.AddSupportedExtension(extension);
             }
@@ -279,21 +344,21 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
             var archiveHandler = new ArchiveHandler(fileRegistry);
             var archiveStreams = CreateArchiveStreams(profile.ArchiveFiles, gameDirectory);
 
-            UnpackArchives(archiveStreams, gameDirectory, archiveHandler, OnBeginExtractingArchive, ResetExtractedFileCount, SetExtractingArchiveFilename);
+            UnpackArchives(archiveStreams, archiveHandler, OnBeginExtractingArchive, this.ResetExtractedFileCount, this.SetExtractingArchiveFilename);
 
             var extractedFilesDirectory = MakeExtractedFilesDirectory(profile.DisplayName);
-            var fileExtractor = new FileExtractor(extractedFilesDirectory, formatHandlers, OnBeginExtractingFile, IncrementExtractedFileCount, GetExtractingArchiveFilename);
+            var fileExtractor = new FileExtractor(extractedFilesDirectory, formatHandlers, OnBeginExtractingFile, this.IncrementExtractedFileCount, this.GetExtractingArchiveFilename);
 
             fileExtractor.ExtractFiles(fileRegistry);
 
-            foreach(var archiveStream in archiveStreams)
+            foreach (var archiveStream in archiveStreams)
             {
                 archiveStream.Close();
             }
 
             EditorUtility.ClearProgressBar();
 
-            fileRegistry.PrintFiles();
+            fileRegistry.PrintStats();
         }
 
         /// <summary>
@@ -302,16 +367,16 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
         /// <returns>The incremented count of extracted files.</returns>
         private int IncrementExtractedFileCount()
         {
-            ExtractedFileCount++;
-            return ExtractedFileCount;
+            this.extractedFileCount++;
+            return this.extractedFileCount;
         }
 
         /// <summary>
-        /// Resets the count of extraced files.
+        /// Resets the count of extracted files.
         /// </summary>
         private void ResetExtractedFileCount()
         {
-            ExtractedFileCount = 0;
+            this.extractedFileCount = 0;
         }
 
         /// <summary>
@@ -320,7 +385,7 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
         /// <returns>The filename of the archive currently being extracted.</returns>
         private string GetExtractingArchiveFilename()
         {
-            return ExtractingArchiveFilename;
+            return this.extractingArchiveFilename;
         }
 
         /// <summary>
@@ -329,7 +394,7 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler.Editor
         /// <param name="archiveFilename">Filename of the archive.</param>
         private void SetExtractingArchiveFilename(string archiveFilename)
         {
-            ExtractingArchiveFilename = archiveFilename;
+            this.extractingArchiveFilename = archiveFilename;
         }
     }
 }

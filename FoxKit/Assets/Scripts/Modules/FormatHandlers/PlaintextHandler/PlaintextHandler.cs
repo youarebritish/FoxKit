@@ -1,27 +1,33 @@
-﻿using FoxKit.Core;
-using System.Collections.Generic;
-using System.IO;
-
-/// <summary>
-/// Imports and exports plaintext files.
-/// </summary>
-public class PlaintextHandler : IFormatHandler
+﻿namespace FoxKit.Modules.FormatHandlers.PlaintextHandler
 {
-    public List<string> Extensions => SupportedExtensions;
+    using System.Collections.Generic;
+    using System.IO;
 
-    private readonly List<string> SupportedExtensions = new List<string>() { "lua", "json", "dat" };
+    using FoxKit.Core;
 
-    public object Import(Stream input, string path)
+    /// <inheritdoc />
+    /// <summary>
+    /// Imports and exports plaintext files.
+    /// </summary>
+    public class PlaintextHandler : IFormatHandler
     {
-        using (var outputStream = new FileStream(path, FileMode.Create))
+        /// <inheritdoc />
+        public List<string> Extensions { get; } = new List<string> { "lua", "json", "fpkl", "dat" };
+
+        /// <inheritdoc />
+        public object Import(Stream input, string path)
         {
-            input.CopyTo(outputStream);
-            return outputStream;
+            using (var outputStream = new FileStream(path, FileMode.Create))
+            {
+                input.CopyTo(outputStream);
+                return outputStream;
+            }
         }
-    }
 
-    public void Export(object asset, string path)
-    {
-        throw new System.NotImplementedException();
+        /// <inheritdoc />
+        public void Export(object asset, string path)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

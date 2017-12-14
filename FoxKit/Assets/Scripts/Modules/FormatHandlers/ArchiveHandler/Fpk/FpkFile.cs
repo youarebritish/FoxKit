@@ -93,11 +93,11 @@ namespace GzsTool.Core.Fpk
             writer.Write((byte) 0x77); // w
             writer.Write((ushort) 0x6E69); // in
             writer.Write(fileSize);
-            writer.WriteZeros(18);
+            writer.WriteZeroes(18);
             writer.Write(0x00000002);
             writer.Write(Entries.Count);
             writer.Write(References.Count);
-            writer.WriteZeros(4);
+            writer.WriteZeroes(4);
 
             foreach (var fpkEntry in Entries)
             {

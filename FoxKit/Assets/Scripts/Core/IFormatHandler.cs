@@ -1,21 +1,21 @@
-﻿using System.Collections.Generic;
-using System.IO;
-
-namespace FoxKit.Core
+﻿namespace FoxKit.Core
 {
+    using System.Collections.Generic;
+    using System.IO;
+
     /// <summary>
     /// A generic interface for classes that can import/export Fox Engine file formats.
     /// </summary>
     public interface IFormatHandler
     {
         /// <summary>
-        /// The extension(s) this handler can import/export.
+        /// Gets the extension(s) this handler can import/export.
         /// </summary>
-        /// <example>"fpk" (no period)</example>
+        /// <example>"lua" (no period)</example>
         List<string> Extensions { get; }
 
         /// <summary>
-        /// Import a Fox Engine asset from a binary stream.
+        /// Imports a Fox Engine asset from a binary stream.
         /// </summary>
         /// <param name="input">Binary stream of a Fox asset.</param>
         /// <param name="path">Filename of the importing asset.</param>

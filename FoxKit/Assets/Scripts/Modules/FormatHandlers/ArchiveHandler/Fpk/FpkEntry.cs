@@ -119,9 +119,9 @@ namespace GzsTool.Core.Fpk
         {
             BinaryWriter writer = new BinaryWriter(output, Encoding.Default, true);
             writer.Write(DataOffset);
-            writer.WriteZeros(4);
+            writer.WriteZeroes(4);
             writer.Write(DataSize);
-            writer.WriteZeros(4);
+            writer.WriteZeroes(4);
             FilePathFpkString.Write(output);
             writer.Write(Md5Hash);
         }

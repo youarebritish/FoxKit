@@ -1,33 +1,40 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using FoxKit.Core;
-using GzsTool.Core.Qar;
-using GzsTool.Core.Common;
-using UnityEngine.Assertions;
-using GzsTool.Core.Fpk;
-using GzsTool.Core.Pftxs;
-using GzsTool.Core.Sbp;
-
-namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
+﻿namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
 {
+    using System.Collections.Generic;
+    using System.IO;
+
+    using FoxKit.Core;
+
+    using GzsTool.Core.Common;
+    using GzsTool.Core.Fpk;
+    using GzsTool.Core.Pftxs;
+    using GzsTool.Core.Qar;
+    using GzsTool.Core.Sbp;
+
+    using UnityEngine.Assertions;
+
+    /// <inheritdoc />
     /// <summary>
-    /// Imports and exports QAR archives.
+    /// Imports and exports archives.
     /// </summary>
     public class ArchiveHandler : IFormatHandler
     {
-        #region Fields
-        public List<string> Extensions => SupportedExtensions;
+        /// <summary>
+        /// Table of discovered files.
+        /// </summary>
+        private readonly FileRegistry fileRegistry;
 
-        private readonly List<string> SupportedExtensions = new List<string>() { "pftxs", "fpk", "fpkd", "sbp" };        
-        private readonly FileRegistry FileRegistry;
-        #endregion
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ArchiveHandler"/> class.
+        /// </summary>
+        /// <param name="fileRegistry">
+        /// Table to store discovered files.
+        /// </param>
         public ArchiveHandler(FileRegistry fileRegistry)
         {
-            FileRegistry = fileRegistry;           
+            this.fileRegistry = fileRegistry;
         }
-
-        #region Delegates
+        
         /// <summary>
         /// Delegate for when a file begins being extracted.
         /// </summary>
@@ -57,64 +64,89 @@ namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
         /// <summary>
         /// Delegate for setting the filename of the archive currently being extracted.
         /// </summary>
-        /// <returns>Filename of the archive currently being extracted.</returns>
+        /// <param name="archiveFilename">
+        /// The archive filename.
+        /// </param>
         public delegate void SetExtractingArchiveFilenameDelegate(string archiveFilename);
-        #endregion
 
+        /// <inheritdoc />
+        public List<string> Extensions { get; } = new List<string> { "pftxs", "fpk", "fpkd", "sbp" };
+
+        /// <inheritdoc />
         public object Import(Stream input, string path)
         {
             Assert.IsNotNull(input, "input stream must not be null.");
             Assert.IsNotNull(path, "input path must not be null.");
-            
-            var archiveFile = ReadArchive(path, input);
+
+            var filename = Path.GetFileName(path);
+            var extension = FileRegistry.GetExtension(path);
+            var archiveFile = ReadArchive(filename, extension, input);
             var exportFiles = archiveFile.ExportFiles(input);
 
             foreach (var exportedFile in exportFiles)
             {
                 // Don't extract a file more than once, even if there are duplicates of it.
-                if (FileRegistry.ContainsFile(exportedFile))
+                if (this.fileRegistry.ContainsFile(exportedFile))
                 {
                     continue;
                 }
+
                 // Don't add files whose extension we can't do anything with.
-                if (!FileRegistry.SupportsExtension(FileRegistry.GetExtension(exportedFile.FileName)))
+                if (!this.fileRegistry.SupportsExtension(FileRegistry.GetExtension(exportedFile.FileName)))
                 {
                     continue;
                 }
-                FileRegistry.RegisterFile(exportedFile);
+                this.fileRegistry.RegisterFile(exportedFile);
             }
 
             return exportFiles;
         }
 
+        /// <inheritdoc />
         public void Export(object asset, string path)
         {
             throw new System.NotImplementedException();
         }
 
-        private static ArchiveFile ReadArchive(string path, Stream inputStream)
+        /// <summary>
+        /// Reads an archive.
+        /// </summary>
+        /// <param name="filename">
+        /// The filename of the archive.
+        /// </param>
+        /// <param name="extension">
+        /// The extension of the archive.
+        /// </param>
+        /// <param name="inputStream">
+        /// The input stream.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ArchiveFile"/>.
+        /// </returns>
+        private static ArchiveFile ReadArchive(string filename, string extension, Stream inputStream)
         {
-            // TODO THIS SUCKS
-            var extension = FileRegistry.GetExtension(path);
             ArchiveFile file = null;
-            if (extension == "fpk" || extension == "fpkd")
+            switch (extension)
             {
-                file = new FpkFile();
-            }
-            else if (extension == "dat")
-            {
-                file = new QarFile();
-            }
-            else if (extension == "pftxs")
-            {
-                file = new PftxsFile();
-            }
-            else if (extension == "sbp")
-            {
-                file = new SbpFile();
+                case "fpk":
+                case "fpkd":
+                    file = new FpkFile();
+                    break;
+                case "dat":
+                    file = new QarFile();
+                    break;
+                case "pftxs":
+                    file = new PftxsFile();
+                    break;
+                case "sbp":
+                    file = new SbpFile();
+                    break;
+                default:
+                    Assert.IsTrue(false, "Invalid archive extension: " + extension);
+                    break;
             }
 
-            file.Name = Path.GetFileName(path);
+            file.Name = filename;
             file.Read(inputStream);
             return file;
         }

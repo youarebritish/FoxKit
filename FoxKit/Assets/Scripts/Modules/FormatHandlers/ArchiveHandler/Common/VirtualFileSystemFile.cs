@@ -22,7 +22,7 @@ namespace GzsTool.Core.Common
 
         public byte[] Content
         {
-            get { return _dataStream().ToArray(); }
+            get { return _dataStream().ToByteArray(); }
         }
 
         public Stream ContentStream

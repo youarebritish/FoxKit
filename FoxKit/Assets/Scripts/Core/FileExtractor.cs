@@ -1,14 +1,13 @@
-﻿using FoxKit.Modules.FormatHandlers.ArchiveHandler;
-using GzsTool.Core.Common;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using UnityEngine.Assertions;
-using static FoxKit.Modules.FormatHandlers.ArchiveHandler.ArchiveHandler;
-using static FoxKit.Modules.FormatHandlers.ArchiveHandler.FileRegistry;
-
-namespace FoxKit.Core
+﻿namespace FoxKit.Core
 {
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
+    using FoxKit.Modules.FormatHandlers.ArchiveHandler;
+
+    using UnityEngine.Assertions;
+
     /// <summary>
     /// Extracts files to a useful format.
     /// </summary>
@@ -17,18 +16,47 @@ namespace FoxKit.Core
         /// <summary>
         /// Base directory to write files to.
         /// </summary>
-        private readonly string OutputDirectory;
+        private readonly string outputDirectory;
 
         /// <summary>
         /// Prioritized list of file format converters. They will be run in the order they're provided.
         /// </summary>
-        private readonly List<IFormatHandler> FormatHandlers;
+        private readonly List<IFormatHandler> formatHandlers;
 
-        private readonly BeginExtractingFileDelegate OnBeginExtractingFile;
-        private readonly IncrementExtractedFileCountDelegate IncrementExtractedFileCount;
-        private readonly GetExtractingArchiveFilenameDelegate GetExtractingArchiveFilename;
+        /// <summary>
+        /// Invoked when a file begins being extracted.
+        /// </summary>
+        private readonly ArchiveHandler.BeginExtractingFileDelegate onBeginExtractingFile;
 
-        public FileExtractor(string outputDirectory, List<IFormatHandler> formatHandlers, BeginExtractingFileDelegate onBeginExtractingFile, IncrementExtractedFileCountDelegate incrementExtractedFileCount, GetExtractingArchiveFilenameDelegate getExtractingArchiveFilename)
+        /// <summary>
+        /// Delegate to increment the count of extracted files by one.
+        /// </summary>
+        private readonly ArchiveHandler.IncrementExtractedFileCountDelegate incrementExtractedFileCount;
+
+        /// <summary>
+        /// Delegate to get the filename of the archive currently being extracted.
+        /// </summary>
+        private readonly ArchiveHandler.GetExtractingArchiveFilenameDelegate getExtractingArchiveFilename;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileExtractor"/> class.
+        /// </summary>
+        /// <param name="outputDirectory">
+        /// The output directory to extract to.
+        /// </param>
+        /// <param name="formatHandlers">
+        /// Format handlers to use for converting file types.
+        /// </param>
+        /// <param name="onBeginExtractingFile">
+        /// Callback to invoke when a file begins being extracted.
+        /// </param>
+        /// <param name="incrementExtractedFileCount">
+        /// Callback to increment the extracted file count by one.
+        /// </param>
+        /// <param name="getExtractingArchiveFilename">
+        /// Delegate to get the filename of the archive currently being extracted.
+        /// </param>
+        public FileExtractor(string outputDirectory, List<IFormatHandler> formatHandlers, ArchiveHandler.BeginExtractingFileDelegate onBeginExtractingFile, ArchiveHandler.IncrementExtractedFileCountDelegate incrementExtractedFileCount, ArchiveHandler.GetExtractingArchiveFilenameDelegate getExtractingArchiveFilename)
         {
             Assert.IsNotNull(outputDirectory, "outputDirectory must not be null.");
             Assert.IsNotNull(formatHandlers, "fileRegistry must not be null.");
@@ -37,12 +65,12 @@ namespace FoxKit.Core
             Assert.IsNotNull(incrementExtractedFileCount, "incrementExtractedFileCount must not be null.");
             Assert.IsNotNull(getExtractingArchiveFilename, "getExtractingArchiveFilename must not be null.");
 
-            OutputDirectory = outputDirectory;
-            FormatHandlers = formatHandlers;
+            this.outputDirectory = outputDirectory;
+            this.formatHandlers = formatHandlers;
 
-            OnBeginExtractingFile = onBeginExtractingFile;
-            IncrementExtractedFileCount = incrementExtractedFileCount;
-            GetExtractingArchiveFilename = getExtractingArchiveFilename;
+            this.onBeginExtractingFile = onBeginExtractingFile;
+            this.incrementExtractedFileCount = incrementExtractedFileCount;
+            this.getExtractingArchiveFilename = getExtractingArchiveFilename;
         }
 
         /// <summary>
@@ -55,10 +83,10 @@ namespace FoxKit.Core
             
             var extractedFiles = new Dictionary<string, object>();
 
-            var onFileRegisteredWhileExtracting = MakeOnFileRegisteredWhileExtractingDelegate(OutputDirectory, FormatHandlers, extractedFiles);
+            var onFileRegisteredWhileExtracting = MakeOnFileRegisteredWhileExtractingDelegate(this.outputDirectory, this.formatHandlers, extractedFiles);
             fileRegistry.OnFileRegistered += onFileRegisteredWhileExtracting;
 
-            foreach (var formatHandler in FormatHandlers)
+            foreach (var formatHandler in this.formatHandlers)
             {
                 foreach (var extension in formatHandler.Extensions)
                 {
@@ -70,8 +98,8 @@ namespace FoxKit.Core
                     foreach (var file in fileRegistry.GetFilesWithExtension(extension))
                     {
                         // TODO Should OnBeginExtractingFile go inside ExtractFile? Otherwise the progress bar UI won't be extracting when loading required files.
-                        OnBeginExtractingFile.Invoke(file.FileName, fileRegistry.FileCount, IncrementExtractedFileCount, GetExtractingArchiveFilename);
-                        ExtractFile(file.DataStream(), file.FileName, OutputDirectory, formatHandler, extractedFiles);
+                        this.onBeginExtractingFile.Invoke(file.FileName, fileRegistry.FileCount, this.incrementExtractedFileCount, this.getExtractingArchiveFilename);
+                        ExtractFile(file.DataStream(), file.FileName, this.outputDirectory, formatHandler, extractedFiles);
                     }
                 }
             }
@@ -79,14 +107,53 @@ namespace FoxKit.Core
             fileRegistry.OnFileRegistered -= onFileRegisteredWhileExtracting;
         }
 
-        private static OnFileRegisteredDelegate MakeOnFileRegisteredWhileExtractingDelegate(string outputDirectory, List<IFormatHandler> formatHandlers, Dictionary<string, object> extractedFiles)
+        /// <summary>
+        /// Make the callback to invoke when a file is registered while another is already being extracted.
+        /// </summary>
+        /// <param name="outputDirectory">
+        /// The output directory to write to.
+        /// </param>
+        /// <param name="formatHandlers">
+        /// Format handlers to use for converting file types.
+        /// </param>
+        /// <param name="extractedFiles">
+        /// Table of extracted files.
+        /// </param>
+        /// <returns>
+        /// The delegate to invoke.
+        /// </returns>
+        private static FileRegistry.OnFileRegisteredDelegate MakeOnFileRegisteredWhileExtractingDelegate(string outputDirectory, List<IFormatHandler> formatHandlers, Dictionary<string, object> extractedFiles)
         {
-            return delegate (FileDataStreamContainer file, string extension)
-            {
-                OnFileRegisteredWhileExtracting(file.DataStream(), file.FileName, extension, outputDirectory, formatHandlers, extractedFiles);
-            };
+            return (file, extension) => OnFileRegisteredWhileExtracting(
+                file.DataStream(),
+                file.FileName,
+                extension,
+                outputDirectory,
+                formatHandlers,
+                extractedFiles);
         }
 
+        /// <summary>
+        /// Called when a file is registered while another is already being extracted. Immediately tries to extract the newly-registered file.
+        /// </summary>
+        /// <param name="input">
+        /// Input stream containing the contents of the newly-registered file.
+        /// </param>
+        /// <param name="filename">
+        /// Filename of the newly-registered file.
+        /// </param>
+        /// <param name="extension">
+        /// Extension of the newly-registered file.
+        /// </param>
+        /// <param name="outputDirectory">
+        /// Output directory to write to.
+        /// </param>
+        /// <param name="formatHandlers">
+        /// Format handlers to use for converting file types.
+        /// </param>
+        /// <param name="extractedFiles">
+        /// Table of extracted files.
+        /// </param>
         private static void OnFileRegisteredWhileExtracting(Stream input, string filename, string extension, string outputDirectory, List<IFormatHandler> formatHandlers, Dictionary<string, object> extractedFiles)
         {
             var formatHandler = FindFormatHandlerForExtension(extension, formatHandlers);
@@ -98,11 +165,24 @@ namespace FoxKit.Core
         /// <summary>
         /// Extracts a specific file. Can be used to extract a file required by another one that's already being extracted.
         /// </summary>
-        /// <param name="input">Input stream.</param>
-        /// <param name="filename">Filename of the file to extract.</param>
-        /// <param name="outputDirectory">Output directory to write the file.</param>
-        /// <param name="formatHandler">Format handler to use.</param>
-        /// <returns>The extracted file.</returns>
+        /// <param name="input">
+        /// Input stream containing the contents of the file.
+        /// </param>
+        /// <param name="filename">
+        /// Filename of the file to extract.
+        /// </param>
+        /// <param name="outputDirectory">
+        /// Output directory to write the file.
+        /// </param>
+        /// <param name="formatHandler">
+        /// Format handler to use.
+        /// </param>
+        /// <param name="extractedFiles">
+        /// Table of extracted files.
+        /// </param>
+        /// <returns>
+        /// The extracted file.
+        /// </returns>
         private static object ExtractFile(Stream input, string filename, string outputDirectory, IFormatHandler formatHandler, Dictionary<string, object> extractedFiles)
         {
             Assert.IsNotNull(input, "Input stream must not be null.");
@@ -117,6 +197,7 @@ namespace FoxKit.Core
             }
 
             var outputFilePath = MakeOutputPath(outputDirectory, filename);
+            
             Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath));
             var extractedFile = formatHandler.Import(input, outputFilePath);
 
