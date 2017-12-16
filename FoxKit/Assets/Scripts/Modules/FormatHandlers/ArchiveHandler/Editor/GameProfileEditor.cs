@@ -6,6 +6,7 @@
 
     using FoxKit.Core;
     using FoxKit.Modules.FormatHandlers.PlaintextHandler;
+    using FoxKit.Modules.FormatHandlers.TextureHandler;
 
     using GzsTool.Core.Utility;
 
@@ -315,11 +316,13 @@
         /// <returns>
         /// The newly-created file format handlers.
         /// </returns>
-        private static List<IFormatHandler> MakeFormatHandlers(FileRegistry fileRegistry)
+        private static List<IFormatHandler> MakeFormatHandlers(FileRegistry fileRegistry, List<uint> routeNames, HashSet<uint> eventNames, HashSet<uint> routeMessages)
         {
             var archiveHandler = new ArchiveHandler(fileRegistry);
+            var routeSetHandler = new RouteSetHandler(routeNames, eventNames, routeMessages);
+            var textureHandler = new TextureHandler(fileRegistry);
             var textHandler = new PlaintextHandler();
-            return new List<IFormatHandler> { textHandler, archiveHandler };
+            return new List<IFormatHandler> { archiveHandler, routeSetHandler };
         }
 
         /// <summary>
@@ -340,9 +343,12 @@
             ReadFpkDictionaries(profile.FpkDictionaries);
 
             var fileRegistry = new FileRegistry();
-            var formatHandlers = MakeFormatHandlers(fileRegistry);
+            var routeNames = new List<uint>();
+            var eventNames = new HashSet<uint>();
+            var routeMessages = new HashSet<uint>();
+            var formatHandlers = MakeFormatHandlers(fileRegistry, routeNames, eventNames, routeMessages);
 
-            var supportedExtensions = new HashSet<string>(formatHandlers.SelectMany(handler => handler.Extensions));
+            var supportedExtensions = formatHandlers.SelectMany(handler => handler.Extensions);
             foreach (var extension in supportedExtensions)
             {
                 fileRegistry.AddSupportedExtension(extension);
@@ -367,6 +373,31 @@
             fileRegistry.PrintStats();
 
             this.ResetExtractedFileCount();
+
+
+            using (var routeNameWriter = new StreamWriter(new FileStream("routeNames.txt", FileMode.Create)))
+            {
+                foreach (var routeName in routeNames)
+                {
+                    routeNameWriter.WriteLine(routeName);
+                }
+            }
+
+            using (var routeEventNameWriter = new StreamWriter(new FileStream("routeEventNames.txt", FileMode.Create)))
+            {
+                foreach (var routeEventName in eventNames)
+                {
+                    routeEventNameWriter.WriteLine(routeEventName);
+                }
+            }
+
+            using (var routeEventNameWriter = new StreamWriter(new FileStream("routeEventMessages.txt", FileMode.Create)))
+            {
+                foreach (var message in routeMessages)
+                {
+                    routeEventNameWriter.WriteLine(message);
+                }
+            }
         }
 
         /// <summary>

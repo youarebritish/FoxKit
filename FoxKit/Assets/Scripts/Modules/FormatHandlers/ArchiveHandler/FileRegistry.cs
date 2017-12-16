@@ -1,6 +1,9 @@
 ﻿namespace FoxKit.Modules.FormatHandlers.ArchiveHandler
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Linq;
     using System.Text.RegularExpressions;
 
     using GzsTool.Core.Common;
@@ -70,9 +73,34 @@
                 this.fileMap.Add(extension, contents);
             }
 
-            this.FileCount++;
+            //UnityEngine.Debug.Log("Registering file " + file.FileName + " with extension " + extension);
 
+            this.FileCount++;
             this.OnFileRegistered?.Invoke(file, extension);
+        }
+
+        public FileDataStreamContainer FindFile(string filename, string extension)
+        {
+            if (!fileMap.ContainsKey(extension))
+            {
+                UnityEngine.Debug.Log("Extension " + extension + " not registered.");
+                return null;
+            }
+
+            UnityEngine.Debug.Log("Looking for file " + filename + " with extension " + extension);
+
+            var filesWithExtension = GetFilesWithExtension(extension);
+            return filesWithExtension.FirstOrDefault(
+                delegate(FileDataStreamContainer entry)
+                    {
+                        var simplifiedFilename = Path.GetFileName(entry.FileName);
+
+                        if (simplifiedFilename == filename)
+                        {
+                            UnityEngine.Debug.Log("Matched " + simplifiedFilename);
+                        }
+                        return simplifiedFilename  == filename;
+                    });
         }
 
         /// <summary>

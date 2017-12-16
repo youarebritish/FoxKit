@@ -17,6 +17,7 @@
         /// <inheritdoc />
         public object Import(Stream input, string path)
         {
+            // TODO: Support changing the file extension (fpkl -> json, dat -> xml)
             using (var outputStream = new FileStream(path, FileMode.Create))
             {
                 input.CopyTo(outputStream);

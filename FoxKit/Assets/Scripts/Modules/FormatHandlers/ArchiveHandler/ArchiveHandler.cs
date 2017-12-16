@@ -70,11 +70,12 @@
         public delegate void SetReadingArchiveFilenameDelegate(string archiveFilename);
 
         /// <inheritdoc />
-        public List<string> Extensions { get; } = new List<string> { "pftxs", "fpk", "fpkd", "sbp" };
+        public List<string> Extensions { get; } = new List<string> { "fpk" };//{ "pftxs", "fpk", "fpkd", "sbp" };
 
         /// <inheritdoc />
         public object Import(Stream input, string path)
         {
+            //UnityEngine.Debug.Log("Extracting " + path);
             Assert.IsNotNull(input, "input stream must not be null.");
             Assert.IsNotNull(path, "input path must not be null.");
 

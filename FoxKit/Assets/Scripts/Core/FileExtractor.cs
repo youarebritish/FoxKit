@@ -38,6 +38,8 @@
         /// </summary>
         private readonly ArchiveHandler.GetExtractingArchiveFilenameDelegate getExtractingArchiveFilename;
 
+        private readonly ExtractFileDelegate requestExtractFileDelegate;
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="FileExtractor"/> class.
         /// </summary>
@@ -71,7 +73,15 @@
             this.onBeginExtractingFile = onBeginExtractingFile;
             this.incrementExtractedFileCount = incrementExtractedFileCount;
             this.getExtractingArchiveFilename = getExtractingArchiveFilename;
+
+            this.requestExtractFileDelegate = MakeExtractFileDelegate();
         }
+
+        public delegate object ExtractFileDelegate(string filename, string extension, FileRegistry fileRegistry);
+
+        public ExtractFileDelegate RequestExtractFileDelegate => this.requestExtractFileDelegate;
+
+        private Dictionary<string, object> extractedFiles = new Dictionary<string, object>();
 
         /// <summary>
         /// Extracts the files in a FileRegistry.
@@ -81,11 +91,11 @@
         {
             Assert.IsNotNull(fileRegistry, "fileRegistry must not be null.");
             
-            var extractedFiles = new Dictionary<string, object>();
+            extractedFiles = new Dictionary<string, object>();
 
             var onFileRegisteredWhileExtracting = MakeOnFileRegisteredWhileExtractingDelegate(this.outputDirectory, this.formatHandlers, extractedFiles);
             fileRegistry.OnFileRegistered += onFileRegisteredWhileExtracting;
-
+            
             foreach (var formatHandler in this.formatHandlers)
             {
                 foreach (var extension in formatHandler.Extensions)
@@ -225,6 +235,16 @@
         private static string MakeOutputPath(string outputDirectory, string filename)
         {
             return Path.Combine(outputDirectory, filename);
+        }
+
+        private ExtractFileDelegate MakeExtractFileDelegate()
+        {
+            return delegate(string filename, string extension, FileRegistry fileRegistry)
+                {
+                    var formatHandler = FindFormatHandlerForExtension(extension, this.formatHandlers);
+                    var file = fileRegistry.GetFilesWithExtension(extension).First(entry => entry.FileName == filename);
+                    return ExtractFile(file.DataStream(), filename, this.outputDirectory, formatHandler, this.extractedFiles);
+                };
         }
     }
 }
