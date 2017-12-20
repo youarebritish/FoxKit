@@ -7,28 +7,40 @@ using FoxKit.Core;
 
 using GzsTool.Core;
 
+using UnityEditor.Experimental.AssetImporters;
+
 using UnityEngine;
 
-public class RouteSetHandler : IFormatHandler
+[ScriptedImporter(1, "frt")]
+public class RouteSetHandler : ScriptedImporter, IFormatHandler
 {
     public List<string> Extensions => new List<string> { "frt" };
 
-    private List<uint> routeNames;
+    private List<uint> routeNames = new List<uint>();
 
-    private HashSet<uint> eventNames;
+    private HashSet<uint> eventNames = new HashSet<uint>();
 
-    private HashSet<uint> messageNames;
+    private HashSet<uint> messageNames = new HashSet<uint>();
 
-    public RouteSetHandler(List<uint> routeNames, HashSet<uint> eventNames, HashSet<uint> messageNames)
+    private HashSet<string> jsonSnippets = new HashSet<string>();
+
+    public RouteSetHandler()
+    {
+        
+    }
+
+    public RouteSetHandler(List<uint> routeNames, HashSet<uint> eventNames, HashSet<uint> messageNames, HashSet<string> jsonSnippets)
     {
         this.routeNames = routeNames;
         this.eventNames = eventNames;
         this.messageNames = messageNames;
+        this.jsonSnippets = jsonSnippets;
     }
 
     public object Import(Stream input, string path)
     {
         var routeset = CreateRouteSet(Path.GetFileNameWithoutExtension(path));
+        routeset.transform.position = Vector3.zero;
 
         using (var reader = new BinaryReader(input))
         {
@@ -90,10 +102,12 @@ public class RouteSetHandler : IFormatHandler
 
                     var routeEvent = new RouteEvent { Name = eventName.ToString() };
 
-                    for (var j = 0; j < 11; j++)
+                    for (var j = 0; j < 10; j++)
                     {
                         routeEvent.Params.Add(reader.ReadUInt32());
                     }
+                    //var jsonSnippet = reader.ReadChars(4);
+                    routeEvent.Params.Add(0); // TODO
                     if (!routeEvents.Contains(routeEvent))
                     {
                         routeEvents.Add(routeEvent);
@@ -107,6 +121,12 @@ public class RouteSetHandler : IFormatHandler
                             this.messageNames.Add(routeEvent.Params[7]);
                         }
                     }
+
+                    // Json snippets
+                    /*if (!this.jsonSnippets.Contains(jsonSnippet.ToString()))
+                    {
+                        this.jsonSnippets.Add(jsonSnippet.ToString());
+                    }*/
                 }
             }
 
@@ -128,7 +148,7 @@ public class RouteSetHandler : IFormatHandler
         }
 
         // FIXME: Save to prefab!
-        foreach (var route in routeset.Routes)
+        /*foreach (var route in routeset.Routes)
         {
             foreach (var node in route.Nodes)
             {
@@ -136,8 +156,8 @@ public class RouteSetHandler : IFormatHandler
             }
             GameObject.DestroyImmediate(route.gameObject);
         }
-        GameObject.DestroyImmediate(routeset.gameObject);
-        return null;
+        GameObject.DestroyImmediate(routeset.gameObject);*/
+        return routeset;
     }
 
     private static void ReadNodesForRoute(BinaryReader input, Route route, int nodeCount)
@@ -149,8 +169,16 @@ public class RouteSetHandler : IFormatHandler
             var z = input.ReadSingle();
 
             var node = CreateRouteNode(route.name, i, new Vector3(z, y, x));
+
+            // Set the position of a route to the position of its first node, so that double-clicking on a route in the Hierarchy has intuitive behavior.
+            if (i == 0)
+            {
+                route.transform.position = node.transform.position;
+            }
+
             route.Nodes.Add(node);
             node.transform.SetParent(route.transform);
+            
         }
     }
 
@@ -227,6 +255,16 @@ public class RouteSetHandler : IFormatHandler
         {
             EventCount = eventCount;
             EdgeEventIndex = edgeEventIndex;
+        }
+    }
+
+    public override void OnImportAsset(AssetImportContext ctx)
+    {
+        using (var inputStream = new FileStream(ctx.assetPath, FileMode.Open))
+        {
+            var routeset = Import(inputStream, ctx.assetPath) as RouteSet;
+            ctx.AddObjectToAsset(routeset.name, routeset.gameObject);
+            ctx.SetMainObject(routeset.gameObject);
         }
     }
 }

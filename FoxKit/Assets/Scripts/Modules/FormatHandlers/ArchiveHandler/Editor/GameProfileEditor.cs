@@ -316,10 +316,10 @@
         /// <returns>
         /// The newly-created file format handlers.
         /// </returns>
-        private static List<IFormatHandler> MakeFormatHandlers(FileRegistry fileRegistry, List<uint> routeNames, HashSet<uint> eventNames, HashSet<uint> routeMessages)
+        private static List<IFormatHandler> MakeFormatHandlers(FileRegistry fileRegistry, List<uint> routeNames, HashSet<uint> eventNames, HashSet<uint> routeMessages, HashSet<string> jsonSnippets)
         {
             var archiveHandler = new ArchiveHandler(fileRegistry);
-            var routeSetHandler = new RouteSetHandler(routeNames, eventNames, routeMessages);
+            var routeSetHandler = new RouteSetHandler(routeNames, eventNames, routeMessages, jsonSnippets);
             var textureHandler = new TextureHandler(fileRegistry);
             var textHandler = new PlaintextHandler();
             return new List<IFormatHandler> { archiveHandler, routeSetHandler };
@@ -346,7 +346,8 @@
             var routeNames = new List<uint>();
             var eventNames = new HashSet<uint>();
             var routeMessages = new HashSet<uint>();
-            var formatHandlers = MakeFormatHandlers(fileRegistry, routeNames, eventNames, routeMessages);
+            var jsonSnippets = new HashSet<string>();
+            var formatHandlers = MakeFormatHandlers(fileRegistry, routeNames, eventNames, routeMessages, jsonSnippets);
 
             var supportedExtensions = formatHandlers.SelectMany(handler => handler.Extensions);
             foreach (var extension in supportedExtensions)
@@ -396,6 +397,14 @@
                 foreach (var message in routeMessages)
                 {
                     routeEventNameWriter.WriteLine(message);
+                }
+            }
+
+            using (var routeEventNameWriter = new StreamWriter(new FileStream("routeJsonSnippets.txt", FileMode.Create)))
+            {
+                foreach (var message in jsonSnippets)
+                {
+                    routeEventNameWriter.WriteLine(jsonSnippets);
                 }
             }
         }

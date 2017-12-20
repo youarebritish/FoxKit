@@ -21,5 +21,11 @@ public class Route : MonoBehaviour
             Gizmos.DrawLine(previousNode.transform.position, node.transform.position);
             previousNode = node;
         }
+
+        // Connect first and last nodes.
+        if (this.Nodes.Count > 2)
+        {
+            Gizmos.DrawLine(this.Nodes[this.Nodes.Count - 1].transform.position, this.Nodes[0].transform.position);
+        }
     }
 }
