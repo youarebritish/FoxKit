@@ -316,13 +316,12 @@
         /// <returns>
         /// The newly-created file format handlers.
         /// </returns>
-        private static List<IFormatHandler> MakeFormatHandlers(FileRegistry fileRegistry, List<uint> routeNames, HashSet<uint> eventNames, HashSet<uint> routeMessages, HashSet<string> jsonSnippets)
+        private static List<IFormatHandler> MakeFormatHandlers(FileRegistry fileRegistry)
         {
             var archiveHandler = new ArchiveHandler(fileRegistry);
-            var routeSetHandler = new RouteSetHandler(routeNames, eventNames, routeMessages, jsonSnippets);
             var textureHandler = new TextureHandler(fileRegistry);
             var textHandler = new PlaintextHandler();
-            return new List<IFormatHandler> { archiveHandler, routeSetHandler };
+            return new List<IFormatHandler> { archiveHandler };
         }
 
         /// <summary>
@@ -343,11 +342,7 @@
             ReadFpkDictionaries(profile.FpkDictionaries);
 
             var fileRegistry = new FileRegistry();
-            var routeNames = new List<uint>();
-            var eventNames = new HashSet<uint>();
-            var routeMessages = new HashSet<uint>();
-            var jsonSnippets = new HashSet<string>();
-            var formatHandlers = MakeFormatHandlers(fileRegistry, routeNames, eventNames, routeMessages, jsonSnippets);
+            var formatHandlers = MakeFormatHandlers(fileRegistry);
 
             var supportedExtensions = formatHandlers.SelectMany(handler => handler.Extensions);
             foreach (var extension in supportedExtensions)
@@ -374,39 +369,6 @@
             fileRegistry.PrintStats();
 
             this.ResetExtractedFileCount();
-
-
-            using (var routeNameWriter = new StreamWriter(new FileStream("routeNames.txt", FileMode.Create)))
-            {
-                foreach (var routeName in routeNames)
-                {
-                    routeNameWriter.WriteLine(routeName);
-                }
-            }
-
-            using (var routeEventNameWriter = new StreamWriter(new FileStream("routeEventNames.txt", FileMode.Create)))
-            {
-                foreach (var routeEventName in eventNames)
-                {
-                    routeEventNameWriter.WriteLine(routeEventName);
-                }
-            }
-
-            using (var routeEventNameWriter = new StreamWriter(new FileStream("routeEventMessages.txt", FileMode.Create)))
-            {
-                foreach (var message in routeMessages)
-                {
-                    routeEventNameWriter.WriteLine(message);
-                }
-            }
-
-            using (var routeEventNameWriter = new StreamWriter(new FileStream("routeJsonSnippets.txt", FileMode.Create)))
-            {
-                foreach (var message in jsonSnippets)
-                {
-                    routeEventNameWriter.WriteLine(jsonSnippets);
-                }
-            }
         }
 
         /// <summary>
