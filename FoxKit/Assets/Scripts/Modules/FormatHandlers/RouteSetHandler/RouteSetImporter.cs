@@ -109,9 +109,8 @@
                         {
                             routeEvent.Params.Add(reader.ReadUInt32());
                         }
-                        // TODO: ArgumentException: The output char buffer is too small to contain the decoded characters, encoding 'Unicode (UTF-8)' fallback 'System.Text.DecoderReplacementFallback'
-                        var snippet = reader.ReadUInt32();//reader.ReadChars(4);
-                        routeEvent.Snippet = snippet.ToString();//new string(snippet));
+                        var snippet = reader.ReadBytes(4);
+                        routeEvent.Snippet = System.Text.Encoding.Default.GetString(snippet);
                         routeEvents.Add(routeEvent);
                     }
                 }
