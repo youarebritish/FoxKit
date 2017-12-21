@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 
+using FoxKit.Modules.FormatHandlers.RouteSetHandler;
+
 using UnityEngine;
 
 [System.Serializable]
@@ -9,7 +11,7 @@ public class Route : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
+        Gizmos.color = RouteSetImporterPreferences.Instance.EdgeColor;
         RouteNode previousNode = null;
         foreach (var node in Nodes)
         {

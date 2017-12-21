@@ -1,5 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
+using FoxKit.Modules.FormatHandlers.RouteSetHandler;
+
 using UnityEngine;
 
 [System.Serializable]
@@ -10,7 +12,7 @@ public class RouteNode : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, 0.1f);
+        Gizmos.color = RouteSetImporterPreferences.Instance.NodeColor;
+        Gizmos.DrawWireSphere(this.transform.position, RouteSetImporterPreferences.Instance.NodeSize);
     }
 }

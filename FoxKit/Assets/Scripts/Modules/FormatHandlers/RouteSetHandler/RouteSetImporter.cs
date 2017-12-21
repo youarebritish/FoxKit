@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.IO;
-    using System.Text;
 
     using FoxKit.Core;
 
@@ -44,6 +43,7 @@
             using (var reader = new BinaryReader(new FileStream(ctx.assetPath, FileMode.Open)))
             {
                 // Header
+                // TODO: Check if GZ version
                 reader.Skip(6);
 
                 var routeIdCount = reader.ReadInt16();

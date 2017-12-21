@@ -1,10 +1,11 @@
-﻿using System;
-using UnityEngine;
-using UnityEditor;
-using System.IO;
-
-namespace FoxKit.Utils
+﻿namespace FoxKit.Utils
 {
+    using System.IO;
+
+    using UnityEditor;
+
+    using UnityEngine;
+
     public static class CreateScriptableObject
     {
         /// <summary>

@@ -1,11 +1,16 @@
 ﻿namespace FoxKit.Modules.FormatHandlers.RouteSetHandler
 {
+    using FoxKit.Modules.FormatHandlers.ArchiveHandler;
+    using FoxKit.Utils;
+
+    using UnityEditor;
+
     using UnityEngine;
 
-    public class RouteSetImporterPreferences : ScriptableObject
+    public class RouteSetImporterPreferences : SingletonScriptableObject<RouteSetImporterPreferences>
     {
-        private static readonly Color defaultNodeColor = new Color(244, 158, 8);
-        private static readonly Color defaultEdgeColor = new Color(243, 210, 62);
+        private static readonly Color defaultNodeColor = new Color(0.956f, 0.62f, 0.031f);
+        private static readonly Color defaultEdgeColor = new Color(0.953f, 0.859f, 0.243f);
         private static readonly float defaultNodeSize = 0.1f;
 
         public Color NodeColor => defaultNodeColor;
@@ -20,5 +25,11 @@
         public TextAsset EventHashDump { get; set; }
         public TextAsset MessageHashDump { get; set; }
         public TextAsset JsonDump { get; set; }
+
+        [MenuItem("Assets/Create/FoxKit/Preferences/RouteSet")]
+        public static void CreateAsset()
+        {
+            CreateScriptableObject.CreateAsset<RouteSetImporterPreferences>();
+        }
     }
 }
