@@ -23,30 +23,41 @@
             this.InitializeDictionaries();
 
             var path = ctx.assetPath;
-
-            var routeset = CreateRouteSet(Path.GetFileNameWithoutExtension(path));
-            routeset.transform.position = Vector3.zero;
-
-            using (var reader = new BinaryReader(new FileStream(ctx.assetPath, FileMode.Open)))
-            {
-                this.ReadHeader(reader, routeset);
-
-                var nodeCount = new Dictionary<Route, int>();
-                var eventCount = new Dictionary<Route, int>();
-                ReadRouteDefinitions(routeset, reader, nodeCount, eventCount);
-                
-                ReadNodes(routeset, reader, nodeCount);
-                
-                var eventTable = ReadEventTable(routeset, reader);
-                var routeEvents = this.ReadEvents(eventCount, reader);
-                AssignEvents(routeset, eventTable, routeEvents);
-            }
+            var routesetName = Path.GetFileNameWithoutExtension(path);
+            var routeset = ReadRouteSet(ctx, routesetName, this.routeNameHashManager, this.eventNameHashManager);
 
             ctx.AddObjectToAsset(routeset.name, routeset.gameObject);
             ctx.SetMainObject(routeset.gameObject);
         }
 
-        private void ReadHeader(BinaryReader reader, RouteSet routeset)
+        private static RouteSet ReadRouteSet(AssetImportContext ctx, string routesetName, IHashManager<uint> routeNameHashManager, IHashManager<uint> eventNameHashManager)
+        {
+            var routeset = CreateRouteSet(routesetName);
+            routeset.transform.position = Vector3.zero;
+
+            using (var reader = new BinaryReader(new FileStream(ctx.assetPath, FileMode.Open)))
+            {
+                routeset.Routes = ReadHeader(reader, routeNameHashManager);
+                foreach (var route in routeset.Routes)
+                {
+                    route.transform.SetParent(routeset.transform);
+                }
+
+                var nodeCount = new Dictionary<Route, int>();
+                var eventCount = new Dictionary<Route, int>();
+                ReadRouteDefinitions(routeset, reader, nodeCount, eventCount);
+
+                ReadNodes(routeset, reader, nodeCount);
+
+                var eventTable = ReadEventTable(routeset, reader);
+                var routeEvents = ReadEvents(eventCount, reader, eventNameHashManager);
+                AssignEvents(routeset, eventTable, routeEvents);
+            }
+
+            return routeset;
+        }
+
+        private static List<Route> ReadHeader(BinaryReader reader, IHashManager<uint> routeNameHashManager)
         {
             reader.Skip(4);
 
@@ -57,26 +68,30 @@
             }
 
             var routeIdCount = reader.ReadInt16();
-            routeset.Routes = new List<Route>(routeIdCount);
-            var routeIdsOffset = reader.ReadInt32();
-            var routeDefinitionsOffset = reader.ReadInt32();
-
-            reader.Skip(3 * sizeof(int));
+            var routes = new List<Route>(routeIdCount);
+            
+            reader.Skip(5 * sizeof(int));
 
             for (var i = 0; i < routeIdCount; i++)
             {
-                var routeNameHash = reader.ReadUInt32();
-                string routeNameString;
-                if (!this.routeNameHashManager.TryGetStringFromHash(routeNameHash, out routeNameString))
-                {
-                    routeNameString = routeNameHash.ToString();
-                }
-
-                var route = CreateRoute(routeNameString);
-
-                routeset.Routes.Add(route);
-                route.transform.SetParent(routeset.transform);
+                var route = ReadRoute(reader, routeNameHashManager);
+                routes.Add(route);
             }
+
+            return routes;
+        }
+
+        private static Route ReadRoute(BinaryReader reader, IHashManager<uint> routeNameHashManager)
+        {
+            var routeNameHash = reader.ReadUInt32();
+            string routeNameString;
+            if (!routeNameHashManager.TryGetStringFromHash(routeNameHash, out routeNameString))
+            {
+                routeNameString = routeNameHash.ToString();
+            }
+
+            var route = CreateRoute(routeNameString);
+            return route;
         }
 
         private static void ReadRouteDefinitions(
@@ -115,7 +130,7 @@
             return nodeEventDataTable;
         }
 
-        private List<RouteEvent> ReadEvents(Dictionary<Route, int> eventCount, BinaryReader reader)
+        private static List<RouteEvent> ReadEvents(Dictionary<Route, int> eventCount, BinaryReader reader, IHashManager<uint> eventNameHashManager)
         {
             var routeEvents = new List<RouteEvent>();
             foreach (var route in eventCount.Keys)
@@ -124,7 +139,7 @@
                 {
                     var eventNameHash = reader.ReadUInt32();
                     string eventNameString;
-                    if (!this.eventNameHashManager.TryGetStringFromHash(eventNameHash, out eventNameString))
+                    if (!eventNameHashManager.TryGetStringFromHash(eventNameHash, out eventNameString))
                     {
                         eventNameString = eventNameHash.ToString();
                     }
