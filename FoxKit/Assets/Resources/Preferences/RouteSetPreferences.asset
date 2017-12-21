@@ -9,5 +9,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6a9caca022e65874284196efbe758654, type: 3}
-  m_Name: New RouteSetImporterPreferences
+  m_Name: RouteSetPreferences
   m_EditorClassIdentifier: 

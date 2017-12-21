@@ -26,14 +26,9 @@
         {
             this.routeNameHashManager = new StrCode32HashManager();
             this.eventNameHashManager = new StrCode32HashManager();
-            if (RouteNameDictionary != null)
-            {
-                this.routeNameHashManager.LoadDictionary(RouteNameDictionary);
-            }
-            if (EventNameDictionary != null)
-            {
-                this.eventNameHashManager.LoadDictionary(EventNameDictionary);
-            }
+
+            this.routeNameHashManager.LoadDictionary(RouteSetImporterPreferences.Instance.IdDictionary);
+            this.eventNameHashManager.LoadDictionary(RouteSetImporterPreferences.Instance.EventDictionary);
 
             var path = ctx.assetPath;
 
@@ -114,16 +109,15 @@
                         {
                             routeEvent.Params.Add(reader.ReadUInt32());
                         }
-                        var snippet = reader.ReadChars(4);
-                        routeEvent.Snippet = new string(snippet);
-                        if (!routeEvents.Contains(routeEvent))
-                        {
-                            routeEvents.Add(routeEvent);
-                        }
+                        // TODO: ArgumentException: The output char buffer is too small to contain the decoded characters, encoding 'Unicode (UTF-8)' fallback 'System.Text.DecoderReplacementFallback'
+                        var snippet = reader.ReadUInt32();//reader.ReadChars(4);
+                        routeEvent.Snippet = snippet.ToString();//new string(snippet));
+                        routeEvents.Add(routeEvent);
                     }
                 }
 
                 // Assign events to nodes.
+                var readEvents = 0;
                 foreach (var route in routeset.Routes)
                 {
                     foreach (var node in route.Nodes)
@@ -133,9 +127,10 @@
 
                         for (var i = 0; i < eventData.EventCount; i++)
                         {
-                            node.Events.Add(routeEvents[i]);
+                            node.Events.Add(routeEvents[i + readEvents]);
                         }
                         node.EdgeEvent = routeEvents[eventData.EdgeEventIndex];
+                        readEvents += eventData.EventCount;
                     }
                 }
             }
