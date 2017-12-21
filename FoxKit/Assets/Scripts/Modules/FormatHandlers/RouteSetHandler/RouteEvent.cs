@@ -5,5 +5,6 @@ using UnityEngine;
 public class RouteEvent
 {
     public string Name;
-    public List<uint> Params = new List<uint>(11);
+    public List<uint> Params = new List<uint>(10);
+    public string Snippet;
 }

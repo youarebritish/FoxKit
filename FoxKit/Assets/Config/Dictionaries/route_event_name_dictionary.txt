@@ -1,6 +1,8 @@
 All
 BeckonRight
 BeckonLeft
+BurstFire
+CallVoice
 Caution
 CautionSquatIdleAim
 CautionSquatIdleReady
@@ -11,6 +13,8 @@ CautionStandWalkReady
 CautionSearchStandIdleReady
 CautionSearchStandWalkReady
 CautionWalk
+Conversation
+CommonActing
 chase
 CloseDoor
 Crawl
@@ -21,6 +25,13 @@ Demo
 Fire
 Forward
 ForwardChangeSpeed
+GroupRouteMoveStart
+GroupRouteMove
+GroupRideVehicle
+GroupVehicleRouteMove
+Helicopter
+HelicopterSetTargetSpeed
+HueyRideVehicle
 HalfSquatWalk
 Idle
 Kill
@@ -55,6 +66,7 @@ RouteMoveFree
 Salute
 SearchLightIdle
 SendMessage
+SetTargetSpeed
 SitUpMove
 Snipe
 StandAim
@@ -103,6 +115,10 @@ StandWalk
 Stun
 SwitchRoute
 SpecialMove
+Vehicle
+VehicleMove
+VehicleChase
+VehicleRouteMove
 Wait
 Walk
 WalkFacingFront

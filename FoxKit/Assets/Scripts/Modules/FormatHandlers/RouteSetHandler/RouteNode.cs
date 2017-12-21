@@ -5,7 +5,6 @@ using UnityEngine;
 [System.Serializable]
 public class RouteNode : MonoBehaviour
 {
-    public Vector3 Position;
     public RouteEvent EdgeEvent;
     public List<RouteEvent> Events;
 
