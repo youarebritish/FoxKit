@@ -260,35 +260,37 @@
             throw new System.NotImplementedException();
         }
 
-        private struct RouteDefinition
+        public struct RouteDefinition
         {
-            private int NodeOffset { get; }
+            public static uint SizeBytes => (3 * sizeof(uint) + 2 * sizeof(ushort));
 
-            private int EdgeOffset { get; } // TODO rename
+            private uint NodeOffset { get; }
 
-            private int EventOffset { get; }
+            private uint EdgeOffset { get; } // TODO rename
 
-            public short NumEdgeEvents { get; }
+            private uint EventOffset { get; }
 
-            public short NumEvents { get; }
+            public ushort NumEdgeEvents { get; }
 
+            public ushort NumEvents { get; }
+            
             public static RouteDefinition Read(BinaryReader input)
             {
-                var nodeOffset = input.ReadInt32();
-                var edgeOffset = input.ReadInt32();
-                var eventOffset = input.ReadInt32();
-                var numEdgeEvents = input.ReadInt16();
-                var numEvents = input.ReadInt16();
+                var nodeOffset = input.ReadUInt32();
+                var edgeOffset = input.ReadUInt32();
+                var eventOffset = input.ReadUInt32();
+                var numEdgeEvents = input.ReadUInt16();
+                var numEvents = input.ReadUInt16();
 
                 return new RouteDefinition(nodeOffset, edgeOffset, eventOffset, numEdgeEvents, numEvents);
             }
 
             private RouteDefinition(
-                int nodeOffset,
-                int edgeOffset,
-                int eventOffset,
-                short numEdgeEvents,
-                short numEvents)
+                uint nodeOffset,
+                uint edgeOffset,
+                uint eventOffset,
+                ushort numEdgeEvents,
+                ushort numEvents)
             {
                 this.NodeOffset = nodeOffset;
                 this.EdgeOffset = edgeOffset;

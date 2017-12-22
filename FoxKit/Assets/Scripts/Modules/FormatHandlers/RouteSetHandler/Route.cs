@@ -12,7 +12,7 @@ public class Route : MonoBehaviour
 {
     public List<RouteNode> Nodes = new List<RouteNode>();
     public bool DisplayAsCircuit = true;
-
+    
     void OnDrawGizmos()
     {
         var isRouteSelected = IsRouteSelected();
