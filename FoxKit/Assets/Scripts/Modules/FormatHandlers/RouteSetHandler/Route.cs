@@ -11,20 +11,23 @@ using UnityEngine;
 public class Route : MonoBehaviour
 {
     public List<RouteNode> Nodes = new List<RouteNode>();
+    public bool DisplayAsCircuit = true;
 
     void OnDrawGizmos()
     {
+        var isRouteSelected = IsRouteSelected();
+
         Gizmos.color = RouteSetImporterPreferences.Instance.EdgeColor;
         RouteNode previousNode = null;
         foreach (var node in this.Nodes)
         {
             Gizmos.color = RouteSetImporterPreferences.Instance.NodeColor;
-            if (!Selection.Contains(gameObject))
+            if (!isRouteSelected)
             {
-                Gizmos.color = new Color(Gizmos.color.r, Gizmos.color.g, Gizmos.color.b, Gizmos.color.a * 0.25f);
+                Gizmos.color = new Color(Gizmos.color.r, Gizmos.color.g, Gizmos.color.b, Gizmos.color.a * 0.1f);
             }
 
-            Gizmos.DrawWireSphere(this.transform.position, RouteSetImporterPreferences.Instance.NodeSize);
+            Gizmos.DrawWireSphere(node.transform.position, RouteSetImporterPreferences.Instance.NodeSize);
 
             if (previousNode == null)
             {
@@ -33,9 +36,9 @@ public class Route : MonoBehaviour
             }
 
             Gizmos.color = RouteSetImporterPreferences.Instance.EdgeColor;
-            if (!Selection.Contains(gameObject))
+            if (!isRouteSelected)
             {
-                Gizmos.color = new Color(Gizmos.color.r, Gizmos.color.g, Gizmos.color.b, Gizmos.color.a * 0.25f);
+                Gizmos.color = new Color(Gizmos.color.r, Gizmos.color.g, Gizmos.color.b, Gizmos.color.a * 0.1f);
             }
 
             Gizmos.DrawLine(previousNode.transform.position, node.transform.position);
@@ -43,6 +46,10 @@ public class Route : MonoBehaviour
         }
 
         // Connect first and last nodes.
+        if (!this.DisplayAsCircuit)
+        {
+            return;
+        }
         if (this.Nodes.Count > 2)
         {
             Gizmos.DrawLine(this.Nodes[this.Nodes.Count - 1].transform.position, this.Nodes[0].transform.position);
@@ -51,7 +58,7 @@ public class Route : MonoBehaviour
 
     private bool IsRouteSelected()
     {
-        if (Selection.Contains(gameObject))
+        if (Selection.Contains(this.gameObject))
         {
             return true;
         }

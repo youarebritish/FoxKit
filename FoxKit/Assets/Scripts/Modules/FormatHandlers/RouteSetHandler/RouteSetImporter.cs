@@ -10,7 +10,7 @@
     using UnityEditor.Experimental.AssetImporters;
 
     using UnityEngine;
-
+    
     [ScriptedImporter(1, "frt")]
     public class RouteSetImporter : ScriptedImporter
     {
@@ -224,7 +224,7 @@
 
         private static RouteNode CreateRouteNode(string routeName, int index, Vector3 position)
         {
-            var nodeName = routeName + "_node" + index;
+            var nodeName = routeName + "_RouteNode" + index.ToString("0000");
             var go = new GameObject { name = nodeName };
 
             var node = go.AddComponent<RouteNode>();
@@ -239,15 +239,15 @@
 
         private struct RouteDefinition
         {
-            public int NodeOffset { get; private set; }
+            private int NodeOffset { get; }
 
-            public int EdgeOffset { get; private set; } // TODO rename
+            private int EdgeOffset { get; } // TODO rename
 
-            public int EventOffset { get; private set; }
+            private int EventOffset { get; }
 
-            public short NumEdgeEvents { get; private set; }
+            public short NumEdgeEvents { get; }
 
-            public short NumEvents { get; private set; }
+            public short NumEvents { get; }
 
             public static RouteDefinition Read(BinaryReader input)
             {
@@ -267,19 +267,19 @@
                 short numEdgeEvents,
                 short numEvents)
             {
-                NodeOffset = nodeOffset;
-                EdgeOffset = edgeOffset;
-                EventOffset = eventOffset;
-                NumEdgeEvents = numEdgeEvents;
-                NumEvents = numEvents;
+                this.NodeOffset = nodeOffset;
+                this.EdgeOffset = edgeOffset;
+                this.EventOffset = eventOffset;
+                this.NumEdgeEvents = numEdgeEvents;
+                this.NumEvents = numEvents;
             }
         }
 
         private struct RouteNodeEventData
         {
-            public short EventCount { get; private set; }
+            public short EventCount { get; }
 
-            public short EdgeEventIndex { get; private set; }
+            public short EdgeEventIndex { get; }
 
             public static RouteNodeEventData Read(BinaryReader input)
             {
@@ -290,8 +290,8 @@
 
             private RouteNodeEventData(short eventCount, short edgeEventIndex)
             {
-                EventCount = eventCount;
-                EdgeEventIndex = edgeEventIndex;
+                this.EventCount = eventCount;
+                this.EdgeEventIndex = edgeEventIndex;
             }
         }
     }

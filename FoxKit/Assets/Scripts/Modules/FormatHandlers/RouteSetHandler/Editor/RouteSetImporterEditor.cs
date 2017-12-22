@@ -3,8 +3,6 @@
 using UnityEditor;
 using UnityEditor.Experimental.AssetImporters;
 
-using UnityEngine;
-
 [CustomEditor(typeof(RouteSetImporter))]
 public class RouteSetImporterEditor : ScriptedImporterEditor
 {
