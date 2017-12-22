@@ -12,18 +12,18 @@
         private static readonly Color defaultEdgeColor = new Color(0.953f, 0.859f, 0.243f);
         private static readonly float defaultNodeSize = 0.1f;
         
-        public Color NodeColor { get; set; } = defaultNodeColor;
-        public Color EdgeColor { get; set; } = defaultEdgeColor;
-        public float NodeSize { get; set; } = defaultNodeSize;
+        public Color NodeColor  = defaultNodeColor;
+        public Color EdgeColor = defaultEdgeColor;
+        public float NodeSize = defaultNodeSize;
 
-        public TextAsset IdDictionary { get; set; }
-        public TextAsset EventDictionary { get; set; }
-        public TextAsset MessageDictionary { get; set; }
+        public TextAsset IdDictionary;
+        public TextAsset EventDictionary;
+        public TextAsset MessageDictionary;
 
-        public TextAsset IdHashDump { get; set; }
-        public TextAsset EventHashDump { get; set; }
-        public TextAsset MessageHashDump { get; set; }
-        public TextAsset JsonDump { get; set; }
+        public TextAsset IdHashDump;
+        public TextAsset EventHashDump;
+        public TextAsset MessageHashDump;
+        public TextAsset JsonDump;
 
         [MenuItem("Assets/Create/FoxKit/Preferences/RouteSet")]
         public static void CreateAsset()

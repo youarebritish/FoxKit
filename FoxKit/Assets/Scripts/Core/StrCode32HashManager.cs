@@ -31,6 +31,11 @@
             return this.lookUpTable.TryGetValue(hash, out result);
         }
 
+        public uint GetHash(string input)
+        {
+            return HashString(input);
+        }
+
         private static uint HashString(string input)
         {
             Assert.IsNotNull(input, "Hash input must not be null.");

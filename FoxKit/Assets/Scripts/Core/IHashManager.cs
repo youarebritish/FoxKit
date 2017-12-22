@@ -8,5 +8,7 @@ namespace FoxKit.Core
         void LoadDictionary(TextAsset dictionary);
 
         bool TryGetStringFromHash(THash hash, out string result);
+
+        THash GetHash(string input);
     }
 }
