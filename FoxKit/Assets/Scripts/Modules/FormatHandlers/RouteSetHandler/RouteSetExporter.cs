@@ -60,13 +60,13 @@ public class RouteSetExporter
             {
                 var isEdgeEventADuplicate = false;
                 var duplicatedEventIndex = ushort.MaxValue;
-                foreach (var edgeEvent in eventIndices.Keys)
+                foreach (var routeEvent in eventIndices.Keys)
                 {
-                    if (edgeEvent != node.EdgeEvent)
+                    if (routeEvent != node.EdgeEvent)
                     {
                         continue;
                     }
-                    duplicatedEventIndex = eventIndices[edgeEvent];
+                    duplicatedEventIndex = eventIndices[routeEvent];
                     isEdgeEventADuplicate = true;
                 }
                 if (!isEdgeEventADuplicate)
@@ -85,6 +85,14 @@ public class RouteSetExporter
                 }
             }
             WriteEventTable(nodes, eventIndices, writer);
+
+            var events = new List<RouteEvent>();
+            foreach (var node in nodes)
+            {
+                events.Add(node.EdgeEvent);
+                events.AddRange(node.Events);
+            }
+            WriteEvents(events, hashManager, writer);
         }
     }
 
@@ -182,6 +190,38 @@ public class RouteSetExporter
 
         var edgeEventIndex = eventIndices[node.EdgeEvent];
         writer.Write(edgeEventIndex);
+    }
+
+    private static void WriteEvents(List<RouteEvent> events, StrCode32HashManager hashManager, BinaryWriter writer)
+    {
+        foreach (var @event in events)
+        {
+            WriteEvent(@event, hashManager, writer);
+        }
+    }
+
+    private static void WriteEvent(RouteEvent @event, StrCode32HashManager hashManager, BinaryWriter writer)
+    {
+        var eventNameHash = hashManager.GetHash(@event.Name);
+        writer.Write(eventNameHash);
+
+        for (var i = 0; i < 10; i++)
+        {
+            writer.Write(@event.Params[i]);
+        }
+
+        var snippet = @event.Snippet.ToCharArray();
+        for (var i = 0; i < 4; i++)
+        {
+            if (i >= snippet.Length)
+            {
+                writer.Write('\0');
+            }
+            else
+            {
+                writer.Write(snippet[i]);
+            }
+        }
     }
 
     private static uint CalculateRouteIdsOffset()

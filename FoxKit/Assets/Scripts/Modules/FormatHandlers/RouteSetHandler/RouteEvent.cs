@@ -10,7 +10,7 @@ public class RouteEvent
     public List<uint> Params = new List<uint>(10);
     public string Snippet;
 
-    public override bool Equals(System.Object obj)
+    /*public override bool Equals(System.Object obj)
     {
         var routeEvent = obj as RouteEvent;
         return routeEvent != null && this == routeEvent;
@@ -40,5 +40,5 @@ public class RouteEvent
     public static bool operator !=(RouteEvent x, RouteEvent y)
     {
         return !(x == y);
-    }
+    }*/
 }
