@@ -157,6 +157,7 @@ public class RouteSetExporter
 
         // TODO: Combine duplicate events
         var eventCount = (ushort)(route.Nodes.Aggregate<RouteNode, uint>(0, (current, node) => current + (uint)node.Events.Count));
+        eventCount += (ushort)route.Nodes.Count;
         writer.Write(eventCount);
     }
 
