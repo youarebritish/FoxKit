@@ -1,44 +1,42 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 using FoxKit.Core;
 using FoxKit.Modules.FormatHandlers.RouteSetHandler;
 
-using UnityEngine;
 using UnityEngine.Assertions;
 
-public class RouteSetExporter
+public static class RouteSetExporter
 {
     private const uint HeaderSizeBytes = 28;
     private const uint NodeSizeBytes = 3 * sizeof(float);
     private const uint EventTableSizeBytes = 2 * sizeof(ushort);
     private const uint EventSizeBytes = sizeof(uint) + (10 * sizeof(uint)) + (4 * sizeof(byte));
 
+    private const ushort GzFrtVersion = 2;
+    private const ushort TppFrtVersion = 3;
+
     public static void ExportRouteSet(RouteSet routeSet, StrCode32HashManager hashManager, string exportPath)
     {
+        Assert.IsNotNull(routeSet, "RouteSet must not be null.");
+        Assert.IsNotNull(hashManager, "hashManager must not be null.");
+        Assert.IsNotNull(exportPath, "exportPath must not be null.");
+        Assert.IsNotNull(routeSet.Routes, "RouteSet.Routes must not be null.");
+
         var routeCount = routeSet.Routes.Count;
-        Assert.IsTrue(routeCount < ushort.MaxValue, "Invalid route count. Only up to " + ushort.MaxValue + " routes can be written to file.");
+        Assert.IsTrue(routeCount > 0, "Invalid route count. Cannot write a routeset with no routes.");
+        Assert.IsTrue(routeCount <= ushort.MaxValue, "Invalid route count. Only up to " + ushort.MaxValue + " routes can be written to file.");
 
         using (var writer = new BinaryWriter(new FileStream(exportPath, FileMode.Create)))
         {
             var nodes = new List<RouteNode>();
             var nodeIndices = new Dictionary<RouteNode, int>();
-            var i = 0;
-            foreach (var route in routeSet.Routes)
-            {
-                foreach (var node in route.Nodes)
-                {
-                    nodes.Add(node);
-                    nodeIndices.Add(node, i);
-                    i++;
-                }
-            }
+            CreateNodeList(routeSet, nodes, nodeIndices);
 
             var nodeCount = (uint)nodes.Count;
             uint routeDefinitionsOffset, nodesOffset, eventTableOffset, eventsOffset;
-            WriteHeader(3, (ushort)routeCount, nodeCount, writer, out routeDefinitionsOffset, out nodesOffset, out eventTableOffset, out eventsOffset);
+            WriteHeader(TppFrtVersion, (ushort)routeCount, nodeCount, writer, out routeDefinitionsOffset, out nodesOffset, out eventTableOffset, out eventsOffset);
 
             var routeIds = routeSet.Routes.Select(route => hashManager.GetHash(route.name)).ToList();
             WriteRouteIds(routeIds, writer);
@@ -55,35 +53,7 @@ public class RouteSetExporter
             WriteNodes(nodes, writer);
             
             var eventIndices = new Dictionary<RouteEvent, ushort>();
-            ushort j = 0;
-            foreach (var node in nodes)
-            {
-                var isEdgeEventADuplicate = false;
-                var duplicatedEventIndex = ushort.MaxValue;
-                foreach (var routeEvent in eventIndices.Keys)
-                {
-                    if (routeEvent != node.EdgeEvent)
-                    {
-                        continue;
-                    }
-                    duplicatedEventIndex = eventIndices[routeEvent];
-                    isEdgeEventADuplicate = true;
-                }
-                if (!isEdgeEventADuplicate)
-                {
-                    eventIndices.Add(node.EdgeEvent, j);
-                    j++;
-                }
-                else
-                {
-                    eventIndices.Add(node.EdgeEvent, duplicatedEventIndex);
-                }
-                foreach (var @event in node.Events)
-                {
-                    eventIndices.Add(@event, j);
-                    j++;
-                }
-            }
+            BuildEventList(nodes, eventIndices);
             WriteEventTable(nodes, eventIndices, writer);
 
             var events = new List<RouteEvent>();
@@ -96,7 +66,56 @@ public class RouteSetExporter
         }
     }
 
-    private static void WriteHeader(short version, ushort routeCount, uint nodeCount, BinaryWriter writer, out uint routeDefinitionsOffset, out uint nodesOffset, out uint eventTableOffset, out uint eventsOffset)
+    private static void BuildEventList(List<RouteNode> nodes, Dictionary<RouteEvent, ushort> eventIndices)
+    {
+        ushort i = 0;
+        foreach (var node in nodes)
+        {
+            var isEdgeEventADuplicate = false;
+            var duplicatedEventIndex = ushort.MaxValue;
+            foreach (var routeEvent in eventIndices.Keys)
+            {
+                if (routeEvent != node.EdgeEvent)
+                {
+                    continue;
+                }
+                duplicatedEventIndex = eventIndices[routeEvent];
+                isEdgeEventADuplicate = true;
+            }
+            if (!isEdgeEventADuplicate)
+            {
+                eventIndices.Add(node.EdgeEvent, i);
+                i++;
+            }
+            else
+            {
+                eventIndices.Add(node.EdgeEvent, duplicatedEventIndex);
+            }
+            foreach (var @event in node.Events)
+            {
+                eventIndices.Add(@event, i);
+                i++;
+            }
+        }
+    }
+
+    private static void CreateNodeList(RouteSet routeSet, List<RouteNode> nodes, Dictionary<RouteNode, int> nodeIndices)
+    {
+        var i = 0;
+        foreach (var route in routeSet.Routes)
+        {
+            Assert.IsTrue(route.Nodes.Count > 0, "Route " + route.name + " has no nodes. All routes must contain at least one RouteNode.");
+
+            foreach (var node in route.Nodes)
+            {
+                nodes.Add(node);
+                nodeIndices.Add(node, i);
+                i++;
+            }
+        }
+    }
+
+    private static void WriteHeader(ushort version, ushort routeCount, uint nodeCount, BinaryWriter writer, out uint routeDefinitionsOffset, out uint nodesOffset, out uint eventTableOffset, out uint eventsOffset)
     {
         writer.Write('R');
         writer.Write('O');
@@ -148,15 +167,14 @@ public class RouteSetExporter
 
         var eventTableEntryOffset = (uint)(eventTableOffset + (EventTableSizeBytes * initialNodeIndex));
         writer.Write(eventTableEntryOffset - entryOffset);
-
-        // TODO: I think this isn't quite right. Does this take into account shared edge events?
+        
         var eventOffset = (uint)(eventsOffset + (EventSizeBytes * initialNodeIndex));
 
         writer.Write(eventOffset - entryOffset);
         writer.Write((ushort)route.Nodes.Count);
 
-        // TODO: Combine duplicate events
-        var eventCount = (ushort)(route.Nodes.Aggregate<RouteNode, uint>(0, (current, node) => current + (uint)node.Events.Count));
+        // TODO: Combine duplicate events.
+        var eventCount = (ushort)route.Nodes.Aggregate<RouteNode, uint>(0, (current, node) => current + (uint)node.Events.Count);
         eventCount += (ushort)route.Nodes.Count;
         writer.Write(eventCount);
     }

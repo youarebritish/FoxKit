@@ -1,6 +1,9 @@
 All
-BeckonRight
+AttackFireAAG
+AttackStandFire
+AttackBurstFire
 BeckonLeft
+BeckonRight
 BurstFire
 CallVoice
 Caution
@@ -8,7 +11,9 @@ CautionSquatIdleAim
 CautionSquatIdleReady
 CautionStandIdleAim
 CautionStandIdleReady
+CautionStandRunAim
 CautionStandRunReady
+CautionStandWalkAim
 CautionStandWalkReady
 CautionSearchStandIdleReady
 CautionSearchStandWalkReady
@@ -22,6 +27,7 @@ CrawlMove
 CrawlRolling
 Dash
 Demo
+EmergencyRideVehicle
 Fire
 Forward
 ForwardChangeSpeed
@@ -41,6 +47,7 @@ MoveFree
 MoveRun
 None
 Normal
+NormalStandRun
 ReadyKnifeIdle
 Recovery
 RelaxedStandIdle
