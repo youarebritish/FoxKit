@@ -177,7 +177,7 @@ public class RouteSetExporter
 
     private static void WriteEventTableEntry(RouteNode node, IReadOnlyDictionary<RouteEvent, ushort> eventIndices, BinaryWriter writer)
     {
-        var eventCount = (ushort)node.Events.Count;
+        var eventCount = (ushort)(node.Events.Count + 1);
         writer.Write(eventCount);
 
         var edgeEventIndex = eventIndices[node.EdgeEvent];

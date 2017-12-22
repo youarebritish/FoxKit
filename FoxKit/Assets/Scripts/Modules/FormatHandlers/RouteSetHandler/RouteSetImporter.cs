@@ -189,13 +189,19 @@
                 foreach (var node in route.Nodes)
                 {
                     var eventData = nodeEventDataTable[node];
-                    node.Events = new List<RouteEvent>(eventData.EventCount);
+                    node.EdgeEvent = routeEvents[eventData.EdgeEventIndex];
 
+                    node.Events = new List<RouteEvent>();
                     for (var i = 0; i < eventData.EventCount; i++)
                     {
-                        node.Events.Add(routeEvents[i + readEvents]);
+                        var nextEvent = routeEvents[i + readEvents];
+                        if (nextEvent == node.EdgeEvent)
+                        {
+                            continue;
+                        }
+                        node.Events.Add(nextEvent);
                     }
-                    node.EdgeEvent = routeEvents[eventData.EdgeEventIndex];
+                    
                     readEvents += eventData.EventCount;
                 }
             }
