@@ -1,13 +1,10 @@
 ﻿namespace FoxKit.Modules.FormatHandlers.RouteSetHandler
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Text;
 
     using FoxKit.Core;
-
-    using GzsTool.Core;
 
     using UnityEditor.Experimental.AssetImporters;
 
@@ -22,16 +19,24 @@
 
         private IHashManager<uint> routeNameHashManager;
 
-        private delegate float ReadFloat();
+        private const long RouteIdsOffset = 28;
 
-        private delegate RouteDefinition ReadRouteDefinition();
+        public const ushort RouteDefinitionSizeBytes = (3 * sizeof(uint)) + (2 * sizeof(ushort));
 
-        private delegate void SetPosition(Vector3 newPosition);
+        private delegate uint ReadUInt(BinaryReader reader, long position);
 
-        private delegate void SetTransformParent(Transform childTransform);
+        private delegate ushort ReadUShort(BinaryReader reader, long position);
 
-        private delegate uint GetRouteNodeCount(Route route);
+        private delegate float ReadFloat(BinaryReader reader, long position);
 
+        private delegate long GetRouteNodeCountOffset(ushort routeIndex, long routeDefinitionsOffset);
+
+        private delegate long GetRouteEventCountOffset(ushort routeIndex, long routeDefinitionsOffset);
+
+        private delegate long GetNodePositionsOffset(ushort routeCount, long routeDefinitionsOffset);
+
+        private delegate long GetNodePositionOffset(ushort nodeIndex, long nodePositionsOffset);
+        
         public override void OnImportAsset(AssetImportContext ctx)
         {
             this.InitializeDictionaries();
@@ -43,8 +48,10 @@
             var path = ctx.assetPath;
             var routesetName = Path.GetFileNameWithoutExtension(path);
             var routeset = ReadRouteSet(
-                ctx,
+                ctx.assetPath,
                 routesetName,
+                this.ReadUShortFromPosition,
+                this.ReadUIntFromPosition,
                 this.routeNameHashManager,
                 this.eventNameHashManager,
                 idHashDump,
@@ -60,8 +67,11 @@
         }
 
         private static RouteSet ReadRouteSet(
-            AssetImportContext ctx,
+            string assetPath,
             string routesetName,
+            ReadUShort readUShortFromPosition,
+            ReadUInt readUIntFromPosition,
+            ReadFloat readFloatFromPosition,
             IHashManager<uint> routeNameHashManager,
             IHashManager<uint> eventNameHashManager,
             ISet<string> idHashDump,
@@ -69,119 +79,206 @@
             ISet<string> eventSnippetDump)
         {
             var routeset = CreateRouteSet(routesetName);
-            routeset.transform.position = Vector3.zero;
 
-            using (var reader = new BinaryReader(new FileStream(ctx.assetPath, FileMode.Open)))
+            using (var reader = new BinaryReader(new FileStream(assetPath, FileMode.Open)))
             {
-                routeset.Routes = ReadHeader(reader, routeNameHashManager, idHashDump);
-                foreach (var route in routeset.Routes)
+                var version = ReadVersion(reader, readUShortFromPosition);
+                if (version != 3)
                 {
-                    route.transform.SetParent(routeset.transform);
+                    throw new InvalidDataException("Frt version " + version + " is not supported.");
                 }
 
-                var nodeCount = new Dictionary<Route, ushort>();
-                var eventCount = new Dictionary<Route, ushort>();
+                var routeCount = ReadRouteCount(reader, readUShortFromPosition);
+                var routeNames = ReadRouteNames(reader, routeCount, readUIntFromPosition, routeNameHashManager, idHashDump);
+                ushort eventCount = 0;
 
-                ReadRouteDefinitions(routeset, reader, nodeCount, eventCount);
-                ReadNodes(routeset, reader.ReadSingle, route => nodeCount[route]);
+                for (ushort routeIndex = 0; routeIndex < routeNames.Count; routeIndex++)
+                {
+                    var routeName = routeNames[routeIndex];
+                    var route = CreateRoute(routeName, routeset.transform);
+
+                    var routeNodeCount = ReadRouteNodeCount(
+                        reader,
+                        routeIndex,
+                        routeCount,
+                        CalculateRouteNodeCountOffset,
+                        readUShortFromPosition);
+
+                    var routeDefinitionsOffset = CalculateRouteDefinitionsOffset(routeCount);
+                    var nodePositionsOffset = CalculateNodePositionsOffset(routeCount, routeDefinitionsOffset);
+
+                    route.Nodes = ReadNodesForRoute(
+                        reader,
+                        routeNodeCount,
+                        routeName,
+                        readFloatFromPosition,
+                        CalculateNodePositionOffset,
+                        nodePositionsOffset);
+
+                    var routeEventCount = ReadRouteEventCount(
+                        reader,
+                        routeIndex,
+                        routeCount,
+                        CalculateRouteNodeCountOffset,
+                        readUShortFromPosition);
+                    eventCount += routeEventCount;
+
+                    route.transform.SetParent(routeset.transform);
+                    routeset.Routes.Add(route);
+                }
 
                 var eventTable = ReadEventTable(routeset, reader);
+
                 var routeEvents = ReadEvents(
                     eventCount,
                     reader,
                     eventNameHashManager,
                     eventNameHashDump,
                     eventSnippetDump);
+
                 AssignEvents(routeset, eventTable, routeEvents);
             }
 
             return routeset;
         }
 
-        private static List<Route> ReadHeader(
+        private static List<string> ReadRouteNames(
             BinaryReader reader,
+            ushort routeCount,
+            ReadUInt readUIntFromPosition,
             IHashManager<uint> routeNameHashManager,
-            ISet<string> idHashDump)
+            ISet<string> unmatchedRouteIdHashes)
         {
-            reader.Skip(4);
+            var routeNames = new List<string>(routeCount);
 
-            var version = reader.ReadInt16();
-            if (version != 3)
+            for (uint i = 0; i < routeCount; i++)
             {
-                throw new InvalidDataException("Frt version " + version + " is not supported.");
+                var routeIdHash = ReadRouteIdHash(reader, readUIntFromPosition, i);
+                var routeName = ReadRouteName(routeIdHash, routeNameHashManager, unmatchedRouteIdHashes);
+                routeNames.Add(routeName);
             }
 
-            var routeIdCount = reader.ReadInt16();
-            var routes = new List<Route>(routeIdCount);
-
-            reader.Skip(5 * sizeof(int));
-
-            for (var i = 0; i < routeIdCount; i++)
-            {
-                var route = ReadRoute(reader, routeNameHashManager, idHashDump);
-                routes.Add(route);
-            }
-
-            return routes;
+            return routeNames;
         }
 
-        private static Route ReadRoute(
-            BinaryReader reader,
-            IHashManager<uint> routeNameHashManager,
-            ISet<string> idHashDump)
+        private static ushort ReadRouteCount(BinaryReader reader, ReadUShort readUShortFromPosition)
         {
-            var routeNameHash = reader.ReadUInt32();
-            string routeNameString;
-            if (!routeNameHashManager.TryGetStringFromHash(routeNameHash, out routeNameString))
-            {
-                routeNameString = routeNameHash.ToString();
+            const long RouteIdCountOffset = 6;
+            var routeIdCount = readUShortFromPosition(reader, RouteIdCountOffset);
+            return routeIdCount;
+        }
 
-                if (!idHashDump.Contains(routeNameString))
+        private static ushort ReadVersion(BinaryReader reader, ReadUShort readUShortFromPosition)
+        {
+            const long VersionOffset = 4;
+            var version = readUShortFromPosition(reader, VersionOffset);
+            return version;
+        }
+
+        private ReadUInt ReadUIntFromPosition
+        {
+            get
+            {
+                ReadUInt readUint32 = delegate(BinaryReader binaryReader, long position)
+                    {
+                        binaryReader.BaseStream.Seek(position, SeekOrigin.Begin);
+                        return binaryReader.ReadUInt32();
+                    };
+                return readUint32;
+            }
+        }
+
+        private ReadUShort ReadUShortFromPosition
+        {
+            get
+            {
+                ReadUShort readUShort = delegate (BinaryReader binaryReader, long position)
+                    {
+                        binaryReader.BaseStream.Seek(position, SeekOrigin.Begin);
+                        return binaryReader.ReadUInt16();
+                    };
+                return readUShort;
+            }
+        }
+
+        private static uint ReadRouteIdHash(BinaryReader reader, ReadUInt readUint32, uint routeIndex)
+        {
+            const uint RouteIdsOffset = 28;
+            var readerPosition = GetRouteIdOffset(RouteIdsOffset, routeIndex);
+            return readUint32(reader, readerPosition);
+        }
+
+        private static uint GetRouteIdOffset(uint routeIdsOffset, uint routeIndex)
+        {
+            var offset = routeIdsOffset + (routeIndex * sizeof(uint));
+            return offset;
+        }
+        
+        private static string ReadRouteName(
+            uint routeIdHash,
+            IHashManager<uint> routeNameHashManager,
+            ISet<string> unmatchedRouteIdHashes)
+        {
+            string routeName;
+            if (!routeNameHashManager.TryGetStringFromHash(routeIdHash, out routeName))
+            {
+                var routeHashString = routeIdHash.ToString();
+                if (!unmatchedRouteIdHashes.Contains(routeHashString))
                 {
-                    idHashDump.Add(routeNameString);
+                    unmatchedRouteIdHashes.Add(routeHashString);
                 }
             }
-
-            var route = CreateRoute(routeNameString);
-            return route;
+            
+            return routeName;
+        }
+        
+        private static ushort ReadRouteNodeCount(BinaryReader reader, ushort routeIndex, ushort routeIdCount, GetRouteNodeCountOffset getRouteNodeCountOffset, ReadUShort readUShort)
+        {
+            var offset = getRouteNodeCountOffset(routeIndex, routeIdCount);
+            return readUShort(reader, offset);
         }
 
-        private static void ReadRouteDefinitions(
-            RouteSet routeset,
-            BinaryReader reader,
-            IDictionary<Route, ushort> nodeCount,
-            IDictionary<Route, ushort> eventCount)
+        private static ushort ReadRouteEventCount(BinaryReader reader, ushort routeIndex, ushort routeIdCount, GetRouteEventCountOffset getRouteEventCountOffset, ReadUShort readUShort)
         {
-            foreach (var route in routeset.Routes)
-            {
-                var routeMetadata = ReadRouteMetadata(() => RouteDefinition.Read(reader));
-                nodeCount.Add(route, routeMetadata.Item1);
-                eventCount.Add(route, routeMetadata.Item2);
-            }
+            var offset = getRouteEventCountOffset(routeIndex, routeIdCount);
+            return readUShort(reader, offset);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="reader"></param>
-        /// <returns>Number of nodes in the route and number of events in the route.</returns>
-        private static Tuple<ushort, ushort> ReadRouteMetadata(ReadRouteDefinition readRouteDefinition)
+        private static long CalculateRouteNodeCountOffset(ushort routeIndex, long routeDefinitionsOffset)
         {
-            var routeDefinition = readRouteDefinition();
-            return Tuple.Create(routeDefinition.NumEdgeEvents, routeDefinition.NumEvents);
+            var routeDefinitionOffset = CalculateRouteDefinitionOffset(routeIndex, routeDefinitionsOffset);
+            var routeNodeCountOffset = routeDefinitionOffset + (3 * sizeof(uint));
+            return routeNodeCountOffset;
         }
 
-        private static void ReadNodes(RouteSet routeset, ReadFloat readFloat, GetRouteNodeCount getRouteNodeCount)
+        private static long CalculateRouteEventCountOffset(ushort routeIndex, long routeDefinitionsOffset)
         {
-            foreach (var route in routeset.Routes)
-            {
-                route.Nodes = ReadNodesForRoute(
-                    readFloat,
-                    position => route.transform.position = position,
-                    nodeTransform => nodeTransform.SetParent(route.transform),
-                    getRouteNodeCount(route),
-                    route.name);
-            }
+            var routeDefinitionOffset = CalculateRouteDefinitionOffset(routeIndex, routeDefinitionsOffset);
+            var routeNodeCountOffset = routeDefinitionOffset + (3 * sizeof(uint)) + sizeof(ushort);
+            return routeNodeCountOffset;
+        }
+
+        private static long CalculateRouteDefinitionsOffset(ushort routeCount)
+        {
+            var routeDefinitionsOffset = RouteIdsOffset + (routeCount * sizeof(uint));
+            return routeDefinitionsOffset;
+        }
+        
+        private static long CalculateRouteDefinitionOffset(ushort routeIndex, long routeDefinitionsOffset)
+        {
+            var routeDefinitionOffset = routeDefinitionsOffset + (routeIndex * RouteDefinitionSizeBytes);
+            return routeDefinitionOffset;
+        }
+        
+        private static long CalculateNodePositionsOffset(ushort routeCount, long routeDefinitionsOffset)
+        {
+            return routeDefinitionsOffset + (routeCount * RouteDefinitionSizeBytes);
+        }
+
+        private static long CalculateNodePositionOffset(ushort nodeIndex, long nodePositionsOffset)
+        {
+            const ushort NodePositionSizeBytes = 3 * sizeof(float);
+            return nodePositionsOffset + (nodeIndex * NodePositionSizeBytes);
         }
 
         private static Dictionary<RouteNode, RouteNodeEventData> ReadEventTable(RouteSet routeset, BinaryReader reader)
@@ -200,7 +297,7 @@
         }
 
         private static List<RouteEvent> ReadEvents(
-            Dictionary<Route, ushort> eventCount,
+            ushort eventCount,
             BinaryReader reader,
             IHashManager<uint> eventNameHashManager,
             ISet<string> eventNameHashDump,
@@ -284,31 +381,24 @@
             this.messageHashManager.LoadDictionary(RouteSetImporterPreferences.Instance.MessageDictionary);
         }
 
-        private static List<RouteNode> ReadNodesForRoute(ReadFloat readFloat, SetPosition setRoutePosition, SetTransformParent parentNodeToRoute, uint routeNodeCount, string routeName)
+        private static List<RouteNode> ReadNodesForRoute(BinaryReader reader, uint routeNodeCount, string routeName, ReadFloat readFloat, GetNodePositionOffset getNodePositionOffset, long nodePositionsOffset)
         {
             var nodes = new List<RouteNode>();
-            for (var i = 0; i < routeNodeCount; i++)
+            for (ushort i = 0; i < routeNodeCount; i++)
             {
-                var nodePosition = ReadVector3(readFloat);
+                var nodeOffset = getNodePositionOffset(i, nodePositionsOffset);
+                var nodePosition = ReadNodePosition(reader, nodeOffset, readFloat);
                 var node = CreateRouteNode(routeName, i, nodePosition);
-
-                // Set the position of a route to the position of its first node, so that double-clicking on a route in the Hierarchy has intuitive behavior.
-                if (i == 0)
-                {
-                    setRoutePosition(node.transform.position);
-                }
-                
-                parentNodeToRoute(node.transform);
                 nodes.Add(node);
             }
             return nodes;
         }
 
-        private static Vector3 ReadVector3(ReadFloat readFloat)
+        private static Vector3 ReadNodePosition(BinaryReader reader, long nodeOffset, ReadFloat readFloat)
         {
-            var x = readFloat();
-            var y = readFloat();
-            var z = readFloat();
+            var x = readFloat(reader, nodeOffset);
+            var y = readFloat(reader, nodeOffset + sizeof(float));
+            var z = readFloat(reader, nodeOffset + (2 * sizeof(float)));
 
             // Convert Fox to Unity axes.
             return new Vector3(z, y, x);
@@ -320,9 +410,10 @@
             return go.AddComponent<RouteSet>();
         }
 
-        private static Route CreateRoute(string name)
+        private static Route CreateRoute(string name, Transform parent)
         {
             var go = new GameObject { name = name };
+            go.transform.SetParent(parent);
             return go.AddComponent<Route>();
         }
 
@@ -336,7 +427,7 @@
             return node;
         }
 
-        public struct RouteDefinition
+        /*public struct RouteDefinition
         {
             public static uint SizeBytes => 3 * sizeof(uint) + 2 * sizeof(ushort);
 
@@ -374,7 +465,7 @@
                 this.NumEdgeEvents = numEdgeEvents;
                 this.NumEvents = numEvents;
             }
-        }
+        }*/
 
         private struct RouteNodeEventData
         {

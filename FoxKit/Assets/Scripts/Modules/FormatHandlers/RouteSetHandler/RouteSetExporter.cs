@@ -154,7 +154,7 @@ public static class RouteSetExporter
         foreach (var route in routes)
         {
             WriteRouteDefinition(route, currentOffset, nodesOffset, eventTableOffset, eventsOffset, nodeIndices, writer);
-            currentOffset += RouteSetImporter.RouteDefinition.SizeBytes;
+            currentOffset += RouteSetImporter.RouteDefinitionSizeBytes;
         }
     }
 
@@ -255,7 +255,7 @@ public static class RouteSetExporter
 
     private static uint CalculateNodesOffset(uint routeDefinitionsOffset, ushort routeCount)
     {
-        return (uint)(routeDefinitionsOffset + (routeCount * RouteSetImporter.RouteDefinition.SizeBytes));
+        return (uint)(routeDefinitionsOffset + (routeCount * RouteSetImporter.RouteDefinitionSizeBytes));
     }
 
     private static uint CalculateEventTableOffset(uint nodesOffset, uint nodeCount)
