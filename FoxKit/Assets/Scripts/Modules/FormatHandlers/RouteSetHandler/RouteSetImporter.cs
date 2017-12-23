@@ -1,7 +1,9 @@
 ﻿namespace FoxKit.Modules.FormatHandlers.RouteSetHandler
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Text;
 
     using FoxKit.Core;
 
@@ -10,13 +12,25 @@
     using UnityEditor.Experimental.AssetImporters;
 
     using UnityEngine;
-    
+
     [ScriptedImporter(1, "frt")]
     public class RouteSetImporter : ScriptedImporter
     {
-        private IHashManager<uint> routeNameHashManager;
         private IHashManager<uint> eventNameHashManager;
+
         private IHashManager<uint> messageHashManager;
+
+        private IHashManager<uint> routeNameHashManager;
+
+        private delegate float ReadFloat();
+
+        private delegate RouteDefinition ReadRouteDefinition();
+
+        private delegate void SetPosition(Vector3 newPosition);
+
+        private delegate void SetTransformParent(Transform childTransform);
+
+        private delegate uint GetRouteNodeCount(Route route);
 
         public override void OnImportAsset(AssetImportContext ctx)
         {
@@ -28,7 +42,14 @@
 
             var path = ctx.assetPath;
             var routesetName = Path.GetFileNameWithoutExtension(path);
-            var routeset = ReadRouteSet(ctx, routesetName, this.routeNameHashManager, this.eventNameHashManager, idHashDump, eventNameHashDump, eventSnippetDump);
+            var routeset = ReadRouteSet(
+                ctx,
+                routesetName,
+                this.routeNameHashManager,
+                this.eventNameHashManager,
+                idHashDump,
+                eventNameHashDump,
+                eventSnippetDump);
 
             RouteSetImporterPreferences.Instance.IdHashDump.Overwrite(idHashDump);
             RouteSetImporterPreferences.Instance.EventHashDump.Overwrite(eventNameHashDump);
@@ -38,7 +59,14 @@
             ctx.SetMainObject(routeset.gameObject);
         }
 
-        private static RouteSet ReadRouteSet(AssetImportContext ctx, string routesetName, IHashManager<uint> routeNameHashManager, IHashManager<uint> eventNameHashManager, ISet<string> idHashDump, ISet<string> eventNameHashDump, ISet<string> eventSnippetDump)
+        private static RouteSet ReadRouteSet(
+            AssetImportContext ctx,
+            string routesetName,
+            IHashManager<uint> routeNameHashManager,
+            IHashManager<uint> eventNameHashManager,
+            ISet<string> idHashDump,
+            ISet<string> eventNameHashDump,
+            ISet<string> eventSnippetDump)
         {
             var routeset = CreateRouteSet(routesetName);
             routeset.transform.position = Vector3.zero;
@@ -51,21 +79,29 @@
                     route.transform.SetParent(routeset.transform);
                 }
 
-                var nodeCount = new Dictionary<Route, int>();
-                var eventCount = new Dictionary<Route, int>();
-                ReadRouteDefinitions(routeset, reader, nodeCount, eventCount);
+                var nodeCount = new Dictionary<Route, ushort>();
+                var eventCount = new Dictionary<Route, ushort>();
 
-                ReadNodes(routeset, reader, nodeCount);
+                ReadRouteDefinitions(routeset, reader, nodeCount, eventCount);
+                ReadNodes(routeset, reader.ReadSingle, route => nodeCount[route]);
 
                 var eventTable = ReadEventTable(routeset, reader);
-                var routeEvents = ReadEvents(eventCount, reader, eventNameHashManager, eventNameHashDump, eventSnippetDump);
+                var routeEvents = ReadEvents(
+                    eventCount,
+                    reader,
+                    eventNameHashManager,
+                    eventNameHashDump,
+                    eventSnippetDump);
                 AssignEvents(routeset, eventTable, routeEvents);
             }
 
             return routeset;
         }
 
-        private static List<Route> ReadHeader(BinaryReader reader, IHashManager<uint> routeNameHashManager, ISet<string> idHashDump)
+        private static List<Route> ReadHeader(
+            BinaryReader reader,
+            IHashManager<uint> routeNameHashManager,
+            ISet<string> idHashDump)
         {
             reader.Skip(4);
 
@@ -77,7 +113,7 @@
 
             var routeIdCount = reader.ReadInt16();
             var routes = new List<Route>(routeIdCount);
-            
+
             reader.Skip(5 * sizeof(int));
 
             for (var i = 0; i < routeIdCount; i++)
@@ -89,7 +125,10 @@
             return routes;
         }
 
-        private static Route ReadRoute(BinaryReader reader, IHashManager<uint> routeNameHashManager, ISet<string> idHashDump)
+        private static Route ReadRoute(
+            BinaryReader reader,
+            IHashManager<uint> routeNameHashManager,
+            ISet<string> idHashDump)
         {
             var routeNameHash = reader.ReadUInt32();
             string routeNameString;
@@ -110,22 +149,38 @@
         private static void ReadRouteDefinitions(
             RouteSet routeset,
             BinaryReader reader,
-            IDictionary<Route, int> nodeCount,
-            IDictionary<Route, int> eventCount)
+            IDictionary<Route, ushort> nodeCount,
+            IDictionary<Route, ushort> eventCount)
         {
             foreach (var route in routeset.Routes)
             {
-                var routeDefinition = RouteDefinition.Read(reader);
-                nodeCount.Add(route, routeDefinition.NumEdgeEvents);
-                eventCount.Add(route, routeDefinition.NumEvents);
+                var routeMetadata = ReadRouteMetadata(() => RouteDefinition.Read(reader));
+                nodeCount.Add(route, routeMetadata.Item1);
+                eventCount.Add(route, routeMetadata.Item2);
             }
         }
 
-        private static void ReadNodes(RouteSet routeset, BinaryReader reader, IReadOnlyDictionary<Route, int> nodeCount)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns>Number of nodes in the route and number of events in the route.</returns>
+        private static Tuple<ushort, ushort> ReadRouteMetadata(ReadRouteDefinition readRouteDefinition)
+        {
+            var routeDefinition = readRouteDefinition();
+            return Tuple.Create(routeDefinition.NumEdgeEvents, routeDefinition.NumEvents);
+        }
+
+        private static void ReadNodes(RouteSet routeset, ReadFloat readFloat, GetRouteNodeCount getRouteNodeCount)
         {
             foreach (var route in routeset.Routes)
             {
-                ReadNodesForRoute(reader, route, nodeCount[route]);
+                route.Nodes = ReadNodesForRoute(
+                    readFloat,
+                    position => route.transform.position = position,
+                    nodeTransform => nodeTransform.SetParent(route.transform),
+                    getRouteNodeCount(route),
+                    route.name);
             }
         }
 
@@ -140,10 +195,16 @@
                     nodeEventDataTable.Add(node, nodeEventData);
                 }
             }
+
             return nodeEventDataTable;
         }
 
-        private static List<RouteEvent> ReadEvents(Dictionary<Route, int> eventCount, BinaryReader reader, IHashManager<uint> eventNameHashManager, ISet<string> eventNameHashDump, ISet<string> eventSnippetDump)
+        private static List<RouteEvent> ReadEvents(
+            Dictionary<Route, ushort> eventCount,
+            BinaryReader reader,
+            IHashManager<uint> eventNameHashManager,
+            ISet<string> eventNameHashDump,
+            ISet<string> eventSnippetDump)
         {
             var routeEvents = new List<RouteEvent>();
             foreach (var route in eventCount.Keys)
@@ -169,7 +230,7 @@
                     }
 
                     var snippet = reader.ReadBytes(4);
-                    routeEvent.Snippet = System.Text.Encoding.Default.GetString(snippet);
+                    routeEvent.Snippet = Encoding.Default.GetString(snippet);
                     if (routeEvent.Snippet[0] == '\0' && !eventSnippetDump.Contains(routeEvent.Snippet))
                     {
                         eventSnippetDump.Add(routeEvent.Snippet);
@@ -178,10 +239,14 @@
                     routeEvents.Add(routeEvent);
                 }
             }
+
             return routeEvents;
         }
 
-        private static void AssignEvents(RouteSet routeset, IReadOnlyDictionary<RouteNode, RouteNodeEventData> nodeEventDataTable, IReadOnlyList<RouteEvent> routeEvents)
+        private static void AssignEvents(
+            RouteSet routeset,
+            IReadOnlyDictionary<RouteNode, RouteNodeEventData> nodeEventDataTable,
+            IReadOnlyList<RouteEvent> routeEvents)
         {
             var readEvents = 0;
             foreach (var route in routeset.Routes)
@@ -199,9 +264,10 @@
                         {
                             continue;
                         }
+
                         node.Events.Add(nextEvent);
                     }
-                    
+
                     readEvents += eventData.EventCount;
                 }
             }
@@ -218,25 +284,34 @@
             this.messageHashManager.LoadDictionary(RouteSetImporterPreferences.Instance.MessageDictionary);
         }
 
-        private static void ReadNodesForRoute(BinaryReader input, Route route, int nodeCount)
+        private static List<RouteNode> ReadNodesForRoute(ReadFloat readFloat, SetPosition setRoutePosition, SetTransformParent parentNodeToRoute, uint routeNodeCount, string routeName)
         {
-            for (var i = 0; i < nodeCount; i++)
+            var nodes = new List<RouteNode>();
+            for (var i = 0; i < routeNodeCount; i++)
             {
-                var x = input.ReadSingle();
-                var y = input.ReadSingle();
-                var z = input.ReadSingle();
-
-                var node = CreateRouteNode(route.name, i, new Vector3(z, y, x));
+                var nodePosition = ReadVector3(readFloat);
+                var node = CreateRouteNode(routeName, i, nodePosition);
 
                 // Set the position of a route to the position of its first node, so that double-clicking on a route in the Hierarchy has intuitive behavior.
                 if (i == 0)
                 {
-                    route.transform.position = node.transform.position;
+                    setRoutePosition(node.transform.position);
                 }
-
-                route.Nodes.Add(node);
-                node.transform.SetParent(route.transform);
+                
+                parentNodeToRoute(node.transform);
+                nodes.Add(node);
             }
+            return nodes;
+        }
+
+        private static Vector3 ReadVector3(ReadFloat readFloat)
+        {
+            var x = readFloat();
+            var y = readFloat();
+            var z = readFloat();
+
+            // Convert Fox to Unity axes.
+            return new Vector3(z, y, x);
         }
 
         private static RouteSet CreateRouteSet(string name)
@@ -251,9 +326,9 @@
             return go.AddComponent<Route>();
         }
 
-        private static RouteNode CreateRouteNode(string routeName, int index, Vector3 position)
+        private static RouteNode CreateRouteNode(string routeName, int nodeIndex, Vector3 position)
         {
-            var nodeName = routeName + "_RouteNode" + index.ToString("0000");
+            var nodeName = routeName + "_RouteNode" + nodeIndex.ToString("0000");
             var go = new GameObject { name = nodeName };
 
             var node = go.AddComponent<RouteNode>();
@@ -261,14 +336,9 @@
             return node;
         }
 
-        public void Export(object asset, string path)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public struct RouteDefinition
         {
-            public static uint SizeBytes => (3 * sizeof(uint) + 2 * sizeof(ushort));
+            public static uint SizeBytes => 3 * sizeof(uint) + 2 * sizeof(ushort);
 
             private uint NodeOffset { get; }
 
@@ -279,7 +349,7 @@
             public ushort NumEdgeEvents { get; }
 
             public ushort NumEvents { get; }
-            
+
             public static RouteDefinition Read(BinaryReader input)
             {
                 var nodeOffset = input.ReadUInt32();
