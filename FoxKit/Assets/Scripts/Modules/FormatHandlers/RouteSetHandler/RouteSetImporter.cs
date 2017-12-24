@@ -23,6 +23,8 @@
 
         public const ushort RouteDefinitionSizeBytes = (3 * sizeof(uint)) + (2 * sizeof(ushort));
 
+        private const long NodeEventTableDataEntrySizeBytes = 2 * sizeof(ushort);
+
         private delegate uint ReadUInt(BinaryReader reader, long position);
 
         private delegate ushort ReadUShort(BinaryReader reader, long position);
@@ -126,9 +128,7 @@
                     route.transform.SetParent(routeset.transform);
                     routeset.Routes.Add(route);
                 }
-
-                var eventTable = ReadEventTable(routeset, reader);
-
+                
                 var routeEvents = ReadEvents(
                     eventCount,
                     reader,
@@ -136,7 +136,7 @@
                     eventNameHashDump,
                     eventSnippetDump);
 
-                AssignEvents(routeset, eventTable, routeEvents);
+                //AssignEvents(routeset, eventTable, routeEvents);
             }
 
             return routeset;
@@ -280,20 +280,19 @@
             const ushort NodePositionSizeBytes = 3 * sizeof(float);
             return nodePositionsOffset + (nodeIndex * NodePositionSizeBytes);
         }
-
-        private static Dictionary<RouteNode, RouteNodeEventData> ReadEventTable(RouteSet routeset, BinaryReader reader)
+        
+        private static ushort ReadNodeEventCount(BinaryReader reader, ReadUShort readUShort, ushort nodeIndex, long eventTableOffset)
         {
-            var nodeEventDataTable = new Dictionary<RouteNode, RouteNodeEventData>();
-            foreach (var route in routeset.Routes)
-            {
-                foreach (var node in route.Nodes)
-                {
-                    var nodeEventData = RouteNodeEventData.Read(reader);
-                    nodeEventDataTable.Add(node, nodeEventData);
-                }
-            }
+            var entryOffset = eventTableOffset + (NodeEventTableDataEntrySizeBytes * nodeIndex);
+            var nodeEventCount = readUShort(reader, entryOffset);
+            return nodeEventCount;
+        }
 
-            return nodeEventDataTable;
+        private static ushort ReadNodeEdgeEventIndex(BinaryReader reader, ReadUShort readUShort, ushort nodeIndex, long eventTableOffset)
+        {
+            var entryOffset = eventTableOffset + (NodeEventTableDataEntrySizeBytes * nodeIndex);
+            var edgeEventIndex = readUShort(reader, entryOffset + sizeof(ushort));
+            return edgeEventIndex;
         }
 
         private static List<RouteEvent> ReadEvents(
@@ -342,7 +341,7 @@
 
         private static void AssignEvents(
             RouteSet routeset,
-            IReadOnlyDictionary<RouteNode, RouteNodeEventData> nodeEventDataTable,
+            IReadOnlyDictionary<RouteNode, RouteNodeEventTableData> nodeEventDataTable,
             IReadOnlyList<RouteEvent> routeEvents)
         {
             var readEvents = 0;
@@ -426,61 +425,13 @@
             node.transform.position = position;
             return node;
         }
-
-        /*public struct RouteDefinition
+        
+        private struct RouteNodeEventTableData
         {
-            public static uint SizeBytes => 3 * sizeof(uint) + 2 * sizeof(ushort);
-
-            private uint NodeOffset { get; }
-
-            private uint EdgeOffset { get; } // TODO rename
-
-            private uint EventOffset { get; }
-
-            public ushort NumEdgeEvents { get; }
-
-            public ushort NumEvents { get; }
-
-            public static RouteDefinition Read(BinaryReader input)
-            {
-                var nodeOffset = input.ReadUInt32();
-                var edgeOffset = input.ReadUInt32();
-                var eventOffset = input.ReadUInt32();
-                var numEdgeEvents = input.ReadUInt16();
-                var numEvents = input.ReadUInt16();
-
-                return new RouteDefinition(nodeOffset, edgeOffset, eventOffset, numEdgeEvents, numEvents);
-            }
-
-            private RouteDefinition(
-                uint nodeOffset,
-                uint edgeOffset,
-                uint eventOffset,
-                ushort numEdgeEvents,
-                ushort numEvents)
-            {
-                this.NodeOffset = nodeOffset;
-                this.EdgeOffset = edgeOffset;
-                this.EventOffset = eventOffset;
-                this.NumEdgeEvents = numEdgeEvents;
-                this.NumEvents = numEvents;
-            }
-        }*/
-
-        private struct RouteNodeEventData
-        {
-            public short EventCount { get; }
-
-            public short EdgeEventIndex { get; }
-
-            public static RouteNodeEventData Read(BinaryReader input)
-            {
-                var nodeEventCount = input.ReadInt16();
-                var edgeEventIndex = input.ReadInt16();
-                return new RouteNodeEventData(nodeEventCount, edgeEventIndex);
-            }
-
-            private RouteNodeEventData(short eventCount, short edgeEventIndex)
+            public ushort EventCount { get; }
+            public ushort EdgeEventIndex { get; }
+            
+            public RouteNodeEventTableData(ushort eventCount, ushort edgeEventIndex)
             {
                 this.EventCount = eventCount;
                 this.EdgeEventIndex = edgeEventIndex;
