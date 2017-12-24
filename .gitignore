@@ -33,6 +33,9 @@ sysinfo.txt
 *.apk
 *.unitypackage
 *.ide
+<<<<<<< HEAD
 FoxKit/.vs/FoxKit/v15/sqlite3/storage.ide
 *.ide
 FoxKit/.vs/FoxKit/v15/sqlite3/storage.ide
+=======
+>>>>>>> parent of 9bcbc62... Began refactoring routeset importer.

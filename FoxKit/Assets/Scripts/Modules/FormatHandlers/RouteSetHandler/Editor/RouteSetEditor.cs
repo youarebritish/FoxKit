@@ -1,11 +1,14 @@
-﻿using FoxKit.Core;
+﻿using System.Collections;
+using System.Collections.Generic;
+
+using FoxKit.Core;
 
 using UnityEditor;
 
 using UnityEngine;
 
 [CustomEditor(typeof(RouteSet))]
-public class RouteSetInspector : Editor
+public class RouteSetEditor : Editor
 {
     public override void OnInspectorGUI()
     {
