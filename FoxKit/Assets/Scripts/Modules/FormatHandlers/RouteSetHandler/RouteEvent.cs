@@ -3,10 +3,9 @@ using System.Linq;
 
 using UnityEngine;
 
-[System.Serializable]
-public class RouteEvent
+public class RouteEvent : MonoBehaviour
 {
-    public string Name;
+    public string Type;
     public List<uint> Params = new List<uint>(10);
     public string Snippet;
 

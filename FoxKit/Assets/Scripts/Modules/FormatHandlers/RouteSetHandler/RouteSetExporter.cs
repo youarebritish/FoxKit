@@ -221,7 +221,7 @@ public static class RouteSetExporter
 
     private static void WriteEvent(RouteEvent @event, StrCode32HashManager hashManager, BinaryWriter writer)
     {
-        var eventNameHash = hashManager.GetHash(@event.Name);
+        var eventNameHash = hashManager.GetHash(@event.Type);
         writer.Write(eventNameHash);
 
         for (var i = 0; i < 10; i++)

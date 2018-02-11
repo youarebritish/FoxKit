@@ -10,7 +10,7 @@ public class TppLightProbe : MonoBehaviour
 
     public Material ShSphereMapMaterial;
 
-    void OnGUI()
+    void OnDrawGizmos()
     {
         if (ShSphereMapMaterial)
         {

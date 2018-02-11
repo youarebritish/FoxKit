@@ -10,7 +10,9 @@
     using UnityEditor.Experimental.AssetImporters;
 
     using UnityEngine;
-    
+    using System;
+    using System.Linq;
+
     [ScriptedImporter(1, "frt")]
     public class RouteSetImporter : ScriptedImporter
     {
@@ -18,24 +20,145 @@
         private IHashManager<uint> eventNameHashManager;
         private IHashManager<uint> messageHashManager;
 
+        private delegate UnhashNameResult TryUnhashDelegate(uint hash);
+
         public override void OnImportAsset(AssetImportContext ctx)
         {
-            this.InitializeDictionaries();
+            this.InitializeDictionaries();            
 
-            var idHashDump = RouteSetImporterPreferences.Instance.IdHashDump.GetUniqueLines();
-            var eventNameHashDump = RouteSetImporterPreferences.Instance.EventHashDump.GetUniqueLines();
-            var eventSnippetDump = RouteSetImporterPreferences.Instance.JsonDump.GetUniqueLines();
+            using (var reader = new BinaryReader(new FileStream(ctx.assetPath, FileMode.Open), FoxLib.Tpp.RouteSet.getEncoding()))
+            {
+                Action<int> skipBytes = numberOfBytes => SkipBytes(reader, numberOfBytes);
+                var readFunctions = new FoxLib.Tpp.RouteSet.ReadFunctions(reader.ReadSingle, reader.ReadUInt16, reader.ReadUInt32, reader.ReadInt32, reader.ReadBytes, skipBytes);
+                var routeSet = FoxLib.Tpp.RouteSet.Read(readFunctions);
 
-            var path = ctx.assetPath;
-            var routesetName = Path.GetFileNameWithoutExtension(path);
-            var routeset = ReadRouteSet(ctx, routesetName, this.routeNameHashManager, this.eventNameHashManager, idHashDump, eventNameHashDump, eventSnippetDump);
+                var routeSetGameObject = CreateRouteSetGameObject(routeSet, Path.GetFileNameWithoutExtension(ctx.assetPath), MakeUnhashFunc(routeNameHashManager), MakeUnhashFunc(eventNameHashManager));
+                ctx.AddObjectToAsset(routeSetGameObject.name, routeSetGameObject.gameObject);
+                ctx.SetMainObject(routeSetGameObject.gameObject);
+            }            
+        }
 
-            RouteSetImporterPreferences.Instance.IdHashDump.Overwrite(idHashDump);
-            RouteSetImporterPreferences.Instance.EventHashDump.Overwrite(eventNameHashDump);
-            RouteSetImporterPreferences.Instance.JsonDump.Overwrite(eventSnippetDump);
+        private static TryUnhashDelegate MakeUnhashFunc(IHashManager<uint> hashManager)
+        {
+            return (hash =>
+            {
+                string result;
+                if (!hashManager.TryGetStringFromHash(hash, out result))
+                {
+                    return new UnhashNameResult(hash);
+                }
+                return new UnhashNameResult(result);
+            });
+        }
 
-            ctx.AddObjectToAsset(routeset.name, routeset.gameObject);
-            ctx.SetMainObject(routeset.gameObject);
+        private class UnhashNameResult
+        {
+            public bool WasNameUnhashed { get; }
+            public string UnhashedString { get; }
+            public uint Hash { get; }
+
+            public UnhashNameResult(string unhashedName)
+            {
+                WasNameUnhashed = true;
+                UnhashedString = unhashedName;
+                Hash = uint.MaxValue;
+            }
+
+            public UnhashNameResult(uint hash)
+            {
+                WasNameUnhashed = false;
+                UnhashedString = null;
+                Hash = hash;
+            }
+        }
+
+        private static RouteSet CreateRouteSetGameObject(FoxLib.Tpp.RouteSet.RouteSet routeSet, string routeSetName, TryUnhashDelegate getRouteName, TryUnhashDelegate getEventName)
+        {
+            var gameObject = new GameObject(routeSetName);
+            var routeSetComponent = gameObject.AddComponent<RouteSet>();
+
+            var routeGameObjects = from route in routeSet.Routes
+                                   select CreateRouteGameObject(route, getRouteName, getEventName);
+
+            foreach(var routeGameObject in routeGameObjects)
+            {
+                routeGameObject.transform.SetParent(gameObject.transform);
+            }
+
+            return routeSetComponent;
+        }
+
+        private static Route CreateRouteGameObject(FoxLib.Tpp.RouteSet.Route route, TryUnhashDelegate getRouteName, TryUnhashDelegate getEventName)
+        {
+            var gameObject = new GameObject();
+            var routeComponent = gameObject.AddComponent<Route>();
+
+            var routeNameContainer = getRouteName(route.Name);
+            if (routeNameContainer.WasNameUnhashed)
+            {
+                gameObject.name = routeNameContainer.UnhashedString;
+            }
+            else
+            {
+                gameObject.name = routeNameContainer.Hash.ToString();
+                routeComponent.TreatNameAsHash = true;
+            }            
+            
+            routeComponent.Nodes = route.Nodes
+                                    .Select((node, index) => 
+                                        CreateRouteNodeGameObject(gameObject.transform, node, CreateNodeName(gameObject.name, index), getEventName))
+                                    .ToList();
+            
+            return routeComponent;
+        }
+
+        private static string CreateNodeName(string routeName, int nodeIndex)
+        {
+            return String.Format("{0}_Node{1:0000}", routeName, nodeIndex.ToString("0000"));
+        }
+
+        private static RouteNode CreateRouteNodeGameObject(Transform parent, FoxLib.Tpp.RouteSet.RouteNode node, string nodeName, TryUnhashDelegate getEventName)
+        {
+            var gameObject = new GameObject(nodeName);
+            var nodeComponent = gameObject.AddComponent<RouteNode>();
+            gameObject.transform.position = FoxUtils.FoxToUnity(node.Position);
+            gameObject.transform.SetParent(parent);
+
+            // TODO: Handle instancing; put these on the RouteSet
+            nodeComponent.EdgeEvent = CreateRouteEventComponent(gameObject, node.EdgeEvent, getEventName);
+            nodeComponent.Events = (from @event in node.Events
+                                    select CreateRouteEventComponent(gameObject, @event, getEventName))
+                                   .ToList();
+
+            return nodeComponent;
+        }
+
+        private static RouteEvent CreateRouteEventComponent(GameObject parent, FoxLib.Tpp.RouteSet.RouteEvent @event, TryUnhashDelegate getEventName)
+        {
+            var component = parent.AddComponent<RouteEvent>();
+
+            var eventNameContainer = getEventName(@event.EventType);
+            if (eventNameContainer.WasNameUnhashed)
+            {
+                component.Type = eventNameContainer.UnhashedString;
+            }
+            else
+            {
+                component.Type = eventNameContainer.Hash.ToString();
+            }
+            
+            component.Params = @event.Params.Cast<uint>().ToList();
+            return component;
+        }
+
+        /// <summary>
+        /// Skip reading a number of bytes.
+        /// </summary>
+        /// <param name="reader">The BinaryReader to use.</param>
+        /// <param name="numberOfBytes">The number of bytes to skip.</param>
+        private static void SkipBytes(BinaryReader reader, int numberOfBytes)
+        {
+            reader.BaseStream.Position += numberOfBytes;
         }
 
         private static RouteSet ReadRouteSet(AssetImportContext ctx, string routesetName, IHashManager<uint> routeNameHashManager, IHashManager<uint> eventNameHashManager, ISet<string> idHashDump, ISet<string> eventNameHashDump, ISet<string> eventSnippetDump)
@@ -161,7 +284,7 @@
                         }
                     }
 
-                    var routeEvent = new RouteEvent { Name = eventNameString };
+                    var routeEvent = new RouteEvent { Type = eventNameString };
 
                     for (var j = 0; j < 10; j++)
                     {

@@ -12,7 +12,10 @@ public class Route : MonoBehaviour
 {
     public List<RouteNode> Nodes = new List<RouteNode>();
     public bool DisplayAsCircuit = true;
-    
+
+    [Tooltip("When exporting, treat the route's name as a hash instead of a string literal. Use if its true name is unknown.")]
+    public bool TreatNameAsHash;
+
     void OnDrawGizmos()
     {
         var isRouteSelected = IsRouteSelected();
