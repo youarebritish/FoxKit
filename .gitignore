@@ -39,3 +39,5 @@ FoxKit/.vs/FoxKit/v15/sqlite3/storage.ide
 FoxKit/.vs/FoxKit/v15/sqlite3/storage.ide
 =======
 >>>>>>> parent of 9bcbc62... Began refactoring routeset importer.
+*.db
+*.ide
