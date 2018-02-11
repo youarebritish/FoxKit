@@ -3,8 +3,6 @@
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
 
-    using GzsTool.Core.Utility;
-
     using UnityEngine;
     using UnityEngine.Assertions;
 
