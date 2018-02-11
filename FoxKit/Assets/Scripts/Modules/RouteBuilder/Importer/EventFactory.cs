@@ -1,23 +1,24 @@
 ﻿using System.Linq;
 using UnityEngine;
-using static FoxKit.Modules.RouteBuilder.Importer.RouteSetImporter;
+using static FoxKit.Core.IHashManagerExtensions;
 
 namespace FoxKit.Modules.RouteBuilder.Importer
 {
     public static class EventFactory
     {
-        public delegate RouteEvent CreateEventDelegate(GameObject parent, FoxLib.Tpp.RouteSet.RouteEvent @event);
+        public delegate RouteEvent CreateEventDelegate(GameObject parent, FoxLib.Tpp.RouteSet.RouteEvent data);
+        public delegate string GenerateEventNameDelegate(string eventType);
 
-        public static CreateEventDelegate CreateFactory(TryUnhashDelegate getEventName)
+        public static CreateEventDelegate CreateFactory(TryUnhashDelegate getEventTypeName, GenerateEventNameDelegate generateEventName)
         {
-            return (parent, data) => Create(parent, data, getEventName);
+            return (parent, data) => Create(parent, data, getEventTypeName, generateEventName);
         }
 
-        private static RouteEvent Create(GameObject parent, FoxLib.Tpp.RouteSet.RouteEvent data, TryUnhashDelegate getEventName)
+        private static RouteEvent Create(GameObject parent, FoxLib.Tpp.RouteSet.RouteEvent data, TryUnhashDelegate getEventTypeName, GenerateEventNameDelegate generateEventName)
         {
             var component = parent.AddComponent<RouteEvent>();
 
-            var eventNameContainer = getEventName(data.EventType);
+            var eventNameContainer = getEventTypeName(data.EventType);
             if (eventNameContainer.WasNameUnhashed)
             {
                 component.Type = eventNameContainer.UnhashedString;
@@ -27,6 +28,7 @@ namespace FoxKit.Modules.RouteBuilder.Importer
                 component.Type = eventNameContainer.Hash.ToString();
             }
 
+            component.Name = generateEventName(component.Type);
             component.Params = data.Params.Cast<uint>().ToList();
             component.Snippet = data.Snippet;
             return component;

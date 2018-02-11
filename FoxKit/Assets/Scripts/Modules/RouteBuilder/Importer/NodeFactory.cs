@@ -19,9 +19,8 @@ namespace FoxKit.Modules.RouteBuilder.Importer
             var nodeComponent = gameObject.AddComponent<RouteNode>();
             gameObject.transform.position = FoxUtils.FoxToUnity(data.Position);
             gameObject.transform.SetParent(route.transform);
-
-            // TODO: Handle instancing; right now this will do it once for each instance
-            var edgeEvent = createEvent(routeSet.gameObject, data.EdgeEvent);
+            
+            var edgeEvent = routeSet.RegisterRouteEvent(data.EdgeEvent, createEvent);
 
             nodeComponent.EdgeEvent = edgeEvent;
             nodeComponent.Events = (from @event in data.Events

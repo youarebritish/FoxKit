@@ -5,8 +5,6 @@
     using FoxKit.Core;
 
     using UnityEditor.Experimental.AssetImporters;
-
-    using UnityEngine;
     using System;
     using FoxKit.Modules.FormatHandlers.RouteSetHandler;
 
@@ -16,13 +14,7 @@
         private IHashManager<uint> routeNameHashManager;
         private IHashManager<uint> eventNameHashManager;
         private IHashManager<uint> messageHashManager;
-
-        public delegate TryUnhashResult TryUnhashDelegate(uint hash);
-
-        private delegate RouteNode CreateNodeGameObjectDelegate(RouteSet routeSet, Route owner, FoxLib.Tpp.RouteSet.RouteNode node, string nodeName);
-        private delegate Route CreateRouteGameObjectDelegate(RouteSet owner, FoxLib.Tpp.RouteSet.Route route);
-        private delegate RouteEvent CreateRouteEventComponentDelegate(GameObject parent, FoxLib.Tpp.RouteSet.RouteEvent @event);
-
+        
         public override void OnImportAsset(AssetImportContext ctx)
         {
             InitializeDictionaries();
@@ -36,12 +28,15 @@
                 routeSet = FoxLib.Tpp.RouteSet.Read(readFunctions);
             }
 
-            var getRouteName = MakeUnhashFunc(routeNameHashManager);
-            var getEventName = MakeUnhashFunc(eventNameHashManager);
+            var getRouteName = routeNameHashManager.MakeUnhashFunc();
+            var getEventTypeName = eventNameHashManager.MakeUnhashFunc();
 
-            var buildEvent = EventFactory.CreateFactory(getEventName);
+            var eventIdGenerator = new EventIdGenerator();
+            EventFactory.GenerateEventNameDelegate generateEventName = eventType => GenerateEventName(eventType, eventIdGenerator);
+
+            var buildEvent = EventFactory.CreateFactory(getEventTypeName, generateEventName);
             var buildNode = NodeFactory.CreateFactory(buildEvent);
-            var buildRoute = RouteFactory.CreateFactory(buildNode, getRouteName, CreateNodeName);
+            var buildRoute = RouteFactory.CreateFactory(buildNode, getRouteName, GenerateNodeName);
             var buildRouteSet = RouteSetFactory.CreateFactory(buildRoute);
 
             var routeSetGameObject = buildRouteSet.Invoke(routeSet, Path.GetFileNameWithoutExtension(ctx.assetPath));
@@ -50,42 +45,24 @@
             ctx.SetMainObject(routeSetGameObject.gameObject);
         }
 
-        private static TryUnhashDelegate MakeUnhashFunc(IHashManager<uint> hashManager)
-        {
-            return (hash =>
-            {
-                string result;
-                if (!hashManager.TryGetStringFromHash(hash, out result))
-                {
-                    return new TryUnhashResult(hash);
-                }
-                return new TryUnhashResult(result);
-            });
-        }
-
-        private static string CreateNodeName(string routeName, int nodeIndex)
+        private static string GenerateNodeName(string routeName, int nodeIndex)
         {
             return String.Format("{0}_Node{1:0000}", routeName, nodeIndex.ToString("0000"));
         }
 
-        public class TryUnhashResult
+        private static string GenerateEventName(string eventType, EventIdGenerator idGenerator)
         {
-            public bool WasNameUnhashed { get; }
-            public string UnhashedString { get; }
-            public uint Hash { get; }
+            return String.Format("{0}_{1:0000}", eventType, idGenerator.Generate());
+        }
 
-            public TryUnhashResult(string unhashedName)
-            {
-                WasNameUnhashed = true;
-                UnhashedString = unhashedName;
-                Hash = uint.MaxValue;
-            }
+        private class EventIdGenerator
+        {
+            private int lastId;
 
-            public TryUnhashResult(uint hash)
+            public int Generate()
             {
-                WasNameUnhashed = false;
-                UnhashedString = null;
-                Hash = hash;
+                lastId++;
+                return lastId;
             }
         }
         

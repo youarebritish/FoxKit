@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using UnityEngine;
+using static FoxKit.Core.IHashManagerExtensions;
 using static FoxKit.Modules.RouteBuilder.Importer.NodeFactory;
-using static FoxKit.Modules.RouteBuilder.Importer.RouteSetImporter;
 
 namespace FoxKit.Modules.RouteBuilder.Importer
 {

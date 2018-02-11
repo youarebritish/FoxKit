@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using UnityEngine;
+using static FoxKit.Modules.RouteBuilder.Importer.EventFactory;
 using static FoxKit.Modules.RouteBuilder.Importer.RouteFactory;
 
 namespace FoxKit.Modules.RouteBuilder.Importer
@@ -8,6 +9,7 @@ namespace FoxKit.Modules.RouteBuilder.Importer
     public static class RouteSetFactory
     {
         public delegate RouteSet CreateRouteSetDelegate(FoxLib.Tpp.RouteSet.RouteSet data, string name);
+        public delegate RouteEvent RegisterRouteEventDelegate(FoxLib.Tpp.RouteSet.RouteEvent data);
 
         public static CreateRouteSetDelegate CreateFactory(CreateRouteDelegate createRoute)
         {
@@ -17,7 +19,10 @@ namespace FoxKit.Modules.RouteBuilder.Importer
         private static RouteSet Create(FoxLib.Tpp.RouteSet.RouteSet data, string name, CreateRouteDelegate createRoute)
         {
             var gameObject = new GameObject(name);
+
             var routeSetComponent = gameObject.AddComponent<RouteSet>();
+            routeSetComponent.EdgeEventsContainer = new GameObject("Edge Events");
+            routeSetComponent.EdgeEventsContainer.transform.SetParent(gameObject.transform);
 
             routeSetComponent.Routes = (from route in data.Routes
                                         select createRoute(route, routeSetComponent))
