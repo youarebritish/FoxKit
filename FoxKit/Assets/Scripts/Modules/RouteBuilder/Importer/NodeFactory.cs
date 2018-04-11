@@ -24,7 +24,7 @@ namespace FoxKit.Modules.RouteBuilder.Importer
 
             nodeComponent.EdgeEvent = edgeEvent;
             nodeComponent.Events = (from @event in data.Events
-                                    select routeSet.RegisterRouteEvent(@event, gameObject.transform, createEvent))//createEvent.Invoke(gameObject, @event))
+                                    select routeSet.RegisterRouteEvent(@event, gameObject.transform, createEvent))
                                    .ToList();
 
             return nodeComponent;

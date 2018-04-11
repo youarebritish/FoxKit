@@ -16,7 +16,7 @@ namespace FoxKit.Modules.RouteBuilder.Importer
 
         private static RouteEvent Create(GameObject parent, FoxLib.Tpp.RouteSet.RouteEvent data, TryUnhashDelegate getEventTypeName, GenerateEventNameDelegate generateEventName)
         {
-            var component = CreateRouteSetEditor.CreateNewNodeEvent(parent);
+            var component = parent.AddComponent<RouteEvent>();
 
             var eventNameContainer = getEventTypeName(data.EventType);
             if (eventNameContainer.WasNameUnhashed)

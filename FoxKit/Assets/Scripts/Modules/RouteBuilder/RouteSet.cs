@@ -23,6 +23,7 @@ public class RouteSet : MonoBehaviour
         else
         {
             var eventGameObject = new GameObject();
+            eventGameObject.transform.position = parent.transform.position;
             eventGameObject.transform.SetParent(parent);
 
             eventInstance = createEvent(eventGameObject, data);
