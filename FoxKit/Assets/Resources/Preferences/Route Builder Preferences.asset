@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6a9caca022e65874284196efbe758654, type: 3}
-  m_Name: RouteSetPreferences
+  m_Name: Route Builder Preferences
   m_EditorClassIdentifier: 
   NodeColor: {r: 0.956, g: 0.62, b: 0.031, a: 1}
   EdgeColor: {r: 0.953, g: 0.859, b: 0.243, a: 1}
@@ -17,7 +17,3 @@ MonoBehaviour:
   IdDictionary: {fileID: 4900000, guid: 010fe9df1baae544fa63f0c3fceb8669, type: 3}
   EventDictionary: {fileID: 4900000, guid: 3092caf4b4d92c544afb5f0cc9e20fe6, type: 3}
   MessageDictionary: {fileID: 4900000, guid: 87f2ebc9dd5bfd24f92344d550503951, type: 3}
-  IdHashDump: {fileID: 4900000, guid: a6eb378c486100a4d8bb4d84591a5b35, type: 3}
-  EventHashDump: {fileID: 4900000, guid: 42f61d9614ab26948aa7fa1e09eb4e32, type: 3}
-  MessageHashDump: {fileID: 0}
-  JsonDump: {fileID: 4900000, guid: 73837180dbc3a1f42aa991857633ff11, type: 3}

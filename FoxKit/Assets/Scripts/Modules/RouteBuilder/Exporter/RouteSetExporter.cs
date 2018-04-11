@@ -4,7 +4,7 @@ using FoxKit.Core;
 
 using UnityEngine.Assertions;
 using System;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace FoxKit.Modules.RouteBuilder.Exporter
 {
@@ -24,14 +24,19 @@ namespace FoxKit.Modules.RouteBuilder.Exporter
             EventFactory.GetEventTypeHashDelegate hashEventType = (@event) => GetEventTypeHash(@event, hashManager);
             RouteFactory.GetRouteNameHashDelegate hashRouteName = (route) => GetRouteNameHash(route, hashManager);
 
+            var eventDictionary = new Dictionary<RouteEvent, FoxLib.Tpp.RouteSet.RouteEvent>();
+
+            NodeFactory.TryGetEventInstanceDelegate getEventInstance = eventDictionary.TryGetValue;
+            NodeFactory.RegisterEventInstanceDelegate registerEventInstance = eventDictionary.Add;            
+
             var eventBuilder = EventFactory.CreateFactory(hashEventType);
-            var nodeBuilder = NodeFactory.CreateFactory(eventBuilder);
+            var nodeBuilder = NodeFactory.CreateFactory(getEventInstance, registerEventInstance, eventBuilder);
             var routeBuilder = RouteFactory.CreateFactory(nodeBuilder, hashRouteName);
             var routeSetBuilder = RouteSetFactory.CreateFactory(routeBuilder);
 
             var outgoingRouteSet = routeSetBuilder(routeSet);
 
-            using (var writer = new BinaryWriter(new FileStream(exportPath, FileMode.Create)))
+            using (var writer = new BinaryWriter(new FileStream(exportPath, FileMode.Create), FoxLib.Tpp.RouteSet.getEncoding()))
             {
                 Action<int> writeEmptyBytes = numberOfBytes => WriteEmptyBytes(writer, numberOfBytes);
                 var writeFunctions = new FoxLib.Tpp.RouteSet.WriteFunctions(writer.Write, writer.Write, writer.Write, writer.Write, writer.Write, writeEmptyBytes);
@@ -52,9 +57,9 @@ namespace FoxKit.Modules.RouteBuilder.Exporter
         {
             if (data.TreatTypeAsHash)
             {
-                return uint.Parse(data.Type);
+                return uint.Parse(RouteEvent.EventTypeToString(data.Type));
             }
-            return hashManager.GetHash(data.Type);
+            return hashManager.GetHash(RouteEvent.EventTypeToString(data.Type));
         }
 
         /// <summary>

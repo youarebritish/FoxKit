@@ -15,7 +15,16 @@ public class Route : MonoBehaviour
 
     [Tooltip("When exporting, treat the route's name as a hash instead of a string literal. Use if its true name is unknown.")]
     public bool TreatNameAsHash;
-    
+
+    /// <summary>
+    /// Context menu to add a new node to the Route.
+    /// </summary>
+    [ContextMenu("Add Node")]
+    private void AddNewNode()
+    {
+        CreateRouteSetEditor.CreateNewNode(this);
+    }
+
     void OnDrawGizmos()
     {
         var isRouteSelected = IsRouteSelected();

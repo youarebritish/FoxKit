@@ -7,10 +7,10 @@
 
     public class RoutePreferencesEditor : EditorWindow
     {
-        [MenuItem("FoxKit/Preferences/RouteSet")]
+        [MenuItem("FoxKit/Preferences/Route Builder")]
         public static void ShowWindow()
         {
-            GetWindow(typeof(RoutePreferencesEditor), true, "Route Editor Preferences");
+            GetWindow(typeof(RoutePreferencesEditor), true, "Route Builder Preferences");
         }
 
         void OnGUI()

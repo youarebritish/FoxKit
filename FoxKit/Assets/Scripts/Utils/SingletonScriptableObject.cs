@@ -21,7 +21,30 @@
             {
                 if (!instance)
                 {
-                    instance = Resources.FindObjectsOfTypeAll<T>().FirstOrDefault();
+                    T[] objs = null;
+
+                    var objsGUID = UnityEditor.AssetDatabase.FindAssets("t:" + typeof(T).Name);
+                    var count = objsGUID.Length;
+                    objs = new T[count];
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        objs[i] = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(UnityEditor.AssetDatabase.GUIDToAssetPath(objsGUID[i]));
+                    }
+                    
+                    if (objs.Length == 0)
+                    {
+                        Debug.LogError("No asset of type \"" + typeof(T).Name + "\" has been found in loaded resources.");
+                        return null;
+                    }
+                    
+                    else if (objs.Length > 1)
+                    {
+                        Debug.LogError("There's more than one asset of type \"" + typeof(T).Name + "\" loaded in this project. There should be exactly one asset of this type in the project.");
+                        return null;
+                    }
+
+                    instance = (objs.Length > 0) ? objs[0] : null;
                 }
                 return instance;
             }

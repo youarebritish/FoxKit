@@ -12,7 +12,7 @@
         private static readonly Color defaultEdgeColor = new Color(0.953f, 0.859f, 0.243f);
         private static readonly float defaultNodeSize = 0.1f;
         
-        public Color NodeColor  = defaultNodeColor;
+        public Color NodeColor = defaultNodeColor;
         public Color EdgeColor = defaultEdgeColor;
         public float NodeSize = defaultNodeSize;
 
@@ -20,7 +20,7 @@
         public TextAsset EventDictionary;
         public TextAsset MessageDictionary;
 
-        [MenuItem("Assets/Create/FoxKit/Preferences/RouteSet")]
+        [MenuItem("Assets/Create/FoxKit/Preferences/Route Builder")]
         public static void CreateAsset()
         {
             CreateScriptableObject.CreateAsset<RouteSetImporterPreferences>();

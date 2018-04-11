@@ -16,19 +16,19 @@ namespace FoxKit.Modules.RouteBuilder.Importer
 
         private static RouteEvent Create(GameObject parent, FoxLib.Tpp.RouteSet.RouteEvent data, TryUnhashDelegate getEventTypeName, GenerateEventNameDelegate generateEventName)
         {
-            var component = parent.AddComponent<RouteEvent>();
+            var component = CreateRouteSetEditor.CreateNewNodeEvent(parent);
 
             var eventNameContainer = getEventTypeName(data.EventType);
             if (eventNameContainer.WasNameUnhashed)
             {
-                component.Type = eventNameContainer.UnhashedString;
+                component.Type = RouteEvent.ParseEventType(eventNameContainer.UnhashedString);
             }
             else
             {
-                component.Type = eventNameContainer.Hash.ToString();
+                component.Type = RouteEvent.ParseEventType(eventNameContainer.Hash.ToString());
             }
 
-            component.Name = generateEventName(component.Type);
+            component.Name = generateEventName(RouteEvent.EventTypeToString(component.Type));
             component.Params = data.Params.Cast<uint>().ToList();
             component.Snippet = data.Snippet;
             return component;

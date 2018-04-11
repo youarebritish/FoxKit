@@ -15,8 +15,9 @@ namespace FoxKit.Modules.RouteBuilder.Exporter
 
         private static FoxLib.Tpp.RouteSet.Route Create(Route data, GetRouteNameHashDelegate getRouteIdHash, CreateNodeDelegate createNode)
         {
-            return new FoxLib.Tpp.RouteSet.Route(getRouteIdHash(data), from node in data.Nodes
-                                                                          select createNode(node));
+            var nodes = from node in data.Nodes
+                        select createNode(node);
+            return new FoxLib.Tpp.RouteSet.Route(getRouteIdHash(data), nodes.ToArray());
         }
     }
 }

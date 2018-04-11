@@ -3,7 +3,7 @@
     public static class EventFactory
     {        
         public delegate FoxLib.Tpp.RouteSet.RouteEvent CreateEventDelegate(RouteEvent data);
-        public delegate uint GetEventTypeHashDelegate(RouteEvent @event);
+        public delegate uint GetEventTypeHashDelegate(RouteEvent @event);        
 
         public static CreateEventDelegate CreateFactory(GetEventTypeHashDelegate getEventTypeHash)
         {
