@@ -21,7 +21,7 @@
         /// Events for AI agents to perform at this node.
         /// </summary>
         [Tooltip("Events for AI agents to perform at this node.")]
-        public List<RouteEvent> Events;
+        public List<RouteEvent> Events = new List<RouteEvent>();
 
         /// <summary>
         /// Context menu to add a new node to the Route.
