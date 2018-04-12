@@ -5,6 +5,7 @@
     /// </summary>
     public enum RouteEventType
     {
+        EMPTY_STRING,
         All,
         CarryHoneyBee,
         Caution,

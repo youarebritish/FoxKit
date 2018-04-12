@@ -47,14 +47,22 @@ namespace FoxKit.Modules.RouteBuilder.Importer
         {
             var component = parent.AddComponent<RouteEvent>();
 
-            var eventNameContainer = getEventTypeName(data.EventType);
-            if (eventNameContainer.WasNameUnhashed)
+            // Dumb hack to support the event with no name.
+            if (data.EventType == 3205930904)
             {
-                component.Type = RouteEvent.ParseEventType(eventNameContainer.UnhashedString);
+                component.Type = RouteEventType.EMPTY_STRING;
             }
             else
             {
-                component.Type = RouteEvent.ParseEventType(eventNameContainer.Hash.ToString());
+                var eventNameContainer = getEventTypeName(data.EventType);
+                if (eventNameContainer.WasNameUnhashed)
+                {
+                    component.Type = RouteEvent.ParseEventType(eventNameContainer.UnhashedString);
+                }
+                else
+                {
+                    component.Type = RouteEvent.ParseEventType(eventNameContainer.Hash.ToString());
+                }
             }
 
             component.Name = generateEventName(RouteEvent.EventTypeToString(component.Type));

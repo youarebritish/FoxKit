@@ -63,6 +63,10 @@
         /// <returns>String representation of eventType.</returns>
         public static string EventTypeToString(RouteEventType eventType)
         {
+            if (eventType == RouteEventType.EMPTY_STRING)
+            {
+                return string.Empty;
+            }
             var typeString = eventType.ToString();
             if (typeString.StartsWith("e"))
             {
