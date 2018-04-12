@@ -8,12 +8,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: New RouteBuilderPreferences
-  m_EditorClassIdentifier: Assembly-CSharp:FoxKit.Modules.RouteBuilder:RouteBuilderPreferences
+  m_Script: {fileID: 11500000, guid: 6a9caca022e65874284196efbe758654, type: 3}
+  m_Name: RouteBuilderPreferences
+  m_EditorClassIdentifier: 
   NodeColor: {r: 0.956, g: 0.62, b: 0.031, a: 1}
   EdgeColor: {r: 0.953, g: 0.859, b: 0.243, a: 1}
   NodeSize: 0.1
-  IdDictionary: {fileID: 0}
-  EventDictionary: {fileID: 0}
-  MessageDictionary: {fileID: 0}
+  IdDictionary: {fileID: 4900000, guid: 010fe9df1baae544fa63f0c3fceb8669, type: 3}
+  EventDictionary: {fileID: 4900000, guid: 3092caf4b4d92c544afb5f0cc9e20fe6, type: 3}
+  MessageDictionary: {fileID: 4900000, guid: 87f2ebc9dd5bfd24f92344d550503951, type: 3}

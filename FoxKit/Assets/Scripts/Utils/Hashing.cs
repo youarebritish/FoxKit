@@ -22,12 +22,6 @@
         private static readonly Dictionary<ulong, string> HashNameDictionary = new Dictionary<ulong, string>();
 
         /// <summary>
-        /// Dictionary of MD5 hashed names.
-        /// </summary>
-        private static readonly Dictionary<byte[], string> Md5HashNameDictionary =
-            new Dictionary<byte[], string>(new StructuralEqualityComparer<byte[]>());
-
-        /// <summary>
         /// Supported file extensions.
         /// </summary>
         /// <remarks>TODO: Maybe move this out into a file?</remarks>
