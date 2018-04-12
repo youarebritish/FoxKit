@@ -1,7 +1,5 @@
 ﻿namespace FoxKit.Utils
 {
-    using System.Linq;
-
     using UnityEngine;
 
     /// <summary>
@@ -13,8 +11,14 @@
     public abstract class SingletonScriptableObject<T> : ScriptableObject
         where T : ScriptableObject
     {
+        /// <summary>
+        /// The singleton instance.
+        /// </summary>
         private static T instance = null;
 
+        /// <summary>
+        /// Get the singleton instance.
+        /// </summary>
         public static T Instance
         {
             get

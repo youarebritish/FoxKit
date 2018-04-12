@@ -1,20 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
-
-/// <summary>
-/// Collection of utility functions for working with a Unity scene.
-/// </summary>
-public static class UnitySceneUtils
+﻿namespace FoxKit.Utils
 {
+    using UnityEngine;
+    using UnityEditor;
+
     /// <summary>
-    /// Change the current selection.
+    /// Collection of utility functions for working with a Unity scene.
     /// </summary>
-    /// <param name="go">The GameObject to select.</param>
-    public static void Select(GameObject go)
+    public static class UnitySceneUtils
     {
-        var newSelection = new GameObject[] { go };
-        Selection.objects = newSelection;
+        /// <summary>
+        /// Change the current selection.
+        /// </summary>
+        /// <param name="go">The GameObject to select.</param>
+        public static void Select(GameObject go)
+        {
+            var newSelection = new GameObject[] { go };
+            Selection.objects = newSelection;
+        }
     }
 }

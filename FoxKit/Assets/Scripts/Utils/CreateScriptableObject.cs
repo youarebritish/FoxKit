@@ -6,10 +6,13 @@
 
     using UnityEngine;
 
+    /// <summary>
+    /// Helper functions for creating ScriptableObjects.
+    /// </summary>
     public static class CreateScriptableObject
     {
         /// <summary>
-        //	This makes it easy to create, name, and place unique new ScriptableObject asset files.
+        // This makes it easy to create, name, and place unique new ScriptableObject asset files.
         /// </summary>
         public static T CreateAsset<T>() where T : ScriptableObject
         {

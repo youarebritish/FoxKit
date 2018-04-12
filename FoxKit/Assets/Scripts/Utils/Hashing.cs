@@ -1,20 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-
-public static class Hashing
+﻿namespace FoxKit.Utils
 {
-    private static readonly MD5 Md5 = MD5.Create();
-    private static readonly Dictionary<ulong, string> HashNameDictionary = new Dictionary<ulong, string>();
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
 
-    private static readonly Dictionary<byte[], string> Md5HashNameDictionary =
-        new Dictionary<byte[], string>(new StructuralEqualityComparer<byte[]>());
+    /// <summary>
+    /// Provides helper functions related to hashing.
+    /// </summary>
+    public static class Hashing
+    {
+        /// <summary>
+        /// MD5 hash algorithm instance.
+        /// </summary>
+        private static readonly MD5 Md5 = MD5.Create();
 
-    private static readonly List<string> FileExtensions = new List<string>
+        /// <summary>
+        /// Dictionary of hash names.
+        /// </summary>
+        private static readonly Dictionary<ulong, string> HashNameDictionary = new Dictionary<ulong, string>();
+
+        /// <summary>
+        /// Dictionary of MD5 hashed names.
+        /// </summary>
+        private static readonly Dictionary<byte[], string> Md5HashNameDictionary =
+            new Dictionary<byte[], string>(new StructuralEqualityComparer<byte[]>());
+
+        /// <summary>
+        /// Supported file extensions.
+        /// </summary>
+        /// <remarks>TODO: Maybe move this out into a file?</remarks>
+        private static readonly List<string> FileExtensions = new List<string>
     {
         "1.ftexs",
         "1.nav2",
@@ -156,208 +173,201 @@ public static class Hashing
         "xml"
     };
 
-    private static readonly Dictionary<ulong, string> ExtensionsMap = FileExtensions.ToDictionary(HashFileExtension);
+        /// <summary>
+        /// Map of supported extensions.
+        /// </summary>
+        private static readonly Dictionary<ulong, string> ExtensionsMap = FileExtensions.ToDictionary(HashFileExtension);
 
-    public const ulong MetaFlag = 0x4000000000000;
+        /// <summary>
+        /// Magic number
+        /// </summary>
+        public const ulong MetaFlag = 0x4000000000000;
 
-    private static ulong HashFileExtension(string fileExtension)
-    {
-        return HashFileName(fileExtension, false) & 0x1FFF;
-    }
-
-    public static ulong HashFileName(string text, bool removeExtension = true)
-    {
-        if (removeExtension)
+        /// <summary>
+        /// Hash a file extension.
+        /// </summary>
+        /// <param name="fileExtension">The extension to hash.</param>
+        /// <returns>The hashed extension.</returns>
+        private static ulong HashFileExtension(string fileExtension)
         {
-            int index = text.IndexOf('.');
-            text = index == -1 ? text : text.Substring(0, index);
+            return HashFileName(fileExtension, false) & 0x1FFF;
         }
 
-        bool metaFlag = false;
-        const string assetsConstant = "/Assets/";
-        if (text.StartsWith(assetsConstant))
+        /// <summary>
+        /// Hash a filename.
+        /// </summary>
+        /// <param name="text">Filename to hash.</param>
+        /// <param name="removeExtension">Whether or not to remove the extension.</param>
+        /// <returns>The hashed filename.</returns>
+        public static ulong HashFileName(string text, bool removeExtension = true)
         {
-            text = text.Substring(assetsConstant.Length);
+            if (removeExtension)
+            {
+                int index = text.IndexOf('.');
+                text = index == -1 ? text : text.Substring(0, index);
+            }
 
-            if (text.StartsWith("tpptest"))
+            bool metaFlag = false;
+            const string assetsConstant = "/Assets/";
+            if (text.StartsWith(assetsConstant))
+            {
+                text = text.Substring(assetsConstant.Length);
+
+                if (text.StartsWith("tpptest"))
+                {
+                    metaFlag = true;
+                }
+            }
+            else
             {
                 metaFlag = true;
             }
-        }
-        else
-        {
-            metaFlag = true;
-        }
 
-        text = text.TrimStart('/');
+            text = text.TrimStart('/');
 
-        const ulong seed0 = 0x9ae16a3b2f90404f;
-        byte[] seed1Bytes = new byte[sizeof(ulong)];
-        for (int i = text.Length - 1, j = 0; i >= 0 && j < sizeof(ulong); i--, j++)
-        {
-            seed1Bytes[j] = Convert.ToByte(text[i]);
-        }
-        ulong seed1 = BitConverter.ToUInt64(seed1Bytes, 0);
-        ulong maskedHash = CityHash.CityHash.CityHash64WithSeeds(text, seed0, seed1) & 0x3FFFFFFFFFFFF;
-
-        return metaFlag
-            ? maskedHash | MetaFlag
-            : maskedHash;
-    }
-
-    public static ulong HashFileNameLegacy(string text, bool removeExtension = true)
-    {
-        if (removeExtension)
-        {
-            int index = text.IndexOf('.');
-            text = index == -1 ? text : text.Substring(0, index);
-        }
-
-        const ulong seed0 = 0x9ae16a3b2f90404f;
-        ulong seed1 = text.Length > 0 ? (uint)((text[0]) << 16) + (uint)text.Length : 0;
-        return CityHash.CityHash.CityHash64WithSeeds(text + "\0", seed0, seed1) & 0xFFFFFFFFFFFF;
-    }
-
-    public static ulong HashFileNameWithExtension(string filePath)
-    {
-        filePath = DenormalizeFilePath(filePath);
-        string hashablePart;
-        string extensionPart;
-        int extensionIndex = filePath.IndexOf(".", StringComparison.Ordinal);
-        if (extensionIndex == -1)
-        {
-            hashablePart = filePath;
-            extensionPart = "";
-        }
-        else
-        {
-            hashablePart = filePath.Substring(0, extensionIndex);
-            extensionPart = filePath.Substring(extensionIndex + 1, filePath.Length - extensionIndex - 1);
-        }
-
-        ulong typeId = 0;
-        var extensions = ExtensionsMap.Where(e => e.Value == extensionPart).ToList();
-        if (extensions.Count == 1)
-        {
-            var extension = extensions.Single();
-            typeId = extension.Key;
-        }
-        ulong hash = HashFileName(hashablePart);
-        hash = (typeId << 51) | hash;
-        return hash;
-    }
-
-    internal static string NormalizeFilePath(string filePath)
-    {
-        return filePath.Replace("/", "\\").TrimStart('\\');
-    }
-
-    private static string DenormalizeFilePath(string filePath)
-    {
-        return filePath.Replace("\\", "/");
-    }
-
-    internal static bool TryGetFileNameFromHash(ulong hash, out string fileName)
-    {
-        bool foundFileName = true;
-        string filePath;
-        string fileExtension;
-
-        ulong extensionHash = hash >> 51;
-        ulong pathHash = hash & 0x3FFFFFFFFFFFF;
-
-        fileName = "";
-        if (!HashNameDictionary.TryGetValue(pathHash, out filePath))
-        {
-            filePath = pathHash.ToString("x");
-            foundFileName = false;
-        }
-
-        fileName += filePath;
-
-        if (!ExtensionsMap.TryGetValue(extensionHash, out fileExtension))
-        {
-            fileExtension = "_unknown";
-            foundFileName = false;
-        }
-        else
-        {
-            fileName += ".";
-        }
-        fileName += fileExtension;
-
-        DebugAssertHashMatches(foundFileName, hash, fileName);
-
-        return foundFileName;
-    }
-
-    [Conditional("DEBUG")]
-    private static void DebugAssertHashMatches(bool foundFileName, ulong hash, string fileName)
-    {
-        if (foundFileName)
-        {
-            ulong hashTest = HashFileNameWithExtension(fileName);
-            if (hash != hashTest)
+            const ulong seed0 = 0x9ae16a3b2f90404f;
+            byte[] seed1Bytes = new byte[sizeof(ulong)];
+            for (int i = text.Length - 1, j = 0; i >= 0 && j < sizeof(ulong); i--, j++)
             {
-                Debug.WriteLine("{0};{1:x};{2:x};{3:x}", fileName, hash, hashTest, (hashTest - hash));
+                seed1Bytes[j] = Convert.ToByte(text[i]);
             }
-        }
-    }
+            ulong seed1 = BitConverter.ToUInt64(seed1Bytes, 0);
+            ulong maskedHash = CityHash.CityHash.CityHash64WithSeeds(text, seed0, seed1) & 0x3FFFFFFFFFFFF;
 
-    public static void ReadDictionary(string path)
-    {
-        foreach (var line in File.ReadAllLines(path))
+            return metaFlag
+                ? maskedHash | MetaFlag
+                : maskedHash;
+        }
+
+        /// <summary>
+        /// Hash a filename with legacy hashing algorithm.
+        /// </summary>
+        /// <param name="text">Filename to hash.</param>
+        /// <param name="removeExtension">Whether or not to remove the extension.</param>
+        /// <returns>The legacy-hashed filename.</returns>
+        public static ulong HashFileNameLegacy(string text, bool removeExtension = true)
         {
-            ulong hash = HashFileName(line) & 0x3FFFFFFFFFFFF;
-            if (HashNameDictionary.ContainsKey(hash) == false)
+            if (removeExtension)
             {
-                HashNameDictionary.Add(hash, line);
+                int index = text.IndexOf('.');
+                text = index == -1 ? text : text.Substring(0, index);
             }
+
+            const ulong seed0 = 0x9ae16a3b2f90404f;
+            ulong seed1 = text.Length > 0 ? (uint)((text[0]) << 16) + (uint)text.Length : 0;
+            return CityHash.CityHash.CityHash64WithSeeds(text + "\0", seed0, seed1) & 0xFFFFFFFFFFFF;
         }
-    }
 
-    internal static byte[] Md5Hash(byte[] buffer)
-    {
-        return Md5.ComputeHash(buffer);
-    }
-
-    internal static byte[] Md5HashText(string text)
-    {
-        return Md5.ComputeHash(Encoding.Default.GetBytes(text));
-    }
-
-    public static void ReadMd5Dictionary(string path)
-    {
-        foreach (var line in File.ReadAllLines(path))
+        /// <summary>
+        /// Hash a filename with extension.
+        /// </summary>
+        /// <param name="filePath">Filename to hash.</param>
+        /// <returns>The hashed filename.</returns>
+        public static ulong HashFileNameWithExtension(string filePath)
         {
-            byte[] md5Hash = Md5HashText(line);
-            if (Md5HashNameDictionary.ContainsKey(md5Hash) == false)
+            filePath = DenormalizeFilePath(filePath);
+            string hashablePart;
+            string extensionPart;
+            int extensionIndex = filePath.IndexOf(".", StringComparison.Ordinal);
+            if (extensionIndex == -1)
             {
-                Md5HashNameDictionary.Add(md5Hash, line);
+                hashablePart = filePath;
+                extensionPart = "";
             }
-        }
-    }
+            else
+            {
+                hashablePart = filePath.Substring(0, extensionIndex);
+                extensionPart = filePath.Substring(extensionIndex + 1, filePath.Length - extensionIndex - 1);
+            }
 
-    internal static bool TryGetFileNameFromMd5Hash(byte[] md5Hash, string entryName, out string fileName)
-    {
-        if (Md5HashNameDictionary.TryGetValue(md5Hash, out fileName) == false)
+            ulong typeId = 0;
+            var extensions = ExtensionsMap.Where(e => e.Value == extensionPart).ToList();
+            if (extensions.Count == 1)
+            {
+                var extension = extensions.Single();
+                typeId = extension.Key;
+            }
+            ulong hash = HashFileName(hashablePart);
+            hash = (typeId << 51) | hash;
+            return hash;
+        }
+
+        /// <summary>
+        /// Replace /'s with \\'s and remove leading occurrence of \\.
+        /// </summary>
+        /// <param name="filePath">The filename to normalize.</param>
+        /// <returns>The normalized filename.</returns>
+        internal static string NormalizeFilePath(string filePath)
         {
-            fileName = string.Format("{0}{1}", BitConverter.ToString(md5Hash).Replace("-", ""),
-                GetFileExtension(entryName));
-            return false;
+            return filePath.Replace("/", "\\").TrimStart('\\');
         }
-        return true;
-    }
 
-    private static string GetFileExtension(string entryName)
-    {
-        string extension = "";
-        int index = entryName.LastIndexOf(".", StringComparison.Ordinal);
-        if (index != -1)
+        /// <summary>
+        /// Replace \\'s with /'s.
+        /// </summary>
+        /// <param name="filePath">The filename to denormalize.</param>
+        /// <returns>The denormalized filename.</returns>
+        private static string DenormalizeFilePath(string filePath)
         {
-            extension = entryName.Substring(index, entryName.Length - index);
+            return filePath.Replace("\\", "/");
         }
 
-        return extension;
+        /// <summary>
+        /// Try to get a filename with a given hash.
+        /// </summary>
+        /// <param name="hash">The hashed filename.</param>
+        /// <param name="fileName">The recovered filename.</param>
+        /// <returns>True if the filename was found.</returns>
+        internal static bool TryGetFileNameFromHash(ulong hash, out string fileName)
+        {
+            bool foundFileName = true;
+            string filePath;
+            string fileExtension;
+
+            ulong extensionHash = hash >> 51;
+            ulong pathHash = hash & 0x3FFFFFFFFFFFF;
+
+            fileName = "";
+            if (!HashNameDictionary.TryGetValue(pathHash, out filePath))
+            {
+                filePath = pathHash.ToString("x");
+                foundFileName = false;
+            }
+
+            fileName += filePath;
+
+            if (!ExtensionsMap.TryGetValue(extensionHash, out fileExtension))
+            {
+                fileExtension = "_unknown";
+                foundFileName = false;
+            }
+            else
+            {
+                fileName += ".";
+            }
+            fileName += fileExtension;
+            
+            return foundFileName;
+        }
+
+        /// <summary>
+        /// Compute the MD5 hash for a byte array.
+        /// </summary>
+        /// <param name="buffer">Byte array to hash.</param>
+        /// <returns>The MD5 hash.</returns>
+        internal static byte[] Md5Hash(byte[] buffer)
+        {
+            return Md5.ComputeHash(buffer);
+        }
+
+        /// <summary>
+        /// Compute the MD5 hash for a string.
+        /// </summary>
+        /// <param name="text">String to hash.</param>
+        /// <returns>The MD5 hash.</returns>
+        internal static byte[] Md5HashText(string text)
+        {
+            return Md5.ComputeHash(Encoding.Default.GetBytes(text));
+        }
     }
 }

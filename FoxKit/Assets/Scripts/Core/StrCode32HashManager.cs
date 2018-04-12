@@ -1,5 +1,6 @@
 ﻿namespace FoxKit.Core
 {
+    using FoxKit.Utils;
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
 
