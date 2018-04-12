@@ -1,12 +1,18 @@
-﻿using FoxKit.Modules.RouteBuilder.Importer;
-using UnityEditor;
-using UnityEditor.Experimental.AssetImporters;
-
-[CustomEditor(typeof(RouteSetImporter))]
-public class RouteSetImporterEditor : ScriptedImporterEditor
+﻿namespace FoxKit.Modules.RouteBuilder.Editor
 {
-    public override void OnInspectorGUI()
+    using FoxKit.Modules.RouteBuilder.Importer;
+    using UnityEditor;
+    using UnityEditor.Experimental.AssetImporters;
+
+    /// <summary>
+    /// Custom editor for frt importer.
+    /// </summary>
+    [CustomEditor(typeof(RouteSetImporter))]
+    public class RouteSetImporterEditor : ScriptedImporterEditor
     {
-        base.ApplyRevertGUI();
+        public override void OnInspectorGUI()
+        {
+            base.ApplyRevertGUI();
+        }
     }
 }

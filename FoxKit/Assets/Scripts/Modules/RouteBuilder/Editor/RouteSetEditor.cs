@@ -1,34 +1,39 @@
-﻿
-using FoxKit.Core;
-
-using UnityEditor;
-
-using UnityEngine;
-using FoxKit.Modules.RouteBuilder.Exporter;
-
-[CustomEditor(typeof(RouteSet))]
-public class RouteSetEditor : Editor
+﻿namespace FoxKit.Modules.RouteBuilder.Editor
 {
-    public override void OnInspectorGUI()
+    using FoxKit.Core;
+
+    using UnityEditor;
+
+    using UnityEngine;
+    using FoxKit.Modules.RouteBuilder.Exporter;
+
+    /// <summary>
+    /// Custom editor for RouteSets.
+    /// </summary>
+    [CustomEditor(typeof(RouteSet))]
+    public class RouteSetEditor : Editor
     {
-        this.DrawDefaultInspector();
-
-        EditorGUILayout.Space();
-
-        if (GUILayout.Button("Export frt"))
+        public override void OnInspectorGUI()
         {
-            var exportPath = EditorUtility.SaveFilePanel(
-                "Export frt",
-                string.Empty,
-                this.target.name + ".frt",
-                "frt");
+            this.DrawDefaultInspector();
 
-            if (string.IsNullOrEmpty(exportPath))
+            EditorGUILayout.Space();
+
+            if (GUILayout.Button("Export frt"))
             {
-                return;
+                var exportPath = EditorUtility.SaveFilePanel(
+                    "Export frt",
+                    string.Empty,
+                    this.target.name + ".frt",
+                    "frt");
+
+                if (string.IsNullOrEmpty(exportPath))
+                {
+                    return;
+                }
+                var hashManager = new StrCode32HashManager();
+                RouteSetExporter.ExportRouteSet(this.target as RouteSet, hashManager, exportPath);
             }
-            var hashManager = new StrCode32HashManager();
-            RouteSetExporter.ExportRouteSet(this.target as RouteSet, hashManager, exportPath);
         }
     }
 }

@@ -8,8 +8,17 @@ using System.Collections.Generic;
 
 namespace FoxKit.Modules.RouteBuilder.Exporter
 {
+    /// <summary>
+    /// Collection of helper functions for exporting RouteSets to frt format.
+    /// </summary>
     public static class RouteSetExporter
     {
+        /// <summary>
+        /// Exports a RouteSet to an frt file.
+        /// </summary>
+        /// <param name="routeSet">The RouteSet to export.</param>
+        /// <param name="hashManager">Hash manager instance.</param>
+        /// <param name="exportPath">File path to export to.</param>
         public static void ExportRouteSet(RouteSet routeSet, StrCode32HashManager hashManager, string exportPath)
         {
             Assert.IsNotNull(routeSet, "RouteSet must not be null.");
@@ -44,6 +53,12 @@ namespace FoxKit.Modules.RouteBuilder.Exporter
             }
         }
 
+        /// <summary>
+        /// Get the StrCode32 hash for a route name.
+        /// </summary>
+        /// <param name="data">Route whose name to hash.</param>
+        /// <param name="hashManager">Hash manager instance.</param>
+        /// <returns>StrCode32 hash of the route name.</returns>
         private static uint GetRouteNameHash(Route data, StrCode32HashManager hashManager)
         {
             if (data.TreatNameAsHash)
@@ -53,6 +68,12 @@ namespace FoxKit.Modules.RouteBuilder.Exporter
             return hashManager.GetHash(data.name);
         }
 
+        /// <summary>
+        /// Get the StrCode32 hash for an event type.
+        /// </summary>
+        /// <param name="data">Event whose type to hash.</param>
+        /// <param name="hashManager">Hash manager instance.</param>
+        /// <returns>StrCode32 hash of the event type</returns>
         private static uint GetEventTypeHash(RouteEvent data, StrCode32HashManager hashManager)
         {
             if (data.TreatTypeAsHash)

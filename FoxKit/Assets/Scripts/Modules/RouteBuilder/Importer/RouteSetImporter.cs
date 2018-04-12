@@ -6,15 +6,33 @@
 
     using UnityEditor.Experimental.AssetImporters;
     using System;
-    using FoxKit.Modules.FormatHandlers.RouteSetHandler;
+    using FoxKit.Modules.RouteBuilder;
 
+    /// <summary>
+    /// ScriptedImporter to handle importing frt files.
+    /// </summary>
     [ScriptedImporter(1, "frt")]
     public class RouteSetImporter : ScriptedImporter
     {
+        /// <summary>
+        /// Hash manager for Route names.
+        /// </summary>
         private IHashManager<uint> routeNameHashManager;
-        private IHashManager<uint> eventNameHashManager;
+
+        /// <summary>
+        /// Hash manager for RouteEvent types.
+        /// </summary>
+        private IHashManager<uint> eventTypeHashManager;
+
+        /// <summary>
+        /// Hash manager for RouteEvent messages.
+        /// </summary>
         private IHashManager<uint> messageHashManager;
         
+        /// <summary>
+        /// Import a .frt file.
+        /// </summary>
+        /// <param name="ctx"></param>
         public override void OnImportAsset(AssetImportContext ctx)
         {
             InitializeDictionaries();
@@ -29,7 +47,7 @@
             }
 
             var getRouteName = routeNameHashManager.MakeUnhashFunc();
-            var getEventTypeName = eventNameHashManager.MakeUnhashFunc();
+            var getEventTypeName = eventTypeHashManager.MakeUnhashFunc();
 
             var eventIdGenerator = new EventIdGenerator();
             EventFactory.GenerateEventNameDelegate generateEventName = eventType => GenerateEventName(eventType, eventIdGenerator);
@@ -45,16 +63,31 @@
             ctx.SetMainObject(routeSetGameObject.gameObject);
         }
 
+        /// <summary>
+        /// Generates a route node name.
+        /// </summary>
+        /// <param name="routeName">Name of the owning route.</param>
+        /// <param name="nodeIndex">Index of the node.</param>
+        /// <returns>A new route node name.</returns>
         private static string GenerateNodeName(string routeName, int nodeIndex)
         {
             return String.Format("{0}_Node{1:0000}", routeName, nodeIndex.ToString("0000"));
         }
 
+        /// <summary>
+        /// Generates a route event name.
+        /// </summary>
+        /// <param name="eventType">Type of the event.</param>
+        /// <param name="idGenerator">ID number generator.</param>
+        /// <returns>A new route event name.</returns>
         private static string GenerateEventName(string eventType, EventIdGenerator idGenerator)
         {
             return String.Format("{0}_{1:0000}", eventType, idGenerator.Generate());
         }
 
+        /// <summary>
+        /// Generates route event IDs.
+        /// </summary>
         private class EventIdGenerator
         {
             private int lastId;
@@ -76,15 +109,18 @@
             reader.BaseStream.Position += numberOfBytes;
         }
                 
+        /// <summary>
+        /// Initialize hash dictionaries.
+        /// </summary>
         private void InitializeDictionaries()
         {
             this.routeNameHashManager = new StrCode32HashManager();
-            this.eventNameHashManager = new StrCode32HashManager();
+            this.eventTypeHashManager = new StrCode32HashManager();
             this.messageHashManager = new StrCode32HashManager();
 
-            this.routeNameHashManager.LoadDictionary(RouteSetImporterPreferences.Instance.IdDictionary);
-            this.eventNameHashManager.LoadDictionary(RouteSetImporterPreferences.Instance.EventDictionary);
-            this.messageHashManager.LoadDictionary(RouteSetImporterPreferences.Instance.MessageDictionary);
+            this.routeNameHashManager.LoadDictionary(RouteBuilderPreferences.Instance.IdDictionary);
+            this.eventTypeHashManager.LoadDictionary(RouteBuilderPreferences.Instance.EventDictionary);
+            this.messageHashManager.LoadDictionary(RouteBuilderPreferences.Instance.MessageDictionary);
         }
     }
 }

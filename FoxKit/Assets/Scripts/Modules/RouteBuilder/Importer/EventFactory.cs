@@ -4,16 +4,45 @@ using static FoxKit.Core.IHashManagerExtensions;
 
 namespace FoxKit.Modules.RouteBuilder.Importer
 {
+    /// <summary>
+    /// Collection of helper functions for constructing RouteEvents.
+    /// </summary>
     public static class EventFactory
     {
+        /// <summary>
+        /// Delegate to create a RouteEvent.
+        /// </summary>
+        /// <param name="parent">GameObject parent of the RouteEvent.</param>
+        /// <param name="data">Parameters of the RouteEvent to create.</param>
+        /// <returns>The constructed RouteEvent.</returns>
         public delegate RouteEvent CreateEventDelegate(GameObject parent, FoxLib.Tpp.RouteSet.RouteEvent data);
+
+        /// <summary>
+        /// Delegate to generate a RouteEvent name.
+        /// </summary>
+        /// <param name="eventType">String representation of the RouteEvent type.</param>
+        /// <returns>Name of the RouteEvent.</returns>
         public delegate string GenerateEventNameDelegate(string eventType);
 
+        /// <summary>
+        /// Create a function to create RouteEvents.
+        /// </summary>
+        /// <param name="getEventTypeName"></param>
+        /// <param name="generateEventName"></param>
+        /// <returns></returns>
         public static CreateEventDelegate CreateFactory(TryUnhashDelegate getEventTypeName, GenerateEventNameDelegate generateEventName)
         {
             return (parent, data) => Create(parent, data, getEventTypeName, generateEventName);
         }
 
+        /// <summary>
+        /// Create a RouteEvent.
+        /// </summary>
+        /// <param name="parent">GameObject parent of the RouteEvent.</param>
+        /// <param name="data">Parameters of the RouteEvent.</param>
+        /// <param name="getEventTypeName">Function to get the name of the RouteEvent's type.</param>
+        /// <param name="generateEventName">Function to generate a name for a RouteEvent.</param>
+        /// <returns>The constructed RouteEvent.</returns>
         private static RouteEvent Create(GameObject parent, FoxLib.Tpp.RouteSet.RouteEvent data, TryUnhashDelegate getEventTypeName, GenerateEventNameDelegate generateEventName)
         {
             var component = parent.AddComponent<RouteEvent>();

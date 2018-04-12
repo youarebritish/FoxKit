@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using static FoxKit.Modules.RouteBuilder.Exporter.EventFactory;
 
 namespace FoxKit.Modules.RouteBuilder.Exporter
 {
+    /// <summary>
+    /// Collection of helper functions for constructing RouteNodes.
+    /// </summary>
     public static class NodeFactory
     {        
         public delegate FoxLib.Tpp.RouteSet.RouteNode CreateNodeDelegate(RouteNode data);
@@ -23,16 +25,28 @@ namespace FoxKit.Modules.RouteBuilder.Exporter
         /// <param name="instance">The instance to register.</param>
         public delegate void RegisterEventInstanceDelegate(RouteEvent data, FoxLib.Tpp.RouteSet.RouteEvent instance);
 
+        /// <summary>
+        /// Create a function to create RouteNode.
+        /// </summary>
+        /// <param name="getEventInstance">Function to get an existing RouteEvent instance.</param>
+        /// <param name="registerEventInstance">Function to register a RouteEvent instance.</param>
+        /// <param name="createEvent">Function to create a RouteEvent.</param>
+        /// <returns>Function to create a RouteNode</returns>
         public static CreateNodeDelegate CreateFactory(TryGetEventInstanceDelegate getEventInstance, RegisterEventInstanceDelegate registerEventInstance, CreateEventDelegate createEvent)
         {
             return data => Create(data, getEventInstance, registerEventInstance, createEvent);
         }
 
+        /// <summary>
+        /// Create a RouteNode.
+        /// </summary>
+        /// <param name="data">Parameters of the RouteNode to construct.</param>
+        /// <param name="getEventInstance">Function to get an existing RouteEvent instance.</param>
+        /// <param name="registerEventInstance">Function to register a RouteEvent instance.</param>
+        /// <param name="createEvent">Function to create a RouteEvent.</param>
+        /// <returns>Function to create a RouteNode.</returns>
         private static FoxLib.Tpp.RouteSet.RouteNode Create(RouteNode data, TryGetEventInstanceDelegate getEventInstance, RegisterEventInstanceDelegate registerEventInstance, CreateEventDelegate createEvent)
         {
-            /*var events = from @event in data.Events
-                         select createEvent(@event);*/
-
             FoxLib.Tpp.RouteSet.RouteEvent edgeEvent;
             if (!getEventInstance(data.EdgeEvent, out edgeEvent))
             {

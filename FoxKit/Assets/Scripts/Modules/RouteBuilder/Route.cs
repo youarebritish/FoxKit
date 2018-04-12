@@ -1,83 +1,105 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-using FoxKit.Modules.FormatHandlers.RouteSetHandler;
-
-using UnityEditor;
-
-using UnityEngine;
-
-[System.Serializable]
-public class Route : MonoBehaviour
+﻿namespace FoxKit.Modules.RouteBuilder
 {
-    public List<RouteNode> Nodes = new List<RouteNode>();
-    public bool DisplayAsCircuit = true;
+    using System.Collections.Generic;
+    using System.Linq;
 
-    [Tooltip("When exporting, treat the route's name as a hash instead of a string literal. Use if its true name is unknown.")]
-    public bool TreatNameAsHash;
+    using UnityEditor;
 
+    using UnityEngine;
+    
     /// <summary>
-    /// Context menu to add a new node to the Route.
+    /// An AI agent assigned to a Route will walk from node to node in a circuit.
     /// </summary>
-    [ContextMenu("Add Node")]
-    private void AddNewNode()
+    [System.Serializable]
+    public class Route : MonoBehaviour
     {
-        CreateRouteSetEditor.CreateNewNode(this);
-    }
+        /// <summary>
+        /// Ordered list of route nodes for AI agents to follow.
+        /// </summary>
+        public List<RouteNode> Nodes = new List<RouteNode>();
 
-    void OnDrawGizmos()
-    {
-        var isRouteSelected = IsRouteSelected();
+        /// <summary>
+        /// Should the Route be drawn with the first and last nodes connected?
+        /// </summary>
+        [Tooltip("If checked, the first and last nodes will appear connected.")]
+        public bool DisplayAsCircuit = true;
 
-        Gizmos.color = RouteSetImporterPreferences.Instance.EdgeColor;
-        RouteNode previousNode = null;
-        foreach (var node in this.Nodes)
+        /// <summary>
+        /// Should the route's name be exported as a hash instead of a string literal?
+        /// </summary>
+        [Tooltip("When exporting, treat the route's name as a hash instead of a string literal. Use if its true name is unknown.")]
+        public bool TreatNameAsHash;
+
+        /// <summary>
+        /// Context menu to add a new node to the Route.
+        /// </summary>
+        [ContextMenu("Add Node")]
+        private void AddNewNode()
         {
-            Gizmos.color = RouteSetImporterPreferences.Instance.NodeColor;
-            if (!isRouteSelected)
-            {
-                Gizmos.color = new Color(Gizmos.color.r, Gizmos.color.g, Gizmos.color.b, Gizmos.color.a * 0.1f);
-            }
+            CreateRouteSetEditor.CreateNewNode(this);
+        }
 
-            Gizmos.DrawWireSphere(node.transform.position, RouteSetImporterPreferences.Instance.NodeSize);
+        /// <summary>
+        /// Draw the Route's gizmos in the scene view.
+        /// </summary>
+        void OnDrawGizmos()
+        {
+            var isRouteSelected = IsRouteSelected();
 
-            if (previousNode == null)
+            Gizmos.color = RouteBuilderPreferences.Instance.EdgeColor;
+            RouteNode previousNode = null;
+            foreach (var node in this.Nodes)
             {
+                Gizmos.color = RouteBuilderPreferences.Instance.NodeColor;
+                if (!isRouteSelected)
+                {
+                    Gizmos.color = new Color(Gizmos.color.r, Gizmos.color.g, Gizmos.color.b, Gizmos.color.a * 0.1f);
+                }
+
+                Gizmos.DrawWireSphere(node.transform.position, RouteBuilderPreferences.Instance.NodeSize);
+
+                if (previousNode == null)
+                {
+                    previousNode = node;
+                    continue;
+                }
+
+                Gizmos.color = RouteBuilderPreferences.Instance.EdgeColor;
+                if (!isRouteSelected)
+                {
+                    Gizmos.color = new Color(Gizmos.color.r, Gizmos.color.g, Gizmos.color.b, Gizmos.color.a * 0.1f);
+                }
+
+                Gizmos.DrawLine(previousNode.transform.position, node.transform.position);
                 previousNode = node;
-                continue;
             }
 
-            Gizmos.color = RouteSetImporterPreferences.Instance.EdgeColor;
-            if (!isRouteSelected)
+            // Connect first and last nodes.
+            if (!this.DisplayAsCircuit)
             {
-                Gizmos.color = new Color(Gizmos.color.r, Gizmos.color.g, Gizmos.color.b, Gizmos.color.a * 0.1f);
+                return;
             }
-
-            Gizmos.DrawLine(previousNode.transform.position, node.transform.position);
-            previousNode = node;
+            if (this.Nodes.Count > 2)
+            {
+                Gizmos.DrawLine(this.Nodes[this.Nodes.Count - 1].transform.position, this.Nodes[0].transform.position);
+            }
         }
 
-        // Connect first and last nodes.
-        if (!this.DisplayAsCircuit)
+        /// <summary>
+        /// Should the Route be considered selected?
+        /// </summary>
+        /// <returns>True if selected, else false.</returns>
+        private bool IsRouteSelected()
         {
-            return;
+            if (Selection.Contains(this.gameObject))
+            {
+                return true;
+            }
+            if (Selection.Contains(this.transform.parent.gameObject))
+            {
+                return true;
+            }
+            return Nodes.Any(node => Selection.Contains(node.gameObject));
         }
-        if (this.Nodes.Count > 2)
-        {
-            Gizmos.DrawLine(this.Nodes[this.Nodes.Count - 1].transform.position, this.Nodes[0].transform.position);
-        }
-    }
-
-    private bool IsRouteSelected()
-    {
-        if (Selection.Contains(this.gameObject))
-        {
-            return true;
-        }
-        if (Selection.Contains(this.transform.parent.gameObject))
-        {
-            return true;
-        }
-        return this.Nodes.Any(node => Selection.Contains(node.gameObject));
     }
 }
