@@ -22,11 +22,11 @@ public struct MaterialPreset
     public MaterialPreset(FoxLib.MaterialParamBinary.MaterialPreset foxLibMaterialPreset)
     {
         this.F0 = foxLibMaterialPreset.F0;
-        this.RoughnessThreshold = foxLibMaterialPreset.AnisotropicRoughness;
+        this.RoughnessThreshold = foxLibMaterialPreset.RoughnessThreshold;
         this.ReflectionDependDiffuse = foxLibMaterialPreset.ReflectionDependDiffuse;
-        this.AnisotropicRoughness = foxLibMaterialPreset.RoughnessThreshold;
+        this.AnisotropicRoughness = foxLibMaterialPreset.AnisotropicRoughness;
 
         this.SpecularColor = FoxUtils.FoxColorRGBToUnityColor(foxLibMaterialPreset.SpecularColor);
-        this.Translucency = foxLibMaterialPreset.RoughnessThreshold;
+        this.Translucency = foxLibMaterialPreset.Translucency;
     }
 }
