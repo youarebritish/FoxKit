@@ -1,4 +1,4 @@
-﻿namespace FoxKit.Modules.MaterialDatabaseEditor.Editor
+﻿namespace FoxKit.Modules.MaterialDatabase.Editor
 {
     using System;
 
@@ -6,8 +6,8 @@
     using UnityEditor;
 
     using FoxKit.Core;
-    using FoxKit.Modules.MaterialDatabaseEditor;
-    using FoxKit.Modules.MaterialDatabaseEditor.Exporter;
+    using FoxKit.Modules.MaterialDatabase;
+    using FoxKit.Modules.MaterialDatabase.Exporter;
 
     /// <summary>
     /// Custom editor for MaterialDatabases.

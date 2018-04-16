@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 
-namespace FoxKit.Modules.MaterialDatabaseEditor
+namespace FoxKit.Modules.MaterialDatabase
 {
     /// <summary>
     /// A material database which stores material presets.

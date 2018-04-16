@@ -3,7 +3,7 @@ using System.Linq;
 
 using UnityEngine.Assertions;
 
-namespace FoxKit.Modules.MaterialDatabaseEditor.Exporter
+namespace FoxKit.Modules.MaterialDatabase.Exporter
 {
     /// <summary>
     /// Collection of helper functions for exporting MaterialDatabase to fmtt format.

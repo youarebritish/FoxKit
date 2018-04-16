@@ -1,10 +1,10 @@
-﻿namespace FoxKit.Modules.MaterialDatabaseEditor.Importer
+﻿namespace FoxKit.Modules.MaterialDatabase.Importer
 {
     using System.Linq;
     using System.IO;
 
     using UnityEditor.Experimental.AssetImporters;
-    using FoxKit.Modules.MaterialDatabaseEditor;
+    using FoxKit.Modules.MaterialDatabase;
 
     /// <summary>
     /// ScriptedImporter to handle importing fmtt files.
