@@ -26,5 +26,45 @@ namespace FoxKit.Utils
         {
             return new FoxLib.Core.Vector3(unityVector.z, unityVector.y, unityVector.x);
         }
+
+        /// <summary>
+        /// Converts a Fox Engine ColorRGB to a Unity Color.
+        /// </summary>
+        /// <param name="foxColor">The Fox Engine ColorRGB.</param>
+        /// <returns>The Unity color.</returns>
+        public static Color FoxColorRGBToUnityColor(FoxLib.Core.ColorRGB foxColor)
+        {
+            return new Color(foxColor.Red, foxColor.Green, foxColor.Blue);
+        }
+
+        /// <summary>
+        /// Converts a Unity Color to a Fox Engine ColorRGB.
+        /// </summary>
+        /// <param name="unityColor">The Unity color.</param>
+        /// <returns>The Fox Engine color.</returns>
+        public static FoxLib.Core.ColorRGB UnityColorToFoxColorRGB(Color unityColor)
+        {
+            return new FoxLib.Core.ColorRGB(unityColor.r, unityColor.g, unityColor.b);
+        }
+
+        /// <summary>
+        /// Converts a Fox Engine ColorRGBA to a Unity Color.
+        /// </summary>
+        /// <param name="unityColor">The Fox Engine ColorRGBA.</param>
+        /// <returns>The Unity color.</returns>
+        public static Color FoxColorRGBAToUnityColor(FoxLib.Core.ColorRGBA foxColor)
+        {
+            return new Color(foxColor.Red, foxColor.Green, foxColor.Blue, foxColor.Alpha);
+        }
+
+        /// <summary>
+        /// Converts a Unity Color to a Fox Engine ColorRGBA.
+        /// </summary>
+        /// <param name="unityColor">The Unity color.</param>
+        /// <returns>The Fox Engine color.</returns>
+        public static FoxLib.Core.ColorRGBA UnityColorToFoxColorRGBA(Color unityColor)
+        {
+            return new FoxLib.Core.ColorRGBA(unityColor.r, unityColor.g, unityColor.b, unityColor.a);
+        }
     }
 }
