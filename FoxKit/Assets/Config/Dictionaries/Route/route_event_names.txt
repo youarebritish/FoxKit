@@ -46,7 +46,9 @@ Normal
 OnBaseRoute
 OnTheHill
 OpenDoor
+PickUpHoneyBee
 PileBunker
+PutHostageInVehicle
 Recovery
 RelaxedIdleAct
 RelaxedRun
