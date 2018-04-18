@@ -19,10 +19,6 @@
 
         const int HEIGHTMAP_BYTES = 4096;
 
-        // TODO: Make parameters. These are afghanistan's values.
-        const float MAX_ELEVATION = 755.0121f;
-        const float MIN_ELEVATION = 188.4435f;
-
         /// <summary>
         /// Import a .htre file.
         /// </summary>
@@ -47,7 +43,7 @@
                         for (int j = 0; j < halfWidth; j++)
                         {
                             var height = reader.ReadSingle();
-                            heightValues[j, i] = height / MAX_ELEVATION;
+                            heightValues[j, i] = height / TerrainPreferences.Instance.MaxHeight;
                         }
                     }
                 }
@@ -57,7 +53,7 @@
             var terrainData = new TerrainData
             {
                 heightmapResolution = HEIGHTMAP_WIDTH,
-                size = new Vector3(128.0f, MAX_ELEVATION, 128.0f)
+                size = new Vector3(128.0f, TerrainPreferences.Instance.MaxHeight, 128.0f)
             };            
 
             terrainData.SetHeights(0, 0, tiles[0]);
