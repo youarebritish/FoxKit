@@ -1,4 +1,4 @@
-﻿namespace FoxKit.Core
+﻿namespace FoxKit.Core.Tpp
 {
     using UnityEngine;
 
