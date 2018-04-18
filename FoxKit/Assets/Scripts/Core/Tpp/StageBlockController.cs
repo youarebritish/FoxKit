@@ -1,34 +1,39 @@
-﻿using System;
-using UnityEngine;
-
-public class StageBlockController : MonoBehaviour
+﻿namespace FoxKit.Core.Tpp
 {
-    public Color SmallBlockBounds = new Color(204, 204, 204, 37);
+    using UnityEngine;
 
-    public int SmallBlockCount = 64;
-    public int SmallBlockSize = 128;
-
-    private void OnDrawGizmos()
+    /// <summary>
+    /// Visualizes block boundaries.
+    /// </summary>
+    public class StageBlockController : MonoBehaviour
     {
-        DrawSmallBlocksBounds();
-    }
+        public Color SmallBlockBounds = new Color(204, 204, 204, 37);
 
-    private void DrawSmallBlocksBounds()
-    {
-        Gizmos.color = SmallBlockBounds;
-        for (int i = 0; i <= SmallBlockCount; i++)
+        public int SmallBlockCount = 64;
+        public int SmallBlockSize = 128;
+
+        private void OnDrawGizmos()
         {
-            float length = SmallBlockSize * SmallBlockCount / 2;
+            DrawSmallBlocksBounds();
+        }
 
-            var startPosition1 = new Vector3((-i * 128) + 4096, 0, length);
-            var endPosition1 = new Vector3((-i * 128) + 4096, 0, -length);            
+        private void DrawSmallBlocksBounds()
+        {
+            Gizmos.color = SmallBlockBounds;
+            for (int i = 0; i <= SmallBlockCount; i++)
+            {
+                float length = SmallBlockSize * SmallBlockCount / 2;
 
-            Gizmos.DrawLine(startPosition1, endPosition1);
+                var startPosition1 = new Vector3((-i * 128) + 4096, 0, length);
+                var endPosition1 = new Vector3((-i * 128) + 4096, 0, -length);
 
-            var startPosition2 = new Vector3(startPosition1.z, 0, startPosition1.x);
-            var endPosition2 = new Vector3(endPosition1.z, 0, endPosition1.x);
+                Gizmos.DrawLine(startPosition1, endPosition1);
 
-            Gizmos.DrawLine(startPosition2, endPosition2);
+                var startPosition2 = new Vector3(startPosition1.z, 0, startPosition1.x);
+                var endPosition2 = new Vector3(endPosition1.z, 0, endPosition1.x);
+
+                Gizmos.DrawLine(startPosition2, endPosition2);
+            }
         }
     }
 }
