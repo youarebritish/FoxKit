@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class StageBlockController : MonoBehaviour
 {
-    public Color SmallBlockBounds;
+    public Color SmallBlockBounds = new Color(204, 204, 204, 37);
 
-    public int SmallBlockCount;
-    public int SmallBlockSize;
+    public int SmallBlockCount = 64;
+    public int SmallBlockSize = 128;
 
     private void OnDrawGizmos()
     {
