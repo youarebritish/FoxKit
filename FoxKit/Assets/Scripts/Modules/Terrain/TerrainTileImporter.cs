@@ -48,7 +48,7 @@
                         for (int j = 0; j < HEIGHTMAP_HEIGHT / 2; j++)
                         {
                             var height = reader.ReadSingle();
-                            heightValues[i, j] = height / MAX_ELEVATION;
+                            heightValues[j, i] = height / MAX_ELEVATION;
 
                             if (height > max)
                             {
@@ -70,16 +70,25 @@
                 size = new Vector3(128.0f, MAX_ELEVATION, 128.0f)
             };
 
+            int halfWidth = HEIGHTMAP_WIDTH / 2;
+
             terrainData.SetHeights(0, 0, tiles[0]);
-            terrainData.SetHeights(HEIGHTMAP_WIDTH / 2, 0, tiles[1]);
-            terrainData.SetHeights(0, HEIGHTMAP_WIDTH / 2, tiles[2]);
-            terrainData.SetHeights(HEIGHTMAP_WIDTH / 2, HEIGHTMAP_WIDTH / 2, tiles[3]);
+            terrainData.SetHeights(halfWidth, 0, tiles[2]);
+
+            terrainData.SetHeights(0, halfWidth, tiles[1]);
+            terrainData.SetHeights(halfWidth, halfWidth, tiles[3]);
 
             var terrainCollider = terrainGO.AddComponent<TerrainCollider>();
             var terrain = terrainGO.AddComponent<Terrain>();
 
             terrainCollider.terrainData = terrainData;
             terrain.terrainData = terrainData;
+
+            // Parse name and position based on name
+            var xIndex = int.Parse(terrainGO.name.Substring(5, 3)) - 101;            
+            var zIndex = int.Parse(terrainGO.name.Substring(9, 3)) - 101;
+
+            terrainGO.transform.position = new Vector3(-4032 + (128 * zIndex), 0, -4032 + (128 * xIndex));
 
             ctx.AddObjectToAsset(terrainGO.name, terrainGO);
             ctx.AddObjectToAsset(terrainGO.name, terrainData);
