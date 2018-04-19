@@ -1,11 +1,9 @@
 ﻿namespace FoxKit.Modules.RouteBuilder.Editor
 {
-    using FoxKit.Core;
 
     using UnityEditor;
 
     using UnityEngine;
-    using FoxKit.Modules.RouteBuilder.Exporter;
 
     /// <summary>
     /// Custom editor for Routes.

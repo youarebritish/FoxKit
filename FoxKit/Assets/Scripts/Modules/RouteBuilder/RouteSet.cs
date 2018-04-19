@@ -94,7 +94,8 @@ public class RouteSet : MonoBehaviour
 
         var route = go.AddComponent<Route>();
         Routes.Add(route);
-        UnitySceneUtils.Select(go);
+
+        route.AddNewNode();
     }
 
     /// <summary>
