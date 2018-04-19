@@ -22,8 +22,9 @@
             EditorGUILayout.Space();
 
             route.Closed = EditorGUILayout.Toggle("Closed", route.Closed);
-            route.TreatNameAsHash = EditorGUILayout.Toggle("Treat Name as Hash", route.TreatNameAsHash);            
+            route.TreatNameAsHash = EditorGUILayout.Toggle("Treat Name as Hash", route.TreatNameAsHash);
 
+            Rotorz.Games.Collections.ReorderableListGUI.Title("Nodes");
             Rotorz.Games.Collections.ReorderableListGUI.ListField(route.Nodes, this.CustomListItem, this.DrawEmpty);
 
             EditorUtility.SetDirty(target);

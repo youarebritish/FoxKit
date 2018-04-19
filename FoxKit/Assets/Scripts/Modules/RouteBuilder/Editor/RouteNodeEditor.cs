@@ -17,6 +17,7 @@
 
             var node = this.target as RouteNode;
 
+            Rotorz.Games.Collections.ReorderableListGUI.Title("Node Events");
             Rotorz.Games.Collections.ReorderableListGUI.ListField(node.Events, this.CustomListItem, this.DrawEmpty);
 
             EditorUtility.SetDirty(target);
