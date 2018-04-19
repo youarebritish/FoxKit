@@ -15,9 +15,8 @@
         {
             var @event = (this.target as RouteEvent);
             DrawToolShelf(@event);
-            
-            Rotorz.Games.Collections.ReorderableListGUI.Title("Settings");
-            this.DrawDefaultInspector();
+            DrawSettings(@event);
+            DrawParams(@event);
         }
 
         private static void DrawToolShelf(RouteEvent @event)
@@ -74,6 +73,27 @@
 
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
+        }
+
+        private static void DrawSettings(RouteEvent @event)
+        {
+            Rotorz.Games.Collections.ReorderableListGUI.Title("Settings");
+
+            var eventTypeContent = new GUIContent("Event type", "The type of this event.");
+            @event.Type = (RouteEventType)EditorGUILayout.EnumPopup(eventTypeContent, @event.Type);
+
+            var snippetContent = new GUIContent("Snippet", "Must be a maximum of four characters");
+            @event.Snippet = EditorGUILayout.TextField(snippetContent, @event.Snippet);
+        }
+
+        private static void DrawParams(RouteEvent @event)
+        {
+            Rotorz.Games.Collections.ReorderableListGUI.Title("Parameters");
+
+            for(int i = 0; i < 10; i++)
+            {
+                @event.Params[i] = (uint)EditorGUILayout.LongField($"Param {i}", @event.Params[i]);
+            }
         }
     }
 }
