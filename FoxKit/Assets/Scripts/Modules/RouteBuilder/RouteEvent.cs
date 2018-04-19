@@ -74,5 +74,15 @@
             }
             return typeString;
         }
+
+        public void AddNewNode()
+        {
+            transform.parent.GetComponent<RouteNode>().AddNewNode();
+        }
+
+        public void AddNewEvent()
+        {
+            transform.parent.GetComponent<RouteNode>().AddNewEvent();
+        }
     }
 }
