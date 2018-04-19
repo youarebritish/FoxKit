@@ -15,10 +15,6 @@
     {
         public override void OnInspectorGUI()
         {
-            this.DrawDefaultInspector();
-
-            EditorGUILayout.Space();
-
             if (GUILayout.Button("Add Route"))
             {
                 (this.target as RouteSet).AddNewRoute();
@@ -39,6 +35,10 @@
                 var hashManager = new StrCode32HashManager();
                 RouteSetExporter.ExportRouteSet(this.target as RouteSet, hashManager, exportPath);
             }
+
+            EditorGUILayout.Space();
+
+            this.DrawDefaultInspector();
         }
     }
 }

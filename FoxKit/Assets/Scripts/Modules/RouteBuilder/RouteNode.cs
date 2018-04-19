@@ -27,7 +27,7 @@
         /// Context menu to add a new node to the Route.
         /// </summary>
         [ContextMenu("Add Node", false, 0)]
-        private void AddNewNode()
+        public void AddNewNode()
         {
             CreateRouteSetEditor.CreateNewNode(transform.GetComponentInParent<Route>());
         }
@@ -36,7 +36,7 @@
         /// Context menu to add a new event to the node.
         /// </summary>
         [ContextMenu("Add Event", false, 1)]
-        private void AddNewEvent()
+        public void AddNewEvent()
         {
             var @event = CreateRouteSetEditor.CreateNewNodeEvent(gameObject);
             this.Events.Add(@event);
