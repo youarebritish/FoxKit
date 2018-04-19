@@ -19,12 +19,7 @@
             {
                 (this.target as RouteSet).AddNewRoute();
             }
-
-            if (GUILayout.Button("Add Edge Event"))
-            {
-                (this.target as RouteSet).AddNewEdgeEvent();
-            }
-
+            
             if (GUILayout.Button("Export frt"))
             {
                 var exportPath = EditorUtility.SaveFilePanel(

@@ -7,6 +7,7 @@
     /// <summary>
     /// An event for an AI agent to perform.
     /// </summary>
+    [DisallowMultipleComponent]
     public class RouteEvent : MonoBehaviour
     {
         /// <summary>
@@ -77,12 +78,22 @@
 
         public void AddNewNode()
         {
-            transform.parent.GetComponent<RouteNode>().AddNewNode();
+            var node = GetComponent<RouteNode>();
+            if (node == null)
+            {
+                node = transform.parent.GetComponent<RouteNode>();
+            }
+            node.AddNewNode();
         }
 
         public void AddNewEvent()
         {
-            transform.parent.GetComponent<RouteNode>().AddNewEvent();
+            var node = GetComponent<RouteNode>();
+            if (node == null)
+            {
+                node = transform.parent.GetComponent<RouteNode>();
+            }
+            node.AddNewEvent();
         }
     }
 }

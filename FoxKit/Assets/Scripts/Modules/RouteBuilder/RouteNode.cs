@@ -9,13 +9,13 @@
     /// A point in a Route for an AI agent to navigate to.
     /// </summary>
     [System.Serializable]
+    [RequireComponent(typeof(RouteEvent))]
     public class RouteNode : MonoBehaviour
     {
         /// <summary>
         /// Event for AI agents to perform on the way to this node.
         /// </summary>
-        [Tooltip("Event for AI agents to perform on the way to this node.")]
-        public RouteEvent EdgeEvent;
+        public RouteEvent EdgeEvent {  get { return GetComponent<RouteEvent>(); } }
 
         /// <summary>
         /// Events for AI agents to perform at this node.

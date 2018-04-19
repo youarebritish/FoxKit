@@ -31,12 +31,7 @@ public class RouteSet : MonoBehaviour
     /// Maps registered route event data to route event instances.
     /// </summary>
     private Dictionary<FoxLib.Tpp.RouteSet.RouteEvent, RouteEvent> EdgeEvents = new Dictionary<FoxLib.Tpp.RouteSet.RouteEvent, RouteEvent>();
-
-    /// <summary>
-    /// GameObject parent to all global edge events.
-    /// </summary>
-    public GameObject EdgeEventsContainer;
-            
+                
     /// <summary>
     /// Registers a route event instance.
     /// </summary>
@@ -66,6 +61,28 @@ public class RouteSet : MonoBehaviour
     }
 
     /// <summary>
+    /// Registers a route event instance.
+    /// </summary>
+    /// <param name="data">Raw data associated with the event.</param>
+    /// <param name="owner">GameObject for the event to attach to.</param>
+    /// <param name="createEvent">Function to create a new event.</param>
+    /// <returns>The new, registered route event instance.</returns>
+    public RouteEvent RegisterRouteEvent(FoxLib.Tpp.RouteSet.RouteEvent data, GameObject owner, CreateEventDelegate createEvent)
+    {
+        RouteEvent eventInstance = null;
+        if (EdgeEvents.TryGetValue(data, out eventInstance))
+        {
+            return eventInstance;
+        }
+        else
+        {
+            eventInstance = createEvent(owner, data);
+            EdgeEvents.Add(data, eventInstance);
+            return eventInstance;
+        }
+    }
+
+    /// <summary>
     /// Context menu to add a new Route to the RouteSet.
     /// </summary>
     [ContextMenu("Add Route")]
@@ -78,21 +95,6 @@ public class RouteSet : MonoBehaviour
         var route = go.AddComponent<Route>();
         Routes.Add(route);
         UnitySceneUtils.Select(go);
-    }
-
-    /// <summary>
-    /// Context menu to add a new edge event to the RouteSet.
-    /// </summary>
-    [ContextMenu("Add Edge Event")]
-    public void AddNewEdgeEvent()
-    {
-        var go = new GameObject();
-        go.transform.SetParent(EdgeEventsContainer.transform);
-        go.name = GenerateNewEdgeEventName(DefaultEdgeEventType, EdgeEventsContainer.GetComponentsInChildren<RouteEvent>().Length);
-
-        var edgeEvent = go.AddComponent<RouteEvent>();
-        edgeEvent.Name = go.name;
-        edgeEvent.Type = DefaultEdgeEventType;
     }
 
     /// <summary>

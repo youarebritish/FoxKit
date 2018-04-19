@@ -74,7 +74,9 @@ StandSearch
 SupineSnipe
 SwitchRoute
 SyncRoute
+UseFlashLight
 UseSearchLight
+PutDownHoneyBee
 Vanish
 VehicleBackFast
 VehicleBackNormal
