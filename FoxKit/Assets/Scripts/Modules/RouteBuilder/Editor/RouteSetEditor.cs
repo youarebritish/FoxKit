@@ -19,6 +19,11 @@
 
             EditorGUILayout.Space();
 
+            if (GUILayout.Button("Add Route"))
+            {
+                (this.target as RouteSet).AddNewRoute();
+            }
+
             if (GUILayout.Button("Export frt"))
             {
                 var exportPath = EditorUtility.SaveFilePanel(

@@ -61,7 +61,7 @@ public class RouteSet : MonoBehaviour
     /// Context menu to add a new Route to the RouteSet.
     /// </summary>
     [ContextMenu("Add Route")]
-    private void AddNewRoute()
+    public void AddNewRoute()
     {
         var go = new GameObject();
         go.transform.SetParent(transform);
