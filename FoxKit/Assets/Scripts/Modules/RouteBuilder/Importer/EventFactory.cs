@@ -25,54 +25,96 @@ namespace FoxKit.Modules.RouteBuilder.Importer
         public delegate string GenerateEventNameDelegate(string eventType);
 
         /// <summary>
-        /// Create a function to create RouteEvents.
+        /// Create a function to create RouteNodeEvents.
         /// </summary>
         /// <param name="getEventTypeName"></param>
         /// <param name="generateEventName"></param>
         /// <returns></returns>
-        public static CreateEventDelegate CreateFactory(TryUnhashDelegate getEventTypeName, GenerateEventNameDelegate generateEventName)
+        public static CreateEventDelegate CreateNodeEventFactory(TryUnhashDelegate getEventTypeName, GenerateEventNameDelegate generateEventName)
         {
-            return (parent, data) => Create(parent, data, getEventTypeName, generateEventName);
+            return (parent, data) => CreateNodeEvent(parent, data, getEventTypeName, generateEventName);
         }
 
         /// <summary>
-        /// Create a RouteEvent.
+        /// Create a function to create RouteEdgeEvents.
+        /// </summary>
+        /// <param name="getEventTypeName"></param>
+        /// <param name="generateEventName"></param>
+        /// <returns></returns>
+        public static CreateEventDelegate CreateEdgeEventFactory(TryUnhashDelegate getEventTypeName, GenerateEventNameDelegate generateEventName)
+        {
+            return (parent, data) => CreateNodeEvent(parent, data, getEventTypeName, generateEventName);
+        }
+
+        /// <summary>
+        /// Create a RouteNodeEvent.
         /// </summary>
         /// <param name="parent">GameObject parent of the RouteEvent.</param>
         /// <param name="data">Parameters of the RouteEvent.</param>
         /// <param name="getEventTypeName">Function to get the name of the RouteEvent's type.</param>
         /// <param name="generateEventName">Function to generate a name for a RouteEvent.</param>
         /// <returns>The constructed RouteEvent.</returns>
-        private static RouteEvent Create(GameObject parent, FoxLib.Tpp.RouteSet.RouteEvent data, TryUnhashDelegate getEventTypeName, GenerateEventNameDelegate generateEventName)
+        private static RouteNodeEvent CreateNodeEvent(GameObject parent, FoxLib.Tpp.RouteSet.RouteEvent data, TryUnhashDelegate getEventTypeName, GenerateEventNameDelegate generateEventName)
         {
-            var component = parent.GetComponent<RouteEvent>();//AddComponent<RouteEvent>();
+            var component = parent.GetComponent<RouteNodeEvent>();
             if (component == null)
             {
-                component = parent.AddComponent<RouteEvent>();
+                component = parent.AddComponent<RouteNodeEvent>();
+            }
+            var eventNameContainer = getEventTypeName(data.EventType);
+            if (eventNameContainer.WasNameUnhashed)
+            {
+                component.Type = RouteNodeEvent.ParseEventType(eventNameContainer.UnhashedString);
+            }
+            else
+            {
+                component.Type = RouteNodeEvent.ParseEventType(eventNameContainer.Hash.ToString());
+            }
+
+            component.Name = generateEventName(RouteNodeEvent.EventTypeToString(component.Type));
+            component.Params = data.Params.Cast<uint>().ToList();
+            component.Snippet = data.Snippet;
+            return component;
+        }
+
+        /// <summary>
+        /// Create a RouteEdgeEvent.
+        /// </summary>
+        /// <param name="parent">GameObject parent of the RouteEvent.</param>
+        /// <param name="data">Parameters of the RouteEvent.</param>
+        /// <param name="getEventTypeName">Function to get the name of the RouteEvent's type.</param>
+        /// <param name="generateEventName">Function to generate a name for a RouteEvent.</param>
+        /// <returns>The constructed RouteEvent.</returns>
+        private static RouteEdgeEvent CreateEdgeEvent(GameObject parent, FoxLib.Tpp.RouteSet.RouteEvent data, TryUnhashDelegate getEventTypeName, GenerateEventNameDelegate generateEventName)
+        {
+            var component = parent.GetComponent<RouteEdgeEvent>();
+            if (component == null)
+            {
+                component = parent.AddComponent<RouteEdgeEvent>();
             }
 
             // Dumb hack to support the event with no name.
             if (data.EventType == 3205930904)
             {
-                component.Type = RouteEventType.EMPTY_STRING;
+                component.Type = RouteEdgeEventType.EMPTY_STRING;
             }
             else
             {
                 var eventNameContainer = getEventTypeName(data.EventType);
                 if (eventNameContainer.WasNameUnhashed)
                 {
-                    component.Type = RouteEvent.ParseEventType(eventNameContainer.UnhashedString);
+                    component.Type = RouteEdgeEvent.ParseEventType(eventNameContainer.UnhashedString);
                 }
                 else
                 {
-                    component.Type = RouteEvent.ParseEventType(eventNameContainer.Hash.ToString());
+                    component.Type = RouteEdgeEvent.ParseEventType(eventNameContainer.Hash.ToString());
                 }
             }
 
-            component.Name = generateEventName(RouteEvent.EventTypeToString(component.Type));
+            component.Name = generateEventName(RouteEdgeEvent.EventTypeToString(component.Type));
             component.Params = data.Params.Cast<uint>().ToList();
             component.Snippet = data.Snippet;
             return component;
-        }
+        }        
     }
 }

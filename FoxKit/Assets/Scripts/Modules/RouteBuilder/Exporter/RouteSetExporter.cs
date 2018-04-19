@@ -30,7 +30,8 @@ namespace FoxKit.Modules.RouteBuilder.Exporter
             Assert.IsTrue(routeCount > 0, "Invalid route count. Cannot write a routeset with no routes.");
             Assert.IsTrue(routeCount <= ushort.MaxValue, "Invalid route count. Only up to " + ushort.MaxValue + " routes can be written to file.");
 
-            EventFactory.GetEventTypeHashDelegate hashEventType = (@event) => GetEventTypeHash(@event, hashManager);
+            EventFactory.GetNodeEventTypeHashDelegate hashNodeEventType = (@event) => GetEventTypeHash(@event, hashManager);
+            EventFactory.GetEdgeEventTypeHashDelegate hashEdgeEventType = (@event) => GetEventTypeHash(@event, hashManager);
             RouteFactory.GetRouteNameHashDelegate hashRouteName = (route) => GetRouteNameHash(route, hashManager);
 
             var eventDictionary = new Dictionary<RouteEvent, FoxLib.Tpp.RouteSet.RouteEvent>();
@@ -38,7 +39,7 @@ namespace FoxKit.Modules.RouteBuilder.Exporter
             NodeFactory.TryGetEventInstanceDelegate getEventInstance = eventDictionary.TryGetValue;
             NodeFactory.RegisterEventInstanceDelegate registerEventInstance = eventDictionary.Add;            
 
-            var eventBuilder = EventFactory.CreateFactory(hashEventType);
+            var eventBuilder = EventFactory.CreateFactory(hashNodeEventType, hashEdgeEventType);
             var nodeBuilder = NodeFactory.CreateFactory(getEventInstance, registerEventInstance, eventBuilder);
             var routeBuilder = RouteFactory.CreateFactory(nodeBuilder, hashRouteName);
             var routeSetBuilder = RouteSetFactory.CreateFactory(routeBuilder);
@@ -69,18 +70,33 @@ namespace FoxKit.Modules.RouteBuilder.Exporter
         }
 
         /// <summary>
-        /// Get the StrCode32 hash for an event type.
+        /// Get the StrCode32 hash for a node event type.
         /// </summary>
         /// <param name="data">Event whose type to hash.</param>
         /// <param name="hashManager">Hash manager instance.</param>
         /// <returns>StrCode32 hash of the event type</returns>
-        private static uint GetEventTypeHash(RouteEvent data, StrCode32HashManager hashManager)
+        private static uint GetEventTypeHash(RouteNodeEvent data, StrCode32HashManager hashManager)
         {
             if (data.TreatTypeAsHash)
             {
-                return uint.Parse(RouteEvent.EventTypeToString(data.Type));
+                return uint.Parse(RouteNodeEvent.EventTypeToString(data.Type));
             }
-            return hashManager.GetHash(RouteEvent.EventTypeToString(data.Type));
+            return hashManager.GetHash(RouteNodeEvent.EventTypeToString(data.Type));
+        }
+
+        /// <summary>
+        /// Get the StrCode32 hash for an edge event type.
+        /// </summary>
+        /// <param name="data">Event whose type to hash.</param>
+        /// <param name="hashManager">Hash manager instance.</param>
+        /// <returns>StrCode32 hash of the event type</returns>
+        private static uint GetEventTypeHash(RouteEdgeEvent data, StrCode32HashManager hashManager)
+        {
+            if (data.TreatTypeAsHash)
+            {
+                return uint.Parse(RouteEdgeEvent.EventTypeToString(data.Type));
+            }
+            return hashManager.GetHash(RouteEdgeEvent.EventTypeToString(data.Type));
         }
 
         /// <summary>

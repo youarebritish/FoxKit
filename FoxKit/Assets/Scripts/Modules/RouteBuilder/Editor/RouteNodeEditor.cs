@@ -22,9 +22,9 @@
             EditorUtility.SetDirty(target);
         }
 
-        private RouteEvent CustomListItem(Rect position, RouteEvent itemValue)
+        private RouteNodeEvent CustomListItem(Rect position, RouteNodeEvent itemValue)
         {
-            return EditorGUI.ObjectField(position, itemValue, typeof(RouteEvent)) as RouteEvent;
+            return EditorGUI.ObjectField(position, itemValue, typeof(RouteNodeEvent)) as RouteNodeEvent;
         }
 
         private void DrawEmpty()

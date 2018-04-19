@@ -53,8 +53,10 @@
             var eventIdGenerator = new EventIdGenerator();
             EventFactory.GenerateEventNameDelegate generateEventName = eventType => GenerateEventName(eventType, eventIdGenerator);
 
-            var buildEvent = EventFactory.CreateFactory(getEventTypeName, generateEventName);
-            var buildNode = NodeFactory.CreateFactory(buildEvent);
+            var buildNodeEvent = EventFactory.CreateNodeEventFactory(getEventTypeName, generateEventName);
+            var buildEdgeEvent = EventFactory.CreateEdgeEventFactory(getEventTypeName, generateEventName);
+
+            var buildNode = NodeFactory.CreateFactory(buildNodeEvent, buildEdgeEvent);
             var buildRoute = RouteFactory.CreateFactory(buildNode, getRouteName, GenerateNodeName);
             var buildRouteSet = RouteSetFactory.CreateFactory(buildRoute);
 
