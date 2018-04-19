@@ -1,5 +1,7 @@
 ﻿namespace FoxKit.Modules.RouteBuilder
 {
+    using FoxKit.Utils;
+    using System;
     using System.Collections.Generic;
 
     using UnityEngine;
@@ -94,6 +96,59 @@
                 node = transform.parent.GetComponent<RouteNode>();
             }
             node.AddNewEvent();
+        }
+
+        /// <summary>
+        /// Create a new RouteEvent.
+        /// </summary>
+        /// <param name="parent">GameObject parent to own the event.</param>
+        public static RouteEvent CreateNewNodeEvent(RouteNode parent)
+        {
+            var go = new GameObject();
+            go.transform.position = parent.transform.position;
+            go.transform.SetParent(parent.transform);
+
+            UnitySceneUtils.Select(go);
+
+            var routeEvent = go.AddComponent<RouteEvent>();
+            go.name = GenerateEventName(EventTypeToString(routeEvent.Type), parent.Events.Count);
+            return routeEvent;
+        }
+
+        /// <summary>
+        /// Generates a route event name.
+        /// </summary>
+        /// <param name="eventType">Type of the event.</param>
+        /// <param name="idGenerator">ID number generator.</param>
+        /// <returns>A new route event name.</returns>
+        public static string GenerateEventName(string eventType, EventIdGenerator idGenerator)
+        {
+            return GenerateEventName(eventType, idGenerator.Generate());
+        }
+
+        /// <summary>
+        /// Generates a route event name.
+        /// </summary>
+        /// <param name="eventType">Type of the event.</param>
+        /// <param name="id">ID number of the event.</param>
+        /// <returns>A new route event name.</returns>
+        private static string GenerateEventName(string eventType, int id)
+        {
+            return String.Format("{0}_{1:0000}", eventType, id);
+        }
+
+        /// <summary>
+        /// Generates route event IDs.
+        /// </summary>
+        public class EventIdGenerator
+        {
+            private int lastId;
+
+            public int Generate()
+            {
+                lastId++;
+                return lastId;
+            }
         }
     }
 }

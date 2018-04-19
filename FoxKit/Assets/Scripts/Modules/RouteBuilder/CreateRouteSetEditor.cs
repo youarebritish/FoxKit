@@ -64,24 +64,7 @@
             UnitySceneUtils.Select(go);
 
             return node;
-        }
-
-        /// <summary>
-        /// Create a new RouteEvent.
-        /// </summary>
-        /// <param name="parent">GameObject parent to own the event.</param>
-        public static RouteEvent CreateNewNodeEvent(GameObject parent)
-        {
-            var go = new GameObject();
-            go.transform.position = parent.transform.position;
-            go.transform.SetParent(parent.transform);
-            go.name = "RouteEvent";
-
-            UnitySceneUtils.Select(go);
-
-            var routeEvent = go.AddComponent<RouteEvent>();
-            return routeEvent;
-        }
+        }        
 
         /// <summary>
         /// Generate a position for a new node.

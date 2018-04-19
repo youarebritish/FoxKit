@@ -107,14 +107,4 @@ public class RouteSet : MonoBehaviour
     {
         return string.Format("rt_{0}_c_{1}", routeSetName, routeCount.ToString("D4"));
     }
-
-    /// <summary>
-    /// Generate name for a new edge event.
-    /// </summary>
-    /// <param name="eventCount">Number of edge events already in the RouteSet.</param>
-    /// <returns>Name for a new edge event.</returns>
-    private static string GenerateNewEdgeEventName(RouteEventType eventType, int eventCount)
-    {
-        return string.Format("{0}_{1}", eventType, eventCount.ToString("D4"));
-    }
 }

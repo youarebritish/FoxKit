@@ -9,8 +9,7 @@
     /// </summary>
     [CustomEditor(typeof(RouteNode))]
     public class RouteNodeEditor : Editor
-    {
-        
+    {        
         public override void OnInspectorGUI()
         {
             EditorGUILayout.Space();

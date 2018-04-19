@@ -37,7 +37,7 @@
         /// </summary>
         public void AddNewEvent()
         {
-            var @event = CreateRouteSetEditor.CreateNewNodeEvent(gameObject);
+            var @event = RouteEvent.CreateNewNodeEvent(this);
             @event.Type = GetComponentInParent<RouteSet>().DefaultNodeEventType;
             this.Events.Add(@event);
         }
