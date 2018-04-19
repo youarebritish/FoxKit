@@ -22,7 +22,7 @@
         /// Should the Route be drawn with the first and last nodes connected?
         /// </summary>
         [Tooltip("If checked, the first and last nodes will appear connected.")]
-        public bool DisplayAsCircuit = true;
+        public bool Closed = true;
 
         /// <summary>
         /// Should the route's name be exported as a hash instead of a string literal?
@@ -74,7 +74,7 @@
             }
 
             // Connect first and last nodes.
-            if (!this.DisplayAsCircuit)
+            if (!this.Closed)
             {
                 return;
             }

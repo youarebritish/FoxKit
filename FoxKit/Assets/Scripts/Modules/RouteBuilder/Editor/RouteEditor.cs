@@ -1,6 +1,5 @@
 ﻿namespace FoxKit.Modules.RouteBuilder.Editor
 {
-    using System.Collections.Generic;
     using UnityEditor;
 
     using UnityEngine;
@@ -13,14 +12,31 @@
     {
         public override void OnInspectorGUI()
         {
+            var route = this.target as Route;
+
             if (GUILayout.Button("Add Node"))
             {
-                (this.target as Route).AddNewNode();
+                route.AddNewNode();
             }
 
             EditorGUILayout.Space();
 
-            this.DrawDefaultInspector();
+            route.Closed = EditorGUILayout.Toggle("Closed", route.Closed);
+            route.TreatNameAsHash = EditorGUILayout.Toggle("Treat Name as Hash", route.TreatNameAsHash);            
+
+            Rotorz.Games.Collections.ReorderableListGUI.ListField(route.Nodes, this.CustomListItem, this.DrawEmpty);
+
+            EditorUtility.SetDirty(target);
+        }
+
+        private RouteNode CustomListItem(Rect position, RouteNode itemValue)
+        {
+            return EditorGUI.ObjectField(position, itemValue, typeof(RouteNode)) as RouteNode;
+        }
+
+        private void DrawEmpty()
+        {
+            GUILayout.Label("Route has no nodes.", EditorStyles.miniLabel);
         }
     }
 }
