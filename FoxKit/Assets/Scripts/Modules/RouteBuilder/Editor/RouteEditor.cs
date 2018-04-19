@@ -14,19 +14,33 @@
         public override void OnInspectorGUI()
         {
             var route = this.target as Route;
+            
+            var iconAddNode = Resources.Load("UI/Route Builder/Buttons/routebuilder_button_new_node") as Texture;
+            var iconParent = Resources.Load("UI/Route Builder/Buttons/routebuilder_button_parent") as Texture;
 
-            if (GUILayout.Button("Add Node"))
+            Rotorz.Games.Collections.ReorderableListGUI.Title("Tools");
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+
+            // Add node button
+            var addNodeContent = new GUIContent(iconAddNode, "Add a new node.");
+            if (GUILayout.Button(addNodeContent, GUILayout.MaxWidth(FoxKitUiUtils.BUTTON_DIMENSION), GUILayout.MaxHeight(FoxKitUiUtils.BUTTON_DIMENSION)))
             {
                 route.AddNewNode();
             }
 
-            if (GUILayout.Button("Select Parent"))
+            // Select parent button
+            var selectParentContent = new GUIContent(iconParent, "Select parent RouteSet.");
+            if (GUILayout.Button(selectParentContent, GUILayout.MaxWidth(FoxKitUiUtils.BUTTON_DIMENSION), GUILayout.MaxHeight(FoxKitUiUtils.BUTTON_DIMENSION)))
             {
                 UnitySceneUtils.Select(route.transform.parent.gameObject);
             }
+            GUILayout.FlexibleSpace();
+            EditorGUILayout.EndHorizontal();
 
-            EditorGUILayout.Space();
+            //EditorGUILayout.Space();
 
+            Rotorz.Games.Collections.ReorderableListGUI.Title("Settings");
             route.Closed = EditorGUILayout.Toggle("Closed", route.Closed);
             route.TreatNameAsHash = EditorGUILayout.Toggle("Treat Name as Hash", route.TreatNameAsHash);
 
