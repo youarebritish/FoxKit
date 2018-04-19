@@ -46,9 +46,8 @@ namespace FoxKit.Modules.RouteBuilder.Importer
             gameObject.transform.position = FoxUtils.FoxToUnity(data.Position);
             gameObject.transform.SetParent(route.transform);
             
-            var edgeEvent = routeSet.RegisterRouteEvent(data.EdgeEvent, routeSet.EdgeEventsContainer.transform, createEvent);
-
-            nodeComponent.EdgeEvent = edgeEvent;
+            routeSet.RegisterRouteEvent(data.EdgeEvent, gameObject, createEvent);
+            
             nodeComponent.Events = (from @event in data.Events
                                     select routeSet.RegisterRouteEvent(@event, gameObject.transform, createEvent))
                                    .ToList();

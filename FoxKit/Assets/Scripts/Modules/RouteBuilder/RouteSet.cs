@@ -1,4 +1,5 @@
 ﻿using FoxKit.Modules.RouteBuilder;
+using FoxKit.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 using static FoxKit.Modules.RouteBuilder.Importer.EventFactory;
@@ -10,6 +11,18 @@ using static FoxKit.Modules.RouteBuilder.Importer.EventFactory;
 public class RouteSet : MonoBehaviour
 {
     /// <summary>
+    /// Default event type to apply to new node events.
+    /// </summary>
+    [Tooltip("Default event type to apply to new node events.")]
+    public RouteEventType DefaultNodeEventType = RouteEventType.None;
+
+    /// <summary>
+    /// Default edge event type to apply to new nodes.
+    /// </summary>
+    [Tooltip("Default edge event type to apply to new nodes.")]
+    public RouteEventType DefaultEdgeEventType = RouteEventType.RelaxedWalk;
+
+    /// <summary>
     /// All of the Routes contained within this RouteSet.
     /// </summary>
     public List<Route> Routes = new List<Route>();
@@ -18,17 +31,7 @@ public class RouteSet : MonoBehaviour
     /// Maps registered route event data to route event instances.
     /// </summary>
     private Dictionary<FoxLib.Tpp.RouteSet.RouteEvent, RouteEvent> EdgeEvents = new Dictionary<FoxLib.Tpp.RouteSet.RouteEvent, RouteEvent>();
-
-    /// <summary>
-    /// GameObject parent to all global edge events.
-    /// </summary>
-    public GameObject EdgeEventsContainer;
-
-    /// <summary>
-    /// Default edge event type.
-    /// </summary>
-    private const RouteEventType DEFAULT_EDGE_EVENT_TYPE = RouteEventType.RelaxedWalk;
-        
+                
     /// <summary>
     /// Registers a route event instance.
     /// </summary>
@@ -58,10 +61,31 @@ public class RouteSet : MonoBehaviour
     }
 
     /// <summary>
+    /// Registers a route event instance.
+    /// </summary>
+    /// <param name="data">Raw data associated with the event.</param>
+    /// <param name="owner">GameObject for the event to attach to.</param>
+    /// <param name="createEvent">Function to create a new event.</param>
+    /// <returns>The new, registered route event instance.</returns>
+    public RouteEvent RegisterRouteEvent(FoxLib.Tpp.RouteSet.RouteEvent data, GameObject owner, CreateEventDelegate createEvent)
+    {
+        RouteEvent eventInstance = null;
+        if (EdgeEvents.TryGetValue(data, out eventInstance))
+        {
+            return eventInstance;
+        }
+        else
+        {
+            eventInstance = createEvent(owner, data);
+            EdgeEvents.Add(data, eventInstance);
+            return eventInstance;
+        }
+    }
+
+    /// <summary>
     /// Context menu to add a new Route to the RouteSet.
     /// </summary>
-    [ContextMenu("Add Route")]
-    private void AddNewRoute()
+    public void AddNewRoute()
     {
         var go = new GameObject();
         go.transform.SetParent(transform);
@@ -69,21 +93,8 @@ public class RouteSet : MonoBehaviour
 
         var route = go.AddComponent<Route>();
         Routes.Add(route);
-    }
 
-    /// <summary>
-    /// Context menu to add a new edge event to the RouteSet.
-    /// </summary>
-    [ContextMenu("Add Edge Event")]
-    private void AddNewEdgeEvent()
-    {
-        var go = new GameObject();
-        go.transform.SetParent(EdgeEventsContainer.transform);
-        go.name = GenerateNewEdgeEventName(EdgeEventsContainer.GetComponentsInChildren<RouteEvent>().Length);
-
-        var edgeEvent = go.AddComponent<RouteEvent>();
-        edgeEvent.Name = go.name;
-        edgeEvent.Type = DEFAULT_EDGE_EVENT_TYPE;
+        route.AddNewNode();
     }
 
     /// <summary>
@@ -95,15 +106,5 @@ public class RouteSet : MonoBehaviour
     private static string GenerateNewRouteName(string routeSetName, int routeCount)
     {
         return string.Format("rt_{0}_c_{1}", routeSetName, routeCount.ToString("D4"));
-    }
-
-    /// <summary>
-    /// Generate name for a new edge event.
-    /// </summary>
-    /// <param name="eventCount">Number of edge events already in the RouteSet.</param>
-    /// <returns>Name for a new edge event.</returns>
-    private static string GenerateNewEdgeEventName(int eventCount)
-    {
-        return string.Format("{0}_{1}", DEFAULT_EDGE_EVENT_TYPE, eventCount.ToString("D4"));
     }
 }
