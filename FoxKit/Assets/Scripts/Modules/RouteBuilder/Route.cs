@@ -21,13 +21,11 @@
         /// <summary>
         /// Should the Route be drawn with the first and last nodes connected?
         /// </summary>
-        [Tooltip("If checked, the first and last nodes will appear connected.")]
         public bool Closed = true;
 
         /// <summary>
         /// Should the route's name be exported as a hash instead of a string literal?
         /// </summary>
-        [Tooltip("When exporting, treat the route's name as a hash instead of a string literal. Use if its true name is unknown.")]
         public bool TreatNameAsHash;
 
         /// <summary>

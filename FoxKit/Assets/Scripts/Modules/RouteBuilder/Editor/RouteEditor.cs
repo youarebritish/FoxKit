@@ -50,8 +50,12 @@
         private static void DrawSettings(Route route)
         {
             Rotorz.Games.Collections.ReorderableListGUI.Title("Settings");
-            route.Closed = EditorGUILayout.Toggle("Closed", route.Closed);
-            route.TreatNameAsHash = EditorGUILayout.Toggle("Treat name as hash", route.TreatNameAsHash);
+
+            var closedContent = new GUIContent("Closed", "If checked, the first and last nodes will appear connected.");
+            route.Closed = EditorGUILayout.Toggle(closedContent, route.Closed);
+
+            var treatNameAsHash = new GUIContent("Treat name as hash", "When exporting, treat the route's name as a hash instead of a string literal. Use if its true name is unknown.");
+            route.TreatNameAsHash = EditorGUILayout.Toggle(treatNameAsHash, route.TreatNameAsHash);
         }
 
         private static void DrawNodeList(Route route)
