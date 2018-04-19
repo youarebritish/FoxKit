@@ -20,13 +20,11 @@
         /// <summary>
         /// Events for AI agents to perform at this node.
         /// </summary>
-        [Tooltip("Events for AI agents to perform at this node.")]
         public List<RouteEvent> Events = new List<RouteEvent>();
 
         /// <summary>
         /// Context menu to add a new node to the Route.
         /// </summary>
-        [ContextMenu("Add Node", false, 0)]
         public void AddNewNode()
         {
             CreateRouteSetEditor.CreateNewNode(transform.GetComponentInParent<Route>());

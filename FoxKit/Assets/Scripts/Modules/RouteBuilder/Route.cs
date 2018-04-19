@@ -48,12 +48,14 @@
             foreach (var node in this.Nodes)
             {
                 Gizmos.color = RouteBuilderPreferences.Instance.NodeColor;
-                if (!isRouteSelected)
+                if (isRouteSelected)
+                {
+                    Gizmos.DrawIcon(node.transform.position, "Route Builder/routebuilder_gizmo_node.png", true);
+                }
+                else
                 {
                     Gizmos.color = new Color(Gizmos.color.r, Gizmos.color.g, Gizmos.color.b, Gizmos.color.a * 0.1f);
-                }
-
-                Gizmos.DrawWireSphere(node.transform.position, RouteBuilderPreferences.Instance.NodeSize);
+                }                
 
                 if (previousNode == null)
                 {
