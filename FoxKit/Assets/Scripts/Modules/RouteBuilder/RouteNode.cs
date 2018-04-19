@@ -35,7 +35,6 @@
         /// <summary>
         /// Context menu to add a new event to the node.
         /// </summary>
-        [ContextMenu("Add Event", false, 1)]
         public void AddNewEvent()
         {
             var @event = CreateRouteSetEditor.CreateNewNodeEvent(gameObject);
@@ -46,7 +45,6 @@
         /// <summary>
         /// Select the next node.
         /// </summary>
-        [ContextMenu("Next Node", false, 100)]
         private void SelectNextNode()
         {
             var route = transform.GetComponentInParent<Route>();
@@ -67,7 +65,6 @@
         /// <summary>
         /// Select the previous node.
         /// </summary>
-        [ContextMenu("Previous Node", false, 101)]
         private void SelectPreviousNode()
         {
             var route = transform.GetComponentInParent<Route>();

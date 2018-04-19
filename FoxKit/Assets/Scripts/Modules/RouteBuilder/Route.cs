@@ -33,7 +33,6 @@
         /// <summary>
         /// Context menu to add a new node to the Route.
         /// </summary>
-        [ContextMenu("Add Node")]
         public void AddNewNode()
         {
             CreateRouteSetEditor.CreateNewNode(this);
