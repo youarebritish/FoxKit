@@ -46,7 +46,9 @@ Normal
 OnBaseRoute
 OnTheHill
 OpenDoor
+PickUpHoneyBee
 PileBunker
+PutHostageInVehicle
 Recovery
 RelaxedIdleAct
 RelaxedRun
@@ -72,7 +74,9 @@ StandSearch
 SupineSnipe
 SwitchRoute
 SyncRoute
+UseFlashLight
 UseSearchLight
+PutDownHoneyBee
 Vanish
 VehicleBackFast
 VehicleBackNormal

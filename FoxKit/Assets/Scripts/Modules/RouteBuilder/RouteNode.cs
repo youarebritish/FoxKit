@@ -3,31 +3,30 @@
     using FoxKit.Utils;
     using System.Collections.Generic;
     using System.Linq;
+    using UnityEditor;
     using UnityEngine;
 
     /// <summary>
     /// A point in a Route for an AI agent to navigate to.
     /// </summary>
     [System.Serializable]
+    [RequireComponent(typeof(RouteEvent))]
     public class RouteNode : MonoBehaviour
     {
         /// <summary>
         /// Event for AI agents to perform on the way to this node.
         /// </summary>
-        [Tooltip("Event for AI agents to perform on the way to this node.")]
-        public RouteEvent EdgeEvent;
+        public RouteEvent EdgeEvent {  get { return GetComponent<RouteEvent>(); } }
 
         /// <summary>
         /// Events for AI agents to perform at this node.
         /// </summary>
-        [Tooltip("Events for AI agents to perform at this node.")]
         public List<RouteEvent> Events = new List<RouteEvent>();
 
         /// <summary>
         /// Context menu to add a new node to the Route.
         /// </summary>
-        [ContextMenu("Add Node", false, 0)]
-        private void AddNewNode()
+        public void AddNewNode()
         {
             CreateRouteSetEditor.CreateNewNode(transform.GetComponentInParent<Route>());
         }
@@ -35,18 +34,16 @@
         /// <summary>
         /// Context menu to add a new event to the node.
         /// </summary>
-        [ContextMenu("Add Event", false, 1)]
-        private void AddNewEvent()
+        public void AddNewEvent()
         {
-            var @event = CreateRouteSetEditor.CreateNewNodeEvent(gameObject);
+            var @event = RouteEvent.CreateNewNodeEvent(this, GetComponentInParent<RouteSet>().DefaultNodeEventType);
             this.Events.Add(@event);
         }
 
         /// <summary>
         /// Select the next node.
         /// </summary>
-        [ContextMenu("Next Node", false, 100)]
-        private void SelectNextNode()
+        public void SelectNextNode()
         {
             var route = transform.GetComponentInParent<Route>();
             var id = route.Nodes.IndexOf(this);
@@ -61,13 +58,13 @@
                 nextNode = route.Nodes[id + 1].gameObject;
             }
             UnitySceneUtils.Select(nextNode);
+            SceneView.lastActiveSceneView.FrameSelected();
         }
 
         /// <summary>
         /// Select the previous node.
         /// </summary>
-        [ContextMenu("Previous Node", false, 101)]
-        private void SelectPreviousNode()
+        public void SelectPreviousNode()
         {
             var route = transform.GetComponentInParent<Route>();
             var id = route.Nodes.IndexOf(this);
@@ -82,6 +79,7 @@
                 nextNode = route.Nodes[id - 1].gameObject;
             }
             UnitySceneUtils.Select(nextNode);
+            SceneView.lastActiveSceneView.FrameSelected();
         }
     }
 }
