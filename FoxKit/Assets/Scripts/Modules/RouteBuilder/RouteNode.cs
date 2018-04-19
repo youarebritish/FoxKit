@@ -3,6 +3,7 @@
     using FoxKit.Utils;
     using System.Collections.Generic;
     using System.Linq;
+    using UnityEditor;
     using UnityEngine;
 
     /// <summary>
@@ -57,6 +58,7 @@
                 nextNode = route.Nodes[id + 1].gameObject;
             }
             UnitySceneUtils.Select(nextNode);
+            SceneView.lastActiveSceneView.FrameSelected();
         }
 
         /// <summary>
@@ -77,6 +79,7 @@
                 nextNode = route.Nodes[id - 1].gameObject;
             }
             UnitySceneUtils.Select(nextNode);
+            SceneView.lastActiveSceneView.FrameSelected();
         }
     }
 }

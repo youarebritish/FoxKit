@@ -62,6 +62,7 @@
             route.Nodes.Add(node);
 
             UnitySceneUtils.Select(go);
+            SceneView.lastActiveSceneView.FrameSelected();
 
             return node;
         }        

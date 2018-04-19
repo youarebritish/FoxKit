@@ -3,7 +3,7 @@
     using FoxKit.Utils;
     using System;
     using System.Collections.Generic;
-
+    using UnityEditor;
     using UnityEngine;
 
     /// <summary>
@@ -109,6 +109,7 @@
             go.transform.SetParent(parent.transform);
 
             UnitySceneUtils.Select(go);
+            SceneView.lastActiveSceneView.FrameSelected();
 
             var routeEvent = go.AddComponent<RouteEvent>();
             routeEvent.Type = type;
