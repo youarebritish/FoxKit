@@ -45,7 +45,7 @@
         /// <summary>
         /// Select the next node.
         /// </summary>
-        private void SelectNextNode()
+        public void SelectNextNode()
         {
             var route = transform.GetComponentInParent<Route>();
             var id = route.Nodes.IndexOf(this);
@@ -65,7 +65,7 @@
         /// <summary>
         /// Select the previous node.
         /// </summary>
-        private void SelectPreviousNode()
+        public void SelectPreviousNode()
         {
             var route = transform.GetComponentInParent<Route>();
             var id = route.Nodes.IndexOf(this);
