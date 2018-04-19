@@ -7,6 +7,7 @@
     using UnityEditor.Experimental.AssetImporters;
     using System;
     using FoxKit.Modules.RouteBuilder;
+    using static FoxKit.Modules.RouteBuilder.RouteEvent;
 
     /// <summary>
     /// ScriptedImporter to handle importing frt files.
@@ -72,31 +73,6 @@
         private static string GenerateNodeName(string routeName, int nodeIndex)
         {
             return String.Format("{0}_Node{1:0000}", routeName, nodeIndex.ToString("0000"));
-        }
-
-        /// <summary>
-        /// Generates a route event name.
-        /// </summary>
-        /// <param name="eventType">Type of the event.</param>
-        /// <param name="idGenerator">ID number generator.</param>
-        /// <returns>A new route event name.</returns>
-        private static string GenerateEventName(string eventType, EventIdGenerator idGenerator)
-        {
-            return String.Format("{0}_{1:0000}", eventType, idGenerator.Generate());
-        }
-
-        /// <summary>
-        /// Generates route event IDs.
-        /// </summary>
-        private class EventIdGenerator
-        {
-            private int lastId;
-
-            public int Generate()
-            {
-                lastId++;
-                return lastId;
-            }
         }
         
         /// <summary>

@@ -1,12 +1,15 @@
 ﻿namespace FoxKit.Modules.RouteBuilder
 {
+    using FoxKit.Utils;
+    using System;
     using System.Collections.Generic;
-
+    using UnityEditor;
     using UnityEngine;
 
     /// <summary>
     /// An event for an AI agent to perform.
     /// </summary>
+    [DisallowMultipleComponent]
     public class RouteEvent : MonoBehaviour
     {
         /// <summary>
@@ -17,7 +20,6 @@
         /// <summary>
         /// Should the event's name be treated as a hash?
         /// </summary>
-        [Tooltip("When exporting, treat the event's name as a hash instead of a string literal. Use if its true name is unknown.")]
         public bool TreatTypeAsHash;
 
         /// <summary>
@@ -29,13 +31,11 @@
         /// <summary>
         /// Event parameters. There must be exactly 10.
         /// </summary>
-        [Tooltip("There must be exactly 10 parameters.")]
         public List<uint> Params = new List<uint> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
         /// <summary>
         /// Must be a maximum of four characters.
         /// </summary>
-        [Tooltip("Must be a maximum of four characters.")]
         public string Snippet = string.Empty;
 
         /// <summary>
@@ -73,6 +73,81 @@
                 return typeString.Remove(0, 1);
             }
             return typeString;
+        }
+
+        public void AddNewNode()
+        {
+            var node = GetComponent<RouteNode>();
+            if (node == null)
+            {
+                node = transform.parent.GetComponent<RouteNode>();
+            }
+            node.AddNewNode();
+        }
+
+        public void AddNewEvent()
+        {
+            var node = GetComponent<RouteNode>();
+            if (node == null)
+            {
+                node = transform.parent.GetComponent<RouteNode>();
+            }
+            node.AddNewEvent();
+        }
+
+        /// <summary>
+        /// Create a new RouteEvent.
+        /// </summary>
+        /// <param name="parent">GameObject parent to own the event.</param>
+        public static RouteEvent CreateNewNodeEvent(RouteNode parent, RouteEventType type)
+        {
+            var go = new GameObject();
+            go.transform.position = parent.transform.position;
+            go.transform.SetParent(parent.transform);
+
+            UnitySceneUtils.Select(go);
+            SceneView.lastActiveSceneView.FrameSelected();
+
+            var routeEvent = go.AddComponent<RouteEvent>();
+            routeEvent.Type = type;
+            go.name = GenerateEventName(EventTypeToString(routeEvent.Type), parent.Events.Count);
+            return routeEvent;
+        }
+
+        /// <summary>
+        /// Generates a route event name.
+        /// </summary>
+        /// <param name="eventType">Type of the event.</param>
+        /// <param name="idGenerator">ID number generator.</param>
+        /// <returns>A new route event name.</returns>
+        public static string GenerateEventName(string eventType, EventIdGenerator idGenerator)
+        {
+            return GenerateEventName(eventType, idGenerator.Generate());
+        }
+
+        /// <summary>
+        /// Generates a route event name.
+        /// </summary>
+        /// <param name="eventType">Type of the event.</param>
+        /// <param name="id">ID number of the event.</param>
+        /// <returns>A new route event name.</returns>
+        private static string GenerateEventName(string eventType, int id)
+        {
+            return String.Format("{0}_{1:0000}", eventType, id);
+        }
+
+        /// <summary>
+        /// Generates route event IDs.
+        /// </summary>
+        public class EventIdGenerator
+        {
+            private int lastId;
+
+            public int Generate()
+            {
+                lastId++;
+                return lastId;
+            }
         }
     }
 }

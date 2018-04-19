@@ -1,5 +1,6 @@
 ﻿namespace FoxKit.Modules.RouteBuilder
 {
+    using FoxKit.Utils;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -21,20 +22,17 @@
         /// <summary>
         /// Should the Route be drawn with the first and last nodes connected?
         /// </summary>
-        [Tooltip("If checked, the first and last nodes will appear connected.")]
-        public bool DisplayAsCircuit = true;
+        public bool Closed = true;
 
         /// <summary>
         /// Should the route's name be exported as a hash instead of a string literal?
         /// </summary>
-        [Tooltip("When exporting, treat the route's name as a hash instead of a string literal. Use if its true name is unknown.")]
         public bool TreatNameAsHash;
 
         /// <summary>
         /// Context menu to add a new node to the Route.
         /// </summary>
-        [ContextMenu("Add Node")]
-        private void AddNewNode()
+        public void AddNewNode()
         {
             CreateRouteSetEditor.CreateNewNode(this);
         }
@@ -48,15 +46,18 @@
 
             Gizmos.color = RouteBuilderPreferences.Instance.EdgeColor;
             RouteNode previousNode = null;
-            foreach (var node in this.Nodes)
+            for(int i = 0; i < this.Nodes.Count; i++)
             {
+                var node = this.Nodes[i];
                 Gizmos.color = RouteBuilderPreferences.Instance.NodeColor;
-                if (!isRouteSelected)
+                if (isRouteSelected)
+                {
+                    Gizmos.DrawIcon(node.transform.position, "Route Builder/routebuilder_gizmo_node.png", true);
+                }
+                else
                 {
                     Gizmos.color = new Color(Gizmos.color.r, Gizmos.color.g, Gizmos.color.b, Gizmos.color.a * 0.1f);
-                }
-
-                Gizmos.DrawWireSphere(node.transform.position, RouteBuilderPreferences.Instance.NodeSize);
+                }                
 
                 if (previousNode == null)
                 {
@@ -69,13 +70,13 @@
                 {
                     Gizmos.color = new Color(Gizmos.color.r, Gizmos.color.g, Gizmos.color.b, Gizmos.color.a * 0.1f);
                 }
-
+                
                 Gizmos.DrawLine(previousNode.transform.position, node.transform.position);
                 previousNode = node;
             }
 
             // Connect first and last nodes.
-            if (!this.DisplayAsCircuit)
+            if (!this.Closed)
             {
                 return;
             }

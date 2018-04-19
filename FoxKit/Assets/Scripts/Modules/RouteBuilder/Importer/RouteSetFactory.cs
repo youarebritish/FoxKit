@@ -46,8 +46,6 @@ namespace FoxKit.Modules.RouteBuilder.Importer
             var gameObject = new GameObject(name);
 
             var routeSetComponent = gameObject.AddComponent<RouteSet>();
-            routeSetComponent.EdgeEventsContainer = new GameObject("Edge Events");
-            routeSetComponent.EdgeEventsContainer.transform.SetParent(gameObject.transform);
 
             routeSetComponent.Routes = (from route in data.Routes
                                         select createRoute(route, routeSetComponent))

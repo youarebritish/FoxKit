@@ -21,8 +21,6 @@
         void OnGUI()
         {
             var prefs = TerrainPreferences.Instance;
-            var maxHeight = prefs.MaxHeight;
-
             prefs.MaxHeight = EditorGUILayout.FloatField("Maximum height:", prefs.MaxHeight);
 
             EditorGUILayout.Space();

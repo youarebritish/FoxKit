@@ -31,14 +31,7 @@
             var go = new GameObject();
             var routeSet = go.AddComponent<RouteSet>();
             go.transform.position = Vector3.zero;
-
-            // Create edge events container.
-            var edgeEventsContainer = new GameObject();
-            edgeEventsContainer.transform.position = Vector3.zero;
-            edgeEventsContainer.transform.SetParent(go.transform);
-            edgeEventsContainer.name = EDGE_EVENTS_CONTAINER_DEFAULT_NAME;
-            routeSet.EdgeEventsContainer = edgeEventsContainer;
-
+            
             go.name = ROUTESET_DEFAULT_NAME;
 
             // Select new RouteSet.
@@ -65,29 +58,14 @@
             go.name = GenerateNewNodeName(route.gameObject.name, route.Nodes.Count);
 
             var node = go.AddComponent<RouteNode>();
+            node.EdgeEvent.Type = route.GetComponentInParent<RouteSet>().DefaultEdgeEventType;
             route.Nodes.Add(node);
 
             UnitySceneUtils.Select(go);
+            SceneView.lastActiveSceneView.FrameSelected();
 
             return node;
-        }
-
-        /// <summary>
-        /// Create a new RouteEvent.
-        /// </summary>
-        /// <param name="parent">GameObject parent to own the event.</param>
-        public static RouteEvent CreateNewNodeEvent(GameObject parent)
-        {
-            var go = new GameObject();
-            go.transform.position = parent.transform.position;
-            go.transform.SetParent(parent.transform);
-            go.name = "RouteEvent";
-
-            UnitySceneUtils.Select(go);
-
-            var routeEvent = go.AddComponent<RouteEvent>();
-            return routeEvent;
-        }
+        }        
 
         /// <summary>
         /// Generate a position for a new node.

@@ -45,7 +45,11 @@ namespace FoxKit.Modules.RouteBuilder.Importer
         /// <returns>The constructed RouteEvent.</returns>
         private static RouteEvent Create(GameObject parent, FoxLib.Tpp.RouteSet.RouteEvent data, TryUnhashDelegate getEventTypeName, GenerateEventNameDelegate generateEventName)
         {
-            var component = parent.AddComponent<RouteEvent>();
+            var component = parent.GetComponent<RouteEvent>();//AddComponent<RouteEvent>();
+            if (component == null)
+            {
+                component = parent.AddComponent<RouteEvent>();
+            }
 
             // Dumb hack to support the event with no name.
             if (data.EventType == 3205930904)
