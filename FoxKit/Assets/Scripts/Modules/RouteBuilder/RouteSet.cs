@@ -1,4 +1,5 @@
 ﻿using FoxKit.Modules.RouteBuilder;
+using FoxKit.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 using static FoxKit.Modules.RouteBuilder.Importer.EventFactory;
@@ -9,6 +10,18 @@ using static FoxKit.Modules.RouteBuilder.Importer.EventFactory;
 [System.Serializable]
 public class RouteSet : MonoBehaviour
 {
+    /// <summary>
+    /// Default event type to apply to new node events.
+    /// </summary>
+    [Tooltip("Default event type to apply to new node events.")]
+    public RouteEventType DefaultNodeEventType = RouteEventType.None;
+
+    /// <summary>
+    /// Default edge event type to apply to new nodes.
+    /// </summary>
+    [Tooltip("Default edge event type to apply to new nodes.")]
+    public RouteEventType DefaultEdgeEventType = RouteEventType.RelaxedWalk;
+
     /// <summary>
     /// All of the Routes contained within this RouteSet.
     /// </summary>
@@ -23,12 +36,7 @@ public class RouteSet : MonoBehaviour
     /// GameObject parent to all global edge events.
     /// </summary>
     public GameObject EdgeEventsContainer;
-
-    /// <summary>
-    /// Default edge event type.
-    /// </summary>
-    private const RouteEventType DEFAULT_EDGE_EVENT_TYPE = RouteEventType.RelaxedWalk;
-        
+            
     /// <summary>
     /// Registers a route event instance.
     /// </summary>
@@ -69,21 +77,22 @@ public class RouteSet : MonoBehaviour
 
         var route = go.AddComponent<Route>();
         Routes.Add(route);
+        UnitySceneUtils.Select(go);
     }
 
     /// <summary>
     /// Context menu to add a new edge event to the RouteSet.
     /// </summary>
     [ContextMenu("Add Edge Event")]
-    private void AddNewEdgeEvent()
+    public void AddNewEdgeEvent()
     {
         var go = new GameObject();
         go.transform.SetParent(EdgeEventsContainer.transform);
-        go.name = GenerateNewEdgeEventName(EdgeEventsContainer.GetComponentsInChildren<RouteEvent>().Length);
+        go.name = GenerateNewEdgeEventName(DefaultEdgeEventType, EdgeEventsContainer.GetComponentsInChildren<RouteEvent>().Length);
 
         var edgeEvent = go.AddComponent<RouteEvent>();
         edgeEvent.Name = go.name;
-        edgeEvent.Type = DEFAULT_EDGE_EVENT_TYPE;
+        edgeEvent.Type = DefaultEdgeEventType;
     }
 
     /// <summary>
@@ -102,8 +111,8 @@ public class RouteSet : MonoBehaviour
     /// </summary>
     /// <param name="eventCount">Number of edge events already in the RouteSet.</param>
     /// <returns>Name for a new edge event.</returns>
-    private static string GenerateNewEdgeEventName(int eventCount)
+    private static string GenerateNewEdgeEventName(RouteEventType eventType, int eventCount)
     {
-        return string.Format("{0}_{1}", DEFAULT_EDGE_EVENT_TYPE, eventCount.ToString("D4"));
+        return string.Format("{0}_{1}", eventType, eventCount.ToString("D4"));
     }
 }
