@@ -1,5 +1,6 @@
 ﻿namespace FoxKit.Modules.RouteBuilder.Editor
 {
+    using FoxKit.Utils;
     using UnityEditor;
 
     using UnityEngine;
@@ -17,6 +18,11 @@
             if (GUILayout.Button("Add Node"))
             {
                 route.AddNewNode();
+            }
+
+            if (GUILayout.Button("Select Parent"))
+            {
+                UnitySceneUtils.Select(route.transform.parent.gameObject);
             }
 
             EditorGUILayout.Space();

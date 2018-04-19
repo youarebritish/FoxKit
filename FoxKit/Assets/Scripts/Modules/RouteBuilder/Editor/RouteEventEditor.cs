@@ -1,6 +1,6 @@
 ﻿namespace FoxKit.Modules.RouteBuilder.Editor
 {
-
+    using FoxKit.Utils;
     using UnityEditor;
 
     using UnityEngine;
@@ -20,6 +20,10 @@
             if (GUILayout.Button("Add Event"))
             {
                 (this.target as RouteEvent).AddNewEvent();
+            }
+            if (GUILayout.Button("Select Parent"))
+            {
+                UnitySceneUtils.Select((this.target as RouteEvent).transform.parent.gameObject);
             }
 
             EditorGUILayout.Space();
