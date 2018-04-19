@@ -6,6 +6,7 @@
 
     using UnityEngine;
     using FoxKit.Modules.RouteBuilder.Exporter;
+    using FoxKit.Utils;
 
     /// <summary>
     /// Custom editor for RouteSets.
@@ -15,17 +16,35 @@
     {
         public override void OnInspectorGUI()
         {
-            if (GUILayout.Button("Add Route"))
+            var routeset = this.target as RouteSet;
+
+            DrawToolShelf(routeset);
+            DrawSettings(routeset);
+            DrawRouteList(routeset);
+        }
+
+        private static void DrawToolShelf(RouteSet routeset)
+        {
+            var iconAddRoute = Resources.Load("UI/Route Builder/Buttons/routebuilder_button_route") as Texture;
+            var iconExport = Resources.Load("UI/Route Builder/Buttons/routebuilder_button_export") as Texture;
+
+            Rotorz.Games.Collections.ReorderableListGUI.Title("Tools");
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+
+            // Add route button
+            if (FoxKitUiUtils.ToolButton(iconAddRoute, "Add a new route."))
             {
-                (this.target as RouteSet).AddNewRoute();
+                routeset.AddNewRoute();
             }
-            
-            if (GUILayout.Button("Export frt"))
+
+            // Export button
+            if (FoxKitUiUtils.ToolButton(iconExport, "Export to .frt file."))
             {
                 var exportPath = EditorUtility.SaveFilePanel(
                     "Export frt",
                     string.Empty,
-                    this.target.name + ".frt",
+                    routeset.name + ".frt",
                     "frt");
 
                 if (string.IsNullOrEmpty(exportPath))
@@ -33,12 +52,34 @@
                     return;
                 }
                 var hashManager = new StrCode32HashManager();
-                RouteSetExporter.ExportRouteSet(this.target as RouteSet, hashManager, exportPath);
+                RouteSetExporter.ExportRouteSet(routeset, hashManager, exportPath);
             }
 
-            EditorGUILayout.Space();
+            GUILayout.FlexibleSpace();
+            EditorGUILayout.EndHorizontal();
+        }
 
-            this.DrawDefaultInspector();
+        private static void DrawSettings(RouteSet routeset)
+        {
+            Rotorz.Games.Collections.ReorderableListGUI.Title("Settings");
+            routeset.DefaultNodeEventType = (RouteEventType)EditorGUILayout.EnumPopup("Default node event type", routeset.DefaultNodeEventType);
+            routeset.DefaultEdgeEventType = (RouteEventType)EditorGUILayout.EnumPopup("Default edge event type", routeset.DefaultEdgeEventType);
+        }
+
+        private static void DrawRouteList(RouteSet routeset)
+        {
+            Rotorz.Games.Collections.ReorderableListGUI.Title("Routes");
+            Rotorz.Games.Collections.ReorderableListGUI.ListField(routeset.Routes, CustomListItem, DrawEmpty);
+        }
+
+        private static Route CustomListItem(Rect position, Route itemValue)
+        {
+            return EditorGUI.ObjectField(position, itemValue, typeof(Route)) as Route;
+        }
+
+        private static void DrawEmpty()
+        {
+            GUILayout.Label("RouteSet has no routes.", EditorStyles.miniLabel);
         }
     }
 }

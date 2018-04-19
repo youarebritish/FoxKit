@@ -51,7 +51,7 @@
         {
             Rotorz.Games.Collections.ReorderableListGUI.Title("Settings");
             route.Closed = EditorGUILayout.Toggle("Closed", route.Closed);
-            route.TreatNameAsHash = EditorGUILayout.Toggle("Treat Name as Hash", route.TreatNameAsHash);
+            route.TreatNameAsHash = EditorGUILayout.Toggle("Treat name as hash", route.TreatNameAsHash);
         }
 
         private static void DrawNodeList(Route route)
