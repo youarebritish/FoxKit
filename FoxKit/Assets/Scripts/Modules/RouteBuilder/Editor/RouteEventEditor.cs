@@ -13,19 +13,6 @@
     {
         public override void OnInspectorGUI()
         {
-            /*if (GUILayout.Button("Add Node"))
-            {
-                (this.target as RouteEvent).AddNewNode();
-            }
-            if (GUILayout.Button("Add Event"))
-            {
-                (this.target as RouteEvent).AddNewEvent();
-            }
-            if (GUILayout.Button("Select Parent"))
-            {
-                UnitySceneUtils.Select((this.target as RouteEvent).transform.parent.gameObject);
-            }*/
-
             var @event = (this.target as RouteEvent);
             DrawToolShelf(@event);
             

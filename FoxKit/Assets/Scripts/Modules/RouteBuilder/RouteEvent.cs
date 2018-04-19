@@ -102,7 +102,7 @@
         /// Create a new RouteEvent.
         /// </summary>
         /// <param name="parent">GameObject parent to own the event.</param>
-        public static RouteEvent CreateNewNodeEvent(RouteNode parent)
+        public static RouteEvent CreateNewNodeEvent(RouteNode parent, RouteEventType type)
         {
             var go = new GameObject();
             go.transform.position = parent.transform.position;
@@ -111,6 +111,7 @@
             UnitySceneUtils.Select(go);
 
             var routeEvent = go.AddComponent<RouteEvent>();
+            routeEvent.Type = type;
             go.name = GenerateEventName(EventTypeToString(routeEvent.Type), parent.Events.Count);
             return routeEvent;
         }

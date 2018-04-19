@@ -37,8 +37,7 @@
         /// </summary>
         public void AddNewEvent()
         {
-            var @event = RouteEvent.CreateNewNodeEvent(this);
-            @event.Type = GetComponentInParent<RouteSet>().DefaultNodeEventType;
+            var @event = RouteEvent.CreateNewNodeEvent(this, GetComponentInParent<RouteSet>().DefaultNodeEventType);
             this.Events.Add(@event);
         }
 
