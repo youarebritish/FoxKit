@@ -2,6 +2,7 @@
 {
 
     using UnityEditor;
+    using UnityEngine;
 
     /// <summary>
     /// Custom editor for RouteNodes.
@@ -12,19 +13,23 @@
         
         public override void OnInspectorGUI()
         {
-            /*
-            if (GUILayout.Button("Add Node"))
-            {
-                (this.target as RouteNode).AddNewNode();
-            }
-            if (GUILayout.Button("Add Event"))
-            {
-                (this.target as RouteNode).AddNewEvent();
-            }
+            EditorGUILayout.Space();
 
-            EditorGUILayout.Space();*/
+            var node = this.target as RouteNode;
 
-            this.DrawDefaultInspector();
+            Rotorz.Games.Collections.ReorderableListGUI.ListField(node.Events, this.CustomListItem, this.DrawEmpty);
+
+            EditorUtility.SetDirty(target);
+        }
+
+        private RouteEvent CustomListItem(Rect position, RouteEvent itemValue)
+        {
+            return EditorGUI.ObjectField(position, itemValue, typeof(RouteEvent)) as RouteEvent;
+        }
+
+        private void DrawEmpty()
+        {
+            GUILayout.Label("Node has no node events.", EditorStyles.miniLabel);
         }
     }
 }
