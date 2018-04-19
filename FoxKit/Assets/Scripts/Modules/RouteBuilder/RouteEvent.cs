@@ -20,7 +20,6 @@
         /// <summary>
         /// Should the event's name be treated as a hash?
         /// </summary>
-        [Tooltip("When exporting, treat the event's name as a hash instead of a string literal. Use if its true name is unknown.")]
         public bool TreatTypeAsHash;
 
         /// <summary>
@@ -32,13 +31,11 @@
         /// <summary>
         /// Event parameters. There must be exactly 10.
         /// </summary>
-        [Tooltip("There must be exactly 10 parameters.")]
         public List<uint> Params = new List<uint> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
         /// <summary>
         /// Must be a maximum of four characters.
         /// </summary>
-        [Tooltip("Must be a maximum of four characters.")]
         public string Snippet = string.Empty;
 
         /// <summary>

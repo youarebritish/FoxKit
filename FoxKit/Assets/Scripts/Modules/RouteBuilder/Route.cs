@@ -1,5 +1,6 @@
 ﻿namespace FoxKit.Modules.RouteBuilder
 {
+    using FoxKit.Utils;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -45,8 +46,9 @@
 
             Gizmos.color = RouteBuilderPreferences.Instance.EdgeColor;
             RouteNode previousNode = null;
-            foreach (var node in this.Nodes)
+            for(int i = 0; i < this.Nodes.Count; i++)
             {
+                var node = this.Nodes[i];
                 Gizmos.color = RouteBuilderPreferences.Instance.NodeColor;
                 if (isRouteSelected)
                 {
@@ -68,7 +70,7 @@
                 {
                     Gizmos.color = new Color(Gizmos.color.r, Gizmos.color.g, Gizmos.color.b, Gizmos.color.a * 0.1f);
                 }
-
+                
                 Gizmos.DrawLine(previousNode.transform.position, node.transform.position);
                 previousNode = node;
             }

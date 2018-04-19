@@ -14,6 +14,7 @@
         public override void OnInspectorGUI()
         {
             var @event = (this.target as RouteEvent);
+
             DrawToolShelf(@event);
             DrawSettings(@event);
             DrawParams(@event);
