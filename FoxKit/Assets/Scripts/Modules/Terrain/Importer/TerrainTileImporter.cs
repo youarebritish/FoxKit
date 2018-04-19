@@ -72,6 +72,11 @@
             var xIndex = int.Parse(terrainGO.name.Substring(5, 3)) - 101;            
             var zIndex = int.Parse(terrainGO.name.Substring(9, 3)) - 101;
 
+            var tileComponent = terrainGO.AddComponent<TerrainTile>();
+            tileComponent.Level = terrainGO.name.Substring(0, 4);
+            tileComponent.IndexX = xIndex + 101;
+            tileComponent.IndexZ = zIndex + 101;
+
             terrainGO.transform.position = new Vector3(-4096 + (128 * zIndex), 0, -4096 + (128 * xIndex));
 
             ctx.AddObjectToAsset(terrainGO.name, terrainGO);
