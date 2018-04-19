@@ -28,15 +28,15 @@
 
             var @event = (this.target as RouteEvent);
             DrawToolShelf(@event);
-
-            EditorGUILayout.Space();
-
+            
+            Rotorz.Games.Collections.ReorderableListGUI.Title("Settings");
             this.DrawDefaultInspector();
         }
 
         private static void DrawToolShelf(RouteEvent @event)
         {
-            var iconAddEvent = Resources.Load("UI/Route Builder/Buttons/routebuilder_button_new_node") as Texture;
+            var iconAddNode = Resources.Load("UI/Route Builder/Buttons/routebuilder_button_new_node") as Texture;
+            var iconAddEvent = Resources.Load("UI/Route Builder/Buttons/routebuilder_button_new_event") as Texture;
             var iconParent = Resources.Load("UI/Route Builder/Buttons/routebuilder_button_parent") as Texture;
             var iconNext = Resources.Load("UI/Route Builder/Buttons/routebuilder_button_next") as Texture;
             var iconPrev = Resources.Load("UI/Route Builder/Buttons/routebuilder_button_prev") as Texture;
@@ -46,9 +46,15 @@
             GUILayout.FlexibleSpace();
 
             // Add node button
-            if (FoxKitUiUtils.ToolButton(iconAddEvent, "Add a new node."))
+            if (FoxKitUiUtils.ToolButton(iconAddNode, "Add a new node."))
             {
                 @event.AddNewNode();
+            }
+
+            // Add event button
+            if (FoxKitUiUtils.ToolButton(iconAddEvent, "Add a new event."))
+            {
+                @event.AddNewEvent();
             }
 
             // Select parent button
