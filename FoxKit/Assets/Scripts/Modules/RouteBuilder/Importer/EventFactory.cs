@@ -43,7 +43,7 @@ namespace FoxKit.Modules.RouteBuilder.Importer
         /// <returns></returns>
         public static CreateEventDelegate CreateEdgeEventFactory(TryUnhashDelegate getEventTypeName, GenerateEventNameDelegate generateEventName)
         {
-            return (parent, data) => CreateNodeEvent(parent, data, getEventTypeName, generateEventName);
+            return (parent, data) => CreateEdgeEvent(parent, data, getEventTypeName, generateEventName);
         }
 
         /// <summary>

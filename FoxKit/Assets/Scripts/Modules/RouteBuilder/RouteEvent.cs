@@ -13,7 +13,7 @@
         /// <summary>
         /// Should the event's name be treated as a hash?
         /// </summary>
-        public bool TreatTypeAsHash;
+        public abstract bool TreatTypeAsHash { get; }
 
         /// <summary>
         /// Deprecated. TODO: Remove this.

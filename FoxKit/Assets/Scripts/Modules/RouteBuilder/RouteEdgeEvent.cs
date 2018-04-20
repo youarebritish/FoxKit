@@ -1,6 +1,7 @@
 ﻿namespace FoxKit.Modules.RouteBuilder
 {
     using System;
+    using System.Collections.Generic;
     using UnityEngine;
 
     /// <summary>
@@ -13,6 +14,15 @@
         /// Type of the event.
         /// </summary>
         public RouteEdgeEventType Type = RouteEdgeEventType.RelaxedWalk;
+
+        public override bool TreatTypeAsHash { get { return HashedEventNames.Contains(Type); } }
+
+        private static readonly List<RouteEdgeEventType> HashedEventNames = new List<RouteEdgeEventType>()
+        {
+            RouteEdgeEventType.Unknown41204288,
+            RouteEdgeEventType.Unknown4125130163,
+            RouteEdgeEventType.Unknown728879063,
+        };
 
         /// <summary>
         /// Parse a string representation of an event type to a RouteNodeEventType.

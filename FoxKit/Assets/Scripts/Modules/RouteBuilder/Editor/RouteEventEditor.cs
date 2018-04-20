@@ -6,17 +6,17 @@
     using UnityEngine;
 
     /// <summary>
-    /// Custom editor for RouteEvents.
+    /// Base class for custom editor for RouteEvents.
     /// </summary>
-    [CustomEditor(typeof(RouteNodeEvent))]
-    public class RouteNodeEventEditor : Editor
+    //[CustomEditor(typeof(RouteNodeEvent))]
+    public abstract class RouteEventEditor : Editor
     {
         public override void OnInspectorGUI()
         {
-            var @event = (this.target as RouteNodeEvent);
+            var @event = (this.target as RouteEvent);
 
             DrawToolShelf(@event);
-            DrawSettings(@event);
+            DrawSettings();
             DrawParams(@event);
         }
 
@@ -76,7 +76,7 @@
             EditorGUILayout.EndHorizontal();
         }
 
-        private static void DrawSettings(RouteNodeEvent @event)
+        protected abstract void DrawSettings();/*
         {
             Rotorz.Games.Collections.ReorderableListGUI.Title("Settings");
 
@@ -85,9 +85,9 @@
 
             var snippetContent = new GUIContent("Snippet", "Must be a maximum of four characters.");
             @event.Snippet = EditorGUILayout.TextField(snippetContent, @event.Snippet);
-        }
+        }*/
 
-        private static void DrawParams(RouteNodeEvent @event)
+        private static void DrawParams(RouteEvent @event)
         {
             Rotorz.Games.Collections.ReorderableListGUI.Title("Parameters");
 

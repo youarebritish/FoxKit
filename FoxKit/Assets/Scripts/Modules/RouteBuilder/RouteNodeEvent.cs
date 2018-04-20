@@ -2,6 +2,7 @@
 {
     using FoxKit.Utils;
     using System;
+    using System.Collections.Generic;
     using UnityEditor;
     using UnityEngine;
 
@@ -15,6 +16,26 @@
         /// Type of the event.
         /// </summary>
         public RouteNodeEventType Type = RouteNodeEventType.RelaxedIdleAct;
+
+        public override bool TreatTypeAsHash { get { return HashedEventNames.Contains(Type); } }
+
+        private static readonly List<RouteNodeEventType> HashedEventNames = new List<RouteNodeEventType>()
+        {
+            RouteNodeEventType.Unknown1245047319,
+            RouteNodeEventType.Unknown1875147223,
+            RouteNodeEventType.Unknown2343446301,
+            RouteNodeEventType.Unknown2358641809,
+            RouteNodeEventType.Unknown2440322811,
+            RouteNodeEventType.Unknown2481191805,
+            RouteNodeEventType.Unknown2617377844,
+            RouteNodeEventType.Unknown2674482002,
+            RouteNodeEventType.Unknown2795470991,
+            RouteNodeEventType.Unknown2829631605,
+            RouteNodeEventType.Unknown3589755714,
+            RouteNodeEventType.Unknown3696614179,
+            RouteNodeEventType.Unknown3969758229,
+            RouteNodeEventType.Unknown4257632892,
+        };
 
         /// <summary>
         /// Parse a string representation of an event type to a RouteNodeEventType.
