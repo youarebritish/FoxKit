@@ -98,6 +98,11 @@ namespace FoxKit.Modules.RouteBuilder.Importer
             {
                 component.Type = RouteEdgeEventType.EMPTY_STRING;
             }
+            // Dumb hack to support lowercase move
+            else if (data.EventType == 368586264)
+            {
+                component.Type = RouteEdgeEventType.LOWERCASE_move;
+            }
             else
             {
                 var eventNameContainer = getEventTypeName(data.EventType);

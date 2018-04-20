@@ -53,6 +53,10 @@
             {
                 return string.Empty;
             }
+            if (eventType == RouteEdgeEventType.LOWERCASE_move)
+            {
+                return "move";
+            }
             var typeString = eventType.ToString();
             if (typeString.StartsWith("Unknown"))
             {

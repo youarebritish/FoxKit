@@ -130,6 +130,6 @@
         WalkerGearRelaxedWalk,
         EMPTY_STRING,
         chase,
-        move
+        LOWERCASE_move
     }
 }
