@@ -64,10 +64,10 @@
             Rotorz.Games.Collections.ReorderableListGUI.Title("Settings");
 
             var nodeEventTypeContent = new GUIContent("Default node event type", "Event type to apply to newly-created node events.");
-            routeset.DefaultNodeEventType = (RouteEventType)EditorGUILayout.EnumPopup(nodeEventTypeContent, routeset.DefaultNodeEventType);
+            routeset.DefaultNodeEventType = (RouteNodeEventType)EditorGUILayout.EnumPopup(nodeEventTypeContent, routeset.DefaultNodeEventType);
 
             var edgeEventTypeContent = new GUIContent("Default node event type", "Event type to apply to newly-created edge events.");
-            routeset.DefaultEdgeEventType = (RouteEventType)EditorGUILayout.EnumPopup(edgeEventTypeContent, routeset.DefaultEdgeEventType);
+            routeset.DefaultEdgeEventType = (RouteEdgeEventType)EditorGUILayout.EnumPopup(edgeEventTypeContent, routeset.DefaultEdgeEventType);
         }
 
         private static void DrawRouteList(RouteSet routeset)
