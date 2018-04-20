@@ -10,18 +10,18 @@
     /// A point in a Route for an AI agent to navigate to.
     /// </summary>
     [System.Serializable]
-    [RequireComponent(typeof(RouteEvent))]
+    [RequireComponent(typeof(RouteEdgeEvent))]
     public class RouteNode : MonoBehaviour
     {
         /// <summary>
         /// Event for AI agents to perform on the way to this node.
         /// </summary>
-        public RouteEvent EdgeEvent {  get { return GetComponent<RouteEvent>(); } }
+        public RouteEdgeEvent EdgeEvent {  get { return GetComponent<RouteEdgeEvent>(); } }
 
         /// <summary>
         /// Events for AI agents to perform at this node.
         /// </summary>
-        public List<RouteEvent> Events = new List<RouteEvent>();
+        public List<RouteNodeEvent> Events = new List<RouteNodeEvent>();
 
         /// <summary>
         /// Context menu to add a new node to the Route.
@@ -32,11 +32,11 @@
         }
 
         /// <summary>
-        /// Context menu to add a new event to the node.
+        /// Context menu to add a new node event to the node.
         /// </summary>
         public void AddNewEvent()
         {
-            var @event = RouteEvent.CreateNewNodeEvent(this, GetComponentInParent<RouteSet>().DefaultNodeEventType);
+            var @event = RouteNodeEvent.CreateNewNodeEvent(this, GetComponentInParent<RouteSet>().DefaultNodeEventType);
             this.Events.Add(@event);
         }
 

@@ -25,9 +25,9 @@ namespace FoxKit.Modules.RouteBuilder.Importer
         /// </summary>
         /// <param name="createEvent">Function to create a RouteEvent.</param>
         /// <returns>Function to create RouteNodes.</returns>
-        public static CreateNodeDelegate CreateFactory(CreateEventDelegate createEvent)
+        public static CreateNodeDelegate CreateFactory(CreateEventDelegate createNodeEvent, CreateEventDelegate createEdgeEvent)
         {
-            return (data, routeSet, route, name) => Create(data, routeSet, route, name, createEvent);
+            return (data, routeSet, route, name) => Create(data, routeSet, route, name, createNodeEvent, createEdgeEvent);
         }
 
         /// <summary>
@@ -39,17 +39,18 @@ namespace FoxKit.Modules.RouteBuilder.Importer
         /// <param name="name">Name of the RouteNode.</param>
         /// <param name="createEvent">Function to create a RouteEvent.</param>
         /// <returns>The constructed RouteNode.</returns>
-        private static RouteNode Create(FoxLib.Tpp.RouteSet.RouteNode data, RouteSet routeSet, Route route, string name, CreateEventDelegate createEvent)
+        private static RouteNode Create(FoxLib.Tpp.RouteSet.RouteNode data, RouteSet routeSet, Route route, string name, CreateEventDelegate createNodeEvent, CreateEventDelegate createEdgeEvent)
         {
             var gameObject = new GameObject(name);
             var nodeComponent = gameObject.AddComponent<RouteNode>();
             gameObject.transform.position = FoxUtils.FoxToUnity(data.Position);
             gameObject.transform.SetParent(route.transform);
             
-            routeSet.RegisterRouteEvent(data.EdgeEvent, gameObject, createEvent);
+            // TODO: Remove? We don't share event instances anymore.
+            routeSet.RegisterRouteEvent(data.EdgeEvent, gameObject, createEdgeEvent);
             
             nodeComponent.Events = (from @event in data.Events
-                                    select routeSet.RegisterRouteEvent(@event, gameObject.transform, createEvent))
+                                    select routeSet.RegisterRouteNodeEvent(@event, gameObject.transform, createNodeEvent))
                                    .ToList();
 
             return nodeComponent;
