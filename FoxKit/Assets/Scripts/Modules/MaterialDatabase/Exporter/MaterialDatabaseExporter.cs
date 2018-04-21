@@ -13,9 +13,9 @@ namespace FoxKit.Modules.MaterialDatabase.Exporter
         /// <summary>
         /// Converts a FoxKit material preset to a FoxLib material preset.
         /// </summary>
-        /// <param name="foxKitMaterialPreset"></param>
-        /// <returns></returns>
-        private static FoxLib.MaterialParamBinary.MaterialPreset convertTest(MaterialPreset foxKitMaterialPreset)
+        /// <param name="foxKitMaterialPreset">The FoxKit material preset.</param>
+        /// <returns>The FoxLib material preset.</returns>
+        private static FoxLib.MaterialParamBinary.MaterialPreset foxKitToFoxLib(MaterialPreset foxKitMaterialPreset)
         {
             FoxLib.MaterialParamBinary.MaterialPreset foxLibMaterialPreset = new FoxLib.MaterialParamBinary.MaterialPreset(foxKitMaterialPreset.F0, foxKitMaterialPreset.RoughnessThreshold, foxKitMaterialPreset.ReflectionDependDiffuse, foxKitMaterialPreset.AnisotropicRoughness, Utils.FoxUtils.UnityColorToFoxColorRGB(foxKitMaterialPreset.SpecularColor), foxKitMaterialPreset.Translucency);
             return foxLibMaterialPreset;
@@ -32,7 +32,7 @@ namespace FoxKit.Modules.MaterialDatabase.Exporter
             Assert.IsTrue(materialPresetCount <= 256, "materialPresets count must be less than or equal to 256.");
             Assert.IsNotNull(exportPath, "exportPath must not be null.");
 
-            FoxLib.MaterialParamBinary.MaterialPreset[] foxLibMaterialPresets = Enumerable.ToArray((from preset in foxKitMaterialPresets select (convertTest(preset))));
+            FoxLib.MaterialParamBinary.MaterialPreset[] foxLibMaterialPresets = Enumerable.ToArray((from preset in foxKitMaterialPresets select (foxKitToFoxLib(preset))));
 
             using (var writer = new BinaryWriter(new FileStream(exportPath, FileMode.Create)))
             {
