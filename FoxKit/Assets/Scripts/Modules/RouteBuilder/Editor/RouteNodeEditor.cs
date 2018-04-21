@@ -1,6 +1,5 @@
 ﻿namespace FoxKit.Modules.RouteBuilder.Editor
 {
-
     using UnityEditor;
     using UnityEngine;
 
