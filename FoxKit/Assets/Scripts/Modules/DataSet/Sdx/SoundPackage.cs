@@ -6,7 +6,7 @@ namespace FoxKit.Modules.DataSet.Sdx
     [Serializable]
     public class SoundPackage : Data
     {
-        public string SoundDataFile;    // TODO FilePtr
+        public UnityEngine.Object SoundDataFile;
         public bool SyncLoad;
     }
 }

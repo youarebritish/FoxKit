@@ -9,7 +9,7 @@ namespace FoxKit.Modules.DataSet.TppGameKit
         public float RotationLimitLeftRight;
         public float RotationLimitLeftUp;
         public float RotationLimitLeftDown;
-        public string DefaultShellPartsFile;    // TODO FilePtr
-        public string FlareShellPartsFile;      // TODO FilePtr
+        public UnityEngine.Object DefaultShellPartsFile;
+        public UnityEngine.Object FlareShellPartsFile;
     }
 }

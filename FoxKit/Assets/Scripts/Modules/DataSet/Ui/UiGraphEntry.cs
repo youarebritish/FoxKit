@@ -7,7 +7,7 @@ namespace FoxKit.Modules.DataSet.Ui
     [Serializable]
     public class UiGraphEntry : Data
     {
-        public List<string> Files;
-        public List<string> RawFiles;
+        public List<UnityEngine.Object> Files;
+        public List<UnityEngine.Object> RawFiles;
     }
 }

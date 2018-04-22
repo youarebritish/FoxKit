@@ -10,9 +10,9 @@ namespace FoxKit.Modules.DataSet.TppGameCore
         public byte VehicleTypeIndex;
         public byte ProxyVehicleTypeIndex;
         public byte BodyImplTypeIndex;
-        public string PartsFile;            // TODO FilePtr
+        public UnityEngine.Object PartsFile;
         public byte BodyInstanceCount;
         public TppVehicle2WeaponParameter WeaponParams;
-        public List<string> FovaFiles = new List<string>();      // TODO FilePtr
+        public List<UnityEngine.Object> FovaFiles;
     }
 }

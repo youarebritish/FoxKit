@@ -11,8 +11,8 @@ namespace FoxKit.Modules.DataSet.TppGameCore
         public string BulletId;
         public byte WeaponImplTypeIndex;
         public float FireInterval;
-        public string WeaponFile;
-        public string AmmoFile;
+        public UnityEngine.Object WeaponFile;
+        public UnityEngine.Object AmmoFile;
         public string OwnerCnpName;
         public string WeaponBoneName;
         public string TurretBoneName;

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using FoxKit.Utils.UI.StringMap;
+using System;
 
 namespace FoxKit.Modules.DataSet.FoxCore
 {
     [Serializable]
     public class DataSet : Data
     {
-        // TODO StringMap
+        public EntityStringMap DataList;
     }
 }

@@ -8,7 +8,7 @@ namespace FoxKit.Modules.DataSet.TppGameCore
     {
         public byte VehicleTypeCode;
         public byte AttachmentImplTypeIndex;
-        public string AttachmentFile;           // TODO: FilePtr
+        public UnityEngine.Object AttachmentFile;
         public byte AttachmentInstanceCount;
         public string BodyCnpName;
         public string AttachmentBoneName;

@@ -1,5 +1,5 @@
 ﻿using FoxKit.Modules.DataSet.GameCore;
-using System.Collections.Generic;
+using FoxKit.Utils.UI.StringMap;
 
 namespace FoxKit.Modules.DataSet.TppGameCore
 {
@@ -9,6 +9,6 @@ namespace FoxKit.Modules.DataSet.TppGameCore
         public string MotionGraphFile;
         public string MtarFile;
         public string ExtensionMtarFile;
-        public List<string> VfxFiles; // TODO StringMap
+        public ObjectStringMap VfxFiles;
     }
 }
