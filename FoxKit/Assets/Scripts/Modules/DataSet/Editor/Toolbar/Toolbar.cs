@@ -16,6 +16,14 @@ namespace FoxKit.Modules.DataSet.Editor.Toolbar
                                                          where (typeof(Toolbar)).IsAssignableFrom(type) && type.IsClass && !type.IsAbstract
                                                          select type).ToArray();
 
+        /// <summary>
+        /// We need to call Initialize() during OnEnable(), otherwise all state will be lost after a recompile.
+        /// </summary>
+        private void OnEnable()
+        {
+            Initialize();
+        }
+
         public static TToolbar Create<TToolbar>(string name) where TToolbar : Toolbar
         {
             return GetWindow<TToolbar>(name, ToolbarTypes) as TToolbar;

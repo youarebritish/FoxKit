@@ -5,6 +5,9 @@ namespace FoxKit.Modules.DataSet.FoxCore
     [Serializable]
     public abstract class Data : Entity
     {
-        public string Name;
+        /// <summary>
+        /// Just use the ScriptableObject's name.
+        /// </summary>
+        public string Name => name;
     }
 }
