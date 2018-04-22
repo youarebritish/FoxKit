@@ -7,7 +7,7 @@ namespace FoxKit.Modules.DataSet.Editor.Toolbar
         [MenuItem("Window/FoxKit/FoxCore")]
         public static void ShowWindow()
         {
-            var window = GetWindow<FoxCoreToolbar>("FoxCore", ToolbarTypes) as FoxCoreToolbar;
+            var window = Create<FoxCoreToolbar>("FoxCore");
             window.Initialize();
         }
     }

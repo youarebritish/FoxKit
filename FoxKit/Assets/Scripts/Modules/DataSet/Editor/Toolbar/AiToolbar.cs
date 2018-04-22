@@ -7,7 +7,7 @@ namespace FoxKit.Modules.DataSet.Editor.Toolbar
         [MenuItem("Window/FoxKit/Ai")]
         public static void ShowWindow()
         {
-            var window = GetWindow<AiToolbar>("Ai", ToolbarTypes) as AiToolbar;
+            var window = Create<AiToolbar>("Ai");
             window.Initialize();
         }
     }

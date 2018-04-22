@@ -12,9 +12,14 @@ namespace FoxKit.Modules.DataSet.Editor.Toolbar
     public abstract class Toolbar : EditorWindow
     {
         private List<IToolbarCommand> commands = new List<IToolbarCommand>();
-        protected static readonly Type[] ToolbarTypes = (from type in Assembly.GetAssembly(typeof(IToolbarCommand)).GetTypes()
+        private static readonly Type[] ToolbarTypes = (from type in Assembly.GetAssembly(typeof(IToolbarCommand)).GetTypes()
                                                          where (typeof(Toolbar)).IsAssignableFrom(type) && type.IsClass && !type.IsAbstract
                                                          select type).ToArray();
+
+        public static TToolbar Create<TToolbar>(string name) where TToolbar : Toolbar
+        {
+            return GetWindow<TToolbar>(name, ToolbarTypes) as TToolbar;
+        }
 
         protected void Initialize()
         {
