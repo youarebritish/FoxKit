@@ -7,40 +7,37 @@ using System.Reflection;
 using System.Collections.Generic;
 using FoxKit.Utils;
 
-namespace FoxKit.Modules.DataSet.Editor
+namespace FoxKit.Modules.DataSet.Editor.Toolbar
 {
-    public class Toolbar : EditorWindow
+    public abstract class Toolbar : EditorWindow
     {
-        public string Name = "FoxKit";
-        private List<IToolbarCommand> commands;
-
-        [MenuItem("Window/FoxKit/Toolbar")]
-        public static void ShowWindow()
-        {
-            var window = GetWindow(typeof(Toolbar)) as Toolbar;
-            window.Initialize();
-        }
+        private List<IToolbarCommand> commands = new List<IToolbarCommand>();
+        protected static readonly Type[] ToolbarTypes = (from type in Assembly.GetAssembly(typeof(IToolbarCommand)).GetTypes()
+                                                         where (typeof(Toolbar)).IsAssignableFrom(type) && type.IsClass && !type.IsAbstract
+                                                         select type).ToArray();
 
         protected void Initialize()
         {
-            titleContent = new GUIContent(Name);
             minSize = new Vector2(minSize.x, 40);
+            maxSize = new Vector2(maxSize.x, minSize.y);
 
             var commands = from type in Assembly.GetAssembly(typeof(IToolbarCommand)).GetTypes()
                            where (typeof(IToolbarCommand)).IsAssignableFrom(type) && type.IsClass && !type.IsAbstract
                            select Activator.CreateInstance(type) as IToolbarCommand;
-            this.commands = commands.ToList();
 
-            foreach (var command in this.commands)
+            foreach (var command in commands)
             {
-                Debug.Log(command.GetType().ToString());
+                var thisType = GetType();
+                if (command.ToolbarType == thisType)
+                {
+                    this.commands.Add(command);
+                }
             }
         }
 
         private void OnGUI()
         {
             EditorGUILayout.BeginHorizontal();
-            GUILayout.Space(10);
             foreach (var command in commands)
             {
                 if (FoxKitUiUtils.ToolButton(command.Icon, command.Tooltip))
