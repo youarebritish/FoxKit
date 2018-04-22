@@ -25,7 +25,7 @@
         /// </summary>
         /// <returns>The newly-created RouteSet.</returns>
         [MenuItem("GameObject/FoxKit/RouteSet %#r", false, 0)]
-        private static RouteSet CreateRouteSet()
+        public static RouteSet CreateRouteSet()
         {
             // Create RouteSet GameObject and component.
             var go = new GameObject();
