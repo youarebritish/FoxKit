@@ -1,6 +1,6 @@
-﻿using FoxKit.Modules.DataSet.Editor.Toolbar;
-using FoxKit.Modules.DataSet.GameCore;
+﻿using FoxKit.Utils;
 using System;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,53 +9,47 @@ namespace FoxKit.Modules.DataSet.FoxCore
     [CustomEditor(typeof(DataSet))]
     public class DataSetEditor : UnityEditor.Editor
     {
+        // TODO Cache this somewhere so it's shared between menus
+        // https://docs.unity3d.com/ScriptReference/Callbacks.DidReloadScripts.html ?
+        // https://docs.unity3d.com/ScriptReference/EditorApplication-delayCall.html ?
+        // https://docs.unity3d.com/ScriptReference/InitializeOnLoadMethodAttribute.html ?
+        private static readonly Type[] typesInAddMenu = ReflectionUtils.GetAssignableConcreteClasses(typeof(Data)).ToArray();
+
         public override void OnInspectorGUI()
         {
             this.DrawDefaultInspector();
 
             if (GUILayout.Button("New Entity"))
             {
-                /*var menu = new GenericMenu();
-                var types = Toolbar.ToolbarTypes;
-                foreach(var type in types)
+                var menu = new GenericMenu();
+                foreach(var type in typesInAddMenu)
                 {
                     AddEntityTypeToMenu(menu, type);
                 }
-                menu.ShowAsContext();*/
+                menu.ShowAsContext();
             }
         }
 
         void AddEntityTypeToMenu(GenericMenu menu, Type type)
         {
-            menu.AddItem(new GUIContent(type.Namespace), false, OnEntityTypeSelected, type);
+            menu.AddItem(new GUIContent(type.Name), false, OnEntityTypeSelected, type);
         }
 
         void OnEntityTypeSelected(object type)
         {
             var typeAsType = type as Type;
             var entry = CreateInstance(typeAsType) as Entity;
-            entry.name = typeAsType.Name + "0000";
+
+            var entitiesOfType = (target as DataSet).DataList.Values
+                .Where(entity => entity.GetType() == typeAsType)
+                .Count();
+
+            entry.name = typeAsType.Name + entitiesOfType.ToString("D4");
 
             AssetDatabase.AddObjectToAsset(entry, target);
             AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(entry));
 
             (target as DataSet).DataList.Add(entry.name, entry);
-        }
-
-        [SerializeField]
-        Color m_Color = Color.white;
-
-        // a method to simplify adding menu items
-        void AddMenuItemForColor(GenericMenu menu, string menuPath, Color color)
-        {
-            // the menu item is marked as selected if it matches the current value of m_Color
-            menu.AddItem(new GUIContent(menuPath), m_Color.Equals(color), OnColorSelected, color);
-        }
-
-        // the GenericMenu.MenuFunction2 event handler for when a menu item is selected
-        void OnColorSelected(object color)
-        {
-            m_Color = (Color)color;
         }
     }
 }

@@ -12,10 +12,6 @@
     {
         public static IEnumerable<Type> GetAssignableConcreteClasses(Type baseType)
         {
-            /*var allTypes = Assembly.GetAssembly(baseType).GetTypes();
-            var assignableTypes = allTypes.Where(type => baseType.IsAssignableFrom(type)).ToList();
-            var concreteTypes = assignableTypes.Where(type => type.IsClass && !type.IsAbstract).ToList();
-            return concreteTypes;*/
             return from type in Assembly.GetAssembly(baseType).GetTypes()
                    where baseType.IsAssignableFrom(type) && type.IsClass && !type.IsAbstract
                    select type;
