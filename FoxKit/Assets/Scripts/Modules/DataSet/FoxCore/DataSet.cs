@@ -6,6 +6,6 @@ namespace FoxKit.Modules.DataSet.FoxCore
     [Serializable]
     public class DataSet : Data
     {
-        public EntityStringMap DataList;
+        public EntityStringMap DataList = new EntityStringMap();
     }
 }

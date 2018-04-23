@@ -13,7 +13,7 @@ namespace FoxKit.Modules.DataSet.FoxCore
         // https://docs.unity3d.com/ScriptReference/Callbacks.DidReloadScripts.html ?
         // https://docs.unity3d.com/ScriptReference/EditorApplication-delayCall.html ?
         // https://docs.unity3d.com/ScriptReference/InitializeOnLoadMethodAttribute.html ?
-        private static readonly Type[] typesInAddMenu = ReflectionUtils.GetAssignableConcreteClasses(typeof(Data)).ToArray();
+        private static readonly Type[] TypesInAddMenu = ReflectionUtils.GetAssignableConcreteClasses(typeof(Data)).ToArray();
 
         public override void OnInspectorGUI()
         {
@@ -22,7 +22,7 @@ namespace FoxKit.Modules.DataSet.FoxCore
             if (GUILayout.Button("New Entity"))
             {
                 var menu = new GenericMenu();
-                foreach(var type in typesInAddMenu)
+                foreach(var type in TypesInAddMenu)
                 {
                     AddEntityTypeToMenu(menu, type);
                 }
