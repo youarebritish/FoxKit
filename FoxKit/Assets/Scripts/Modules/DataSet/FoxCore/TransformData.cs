@@ -14,6 +14,8 @@ namespace FoxKit.Modules.DataSet.FoxCore
         public TransformEntity ShearTransform;
         public TransformEntity PivotTransform;
         public List<TransformData> Children = new List<TransformData>();
+
+        // https://docs.unity3d.com/ScriptReference/EditorGUILayout.MaskField.html
         public bool InheritTransform;
         public bool Visibility;
         public bool Selection;        
