@@ -77,11 +77,11 @@ namespace FoxKit.Modules.DataSet.Importer
 
                 ctx.AddObjectToAsset(entity.GetHashCode().ToString(), entity);
 
+                // TODO Make this more elegant
                 if (!string.IsNullOrEmpty(entity.name))
                 {
                     dataSet.DataList.Add(entity.name, entity);
                 }
-                //dataSet.DataList.Add(entity.name, entity);
             }            
         }
     }

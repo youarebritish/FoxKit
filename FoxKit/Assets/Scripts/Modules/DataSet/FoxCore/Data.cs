@@ -19,7 +19,7 @@ namespace FoxKit.Modules.DataSet.FoxCore
 
             if (propertyData.Name == "name")
             {
-                //name = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                name = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
             }
         }
     }

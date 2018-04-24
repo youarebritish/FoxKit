@@ -9,6 +9,7 @@
     {
         public void Initialize(FoxEntity entityData)
         {
+            // TODO: Assert that class ID and version is correct
             foreach(var property in entityData.StaticProperties)
             {
                 ReadProperty(property);
