@@ -53,11 +53,6 @@ namespace FoxKit.Modules.DataSet.Importer
                 instance.Initialize(entity);
 
                 // Temporary hack to deal with nameless entities (DataElements), remove this once parenting works
-                if (instance.name == string.Empty)
-                {
-                    instance.name = instance.GetInstanceID().ToString();
-                }
-
                 entities.Add(instance);
             }
 
@@ -67,23 +62,27 @@ namespace FoxKit.Modules.DataSet.Importer
                 if (entity.GetType() == typeof(FoxCore.DataSet))
                 {
                     dataSet = entity as FoxCore.DataSet;
-                    dataSet.name = Path.GetFileNameWithoutExtension(ctx.assetPath);
                     break;
                 }
             }
-                
-            foreach(var entity in entities)
+
+            foreach (var entity in entities)
             {
                 if (entity.GetType() == typeof(FoxCore.DataSet))
                 {
-                    ctx.AddObjectToAsset(entity.name, entity);
+                    ctx.AddObjectToAsset("DataSet", entity);
                     ctx.SetMainObject(entity);
                     continue;
                 }
 
-                ctx.AddObjectToAsset(entity.name, entity);
-                dataSet.DataList.Add(entity.name, entity);
-            }
+                ctx.AddObjectToAsset(entity.GetHashCode().ToString(), entity);
+
+                if (!string.IsNullOrEmpty(entity.name))
+                {
+                    dataSet.DataList.Add(entity.name, entity);
+                }
+                //dataSet.DataList.Add(entity.name, entity);
+            }            
         }
     }
 }
