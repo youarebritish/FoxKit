@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace FoxKit.Modules.DataSet.FoxCore
+namespace FoxKit.Modules.DataSet.FoxCore.Editor
 {
     [CustomEditor(typeof(DataSet))]
     public class DataSetEditor : UnityEditor.Editor

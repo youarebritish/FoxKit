@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using UnityEditor;
 using UnityEditor.Experimental.AssetImporters;
 using UnityEngine;
 
@@ -18,70 +17,72 @@ namespace FoxKit.Modules.DataSet.Importer
     {
         // TODO: Remove/cache
         private static readonly Type[] typesInAddMenu = ReflectionUtils.GetAssignableConcreteClasses(typeof(Data)).ToArray();
-
-        private static readonly Dictionary<ulong, string> GlobalHashNameDictionary = new Dictionary<ulong, string>();
+        private static readonly Dictionary<ulong, string> globalHashNameDictionary = new Dictionary<ulong, string>();
 
         public override void OnImportAsset(AssetImportContext ctx)
         {
             var asset = ScriptableObject.CreateInstance<FoxCore.DataSet>();
             asset.name = Path.GetFileNameWithoutExtension(ctx.assetPath);
 
-            var fileName = string.Format("{0}.xml", Path.GetFileName(asset.name));
+            FoxFile foxFile = null;
             using (var input = new FileStream(ctx.assetPath, FileMode.Open))
             {
-                var lookupTable = new FoxLookupTable(GlobalHashNameDictionary);
-                var foxFile = FoxFile.ReadFoxFile(input, lookupTable);
+                var lookupTable = new FoxLookupTable(globalHashNameDictionary);
+                foxFile = FoxFile.ReadFoxFile(input, lookupTable);
+            }
 
-                var entities = new List<Entity>();
-                foreach(var entity in foxFile.Entities)
+            var entities = new List<Entity>();
+            foreach(var entity in foxFile.Entities)
+            {
+                Type entityType = null;
+                foreach(var type in typesInAddMenu)
                 {
-                    Type entityType = null;
-                    foreach(var type in typesInAddMenu)
+                    if (type.Name == entity.ClassName)
                     {
-                        if (type.Name == entity.ClassName)
-                        {
-                            entityType = type;
-                            break;
-                        }
-                    }
-                    if (entityType == null)
-                    {
-                        Debug.LogError("Unable to find class " + entity.ClassName);
-                        continue;
-                    }
-
-                    var instance = ScriptableObject.CreateInstance(entityType) as Entity;
-                    var nameProperty = entity.StaticProperties.First(property => property.Name == "name");
-                    var container = (nameProperty.Container as FoxListBase<FoxString>);
-                    instance.name = container.ToList()[0].ToString();
-
-                    entities.Add(instance);
-                }
-
-                FoxCore.DataSet dataSet = null;
-                foreach(var entity in entities)
-                {
-                    if (entity.GetType() == typeof(FoxCore.DataSet))
-                    {
-                        dataSet = entity as FoxCore.DataSet;
+                        entityType = type;
                         break;
                     }
                 }
-                
-                foreach(var entity in entities)
+                if (entityType == null)
                 {
-                    if (entity.GetType() == typeof(FoxCore.DataSet))
-                    {
-                        ctx.AddObjectToAsset(entity.name, entity);
-                        ctx.SetMainObject(entity);
-                        continue;
-                    }
-
-                    ctx.AddObjectToAsset(entity.name, entity);
-                    //AssetDatabase.AddObjectToAsset(entity, dataSet);
-                    //AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(entity));
-                    dataSet.DataList.Add(entity.name, entity);
+                    Debug.LogError("Unable to find class " + entity.ClassName);
+                    continue;
                 }
+
+                var instance = ScriptableObject.CreateInstance(entityType) as Entity;
+                instance.Initialize(entity);
+
+                // Temporary hack to deal with nameless entities (DataElements), remove this once parenting works
+                if (instance.name == string.Empty)
+                {
+                    instance.name = instance.GetInstanceID().ToString();
+                }
+
+                entities.Add(instance);
+            }
+
+            FoxCore.DataSet dataSet = null;
+            foreach(var entity in entities)
+            {
+                if (entity.GetType() == typeof(FoxCore.DataSet))
+                {
+                    dataSet = entity as FoxCore.DataSet;
+                    dataSet.name = Path.GetFileNameWithoutExtension(ctx.assetPath);
+                    break;
+                }
+            }
+                
+            foreach(var entity in entities)
+            {
+                if (entity.GetType() == typeof(FoxCore.DataSet))
+                {
+                    ctx.AddObjectToAsset(entity.name, entity);
+                    ctx.SetMainObject(entity);
+                    continue;
+                }
+
+                ctx.AddObjectToAsset(entity.name, entity);
+                dataSet.DataList.Add(entity.name, entity);
             }
         }
     }
