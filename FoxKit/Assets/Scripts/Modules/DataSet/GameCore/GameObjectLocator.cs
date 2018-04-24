@@ -3,6 +3,8 @@ using FoxKit.Utils;
 using FoxTool.Fox;
 using FoxTool.Fox.Types.Values;
 using System;
+using UnityEngine;
+using static FoxKit.Modules.DataSet.Importer.EntityFactory;
 
 namespace FoxKit.Modules.DataSet.GameCore
 {
@@ -13,12 +15,12 @@ namespace FoxKit.Modules.DataSet.GameCore
     public class GameObjectLocator : TransformData
     {
         public string TypeName;
-        public uint GroupId;
+        public uint GroupId;        
         public GameObjectLocatorParameter Parameters;
 
-        protected override void ReadProperty(FoxProperty propertyData)
+        protected override void ReadProperty(FoxProperty propertyData, GetEntityFromAddressDelegate getEntity)
         {
-            base.ReadProperty(propertyData);
+            base.ReadProperty(propertyData, getEntity);
             
             if (propertyData.Name == "typeName")
             {
@@ -30,7 +32,8 @@ namespace FoxKit.Modules.DataSet.GameCore
             }
             else if (propertyData.Name == "parameters")
             {
-                // TODO
+                //var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
+                //Parameters = getEntity(address) as GameObjectLocatorParameter;
             }
         }
     }

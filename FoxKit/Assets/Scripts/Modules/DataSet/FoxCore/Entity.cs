@@ -2,17 +2,19 @@
 {
     using FoxTool.Fox;
     using System;
+    using System.Collections.Generic;
     using UnityEngine;
+    using static FoxKit.Modules.DataSet.Importer.EntityFactory;
 
     [Serializable]
     public abstract class Entity : ScriptableObject
     {
-        public void Initialize(FoxEntity entityData)
+        public void Initialize(FoxEntity entityData, GetEntityFromAddressDelegate getEntity)
         {
             // TODO: Assert that class ID and version is correct
             foreach(var property in entityData.StaticProperties)
             {
-                ReadProperty(property);
+                ReadProperty(property, getEntity);
             }
             foreach(var property in entityData.DynamicProperties)
             {
@@ -20,7 +22,7 @@
             }
         }
 
-        protected virtual void ReadProperty(FoxProperty propertyData)
+        protected virtual void ReadProperty(FoxProperty propertyData, GetEntityFromAddressDelegate getEntity)
         {
         }
     }

@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using UnityEditor.Experimental.AssetImporters;
 using UnityEngine;
+using static FoxKit.Modules.DataSet.Importer.EntityFactory;
 
 namespace FoxKit.Modules.DataSet.Importer
 {
@@ -16,7 +17,7 @@ namespace FoxKit.Modules.DataSet.Importer
     public class DataSetImporter : ScriptedImporter
     {
         // TODO: Remove/cache
-        private static readonly Type[] typesInAddMenu = ReflectionUtils.GetAssignableConcreteClasses(typeof(Data)).ToArray();
+        private static readonly Type[] typesInAddMenu = ReflectionUtils.GetAssignableConcreteClasses(typeof(Entity)).ToArray();
         private static readonly Dictionary<ulong, string> globalHashNameDictionary = new Dictionary<ulong, string>();
 
         public override void OnImportAsset(AssetImportContext ctx)
@@ -31,58 +32,60 @@ namespace FoxKit.Modules.DataSet.Importer
                 foxFile = FoxFile.ReadFoxFile(input, lookupTable);
             }
 
-            var entities = new List<Entity>();
-            foreach(var entity in foxFile.Entities)
-            {
-                Type entityType = null;
-                foreach(var type in typesInAddMenu)
-                {
-                    if (type.Name == entity.ClassName)
-                    {
-                        entityType = type;
-                        break;
-                    }
-                }
-                if (entityType == null)
-                {
-                    Debug.LogError("Unable to find class " + entity.ClassName);
-                    continue;
-                }
+            var entities = (from entity in foxFile.Entities
+                            select new { Data = entity, Instance = Create(entity, GetEntityType) })
+                           .ToDictionary(entry => entry.Instance, entry => entry.Data);
 
-                var instance = ScriptableObject.CreateInstance(entityType) as Entity;
-                instance.Initialize(entity);
 
-                // Temporary hack to deal with nameless entities (DataElements), remove this once parenting works
-                entities.Add(instance);
-            }
-
+            // Find DataSet.
             FoxCore.DataSet dataSet = null;
-            foreach(var entity in entities)
+            foreach(var entity in entities.Keys)
             {
                 if (entity.GetType() == typeof(FoxCore.DataSet))
                 {
                     dataSet = entity as FoxCore.DataSet;
+                    ctx.AddObjectToAsset("DataSet", entity);
+                    ctx.SetMainObject(entity);
                     break;
                 }
             }
 
             foreach (var entity in entities)
             {
-                if (entity.GetType() == typeof(FoxCore.DataSet))
+                if (entity.Key == null)
                 {
-                    ctx.AddObjectToAsset("DataSet", entity);
-                    ctx.SetMainObject(entity);
                     continue;
                 }
 
-                ctx.AddObjectToAsset(entity.GetHashCode().ToString(), entity);
+                GetEntityFromAddressDelegate getEntityByAddress = (address) => null;// entities.FirstOrDefault(e => e.Value.Address == address).Key;
+                entity.Key.Initialize(entity.Value, getEntityByAddress);
 
-                // TODO Make this more elegant
-                if (!string.IsNullOrEmpty(entity.name))
+                // TODO Fix null entries
+                if (entity.Key.GetType() == typeof(FoxCore.DataSet))
                 {
-                    dataSet.DataList.Add(entity.name, entity);
+                    continue;
+                }
+                
+                // TODO Make this more elegant
+                if (!string.IsNullOrEmpty(entity.Key.name))
+                {
+                    ctx.AddObjectToAsset(entity.GetHashCode().ToString(), entity.Key);
+                    dataSet.DataList.Add(entity.Key.name, entity.Key);
                 }
             }            
+        }
+
+        private static Type GetEntityType(string className)
+        {
+            foreach (var type in typesInAddMenu)
+            {
+                if (type.Name == className)
+                {
+                    return type;
+                }
+            }
+            Debug.LogError("Unable to find class " + className);
+            return null;
         }
     }
 }

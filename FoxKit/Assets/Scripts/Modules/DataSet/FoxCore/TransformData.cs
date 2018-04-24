@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FoxTool.Fox;
 using FoxKit.Utils;
 using FoxTool.Fox.Types.Values;
+using static FoxKit.Modules.DataSet.Importer.EntityFactory;
 
 namespace FoxKit.Modules.DataSet.FoxCore
 {
@@ -17,35 +18,38 @@ namespace FoxKit.Modules.DataSet.FoxCore
         public TransformEntity ShearTransform;
         public TransformEntity PivotTransform;
         public List<TransformData> Children = new List<TransformData>();
+        
+        public bool InheritTransform = true;
+        public bool Visibility = true;
+        public bool Selection = true;
 
-        // https://docs.unity3d.com/ScriptReference/EditorGUILayout.MaskField.html
-        public bool InheritTransform;
-        public bool Visibility;
-        public bool Selection;
-
-        protected override void ReadProperty(FoxProperty propertyData)
+        protected override void ReadProperty(FoxProperty propertyData, GetEntityFromAddressDelegate getEntity)
         {
-            base.ReadProperty(propertyData);
+            base.ReadProperty(propertyData, getEntity);
 
             if (propertyData.Name == "parent")
             {
-
+                /*var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityHandle>(propertyData).Handle;
+                Parent = getEntity(address) as TransformData;*/
             }
             else if (propertyData.Name == "transform")
             {
-
+                /*var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
+                Transform = getEntity(address) as TransformEntity;*/
             }
             else if (propertyData.Name == "shearTransform")
             {
-
+                /*var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
+                ShearTransform = getEntity(address) as TransformEntity;*/
             }
             else if (propertyData.Name == "pivotTransform")
             {
-
+                /*var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
+                PivotTransform = getEntity(address) as TransformEntity;*/
             }
             else if (propertyData.Name == "children")
             {
-
+                // TODO List
             }
             else if (propertyData.Name == "flags")
             {
