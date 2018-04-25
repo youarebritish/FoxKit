@@ -23,9 +23,9 @@ namespace FoxKit.Modules.DataSet.FoxCore
         public bool Visibility = true;
         public bool Selection = true;
 
-        protected override void ReadProperty(FoxProperty propertyData, GetEntityFromAddressDelegate getEntity)
+        protected override void ReadProperty(FoxProperty propertyData)//, GetEntityFromAddressDelegate getEntity)
         {
-            base.ReadProperty(propertyData, getEntity);
+            base.ReadProperty(propertyData);//, getEntity);
 
             return;
             if (propertyData.Name == "parent")

@@ -5,24 +5,23 @@ using FoxTool.Fox.Types.Values;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static FoxKit.Modules.DataSet.Importer.EntityFactory;
 
 namespace FoxKit.Modules.DataSet.TppGameCore
 {
     [Serializable]
-    public class TppVehicle2BodyData : Data
+    public class TppVehicle2BodyData : TransformData
     {
         public byte VehicleTypeIndex;
         public byte ProxyVehicleTypeIndex;
         public byte BodyImplTypeIndex;
         public UnityEngine.Object PartsFile;
-        public byte BodyInstanceCount;        
+        public byte BodyInstanceCount;
         public TppVehicle2WeaponParameter WeaponParams;
         public List<UnityEngine.Object> FovaFiles;
 
-        protected override void ReadProperty(FoxProperty propertyData, GetEntityFromAddressDelegate getEntity)
+        protected override void ReadProperty(FoxProperty propertyData)//, GetEntityFromAddressDelegate getEntity)
         {
-            base.ReadProperty(propertyData, getEntity);
+            base.ReadProperty(propertyData);//, getEntity);
 
             if (propertyData.Name == "vehicleTypeIndex")
             {
