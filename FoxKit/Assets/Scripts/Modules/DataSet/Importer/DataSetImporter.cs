@@ -18,7 +18,7 @@ namespace FoxKit.Modules.DataSet.Importer
     public class DataSetImporter : ScriptedImporter
     {
         // TODO: Remove/cache
-        private static readonly Type[] typesInAddMenu = ReflectionUtils.GetAssignableConcreteClasses(typeof(Data)).ToArray();
+        private static readonly Type[] typesInAddMenu = ReflectionUtils.GetAssignableConcreteClasses(typeof(Entity)).ToArray();
         private static readonly Dictionary<ulong, string> globalHashNameDictionary = new Dictionary<ulong, string>();
 
         public override void OnImportAsset(AssetImportContext ctx)
@@ -52,7 +52,7 @@ namespace FoxKit.Modules.DataSet.Importer
             foreach (var entity in entities)
             {
                 GetEntityFromAddressDelegate getEntityByAddress = (address) => entities.FirstOrDefault(e => e.Value.Address == address).Key;
-                entity.Key.Initialize(entity.Value);//, getEntityByAddress);
+                entity.Key.Initialize(entity.Value, getEntityByAddress);
 
                 // TODO Fix null entries
                 if (entity.Key.GetType() == typeof(FoxCore.DataSet))
@@ -60,10 +60,10 @@ namespace FoxKit.Modules.DataSet.Importer
                     continue;
                 }
 
-                // TODO Make this more elegant                
-                //if (!string.IsNullOrEmpty(entity.Key.name))
-                {
-                    ctx.AddObjectToAsset(entity.Key.name, entity.Key);
+                // TODO Make this more elegant
+                ctx.AddObjectToAsset(entity.Key.name, entity.Key);
+                if (!string.IsNullOrEmpty(entity.Key.name))
+                {                    
                     dataSet.DataList.Add(entity.Key.name, entity.Key);
                 }
             }

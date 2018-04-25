@@ -14,9 +14,9 @@ namespace FoxKit.Modules.DataSet.FoxCore
         /// </summary>
         public string Name => name;
 
-        protected override void ReadProperty(FoxProperty propertyData)//, GetEntityFromAddressDelegate getEntity)
+        protected override void ReadProperty(FoxProperty propertyData, GetEntityFromAddressDelegate getEntity)
         {
-            base.ReadProperty(propertyData);//, getEntity);
+            base.ReadProperty(propertyData, getEntity);
 
             if (propertyData.Name == "name")
             {

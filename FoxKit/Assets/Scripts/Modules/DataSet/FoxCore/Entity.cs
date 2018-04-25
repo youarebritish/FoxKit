@@ -9,12 +9,12 @@
     [Serializable]
     public abstract class Entity : ScriptableObject
     {
-        public void Initialize(FoxEntity entityData)//, GetEntityFromAddressDelegate getEntity)
+        public void Initialize(FoxEntity entityData, GetEntityFromAddressDelegate getEntity)
         {
             // TODO: Assert that class ID and version is correct
             foreach(var property in entityData.StaticProperties)
             {
-                ReadProperty(property);//, getEntity);
+                ReadProperty(property, getEntity);
             }
             foreach(var property in entityData.DynamicProperties)
             {
@@ -22,7 +22,7 @@
             }
         }
 
-        protected virtual void ReadProperty(FoxProperty propertyData)//, GetEntityFromAddressDelegate getEntity)
+        protected virtual void ReadProperty(FoxProperty propertyData, GetEntityFromAddressDelegate getEntity)
         {
         }
     }
