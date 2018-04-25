@@ -37,16 +37,31 @@ namespace FoxKit.Modules.DataSet.FoxCore
             {
                 var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
                 Transform = getEntity(address) as TransformEntity;
+
+                if (Transform != null)
+                {
+                    Transform.Owner = this;
+                }
             }
             else if (propertyData.Name == "shearTransform")
             {
                 var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
                 ShearTransform = getEntity(address) as TransformEntity;
+
+                if (ShearTransform != null)
+                {
+                    ShearTransform.Owner = this;
+                }
             }
             else if (propertyData.Name == "pivotTransform")
             {
                 var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
                 PivotTransform = getEntity(address) as TransformEntity;
+
+                if (PivotTransform != null)
+                {
+                    PivotTransform.Owner = this;
+                }
             }
             else if (propertyData.Name == "children")
             {

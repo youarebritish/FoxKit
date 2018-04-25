@@ -1,6 +1,7 @@
 ﻿using FoxTool.Fox;
 using FoxTool.Fox.Containers;
 using FoxTool.Fox.Types;
+using FoxTool.Fox.Types.Structs;
 using System.Linq;
 using UnityEngine.Assertions;
 
@@ -27,7 +28,17 @@ namespace FoxKit.Utils
 
             return container[0];
         }
-        
+
+        public static UnityEngine.Vector3 FoxToolToUnity(FoxVector3 foxVector)
+        {
+            return new UnityEngine.Vector3(foxVector.Z, foxVector.Y, foxVector.X);
+        }
+
+        public static UnityEngine.Quaternion FoxToolToUnity(FoxQuat foxQuat)
+        {
+            return new UnityEngine.Quaternion(-foxQuat.Z, -foxQuat.Y, -foxQuat.X, foxQuat.W);
+        }
+
         /// <summary>
         /// Asserts that a property has a container of a given type.
         /// </summary>
