@@ -12,8 +12,9 @@ namespace FoxKit.Modules.DataSet.GameCore
     /// Base class for Entities with a physical location in the world.
     /// </summary>
     [Serializable]
-    public class GameObjectLocator : TransformData
+    public class GameObjectLocator : Data
     {
+        /*
         public string TypeName;
         public uint GroupId;        
         public GameObjectLocatorParameter Parameters;
@@ -21,7 +22,8 @@ namespace FoxKit.Modules.DataSet.GameCore
         protected override void ReadProperty(FoxProperty propertyData, GetEntityFromAddressDelegate getEntity)
         {
             base.ReadProperty(propertyData, getEntity);
-            
+
+            return;
             if (propertyData.Name == "typeName")
             {
                 TypeName = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
@@ -35,6 +37,6 @@ namespace FoxKit.Modules.DataSet.GameCore
                 //var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
                 //Parameters = getEntity(address) as GameObjectLocatorParameter;
             }
-        }
+        }*/
     }
 }

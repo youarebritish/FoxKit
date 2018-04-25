@@ -19,9 +19,6 @@ namespace FoxKit.Modules.DataSet.Importer
             }
 
             var instance = ScriptableObject.CreateInstance(type) as Entity;
-
-            // TODO: Must wait to initialize until all entities created since we need their instances
-            //instance.Initialize(data);
             return instance;
         }
     }

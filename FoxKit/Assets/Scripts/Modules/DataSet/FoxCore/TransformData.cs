@@ -27,6 +27,7 @@ namespace FoxKit.Modules.DataSet.FoxCore
         {
             base.ReadProperty(propertyData, getEntity);
 
+            return;
             if (propertyData.Name == "parent")
             {
                 /*var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityHandle>(propertyData).Handle;
