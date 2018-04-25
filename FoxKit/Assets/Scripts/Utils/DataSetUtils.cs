@@ -2,6 +2,7 @@
 using FoxTool.Fox.Containers;
 using FoxTool.Fox.Types;
 using FoxTool.Fox.Types.Structs;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Assertions;
 
@@ -27,6 +28,18 @@ namespace FoxKit.Utils
                 $"Expected a StaticArray containing exactly one element, but found one with {container.Count} in property {property.Name}.");
 
             return container[0];
+        }
+
+        public static List<TValue> GetDynamicArrayValues<TValue>(FoxProperty property) where TValue : IFoxValue, new()
+        {
+            CheckContainerType(property, FoxContainerType.DynamicArray);
+            return (property.Container as FoxDynamicArray<TValue>).ToList();
+        }
+
+        public static List<TValue> GetListValues<TValue>(FoxProperty property) where TValue : IFoxValue, new()
+        {
+            CheckContainerType(property, FoxContainerType.List);
+            return (property.Container as FoxList<TValue>).ToList();
         }
 
         public static UnityEngine.Vector3 FoxToolToUnity(FoxVector3 foxVector)

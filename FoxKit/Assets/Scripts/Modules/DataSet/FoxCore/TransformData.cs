@@ -5,6 +5,7 @@ using FoxKit.Utils;
 using FoxTool.Fox.Types.Values;
 using static FoxKit.Modules.DataSet.Importer.EntityFactory;
 using UnityEngine;
+using System.Linq;
 
 namespace FoxKit.Modules.DataSet.FoxCore
 {
@@ -65,7 +66,9 @@ namespace FoxKit.Modules.DataSet.FoxCore
             }
             else if (propertyData.Name == "children")
             {
-                // TODO List
+                Children = (from handle in DataSetUtils.GetListValues<FoxEntityHandle>(propertyData)
+                           select getEntity(handle.Handle) as TransformData)
+                           .ToList();
             }
             else if (propertyData.Name == "flags")
             {
