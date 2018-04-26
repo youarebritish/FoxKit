@@ -2,8 +2,10 @@
 using FoxTool.Fox.Containers;
 using FoxTool.Fox.Types;
 using FoxTool.Fox.Types.Structs;
+using FoxTool.Fox.Types.Values;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine.Assertions;
 
 namespace FoxKit.Utils
@@ -40,6 +42,15 @@ namespace FoxKit.Utils
         {
             CheckContainerType(property, FoxContainerType.List);
             return (property.Container as FoxList<TValue>).ToList();
+        }
+
+        public static bool TryGetFile<T>(FoxFilePtr filePtr, out T file) where T : class
+        {
+            // FilePtrs have a leading /, which Unity doesn't like. Get rid of it.
+            var formattedPath = filePtr.ToString().Substring(1);
+            file = AssetDatabase.LoadAssetAtPath(formattedPath, typeof(T)) as T;
+
+            return file != null;
         }
 
         public static UnityEngine.Vector3 FoxToolToUnity(FoxVector3 foxVector)
