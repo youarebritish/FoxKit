@@ -1,5 +1,4 @@
-﻿using FoxKit.Modules.DataSet.FoxCore;
-using System;
+﻿using System;
 using FoxKit.Modules.DataSet.Importer;
 using FoxTool.Fox;
 using FoxTool.Fox.Types.Values;
@@ -13,8 +12,8 @@ namespace FoxKit.Modules.DataSet.TppGameKit
         public float RotationLimitLeftRight;
         public float RotationLimitUp;
         public float RotationLimitDown;
-        public UnityEngine.Object DefaultShellPartsFile;    // TODO
-        public UnityEngine.Object FlareShellPartsFile;      // TODO
+        public UnityEngine.Object DefaultShellPartsFile;
+        public UnityEngine.Object FlareShellPartsFile;
 
         protected override void ReadProperty(FoxProperty propertyData, EntityFactory.GetEntityFromAddressDelegate getEntity)
         {
@@ -28,9 +27,19 @@ namespace FoxKit.Modules.DataSet.TppGameKit
             {
                 RotationLimitUp = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
             }
-            if (propertyData.Name == "rotationLimitDown")
+            else if (propertyData.Name == "rotationLimitDown")
             {
                 RotationLimitDown = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+            }
+            else if (propertyData.Name == "defaultShellPartsFile")
+            {
+                var filePtr = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData);
+                var fileFound = DataSetUtils.TryGetFile(filePtr, out DefaultShellPartsFile);
+            }
+            else if (propertyData.Name == "flareShellPartsFile")
+            {
+                var filePtr = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData);
+                var fileFound = DataSetUtils.TryGetFile(filePtr, out FlareShellPartsFile);
             }
         }
     }

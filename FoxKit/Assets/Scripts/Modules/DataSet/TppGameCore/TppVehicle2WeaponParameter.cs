@@ -8,7 +8,7 @@ using FoxTool.Fox.Types.Values;
 namespace FoxKit.Modules.DataSet.TppGameCore
 {
     [Serializable]
-    public class TppVehicle2WeaponParameter : DataElement<TppVehicle2AttachmentData>
+    public class TppVehicle2WeaponParameter : DataElement<Data>
     {
         public string AttackId;
         public string EquipId;
@@ -48,9 +48,19 @@ namespace FoxKit.Modules.DataSet.TppGameCore
             {
                 FireInterval = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
             }
-            else if (propertyData.Name == "ownerCnpName")
+            else if (propertyData.Name == "fireInterval")
             {
-                OwnerCnpName = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                FireInterval = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+            }
+            else if (propertyData.Name == "weaponFile")
+            {
+                var filePtr = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData);
+                var fileFound = DataSetUtils.TryGetFile(filePtr, out WeaponFile);
+            }
+            else if (propertyData.Name == "ammoFile")
+            {
+                var filePtr = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData);
+                var fileFound = DataSetUtils.TryGetFile(filePtr, out AmmoFile);
             }
             else if (propertyData.Name == "weaponBoneName")
             {

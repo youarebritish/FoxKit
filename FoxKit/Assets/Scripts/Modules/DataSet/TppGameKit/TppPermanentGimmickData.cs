@@ -13,11 +13,11 @@ namespace FoxKit.Modules.DataSet.TppGameKit
     [Serializable]
     public class TppPermanentGimmickData : Data
     {
-        public string PartsFile;    // TODO file
-        public string LocatorFile;  // TODO file
+        public UnityEngine.Object PartsFile;
+        public UnityEngine.Object LocatorFile;
         public TppPermanentGimmickParameter Parameters;
-        public uint Flags1;         // TODO enum
-        public uint Flags2;         // TODO enum
+        public uint Flags1;
+        public uint Flags2;
 
         protected override void ReadProperty(FoxProperty propertyData, EntityFactory.GetEntityFromAddressDelegate getEntity)
         {
@@ -25,11 +25,13 @@ namespace FoxKit.Modules.DataSet.TppGameKit
 
             if (propertyData.Name == "partsFile")
             {
-                PartsFile = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData).ToString();
+                var ptr = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData);
+                var fileFound = DataSetUtils.TryGetFile(ptr, out PartsFile);
             }
             else if (propertyData.Name == "locaterFile")
             {
-                LocatorFile = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData).ToString();
+                var ptr = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData);
+                var fileFound = DataSetUtils.TryGetFile(ptr, out LocatorFile);
             }
             else if (propertyData.Name == "parameters")
             {

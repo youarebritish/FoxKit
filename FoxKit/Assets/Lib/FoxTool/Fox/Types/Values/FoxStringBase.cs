@@ -7,6 +7,7 @@ namespace FoxTool.Fox.Types.Values
 {
     public abstract class FoxStringBase : IFoxValue
     {
+        private const ulong EMPTY_STRING_HASH = 0xB8A0BF169F98;
         private FoxStringLiteral StringLiteral { get; set; }
 
         public void Read(Stream input)
@@ -69,6 +70,10 @@ namespace FoxTool.Fox.Types.Values
 
         public override string ToString()
         {
+            if (StringLiteral.Hash.HashValue == EMPTY_STRING_HASH)
+            {
+                return string.Empty;
+            }
             return StringLiteral.ToString();
         }
     }

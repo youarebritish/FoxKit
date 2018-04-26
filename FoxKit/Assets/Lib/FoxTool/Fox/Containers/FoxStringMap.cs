@@ -107,5 +107,10 @@ namespace FoxTool.Fox.Containers
                 }
             }
         }
+
+        public Dictionary<FoxStringLookupLiteral, T> ToDictionary()
+        {
+            return new Dictionary<FoxStringLookupLiteral, T>(_map);
+        }
     }
 }

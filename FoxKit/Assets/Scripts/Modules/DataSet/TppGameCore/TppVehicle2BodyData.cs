@@ -15,7 +15,7 @@ namespace FoxKit.Modules.DataSet.TppGameCore
         public byte BodyImplTypeIndex;
         public UnityEngine.Object PartsFile;
         public byte BodyInstanceCount;
-        public TppVehicle2WeaponParameter WeaponParams;
+        public List<TppVehicle2WeaponParameter> WeaponParams;
         public List<UnityEngine.Object> FovaFiles;
 
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.GetEntityFromAddressDelegate getEntity)
@@ -36,7 +36,9 @@ namespace FoxKit.Modules.DataSet.TppGameCore
             }
             else if (propertyData.Name == "partsFile")
             {
-                // TODO
+                UnityEngine.Object file;
+                var filePtr = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData);
+                var fileFound = DataSetUtils.TryGetFile(filePtr, out file);
             }
             else if (propertyData.Name == "bodyInstanceCount")
             {
@@ -44,13 +46,27 @@ namespace FoxKit.Modules.DataSet.TppGameCore
             }
             else if (propertyData.Name == "weaponParams")
             {
-                // DynamicArray
-                //var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
-                //WeaponParams = getEntity(address) as TppVehicle2WeaponParameter;
+                var addresses = DataSetUtils.GetDynamicArrayValues<FoxEntityPtr>(propertyData);
+                WeaponParams = new List<TppVehicle2WeaponParameter>(addresses.Count);
+
+                foreach(var address in addresses)
+                {
+                    var param = getEntity(address.EntityPtr) as TppVehicle2WeaponParameter;
+                    WeaponParams.Add(param);
+                    param.Owner = this;
+                }
             }
             else if (propertyData.Name == "fovaFiles")
             {
-                // TODO
+                var filePtrList = DataSetUtils.GetDynamicArrayValues<FoxFilePtr>(propertyData);
+                FovaFiles = new List<UnityEngine.Object>(filePtrList.Count);
+
+                foreach (var filePtr in filePtrList)
+                {
+                    UnityEngine.Object file;
+                    var fileFound = DataSetUtils.TryGetFile(filePtr, out file);
+                    FovaFiles.Add(file);
+                }
             }
         }
     }

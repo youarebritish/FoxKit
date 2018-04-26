@@ -44,8 +44,22 @@ namespace FoxKit.Utils
             return (property.Container as FoxList<TValue>).ToList();
         }
 
+        public static Dictionary<FoxStringLookupLiteral, TValue> GetStringMap<TValue>(FoxProperty property) where TValue : IFoxValue, new()
+        {
+            CheckContainerType(property, FoxContainerType.StringMap);
+            var container = property.Container as FoxStringMap<TValue>;
+            return container.ToDictionary();
+        }
+
         public static bool TryGetFile<T>(FoxFilePtr filePtr, out T file) where T : class
         {
+            var path = filePtr.ToString();
+            if (string.IsNullOrEmpty(path))
+            {
+                file = null;
+                return false;
+            }
+
             // FilePtrs have a leading /, which Unity doesn't like. Get rid of it.
             var formattedPath = filePtr.ToString().Substring(1);
             file = AssetDatabase.LoadAssetAtPath(formattedPath, typeof(T)) as T;
