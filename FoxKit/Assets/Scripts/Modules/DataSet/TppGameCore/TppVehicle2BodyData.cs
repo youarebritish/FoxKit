@@ -4,12 +4,11 @@ using FoxTool.Fox;
 using FoxTool.Fox.Types.Values;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace FoxKit.Modules.DataSet.TppGameCore
 {
     [Serializable]
-    public class TppVehicle2BodyData : TransformData
+    public class TppVehicle2BodyData : Data
     {
         public byte VehicleTypeIndex;
         public byte ProxyVehicleTypeIndex;
