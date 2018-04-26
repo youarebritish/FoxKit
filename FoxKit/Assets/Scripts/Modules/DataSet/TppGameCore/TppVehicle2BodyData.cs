@@ -18,9 +18,9 @@ namespace FoxKit.Modules.DataSet.TppGameCore
         public List<TppVehicle2WeaponParameter> WeaponParams;
         public List<UnityEngine.Object> FovaFiles;
 
-        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.GetEntityFromAddressDelegate getEntity)
+        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
-            base.ReadProperty(propertyData, getEntity);
+            base.ReadProperty(propertyData, initFunctions);
 
             if (propertyData.Name == "vehicleTypeIndex")
             {
@@ -51,7 +51,7 @@ namespace FoxKit.Modules.DataSet.TppGameCore
 
                 foreach(var address in addresses)
                 {
-                    var param = getEntity(address.EntityPtr) as TppVehicle2WeaponParameter;
+                    var param = initFunctions.GetEntityFromAddress(address.EntityPtr) as TppVehicle2WeaponParameter;
                     WeaponParams.Add(param);
                     param.Owner = this;
                 }

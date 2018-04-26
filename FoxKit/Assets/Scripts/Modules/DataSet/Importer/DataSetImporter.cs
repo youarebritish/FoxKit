@@ -33,8 +33,10 @@ namespace FoxKit.Modules.DataSet.Importer
                 foxFile = FoxFile.ReadFoxFile(input, lookupTable);
             }
 
+            var entityCreateFunctions = MakeEntityCreateFunctions();
+
             var entities = (from entity in foxFile.Entities
-                            select new { Data = entity, Instance = Create(entity, GetEntityType) })
+                            select new { Data = entity, Instance = Create(entity, entityCreateFunctions) })
                             .Where(entry => entry.Instance != null)
                             .ToDictionary(entry => entry.Instance, entry => entry.Data);
 
@@ -48,11 +50,12 @@ namespace FoxKit.Modules.DataSet.Importer
                     break;
                 }                
             }
-            
+
+            var entityInitializeFunctions = MakeEntityInitializeFunctions(entities);
             foreach (var entity in entities)
             {
-                GetEntityFromAddressDelegate getEntityByAddress = (address) => entities.FirstOrDefault(e => e.Value.Address == address).Key;
-                entity.Key.Initialize(entity.Value, getEntityByAddress);
+                
+                entity.Key.Initialize(entity.Value, entityInitializeFunctions);
 
                 // TODO Fix null entries
                 if (entity.Key.GetType() == typeof(FoxCore.DataSet))
@@ -70,6 +73,16 @@ namespace FoxKit.Modules.DataSet.Importer
 
             ctx.AddObjectToAsset("DataSet", dataSet);
             ctx.SetMainObject(dataSet);
+        }
+
+        private static EntityCreateFunctions MakeEntityCreateFunctions()
+        {
+            return new EntityCreateFunctions(GetEntityType);
+        }
+
+        private static EntityInitializeFunctions MakeEntityInitializeFunctions(Dictionary<Entity, FoxEntity> entities)
+        {
+            return new EntityInitializeFunctions((address) => entities.FirstOrDefault(e => e.Value.Address == address).Key);
         }
 
         private static Type GetEntityType(string className)

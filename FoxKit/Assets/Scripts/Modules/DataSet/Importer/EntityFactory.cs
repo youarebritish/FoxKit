@@ -6,13 +6,10 @@ using UnityEngine;
 namespace FoxKit.Modules.DataSet.Importer
 {
     public static class EntityFactory
-    {
-        public delegate Type GetEntityTypeDelegate(string className);
-        public delegate Entity GetEntityFromAddressDelegate(ulong address);
-        
-        public static Entity Create(FoxEntity data, GetEntityTypeDelegate getEntityType)
+    {        
+        public static Entity Create(FoxEntity data, EntityCreateFunctions createFunctions)
         {
-            var type = getEntityType(data.ClassName);
+            var type = createFunctions.GetEntityType(data.ClassName);
             if (type == null)
             {
                 return null;
@@ -20,6 +17,28 @@ namespace FoxKit.Modules.DataSet.Importer
 
             var instance = ScriptableObject.CreateInstance(type) as Entity;
             return instance;
+        }
+
+        public class EntityCreateFunctions
+        {
+            public delegate Type GetEntityTypeDelegate(string className);
+            public GetEntityTypeDelegate GetEntityType { get; }
+
+            public EntityCreateFunctions(GetEntityTypeDelegate getEntityType)
+            {
+                this.GetEntityType = getEntityType;
+            }
+        }
+
+        public class EntityInitializeFunctions
+        {
+            public delegate Entity GetEntityFromAddressDelegate(ulong address);
+            public GetEntityFromAddressDelegate GetEntityFromAddress { get; }
+
+            public EntityInitializeFunctions(GetEntityFromAddressDelegate getEntityFromAddress)
+            {
+                this.GetEntityFromAddress = getEntityFromAddress;
+            }
         }
     }
 }

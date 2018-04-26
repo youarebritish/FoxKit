@@ -1,10 +1,8 @@
 ﻿using FoxKit.Modules.DataSet.FoxCore;
-using FoxKit.Modules.DataSet.Importer;
 using FoxKit.Utils;
 using FoxTool.Fox;
 using FoxTool.Fox.Types.Values;
 using System;
-using UnityEngine;
 
 namespace FoxKit.Modules.DataSet.Sdx
 {
@@ -13,9 +11,9 @@ namespace FoxKit.Modules.DataSet.Sdx
     {
         public string TexturePackPath;
 
-        protected override void ReadProperty(FoxProperty propertyData, EntityFactory.GetEntityFromAddressDelegate getEntity)
+        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
-            base.ReadProperty(propertyData, getEntity);
+            base.ReadProperty(propertyData, initFunctions);
 
             if (propertyData.Name == "texturePackPath")
             {

@@ -1,6 +1,5 @@
 ﻿using FoxKit.Modules.DataSet.FoxCore;
 using System;
-using FoxKit.Modules.DataSet.Importer;
 using FoxTool.Fox;
 using FoxKit.Utils;
 using FoxTool.Fox.Types.Values;
@@ -15,8 +14,8 @@ namespace FoxKit.Modules.DataSet.TppGameCore
         public string BulletId;
         public byte WeaponImplTypeIndex;
         public float FireInterval;
-        public UnityEngine.Object WeaponFile;   // TODO
-        public UnityEngine.Object AmmoFile;     // TODO
+        public UnityEngine.Object WeaponFile;
+        public UnityEngine.Object AmmoFile;
         public string OwnerCnpName;
         public string WeaponBoneName;
         public string TurretBoneName;
@@ -24,9 +23,9 @@ namespace FoxKit.Modules.DataSet.TppGameCore
         public float MaxPitch;
         public float RotSpeed;
 
-        protected override void ReadProperty(FoxProperty propertyData, EntityFactory.GetEntityFromAddressDelegate getEntity)
+        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
-            base.ReadProperty(propertyData, getEntity);
+            base.ReadProperty(propertyData, initFunctions);
 
             if (propertyData.Name == "attackId")
             {

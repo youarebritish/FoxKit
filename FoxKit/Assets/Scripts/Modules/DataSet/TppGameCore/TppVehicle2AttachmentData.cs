@@ -1,6 +1,5 @@
 ﻿using FoxKit.Modules.DataSet.FoxCore;
 using System;
-using FoxKit.Modules.DataSet.Importer;
 using FoxTool.Fox;
 using FoxKit.Utils;
 using FoxTool.Fox.Types.Values;
@@ -19,9 +18,9 @@ namespace FoxKit.Modules.DataSet.TppGameCore
         public string AttachmentBoneName;
         public List<TppVehicle2WeaponParameter> WeaponParams;
 
-        protected override void ReadProperty(FoxProperty propertyData, EntityFactory.GetEntityFromAddressDelegate getEntity)
+        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
-            base.ReadProperty(propertyData, getEntity);
+            base.ReadProperty(propertyData, initFunctions);
 
             if (propertyData.Name == "vehicleTypeCode")
             {
@@ -55,7 +54,7 @@ namespace FoxKit.Modules.DataSet.TppGameCore
 
                 foreach (var param in list)
                 {
-                    var entity = getEntity(param.EntityPtr) as TppVehicle2WeaponParameter;
+                    var entity = initFunctions.GetEntityFromAddress(param.EntityPtr) as TppVehicle2WeaponParameter;
                     WeaponParams.Add(entity);
                     entity.Owner = this;
                 }

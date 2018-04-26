@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using FoxTool.Fox;
 using FoxKit.Utils;
 using FoxTool.Fox.Types.Values;
-using static FoxKit.Modules.DataSet.Importer.EntityFactory;
-using UnityEngine;
 using System.Linq;
 
 namespace FoxKit.Modules.DataSet.FoxCore
@@ -25,19 +23,19 @@ namespace FoxKit.Modules.DataSet.FoxCore
         public bool Visibility = true;
         public bool Selection = true;
 
-        protected override void ReadProperty(FoxProperty propertyData, GetEntityFromAddressDelegate getEntity)
+        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
-            base.ReadProperty(propertyData, getEntity);
+            base.ReadProperty(propertyData, initFunctions);
             
             if (propertyData.Name == "parent")
             {
                 var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityHandle>(propertyData).Handle;
-                Parent = getEntity(address) as TransformData;
+                Parent = initFunctions.GetEntityFromAddress(address) as TransformData;
             }
             else if (propertyData.Name == "transform")
             {
                 var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
-                Transform = getEntity(address) as TransformEntity;
+                Transform = initFunctions.GetEntityFromAddress(address) as TransformEntity;
 
                 if (Transform != null)
                 {
@@ -47,7 +45,7 @@ namespace FoxKit.Modules.DataSet.FoxCore
             else if (propertyData.Name == "shearTransform")
             {
                 var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
-                ShearTransform = getEntity(address) as TransformEntity;
+                ShearTransform = initFunctions.GetEntityFromAddress(address) as TransformEntity;
 
                 if (ShearTransform != null)
                 {
@@ -57,7 +55,7 @@ namespace FoxKit.Modules.DataSet.FoxCore
             else if (propertyData.Name == "pivotTransform")
             {
                 var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
-                PivotTransform = getEntity(address) as TransformEntity;
+                PivotTransform = initFunctions.GetEntityFromAddress(address) as TransformEntity;
 
                 if (PivotTransform != null)
                 {
@@ -67,7 +65,7 @@ namespace FoxKit.Modules.DataSet.FoxCore
             else if (propertyData.Name == "children")
             {
                 Children = (from handle in DataSetUtils.GetListValues<FoxEntityHandle>(propertyData)
-                           select getEntity(handle.Handle) as TransformData)
+                           select initFunctions.GetEntityFromAddress(handle.Handle) as TransformData)
                            .ToList();
             }
             else if (propertyData.Name == "flags")

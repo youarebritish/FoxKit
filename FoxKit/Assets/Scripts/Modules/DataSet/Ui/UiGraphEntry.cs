@@ -1,9 +1,6 @@
-﻿using FoxKit.Modules.DataSet.Importer;
-using FoxTool.Fox;
+﻿using FoxTool.Fox;
 using FoxTool.Fox.Types.Values;
 using FoxKit.Utils;
-using FoxKit.Modules.DataSet.GameCore;
-using FoxKit.Utils.UI.StringMap;
 using System;
 using FoxKit.Modules.DataSet.FoxCore;
 using System.Collections.Generic;
@@ -16,9 +13,9 @@ namespace FoxKit.Modules.DataSet.Ui
         public List<UnityEngine.Object> Files;
         public List<UnityEngine.Object> RawFiles;
 
-        protected override void ReadProperty(FoxProperty propertyData, EntityFactory.GetEntityFromAddressDelegate getEntity)
+        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
-            base.ReadProperty(propertyData, getEntity);
+            base.ReadProperty(propertyData, initFunctions);
 
             if (propertyData.Name == "files")
             {

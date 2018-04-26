@@ -1,6 +1,5 @@
 ﻿using FoxKit.Modules.DataSet.FoxCore;
 using System;
-using FoxKit.Modules.DataSet.Importer;
 using FoxTool.Fox;
 using FoxKit.Utils;
 using FoxTool.Fox.Types.Values;
@@ -19,9 +18,9 @@ namespace FoxKit.Modules.DataSet.TppGameKit
         public uint Flags1;
         public uint Flags2;
 
-        protected override void ReadProperty(FoxProperty propertyData, EntityFactory.GetEntityFromAddressDelegate getEntity)
+        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
-            base.ReadProperty(propertyData, getEntity);
+            base.ReadProperty(propertyData, initFunctions);
 
             if (propertyData.Name == "partsFile")
             {
@@ -36,7 +35,7 @@ namespace FoxKit.Modules.DataSet.TppGameKit
             else if (propertyData.Name == "parameters")
             {
                 var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
-                Parameters = getEntity(address) as TppPermanentGimmickParameter;
+                Parameters = initFunctions.GetEntityFromAddress(address) as TppPermanentGimmickParameter;
 
                 if (Parameters != null)
                 {

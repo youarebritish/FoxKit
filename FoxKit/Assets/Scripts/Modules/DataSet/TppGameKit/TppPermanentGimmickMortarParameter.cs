@@ -1,5 +1,4 @@
 ﻿using System;
-using FoxKit.Modules.DataSet.Importer;
 using FoxTool.Fox;
 using FoxTool.Fox.Types.Values;
 using FoxKit.Utils;
@@ -15,9 +14,9 @@ namespace FoxKit.Modules.DataSet.TppGameKit
         public UnityEngine.Object DefaultShellPartsFile;
         public UnityEngine.Object FlareShellPartsFile;
 
-        protected override void ReadProperty(FoxProperty propertyData, EntityFactory.GetEntityFromAddressDelegate getEntity)
+        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
-            base.ReadProperty(propertyData, getEntity);
+            base.ReadProperty(propertyData, initFunctions);
 
             if (propertyData.Name == "rotationLimitLeftRight")
             {

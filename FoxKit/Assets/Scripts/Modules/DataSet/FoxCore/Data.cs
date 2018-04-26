@@ -2,7 +2,6 @@
 using FoxTool.Fox;
 using FoxTool.Fox.Types.Values;
 using FoxKit.Utils;
-using static FoxKit.Modules.DataSet.Importer.EntityFactory;
 
 namespace FoxKit.Modules.DataSet.FoxCore
 {
@@ -14,9 +13,9 @@ namespace FoxKit.Modules.DataSet.FoxCore
         /// </summary>
         public string Name => name;
 
-        protected override void ReadProperty(FoxProperty propertyData, GetEntityFromAddressDelegate getEntity)
+        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
-            base.ReadProperty(propertyData, getEntity);
+            base.ReadProperty(propertyData, initFunctions);
 
             if (propertyData.Name == "name")
             {

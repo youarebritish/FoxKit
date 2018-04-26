@@ -1,5 +1,4 @@
-﻿using FoxKit.Modules.DataSet.Importer;
-using FoxTool.Fox;
+﻿using FoxTool.Fox;
 using FoxTool.Fox.Types.Values;
 using FoxKit.Utils;
 using FoxKit.Modules.DataSet.GameCore;
@@ -15,9 +14,9 @@ namespace FoxKit.Modules.DataSet.TppGameCore
         public UnityEngine.Object ExtensionMtarFile;
         public ObjectStringMap VfxFiles;
 
-        protected override void ReadProperty(FoxProperty propertyData, EntityFactory.GetEntityFromAddressDelegate getEntity)
+        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
-            base.ReadProperty(propertyData, getEntity);
+            base.ReadProperty(propertyData, initFunctions);
             
             if (propertyData.Name == "partsFile")
             {

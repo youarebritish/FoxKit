@@ -13,9 +13,9 @@ namespace FoxKit.Modules.DataSet.FoxCore
         public Quaternion Rotation;
         public Vector3 Scale;
 
-        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.GetEntityFromAddressDelegate getEntity)
+        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
-            base.ReadProperty(propertyData, getEntity);
+            base.ReadProperty(propertyData, initFunctions);
 
             if (propertyData.Name == "transform_translation")
             {

@@ -1,5 +1,4 @@
 ﻿using FoxKit.Modules.DataSet.FoxCore;
-using FoxKit.Modules.DataSet.Importer;
 using FoxKit.Utils;
 using FoxTool.Fox;
 using FoxTool.Fox.Types.Values;
@@ -14,9 +13,9 @@ namespace FoxKit.Modules.DataSet.GameCore
         public uint RealizedCount;
         public GameObjectParameter Parameters;
 
-        protected override void ReadProperty(FoxProperty propertyData, EntityFactory.GetEntityFromAddressDelegate getEntity)
+        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
-            base.ReadProperty(propertyData, getEntity);
+            base.ReadProperty(propertyData, initFunctions);
 
             if (propertyData.Name == "typeName")
             {
@@ -37,7 +36,7 @@ namespace FoxKit.Modules.DataSet.GameCore
             else if (propertyData.Name == "parameters")
             {
                 var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
-                Parameters = getEntity(address) as GameObjectParameter;
+                Parameters = initFunctions.GetEntityFromAddress(address) as GameObjectParameter;
 
                 if (Parameters != null)
                 {
