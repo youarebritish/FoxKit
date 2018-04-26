@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using FoxKit.Utils;
 
-[System.Serializable]
 /// <summary>
 /// A Fox Engine material preset.
 /// </summary>
+[System.Serializable]
 public struct MaterialPreset
 {
     public float F0;
