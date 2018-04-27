@@ -2,6 +2,7 @@
 using FoxTool.Fox;
 using FoxKit.Utils;
 using FoxTool.Fox.Types.Values;
+using System.IO;
 
 namespace FoxKit.Modules.DataSet.FoxCore
 {
@@ -9,6 +10,7 @@ namespace FoxKit.Modules.DataSet.FoxCore
     public class ScriptBlockScript : Data
     {
         public UnityEngine.Object Script;
+        public string ScriptPath;
 
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
@@ -16,8 +18,17 @@ namespace FoxKit.Modules.DataSet.FoxCore
 
             if (propertyData.Name == "script")
             {
-                var path = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData);
-                var success = DataSetUtils.TryGetFile(path, out Script);
+                ScriptPath = Path.GetFileName(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData).ToString());
+            }
+        }
+
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAsset tryGetImportedAsset)
+        {
+            base.OnAssetsImported(tryGetImportedAsset);
+
+            if (tryGetImportedAsset(ScriptPath, out Script))
+            {
+
             }
         }
     }

@@ -1,15 +1,14 @@
 ﻿using FoxKit.Modules.DataSet.FoxCore;
-using FoxKit.Modules.DataSet.GameCore;
 using FoxKit.Utils;
 using FoxTool.Fox;
-using FoxTool.Fox.Containers;
-using FoxTool.Fox.Types.Values;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UnityEditor;
 using UnityEditor.Experimental.AssetImporters;
 using UnityEngine;
+using UnityEngine.Assertions;
 using static FoxKit.Modules.DataSet.Importer.EntityFactory;
 
 namespace FoxKit.Modules.DataSet.Importer
@@ -20,6 +19,8 @@ namespace FoxKit.Modules.DataSet.Importer
         // TODO: Remove/cache
         private static readonly Type[] typesInAddMenu = ReflectionUtils.GetAssignableConcreteClasses(typeof(Entity)).ToArray();
         private static readonly Dictionary<ulong, string> globalHashNameDictionary = new Dictionary<ulong, string>();
+
+        private static readonly Dictionary<string, int> fileRequests = new Dictionary<string, int>();
 
         public override void OnImportAsset(AssetImportContext ctx)
         {
@@ -82,7 +83,7 @@ namespace FoxKit.Modules.DataSet.Importer
 
         private static EntityInitializeFunctions MakeEntityInitializeFunctions(Dictionary<Entity, FoxEntity> entities)
         {
-            return new EntityInitializeFunctions((address) => entities.FirstOrDefault(e => e.Value.Address == address).Key);
+            return new EntityInitializeFunctions((address) => entities.FirstOrDefault(e => e.Value.Address == address).Key, RequestFile);
         }
 
         private static Type GetEntityType(string className)
@@ -96,6 +97,40 @@ namespace FoxKit.Modules.DataSet.Importer
             }
             Debug.LogError("Unable to find class " + className);
             return null;
+        }
+
+        public static bool DoesRequestExistForFile(string filename)
+        {
+            return fileRequests.ContainsKey(filename);
+        }
+
+        public static void ProcessRequestForFile(string filename)
+        {
+            Assert.IsTrue(fileRequests.ContainsKey(filename));
+
+            Debug.Log("Found file: " + filename);
+            var asset = AssetDatabase.LoadAssetAtPath(filename, typeof(UnityEngine.Object));
+            var requestingAssetInstanceId = fileRequests[filename];
+            var requestingAssets = AssetDatabase.FindAssets("name:quest_qih0005");//EditorUtility.InstanceIDToObject(requestingAssetInstanceId);
+            var blah = AssetDatabase.GUIDToAssetPath(requestingAssets[0]);
+            var blah2 = AssetDatabase.LoadAssetAtPath<ScriptBlockScript>(blah);
+            (blah2 as ScriptBlockScript).Script = asset;
+        }
+
+        public static void ClearFileRequests()
+        {
+            fileRequests.Clear();
+        }
+
+        private static void RequestFile(string filePath, int requestingAssetInstanceId)
+        {
+            // When a file is requested:
+            // 1) Check if the file already exists. If so, hand it over immediately.
+            // 2) Add it to FileRequestHandler.
+            // https://docs.unity3d.com/ScriptReference/AssetPostprocessor.OnPostprocessAllAssets.html ?
+            // OnPostprocessAllAssets(): Go through FileRequestHandler's requests and see if any of them were just imported.
+            Debug.Log("Requesting file: " + filePath);
+            fileRequests.Add(Path.GetFileName(filePath), requestingAssetInstanceId);
         }
     }
 }

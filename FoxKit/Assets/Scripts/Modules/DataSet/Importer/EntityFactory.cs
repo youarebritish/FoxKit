@@ -1,5 +1,6 @@
 ﻿using FoxKit.Modules.DataSet.FoxCore;
 using FoxTool.Fox;
+using FoxTool.Fox.Types.Values;
 using System;
 using UnityEngine;
 
@@ -33,11 +34,16 @@ namespace FoxKit.Modules.DataSet.Importer
         public class EntityInitializeFunctions
         {
             public delegate Entity GetEntityFromAddressDelegate(ulong address);
-            public GetEntityFromAddressDelegate GetEntityFromAddress { get; }
+            public delegate void DeliverRequestedFileDelegate(UnityEngine.Object requestedFile);
+            public delegate void RequestFileDelegate(string requestedFilePath, int requestingAssetPath);
 
-            public EntityInitializeFunctions(GetEntityFromAddressDelegate getEntityFromAddress)
+            public GetEntityFromAddressDelegate GetEntityFromAddress { get; }
+            public RequestFileDelegate RequestFile { get; }
+
+            public EntityInitializeFunctions(GetEntityFromAddressDelegate getEntityFromAddress, RequestFileDelegate requestFile)
             {
                 this.GetEntityFromAddress = getEntityFromAddress;
+                this.RequestFile = requestFile;
             }
         }
     }

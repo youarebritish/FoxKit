@@ -23,5 +23,9 @@
         protected virtual void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
         }
+
+        public virtual void OnAssetsImported(Core.AssetPostprocessor.TryGetAsset tryGetImportedAsset)
+        {
+        }
     }
 }

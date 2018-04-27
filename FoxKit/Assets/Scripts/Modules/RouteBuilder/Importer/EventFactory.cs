@@ -30,7 +30,7 @@ namespace FoxKit.Modules.RouteBuilder.Importer
         /// <param name="getEventTypeName"></param>
         /// <param name="generateEventName"></param>
         /// <returns></returns>
-        public static CreateEventDelegate CreateFactory(TryUnhashDelegate getEventTypeName, GenerateEventNameDelegate generateEventName)
+        public static CreateEventDelegate CreateFactory(TryUnhashDelegate<uint> getEventTypeName, GenerateEventNameDelegate generateEventName)
         {
             return (parent, data) => Create(parent, data, getEventTypeName, generateEventName);
         }
@@ -43,7 +43,7 @@ namespace FoxKit.Modules.RouteBuilder.Importer
         /// <param name="getEventTypeName">Function to get the name of the RouteEvent's type.</param>
         /// <param name="generateEventName">Function to generate a name for a RouteEvent.</param>
         /// <returns>The constructed RouteEvent.</returns>
-        private static RouteEvent Create(GameObject parent, FoxLib.Tpp.RouteSet.RouteEvent data, TryUnhashDelegate getEventTypeName, GenerateEventNameDelegate generateEventName)
+        private static RouteEvent Create(GameObject parent, FoxLib.Tpp.RouteSet.RouteEvent data, TryUnhashDelegate<uint> getEventTypeName, GenerateEventNameDelegate generateEventName)
         {
             var component = parent.GetComponent<RouteEvent>();//AddComponent<RouteEvent>();
             if (component == null)
