@@ -14,6 +14,9 @@ namespace FoxKit.Modules.DataSet.TppGameKit
         public UnityEngine.Object DefaultShellPartsFile;
         public UnityEngine.Object FlareShellPartsFile;
 
+        public string DefaultShellPartsFilePath;
+        public string FlareShellPartsFilePath;
+
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
@@ -32,14 +35,19 @@ namespace FoxKit.Modules.DataSet.TppGameKit
             }
             else if (propertyData.Name == "defaultShellPartsFile")
             {
-                var filePtr = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData);
-                var fileFound = DataSetUtils.TryGetFile(filePtr, out DefaultShellPartsFile);
+                DefaultShellPartsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
             }
             else if (propertyData.Name == "flareShellPartsFile")
             {
-                var filePtr = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData);
-                var fileFound = DataSetUtils.TryGetFile(filePtr, out FlareShellPartsFile);
+                FlareShellPartsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
             }
+        }
+
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
+        {
+            base.OnAssetsImported(tryGetImportedAsset);
+            tryGetImportedAsset(DefaultShellPartsFilePath, out DefaultShellPartsFile);
+            tryGetImportedAsset(FlareShellPartsFilePath, out FlareShellPartsFile);
         }
     }
 }

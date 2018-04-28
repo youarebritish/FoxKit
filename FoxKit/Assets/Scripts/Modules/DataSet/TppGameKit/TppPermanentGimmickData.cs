@@ -18,19 +18,20 @@ namespace FoxKit.Modules.DataSet.TppGameKit
         public uint Flags1;
         public uint Flags2;
 
+        public string PartsFilePath;
+        public string LocatorFilePath;
+
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
             if (propertyData.Name == "partsFile")
             {
-                var ptr = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData);
-                var fileFound = DataSetUtils.TryGetFile(ptr, out PartsFile);
+                PartsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
             }
             else if (propertyData.Name == "locaterFile")
             {
-                var ptr = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData);
-                var fileFound = DataSetUtils.TryGetFile(ptr, out LocatorFile);
+                LocatorFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
             }
             else if (propertyData.Name == "parameters")
             {
@@ -50,6 +51,13 @@ namespace FoxKit.Modules.DataSet.TppGameKit
             {
                 Flags2 = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt32>(propertyData).Value;
             }
+        }
+
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
+        {
+            base.OnAssetsImported(tryGetImportedAsset);
+            tryGetImportedAsset(PartsFilePath, out PartsFile);
+            tryGetImportedAsset(LocatorFilePath, out LocatorFile);
         }
     }
 }

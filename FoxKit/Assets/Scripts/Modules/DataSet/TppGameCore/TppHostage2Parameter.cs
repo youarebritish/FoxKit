@@ -14,41 +14,60 @@ namespace FoxKit.Modules.DataSet.TppGameCore
         public UnityEngine.Object ExtensionMtarFile;
         public ObjectStringMap VfxFiles;
 
+        public string PartsFilePath;
+        public string MotionGraphFilePath;
+        public string MtarFilePath;
+        public string ExtensionMtarFilePath;
+        public StringStringMap VfxFilePaths;
+
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
             
             if (propertyData.Name == "partsFile")
             {
-                var filePtr = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData);
-                var fileFound = DataSetUtils.TryGetFile(filePtr, out PartsFile);
+                PartsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
             }
             else if (propertyData.Name == "motionGraphFile")
             {
-                var filePtr = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData);
-                var fileFound = DataSetUtils.TryGetFile(filePtr, out MotionGraphFile);
+                MotionGraphFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
             }
             else if (propertyData.Name == "mtarFile")
             {
-                var filePtr = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData);
-                var fileFound = DataSetUtils.TryGetFile(filePtr, out MtarFile);
+                MtarFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
             }
             else if (propertyData.Name == "extensionMtarFile")
             {
-                var filePtr = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData);
-                var fileFound = DataSetUtils.TryGetFile(filePtr, out ExtensionMtarFile);
+                ExtensionMtarFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
             }
             else if (propertyData.Name == "vfxFiles")
             {
                 var dictionary = DataSetUtils.GetStringMap<FoxFilePtr>(propertyData);
 
-                VfxFiles = new ObjectStringMap();
+                VfxFilePaths = new StringStringMap();
                 foreach(var entry in dictionary)
                 {
-                    UnityEngine.Object file = null;
-                    var fileFound = DataSetUtils.TryGetFile(entry.Value, out file);
-                    VfxFiles.Add(entry.Key.ToString(), file);
+                    var path = ExtensionMtarFilePath = DataSetUtils.ExtractFilePath(entry.Value);
+                    VfxFilePaths.Add(entry.Key.ToString(), path);
                 }
+            }
+        }
+
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
+        {
+            base.OnAssetsImported(tryGetImportedAsset);
+
+            tryGetImportedAsset(PartsFilePath, out PartsFile);
+            tryGetImportedAsset(MotionGraphFilePath, out MotionGraphFile);
+            tryGetImportedAsset(MtarFilePath, out MtarFile);
+            tryGetImportedAsset(ExtensionMtarFilePath, out ExtensionMtarFile);
+
+            VfxFiles = new ObjectStringMap();
+            foreach (var entry in VfxFilePaths)
+            {
+                UnityEngine.Object asset = null;
+                tryGetImportedAsset(entry.Value, out asset);
+                VfxFiles.Add(entry.Key, asset);
             }
         }
     }

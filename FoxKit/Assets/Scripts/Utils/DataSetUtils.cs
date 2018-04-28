@@ -51,20 +51,20 @@ namespace FoxKit.Utils
             return container.ToDictionary();
         }
 
-        public static bool TryGetFile<T>(FoxFilePtr filePtr, out T file) where T : class
+        public static string ExtractFilePath(FoxFilePtr filePtr)
         {
-            var path = filePtr.ToString();
-            if (string.IsNullOrEmpty(path))
-            {
-                file = null;
-                return false;
-            }
+            return FormatFilePath(filePtr.ToString());
+        }
 
-            // FilePtrs have a leading /, which Unity doesn't like. Get rid of it.
-            var formattedPath = filePtr.ToString().Substring(1);
-            file = AssetDatabase.LoadAssetAtPath(formattedPath, typeof(T)) as T;
-
-            return file != null;
+        public static string ExtractFilePath(FoxPath path)
+        {
+            return FormatFilePath(path.ToString());
+        }
+        
+        private static string FormatFilePath(string path)
+        {
+            // Fox Engine paths open with a /, which Unity doesn't like.
+            return path.Substring(1);
         }
 
         public static UnityEngine.Vector3 FoxToolToUnity(FoxVector3 foxVector)

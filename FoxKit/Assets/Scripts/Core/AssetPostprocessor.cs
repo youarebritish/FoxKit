@@ -40,23 +40,20 @@ namespace FoxKit.Core
 
         private static bool TryGetAsset(Dictionary<string, Object> newlyImportedAssets, string path, out Object asset)
         {
-            // Fox Engine paths open with a /, which Unity doesn't like.
-            var reformattedPath = path.Substring(1);
-
             // First see if the asset was just imported.
-            if (newlyImportedAssets.TryGetValue(reformattedPath, out asset))
+            if (newlyImportedAssets.TryGetValue(path, out asset))
             {
                 return true;
             }
 
             // Next see if the asset already exists in the project.
-            asset = AssetDatabase.LoadAssetAtPath<Object>(reformattedPath);
+            asset = AssetDatabase.LoadAssetAtPath<Object>(path);
             if (asset != null)
             {
                 return true;
             }
 
-            Debug.LogError($"Referenced asset {reformattedPath} not found.");
+            Debug.LogError($"Referenced asset {path} not found.");
             return false;
         }
     }

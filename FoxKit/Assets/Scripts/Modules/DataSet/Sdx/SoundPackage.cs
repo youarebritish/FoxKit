@@ -8,9 +8,10 @@ namespace FoxKit.Modules.DataSet.Sdx
 {
     [Serializable]
     public class SoundPackage : Data
-    {
+    {        
         public UnityEngine.Object SoundDataFile;
         public bool SyncLoad;
+        public string SoundDataFilePath;
 
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
@@ -18,13 +19,18 @@ namespace FoxKit.Modules.DataSet.Sdx
 
             if (propertyData.Name == "soundDataFile")
             {
-                var filePtr = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData);
-                var fileFound = DataSetUtils.TryGetFile(filePtr, out SoundDataFile);
+                SoundDataFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
             }
             else if (propertyData.Name == "syncLoad")
             {
                 SyncLoad = DataSetUtils.GetStaticArrayPropertyValue<FoxBool>(propertyData).Value;
             }
+        }
+
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
+        {
+            base.OnAssetsImported(tryGetImportedAsset);
+            tryGetImportedAsset(SoundDataFilePath, out SoundDataFile);
         }
     }
 }

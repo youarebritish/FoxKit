@@ -23,6 +23,9 @@ namespace FoxKit.Modules.DataSet.TppGameCore
         public float MaxPitch;
         public float RotSpeed;
 
+        public string WeaponFilePath;
+        public string AmmoFilePath;
+
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
@@ -53,13 +56,11 @@ namespace FoxKit.Modules.DataSet.TppGameCore
             }
             else if (propertyData.Name == "weaponFile")
             {
-                var filePtr = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData);
-                var fileFound = DataSetUtils.TryGetFile(filePtr, out WeaponFile);
+                WeaponFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
             }
             else if (propertyData.Name == "ammoFile")
             {
-                var filePtr = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData);
-                var fileFound = DataSetUtils.TryGetFile(filePtr, out AmmoFile);
+                AmmoFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
             }
             else if (propertyData.Name == "weaponBoneName")
             {
@@ -81,6 +82,13 @@ namespace FoxKit.Modules.DataSet.TppGameCore
             {
                 RotSpeed = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
             }
+        }
+
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
+        {
+            base.OnAssetsImported(tryGetImportedAsset);
+            tryGetImportedAsset(WeaponFilePath, out WeaponFile);
+            tryGetImportedAsset(AmmoFilePath, out AmmoFile);
         }
     }
 }

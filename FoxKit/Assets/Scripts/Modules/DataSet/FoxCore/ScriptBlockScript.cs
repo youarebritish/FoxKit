@@ -2,7 +2,6 @@
 using FoxTool.Fox;
 using FoxKit.Utils;
 using FoxTool.Fox.Types.Values;
-using System.IO;
 
 namespace FoxKit.Modules.DataSet.FoxCore
 {
@@ -18,7 +17,7 @@ namespace FoxKit.Modules.DataSet.FoxCore
 
             if (propertyData.Name == "script")
             {
-                ScriptPath = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData).ToString();
+                ScriptPath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
             }
         }
 

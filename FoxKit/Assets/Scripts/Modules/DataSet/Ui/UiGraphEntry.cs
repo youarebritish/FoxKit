@@ -13,6 +13,9 @@ namespace FoxKit.Modules.DataSet.Ui
         public List<UnityEngine.Object> Files;
         public List<UnityEngine.Object> RawFiles;
 
+        public List<string> FilesPaths;
+        public List<string> RawFilesPaths;
+
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
@@ -21,25 +24,44 @@ namespace FoxKit.Modules.DataSet.Ui
             {
                 var filePtrList = DataSetUtils.GetDynamicArrayValues<FoxFilePtr>(propertyData);
                 Files = new List<UnityEngine.Object>(filePtrList.Count);
+                FilesPaths = new List<string>(filePtrList.Count);
 
                 foreach (var filePtr in filePtrList)
                 {
-                    UnityEngine.Object file;
-                    var fileFound = DataSetUtils.TryGetFile(filePtr, out file);
-                    Files.Add(file);
+                    var path = DataSetUtils.ExtractFilePath(filePtr);
+                    FilesPaths.Add(path);
                 }
             }
             else if (propertyData.Name == "rawFiles")
             {
                 var filePtrList = DataSetUtils.GetDynamicArrayValues<FoxFilePtr>(propertyData);
                 RawFiles = new List<UnityEngine.Object>(filePtrList.Count);
+                RawFilesPaths = new List<string>(filePtrList.Count);
 
                 foreach (var filePtr in filePtrList)
                 {
-                    UnityEngine.Object file;
-                    var fileFound = DataSetUtils.TryGetFile(filePtr, out file);
-                    RawFiles.Add(file);
+                    var path = DataSetUtils.ExtractFilePath(filePtr);
+                    RawFilesPaths.Add(path);
                 }
+            }
+        }
+
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
+        {
+            base.OnAssetsImported(tryGetImportedAsset);
+
+            foreach(var path in FilesPaths)
+            {
+                UnityEngine.Object file = null;
+                tryGetImportedAsset(path, out file);
+                Files.Add(file);
+            }
+
+            foreach (var path in RawFilesPaths)
+            {
+                UnityEngine.Object file = null;
+                tryGetImportedAsset(path, out file);
+                RawFiles.Add(file);
             }
         }
     }

@@ -18,6 +18,9 @@ namespace FoxKit.Modules.DataSet.TppGameCore
         public List<TppVehicle2WeaponParameter> WeaponParams;
         public List<UnityEngine.Object> FovaFiles;
 
+        public string PartsFilePath;
+        public List<string> FovaFilesPaths;
+
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
@@ -36,9 +39,7 @@ namespace FoxKit.Modules.DataSet.TppGameCore
             }
             else if (propertyData.Name == "partsFile")
             {
-                UnityEngine.Object file;
-                var filePtr = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData);
-                var fileFound = DataSetUtils.TryGetFile(filePtr, out file);
+                PartsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
             }
             else if (propertyData.Name == "bodyInstanceCount")
             {
@@ -60,13 +61,26 @@ namespace FoxKit.Modules.DataSet.TppGameCore
             {
                 var filePtrList = DataSetUtils.GetDynamicArrayValues<FoxFilePtr>(propertyData);
                 FovaFiles = new List<UnityEngine.Object>(filePtrList.Count);
+                FovaFilesPaths = new List<string>(filePtrList.Count);
 
                 foreach (var filePtr in filePtrList)
                 {
-                    UnityEngine.Object file;
-                    var fileFound = DataSetUtils.TryGetFile(filePtr, out file);
-                    FovaFiles.Add(file);
+                    var path = DataSetUtils.ExtractFilePath(filePtr);
+                    FovaFilesPaths.Add(path);
                 }
+            }
+        }
+
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
+        {
+            base.OnAssetsImported(tryGetImportedAsset);
+            tryGetImportedAsset(PartsFilePath, out PartsFile);
+
+            foreach(var fovaFilePath in FovaFilesPaths)
+            {
+                UnityEngine.Object file = null;
+                tryGetImportedAsset(fovaFilePath, out file);
+                FovaFiles.Add(file);
             }
         }
     }

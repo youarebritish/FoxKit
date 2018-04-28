@@ -18,6 +18,8 @@ namespace FoxKit.Modules.DataSet.TppGameCore
         public string AttachmentBoneName;
         public List<TppVehicle2WeaponParameter> WeaponParams;
 
+        public string AttachmentFilePath;
+
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
@@ -32,8 +34,7 @@ namespace FoxKit.Modules.DataSet.TppGameCore
             }
             else if (propertyData.Name == "attachmentFile")
             {
-                var filePtr = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData);
-                var fileFound = DataSetUtils.TryGetFile(filePtr, out AttachmentFile);
+                AttachmentFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
             }
             else if (propertyData.Name == "attachmentInstanceCount")
             {
@@ -59,6 +60,12 @@ namespace FoxKit.Modules.DataSet.TppGameCore
                     entity.Owner = this;
                 }
             }
+        }
+
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
+        {
+            base.OnAssetsImported(tryGetImportedAsset);
+            tryGetImportedAsset(AttachmentFilePath, out AttachmentFile);
         }
     }
 }
