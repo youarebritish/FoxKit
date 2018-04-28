@@ -1,83 +1,101 @@
-﻿namespace FoxKit.Modules.FormVariation
+﻿namespace FoxKit.Modules.PartsBuilder.FormVariation
 {
     using FoxKit.Core;
-    using FoxKit.Utils;
-            
+
     /// <summary>
     /// A form variation operation used by the Fox Engine used to attach one model, and, optionally, its auxilliary files, to another via bones.
     /// </summary>
     [System.Serializable]
     public struct BoneAttachment
     {
-        public StringHashPair ModelFileName;
-        public StringHashPair FrdvFileName;
-        public StringHashPair SimFileName;
+        public StrCode64StringPair ModelFileName;
+        public StrCode64StringPair FrdvFileName;
+        public StrCode64StringPair SimFileName;
 
         /// <summary>
-        /// Creates a FoxKit BoneAttachment from a FoxLib BoneAttachment.
+        /// Initializes a new instance of the BoneAttachment struct.
         /// </summary>
-        /// <param name="boneAttachment">The FoxLib BoneAttachment to convert.</param>
-        /// <returns>The created FoxKit BoneAttachment.</returns>
-        public BoneAttachment(FoxLib.FormVariation.BoneAttachment boneAttachment)
+        /// <param name="modelFileName">Model file name.</param>
+        /// <param name="frdvFileName">Frdv file name.</param>
+        /// <param name="simFileName">Sim file name.</param>
+        public BoneAttachment(StrCode64StringPair modelFileName, StrCode64StringPair frdvFileName, StrCode64StringPair simFileName)
+        {
+            this.ModelFileName = modelFileName;
+
+            this.FrdvFileName = frdvFileName;
+
+            this.SimFileName = simFileName;
+        }
+
+        /// <summary>
+        /// Creates a FoxKit BoneAttachment from a given FoxLib BoneAttachment.
+        /// </summary>
+        /// <param name="boneAttachment">The FoxLib BoneAttachment.</param>
+        /// <param name="fileHashManager">An StrCode64 hash manager used for hashing and unhashing file names.</param>
+        /// <returns>The FoxKit BoneAttachment.</returns>
+        public static BoneAttachment MakeFoxKitBoneAttachment(FoxLib.FormVariation.BoneAttachment boneAttachment, StrCode64HashManager fileHashManager)
         {
             ulong modelFileHash = boneAttachment.ModelFileHash;
             ulong? frdvFileHash = boneAttachment.FrdvFileHash;
             ulong? simFileHash = boneAttachment.SimFileHash;
 
-            string modelFileName;
+            StrCode64StringPair modelFileName;
+            StrCode64StringPair frdvFileName;
+            StrCode64StringPair simFileName;
 
-            if (Hashing.TryGetFileNameFromHash(modelFileHash, out modelFileName) == true)
-            {
-                this.ModelFileName.Name = modelFileName;
-                this.ModelFileName.IsHash = false;
-            }
-            else
-            {
-                this.ModelFileName.Name = modelFileHash.ToString();
-                this.ModelFileName.IsHash = true;
-            }
-
-            string frdvFileName;
+            modelFileName = fileHashManager.GetStringPairFromUnhashAttempt(modelFileHash);
 
             if (frdvFileHash != null)
             {
-                if (Hashing.TryGetFileNameFromHash(frdvFileHash.Value, out frdvFileName) == true)
-                {
-                    this.FrdvFileName.Name = frdvFileName;
-                    this.FrdvFileName.IsHash = false;
-                }
-                else
-                {
-                    this.FrdvFileName.Name = frdvFileHash.Value.ToString();
-                    this.FrdvFileName.IsHash = true;
-                }
+                frdvFileName = fileHashManager.GetStringPairFromUnhashAttempt(frdvFileHash.Value);
             }
             else
             {
-                this.FrdvFileName.Name = string.Empty;
-                this.FrdvFileName.IsHash = false;
+                frdvFileName = new StrCode64StringPair(string.Empty);
             }
-
-            string simFileName;
 
             if (simFileHash != null)
             {
-                if (Hashing.TryGetFileNameFromHash(simFileHash.Value, out simFileName) == true)
-                {
-                    this.SimFileName.Name = simFileName;
-                    this.SimFileName.IsHash = false;
-                }
-                else
-                {
-                    this.SimFileName.Name = simFileHash.Value.ToString();
-                    this.SimFileName.IsHash = true;
-                }
+                simFileName = fileHashManager.GetStringPairFromUnhashAttempt(simFileHash.Value);
             }
             else
             {
-                this.SimFileName.Name = string.Empty;
-                this.SimFileName.IsHash = false;
+                simFileName = new StrCode64StringPair(string.Empty);
             }
+
+            return new BoneAttachment(modelFileName, frdvFileName, simFileName);
+        }
+
+        /// <summary>
+        /// Creates a FoxLib BoneAttachment from a given FoxKit BoneAttachment.
+        /// </summary>
+        /// <param name="boneAttachment">The FoxKit BoneAttachment.</param>
+        /// <param name="fileHashManager">An StrCode64 hash manager used for hashing and unhashing file names.</param>
+        /// <returns>The FoxLib BoneAttachment.</returns>
+        public static FoxLib.FormVariation.BoneAttachment MakeFoxLibBoneAttachment(BoneAttachment boneAttachment, StrCode64HashManager fileHashManager)
+        {
+            StrCode64StringPair modelFileName = boneAttachment.ModelFileName;
+            StrCode64StringPair frdvFileName = boneAttachment.FrdvFileName;
+            StrCode64StringPair simFileName = boneAttachment.SimFileName;
+
+            ulong modelFileHash;
+            ulong? frdvFileHash = null;
+            ulong? simFileHash = null;
+
+
+            modelFileHash = fileHashManager.GetHashFromStringPair(modelFileName);
+
+            if (frdvFileName.String == string.Empty && frdvFileName.IsUnhashed == true)
+            {
+                frdvFileHash = fileHashManager.GetHashFromStringPair(frdvFileName);
+            }
+
+            if (simFileName.String == string.Empty && simFileName.IsUnhashed == true)
+            {
+                simFileHash = fileHashManager.GetHashFromStringPair(simFileName);
+            }
+
+            return new FoxLib.FormVariation.BoneAttachment(modelFileHash, frdvFileHash, simFileHash);
         }
     }
 }

@@ -1,10 +1,10 @@
-﻿using System.IO;
-using System.Linq;
-
-using UnityEngine.Assertions;
-
-namespace FoxKit.Modules.MaterialDatabase.Exporter
+﻿namespace FoxKit.Modules.MaterialDatabase.Exporter
 {
+    using System.IO;
+    using System.Linq;
+
+    using UnityEngine.Assertions;
+
     /// <summary>
     /// Collection of helper functions for exporting MaterialDatabase to fmtt format.
     /// </summary>
@@ -24,7 +24,7 @@ namespace FoxKit.Modules.MaterialDatabase.Exporter
         /// <summary>
         /// Exports MaterialParams to an fmtt file.
         /// </summary>
-        /// <param name="materialPresets">The Material Preset array to export.</param>
+        /// <param name="foxKitMaterialPresets">The Material Preset array to export.</param>
         /// <param name="exportPath">File path to export to.</param>
         public static void ExportMaterialDatabase(MaterialPreset[] foxKitMaterialPresets, string exportPath)
         {

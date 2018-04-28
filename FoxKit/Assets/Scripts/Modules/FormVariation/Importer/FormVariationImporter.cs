@@ -1,11 +1,10 @@
-namespace FoxKit.Modules.FormVariation.Importer
+namespace FoxKit.Modules.PartsBuilder.FormVariation.Importer
 {
     using System;
     using System.IO;
-
     using UnityEditor.Experimental.AssetImporters;
-
-    using FoxKit.Modules.FormVariation;
+    using FoxKit.Core;
+    using FoxKit.Modules.PartsBuilder.FormVariation;
 
     /// <summary>
     /// ScriptedImporter to handle importing fv2 files.
@@ -14,11 +13,23 @@ namespace FoxKit.Modules.FormVariation.Importer
     public class FormVariationImporter : ScriptedImporter
     {
         /// <summary>
+        /// Hash manager for names.
+        /// </summary>
+        private StrCode32HashManager nameHashManager;
+
+        /// <summary>
+        /// Hash manager for file names.
+        /// </summary>
+        private StrCode64HashManager fileNameHashManager;
+
+        /// <summary>
         /// Import a .fv2 file.
         /// </summary>
         /// <param name="ctx"></param>
         public override void OnImportAsset(AssetImportContext ctx)
         {
+            InitializeDictionaries();
+
             FoxLib.FormVariation.FormVariation formVariation = null;
 
             using (var reader = new BinaryReader(new FileStream(ctx.assetPath, FileMode.Open)))
@@ -31,10 +42,10 @@ namespace FoxKit.Modules.FormVariation.Importer
 
             var formVariationSet = UnityEngine.ScriptableObject.CreateInstance<FormVariation>();
 
-            var fova = FormVariation.makeFormVariation(formVariation);
+            formVariationSet = FormVariation.MakeFoxKitFormVariation(formVariation, nameHashManager, fileNameHashManager);
 
-            ctx.AddObjectToAsset("fv2", fova);
-            ctx.SetMainObject(fova);
+            ctx.AddObjectToAsset("fv2", formVariationSet);
+            ctx.SetMainObject(formVariationSet);
         }
 
         /// <summary>
@@ -55,6 +66,18 @@ namespace FoxKit.Modules.FormVariation.Importer
         private static void MoveStream(BinaryReader reader, long bytePos)
         {
             reader.BaseStream.Position = bytePos;
+        }
+
+        /// <summary>
+        /// Initialize hash dictionaries.
+        /// </summary>
+        private void InitializeDictionaries()
+        {
+            this.nameHashManager = new StrCode32HashManager();
+            this.fileNameHashManager = new StrCode64HashManager();
+
+            this.nameHashManager.LoadDictionary(FormVariationPreferences.Instance.NameDictionary);
+            this.fileNameHashManager.LoadDictionary(FormVariationPreferences.Instance.FileDictionary);
         }
     }
 }

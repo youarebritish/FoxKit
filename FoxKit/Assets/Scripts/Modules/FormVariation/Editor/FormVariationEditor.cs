@@ -1,31 +1,39 @@
-//namespace FoxKit.Modules.FormVariation.Editor
-//{
-//    using UnityEngine;
-//    using UnityEditor;
+namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
+{
+    using UnityEngine;
+    using UnityEditor;
 
-//    using Rotorz.Games.Collections;
+    using FoxKit.Modules.PartsBuilder.FormVariation;
+    using FoxKit.Modules.PartsBuilder.FormVariation.Exporter;
 
-//    [CustomEditor(typeof(FormVariation))]
-//    public class FormVariation : Editor
-//    {
-//		public override void OnInspectorGUI()
-//		{
-//            ReorderableListGUI.Title("FormVariation");
-//		}
+    /// <summary>
+    /// Custom editor for FormVariations.
+    /// </summary>
+    [CustomEditor(typeof(FormVariation))]
+    public class FormVariationEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            EditorGUILayout.Space();
 
-//        private void Draw()
-//        {
-            
-//        }
+            if (GUILayout.Button("Export fmtt"))
+            {
+                var myTarget = (FormVariation)this.target;
 
-//        private static ShownMeshGroup CustomListItem(Rect position, ShownMeshGroup itemValue)
-//        {
-//            return EditorGUI.ObjectField(position, itemValue, typeof(ShownMeshGroup)) as ShownMeshGroup;
-//        }
+                var exportPath = EditorUtility.SaveFilePanel(
+                    "Export fv2",
+                    string.Empty,
+                    this.target.name + ".fv2",
+                    "fv2");
 
-//        private static void DrawEmpty(string arrayName)
-//        {
-//            GUILayout.Label(arrayName + " has no routes.", EditorStyles.miniLabel);
-//        }
-//	}
-//}
+                if (string.IsNullOrEmpty(exportPath))
+                {
+                    return;
+                }
+                FormVariationExporter.ExportFormVariation(myTarget as FormVariation, exportPath);
+            }
+
+            this.DrawDefaultInspector();
+        }
+    }
+}

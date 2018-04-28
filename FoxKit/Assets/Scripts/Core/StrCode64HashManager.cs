@@ -7,9 +7,9 @@
     using UnityEngine;
     using UnityEngine.Assertions;
 
-    public class StrCode32HashManager : IHashManager<uint>
+    public class StrCode64HashManager : IHashManager<ulong>
     {
-        private readonly Dictionary<uint, string> lookUpTable = new Dictionary<uint, string>();
+        private readonly Dictionary<ulong, string> lookUpTable = new Dictionary<ulong, string>();
 
         public void LoadDictionary(TextAsset dictionary)
         {
@@ -25,21 +25,21 @@
             }
         }
 
-        public bool TryGetStringFromHash(uint hash, out string result)
+        public bool TryGetStringFromHash(ulong hash, out string result)
         {
             return this.lookUpTable.TryGetValue(hash, out result);
         }
 
-        public uint GetHash(string input)
+        public ulong GetHash(string input)
         {
             return HashString(input);
         }
 
-        private static uint HashString(string input)
+        private static ulong HashString(string input)
         {
             Assert.IsNotNull(input, "Hash input must not be null.");
 
-            var hash = (uint)Hashing.HashFileNameLegacy(input);
+            var hash = Hashing.HashFileNameLegacy(input);
             return hash;
         }
 
@@ -48,17 +48,17 @@
         /// </summary>
         /// <param name="hash">The hash to attempt to unhash.</param>
         /// <returns>The StringPair derived from the unhash attempt.</returns>
-        public StrCode32StringPair GetStringPairFromUnhashAttempt(uint hash)
+        public StrCode64StringPair GetStringPairFromUnhashAttempt(ulong hash)
         {
-            return this.TryUnhash(hash, hashValue => new StrCode32StringPair(hashValue), unhashedString => new StrCode32StringPair(unhashedString));
+            return this.TryUnhash(hash, hashValue => new StrCode64StringPair(hashValue), unhashedString => new StrCode64StringPair(unhashedString));
         }
 
         /// <summary>
         /// Gets a hash from a string pair.
         /// </summary>
         /// <param name="stringPair">String pair.</param>
-        /// <returns>The hash from string pair.</returns>s
-        public uint GetHashFromStringPair(StrCode32StringPair stringPair)
+        /// <returns>The hash from string pair.</returns>
+        public ulong GetHashFromStringPair(StrCode64StringPair stringPair)
         {
             return this.GetHashFromStringPair(stringPair);
         }
