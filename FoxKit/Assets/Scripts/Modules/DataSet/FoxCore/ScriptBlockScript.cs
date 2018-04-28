@@ -18,18 +18,14 @@ namespace FoxKit.Modules.DataSet.FoxCore
 
             if (propertyData.Name == "script")
             {
-                ScriptPath = Path.GetFileName(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData).ToString());
+                ScriptPath = DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData).ToString();
             }
         }
 
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAsset tryGetImportedAsset)
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
         {
             base.OnAssetsImported(tryGetImportedAsset);
-
-            if (tryGetImportedAsset(ScriptPath, out Script))
-            {
-
-            }
+            tryGetImportedAsset(ScriptPath, out Script);
         }
     }
 }

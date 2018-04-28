@@ -10,7 +10,7 @@ namespace FoxKit.Modules.DataSet.FoxCore
         [SerializeField]
         public EntityStringMap DataList = new EntityStringMap();
 
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAsset tryGetImportedAsset)
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
         {
             base.OnAssetsImported(tryGetImportedAsset);
             foreach (var data in DataList.Values)

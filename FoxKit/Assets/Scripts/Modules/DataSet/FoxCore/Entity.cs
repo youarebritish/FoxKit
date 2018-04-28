@@ -24,7 +24,7 @@
         {
         }
 
-        public virtual void OnAssetsImported(Core.AssetPostprocessor.TryGetAsset tryGetImportedAsset)
+        public virtual void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
         {
         }
     }
