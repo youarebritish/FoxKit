@@ -63,6 +63,10 @@ namespace FoxKit.Utils
         
         private static string FormatFilePath(string path)
         {
+            if (string.IsNullOrEmpty(path))
+            {
+                return path;
+            }
             // Fox Engine paths open with a /, which Unity doesn't like.
             return path.Substring(1);
         }
