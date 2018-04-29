@@ -13,7 +13,7 @@ using static FoxKit.Modules.DataSet.Importer.EntityFactory;
 
 namespace FoxKit.Modules.DataSet.Importer
 {
-    [ScriptedImporter(1, "fox2")]
+    [ScriptedImporter(1, new string[] { "fox2", "parts" })]
     public class DataSetImporter : ScriptedImporter
     {
         // TODO: Remove/cache

@@ -17,8 +17,13 @@ namespace FoxKit.Modules.DataSet.FoxCore
         public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
         {
             base.OnAssetsImported(tryGetImportedAsset);
+
             foreach (var data in DataList.Values)
             {
+                /*if (data == null)
+                {
+                    continue;
+                }*/
                 data.OnAssetsImported(tryGetImportedAsset);
             }
         }

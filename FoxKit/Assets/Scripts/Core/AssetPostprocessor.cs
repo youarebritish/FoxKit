@@ -40,6 +40,12 @@ namespace FoxKit.Core
 
         private static bool TryGetAsset(Dictionary<string, Object> newlyImportedAssets, string path, out Object asset)
         {
+            if (string.IsNullOrEmpty(path))
+            {
+                asset = null;
+                return true;
+            }
+
             // First see if the asset was just imported.
             if (newlyImportedAssets.TryGetValue(path, out asset))
             {

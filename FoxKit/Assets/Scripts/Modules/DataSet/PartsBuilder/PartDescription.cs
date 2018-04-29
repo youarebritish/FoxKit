@@ -5,26 +5,26 @@ using FoxTool.Fox.Types.Structs;
 using FoxTool.Fox.Types.Values;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace FoxKit.Modules.DataSet.PartsBuilder
 {
+    [Serializable]
     public abstract class PartDescription : Data
     {
-        public List<UnityEngine.Object> Depends;
+        public List<EntityLink> Depends;
         public string PartName;
         public string BuildType;
-
-        public List<EntityLink> DependsEntityLinks;
-
+        
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
             if (propertyData.Name == "depends")
             {
-                DependsEntityLinks = (from link in DataSetUtils.GetDynamicArrayValues<FoxEntityLink>(propertyData)
-                                     select DataSetUtils.MakeEntityLink(DataSet, link))
-                                     .ToList();
+                Depends = (from link in DataSetUtils.GetDynamicArrayValues<FoxEntityLink>(propertyData)
+                           select DataSetUtils.MakeEntityLink(DataSet, link))
+                           .ToList();
             }
             else if (propertyData.Name == "partName")
             {
@@ -38,7 +38,7 @@ namespace FoxKit.Modules.DataSet.PartsBuilder
 
         public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
         {
-            foreach(var link in DependsEntityLinks)
+            foreach(var link in Depends)
             {
                 link.ResolveReference(tryGetImportedAsset);
             }
