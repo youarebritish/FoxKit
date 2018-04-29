@@ -1,4 +1,5 @@
-﻿using FoxKit.Utils.UI.StringMap;
+﻿using FoxKit.Utils;
+using FoxKit.Utils.UI.StringMap;
 using System;
 using UnityEngine;
 
@@ -9,6 +10,9 @@ namespace FoxKit.Modules.DataSet.FoxCore
     {
         [SerializeField]
         public EntityStringMap DataList = new EntityStringMap();
+
+        [SerializeField]
+        public AddressEntityDictionary AddressMap = new AddressEntityDictionary();
 
         public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
         {

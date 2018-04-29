@@ -69,6 +69,7 @@ namespace FoxKit.Modules.DataSet.Importer
                 if (!string.IsNullOrEmpty(entity.Key.name))
                 {                    
                     dataSet.DataList.Add(entity.Key.name, entity.Key);
+                    dataSet.AddressMap.Add(entity.Value.Address, entity.Key);
                 }
             }
 

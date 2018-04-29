@@ -60,14 +60,14 @@ namespace FoxKit.Modules.DataSet.FoxCore
 
             if (string.IsNullOrEmpty(NameInArchive))
             {
-                // TODO get by address
+                ReferencedEntity = dataSet.AddressMap[Address];
             }
             else
             {
                 ReferencedEntity = dataSet.DataList[NameInArchive];
             }
 
-            return true;
+            return ReferencedEntity != null;
         }
     }
 }
