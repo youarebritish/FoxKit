@@ -56,7 +56,7 @@ namespace FoxKit.Modules.DataSet.Importer
             foreach (var entity in entities)
             {
                 
-                entity.Key.Initialize(entity.Value, entityInitializeFunctions);
+                entity.Key.Initialize(dataSet, entity.Value, entityInitializeFunctions);
 
                 // TODO Fix null entries
                 if (entity.Key.GetType() == typeof(FoxCore.DataSet))

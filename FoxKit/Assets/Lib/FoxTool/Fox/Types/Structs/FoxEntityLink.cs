@@ -10,9 +10,9 @@ namespace FoxTool.Fox.Types.Structs
     public class FoxEntityLink : FoxStruct
     {
         public ulong EntityHandle { get; set; }
-        private FoxStringLiteral PackagePathLiteral { get; set; }
-        private FoxStringLiteral ArchivePathLiteral { get; set; }
-        private FoxStringLiteral NameInArchiveLiteral { get; set; }
+        public FoxStringLiteral PackagePathLiteral { get; set; }
+        public FoxStringLiteral ArchivePathLiteral { get; set; }
+        public FoxStringLiteral NameInArchiveLiteral { get; set; }
 
         public override void Read(Stream input)
         {

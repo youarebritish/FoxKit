@@ -7,8 +7,12 @@
     [Serializable]
     public abstract class Entity : ScriptableObject
     {
-        public void Initialize(FoxEntity entityData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
+        public DataSet DataSet;
+
+        public void Initialize(DataSet dataSet, FoxEntity entityData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
+            DataSet = dataSet;
+
             // TODO: Assert that class ID and version is correct
             foreach(var property in entityData.StaticProperties)
             {

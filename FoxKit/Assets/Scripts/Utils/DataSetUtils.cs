@@ -1,4 +1,5 @@
-﻿using FoxTool.Fox;
+﻿using FoxKit.Modules.DataSet.FoxCore;
+using FoxTool.Fox;
 using FoxTool.Fox.Containers;
 using FoxTool.Fox.Types;
 using FoxTool.Fox.Types.Structs;
@@ -69,6 +70,15 @@ namespace FoxKit.Utils
             }
             // Fox Engine paths open with a /, which Unity doesn't like.
             return path.Substring(1);
+        }
+
+        public static EntityLink MakeEntityLink(DataSet owningDataSet, FoxEntityLink foxEntityLink)
+        {
+            return new EntityLink(owningDataSet,
+                foxEntityLink.PackagePathLiteral.ToString(),
+                foxEntityLink.ArchivePathLiteral.ToString(),
+                foxEntityLink.NameInArchiveLiteral.ToString(),
+                foxEntityLink.EntityHandle);
         }
 
         public static UnityEngine.Vector3 FoxToolToUnity(FoxVector3 foxVector)
