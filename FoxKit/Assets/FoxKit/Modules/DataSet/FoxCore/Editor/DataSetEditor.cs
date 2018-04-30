@@ -15,6 +15,7 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
         // https://docs.unity3d.com/ScriptReference/InitializeOnLoadMethodAttribute.html ?
         private static readonly Type[] TypesInAddMenu = ReflectionUtils.GetAssignableConcreteClasses(typeof(Data)).ToArray();
 
+        /*
         public override void OnInspectorGUI()
         {
             this.DrawDefaultInspector();
@@ -50,6 +51,6 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
             AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(entry));
 
             (target as DataSet).DataList.Add(entry.name, entry);
-        }
+        }*/
     }
 }

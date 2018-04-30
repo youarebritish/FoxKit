@@ -71,15 +71,15 @@ namespace FoxKit.Modules.DataSet.TppGameCore
             }
         }
 
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
-            base.OnAssetsImported(tryGetImportedAsset);
-            tryGetImportedAsset(PartsFilePath, out PartsFile);
+            base.OnAssetsImported(tryGetAsset);
+            tryGetAsset(PartsFilePath, out PartsFile);
 
             foreach(var fovaFilePath in FovaFilesPaths)
             {
                 UnityEngine.Object file = null;
-                tryGetImportedAsset(fovaFilePath, out file);
+                tryGetAsset(fovaFilePath, out file);
                 FovaFiles.Add(file);
             }
         }

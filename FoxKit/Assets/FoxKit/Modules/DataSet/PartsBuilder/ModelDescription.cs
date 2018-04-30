@@ -86,16 +86,16 @@ namespace FoxKit.Modules.DataSet.PartsBuilder
             }
         }
 
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
-            base.OnAssetsImported(tryGetImportedAsset);
+            base.OnAssetsImported(tryGetAsset);
 
-            tryGetImportedAsset(ModelFilePath, out ModelFile);
-            tryGetImportedAsset(ConnectPointFilePath, out ConnectPointFile);
-            tryGetImportedAsset(GameRigFilePath, out GameRigFile);
-            tryGetImportedAsset(HelpBoneFilePath, out HelpBoneFile);
-            tryGetImportedAsset(LipAdjustBinaryFilePath, out LipAdjustBinaryFile);
-            tryGetImportedAsset(FacialSettingFilePath, out FacialSettingFile);
+            tryGetAsset(ModelFilePath, out ModelFile);
+            tryGetAsset(ConnectPointFilePath, out ConnectPointFile);
+            tryGetAsset(GameRigFilePath, out GameRigFile);
+            tryGetAsset(HelpBoneFilePath, out HelpBoneFile);
+            tryGetAsset(LipAdjustBinaryFilePath, out LipAdjustBinaryFile);
+            tryGetAsset(FacialSettingFilePath, out FacialSettingFile);
         }
 
         public enum ModelDescription_DrawRejectionLevel

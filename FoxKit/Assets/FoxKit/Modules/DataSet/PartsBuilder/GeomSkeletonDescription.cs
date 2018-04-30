@@ -24,11 +24,11 @@ namespace FoxKit.Modules.DataSet.PartsBuilder
             }
         }
 
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
-            base.OnAssetsImported(tryGetImportedAsset);
+            base.OnAssetsImported(tryGetAsset);
 
-            tryGetImportedAsset(GsklFilePath, out GsklFile);
+            tryGetAsset(GsklFilePath, out GsklFile);
         }        
     }
 }

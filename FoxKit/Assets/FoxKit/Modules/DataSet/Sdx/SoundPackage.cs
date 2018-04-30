@@ -27,10 +27,10 @@ namespace FoxKit.Modules.DataSet.Sdx
             }
         }
 
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
-            base.OnAssetsImported(tryGetImportedAsset);
-            tryGetImportedAsset(SoundDataFilePath, out SoundDataFile);
+            base.OnAssetsImported(tryGetAsset);
+            tryGetAsset(SoundDataFilePath, out SoundDataFile);
         }
     }
 }

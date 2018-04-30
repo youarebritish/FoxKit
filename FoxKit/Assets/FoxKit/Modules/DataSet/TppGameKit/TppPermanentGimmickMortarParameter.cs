@@ -43,11 +43,11 @@ namespace FoxKit.Modules.DataSet.TppGameKit
             }
         }
 
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
-            base.OnAssetsImported(tryGetImportedAsset);
-            tryGetImportedAsset(DefaultShellPartsFilePath, out DefaultShellPartsFile);
-            tryGetImportedAsset(FlareShellPartsFilePath, out FlareShellPartsFile);
+            base.OnAssetsImported(tryGetAsset);
+            tryGetAsset(DefaultShellPartsFilePath, out DefaultShellPartsFile);
+            tryGetAsset(FlareShellPartsFilePath, out FlareShellPartsFile);
         }
     }
 }

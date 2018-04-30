@@ -53,20 +53,20 @@ namespace FoxKit.Modules.DataSet.TppGameCore
             }
         }
 
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
-            base.OnAssetsImported(tryGetImportedAsset);
+            base.OnAssetsImported(tryGetAsset);
 
-            tryGetImportedAsset(PartsFilePath, out PartsFile);
-            tryGetImportedAsset(MotionGraphFilePath, out MotionGraphFile);
-            tryGetImportedAsset(MtarFilePath, out MtarFile);
-            tryGetImportedAsset(ExtensionMtarFilePath, out ExtensionMtarFile);
+            tryGetAsset(PartsFilePath, out PartsFile);
+            tryGetAsset(MotionGraphFilePath, out MotionGraphFile);
+            tryGetAsset(MtarFilePath, out MtarFile);
+            tryGetAsset(ExtensionMtarFilePath, out ExtensionMtarFile);
 
             VfxFiles = new ObjectStringMap();
             foreach (var entry in VfxFilePaths)
             {
                 UnityEngine.Object asset = null;
-                tryGetImportedAsset(entry.Value, out asset);
+                tryGetAsset(entry.Value, out asset);
                 VfxFiles.Add(entry.Key, asset);
             }
         }

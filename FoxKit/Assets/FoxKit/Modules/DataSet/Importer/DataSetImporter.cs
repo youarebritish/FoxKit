@@ -69,8 +69,7 @@
                 {
                     continue;
                 }
-                dataSet.DataList.Add(entity.Key.name, entity.Key);
-                dataSet.AddressMap.Add(entity.Value.Address, entity.Key);
+                dataSet.AddData(entity.Key.name, entity.Value.Address, entity.Key);
             }
 
             ctx.AddObjectToAsset("DataSet", dataSet);

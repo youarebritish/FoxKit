@@ -36,11 +36,11 @@ namespace FoxKit.Modules.DataSet.PartsBuilder
             }
         }
 
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
             foreach(var link in Depends)
             {
-                link.ResolveReference(tryGetImportedAsset);
+                link.ResolveReference(tryGetAsset);
             }
         }
     }

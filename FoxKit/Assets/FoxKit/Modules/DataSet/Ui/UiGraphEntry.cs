@@ -46,21 +46,21 @@ namespace FoxKit.Modules.DataSet.Ui
             }
         }
 
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
-            base.OnAssetsImported(tryGetImportedAsset);
+            base.OnAssetsImported(tryGetAsset);
 
             foreach(var path in FilesPaths)
             {
                 UnityEngine.Object file = null;
-                tryGetImportedAsset(path, out file);
+                tryGetAsset(path, out file);
                 Files.Add(file);
             }
 
             foreach (var path in RawFilesPaths)
             {
                 UnityEngine.Object file = null;
-                tryGetImportedAsset(path, out file);
+                tryGetAsset(path, out file);
                 RawFiles.Add(file);
             }
         }

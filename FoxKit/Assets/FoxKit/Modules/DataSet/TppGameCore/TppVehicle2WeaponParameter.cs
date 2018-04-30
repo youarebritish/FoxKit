@@ -84,11 +84,11 @@ namespace FoxKit.Modules.DataSet.TppGameCore
             }
         }
 
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
-            base.OnAssetsImported(tryGetImportedAsset);
-            tryGetImportedAsset(WeaponFilePath, out WeaponFile);
-            tryGetImportedAsset(AmmoFilePath, out AmmoFile);
+            base.OnAssetsImported(tryGetAsset);
+            tryGetAsset(WeaponFilePath, out WeaponFile);
+            tryGetAsset(AmmoFilePath, out AmmoFile);
         }
     }
 }

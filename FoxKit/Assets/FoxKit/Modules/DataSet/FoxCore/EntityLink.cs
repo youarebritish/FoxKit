@@ -65,11 +65,11 @@ namespace FoxKit.Modules.DataSet.FoxCore
 
             if (string.IsNullOrEmpty(NameInArchive))
             {
-                ReferencedEntity = dataSet.AddressMap[Address];
+                ReferencedEntity = dataSet[Address];
             }
             else
             {
-                ReferencedEntity = dataSet.DataList[NameInArchive];
+                ReferencedEntity = dataSet[NameInArchive];
             }
 
             return ReferencedEntity != null;

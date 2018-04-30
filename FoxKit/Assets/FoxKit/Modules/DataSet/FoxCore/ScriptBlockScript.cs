@@ -21,10 +21,10 @@ namespace FoxKit.Modules.DataSet.FoxCore
             }
         }
 
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
-            base.OnAssetsImported(tryGetImportedAsset);
-            tryGetImportedAsset(ScriptPath, out Script);
+            base.OnAssetsImported(tryGetAsset);
+            tryGetAsset(ScriptPath, out Script);
         }
     }
 }
