@@ -1,46 +1,70 @@
-﻿using FoxKit.Modules.DataSet.FoxCore;
-using FoxKit.Utils;
-using FoxTool.Fox;
-using FoxTool.Fox.Types.Structs;
-using FoxTool.Fox.Types.Values;
-using System.Collections.Generic;
-using System.Linq;
-using System;
-
-namespace FoxKit.Modules.DataSet.PartsBuilder
+﻿namespace FoxKit.Modules.DataSet.PartsBuilder
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using FoxKit.Modules.DataSet.FoxCore;
+    using FoxKit.Utils;
+
+    using FoxTool.Fox;
+    using FoxTool.Fox.Types.Structs;
+    using FoxTool.Fox.Types.Values;
+
+    using UnityEngine;
+
+    /// <inheritdoc />
+    /// <summary>
+    /// Base class for a PartsFile Data Entity.
+    /// </summary>
     [Serializable]
     public abstract class PartDescription : Data
     {
-        public List<EntityLink> Depends;
-        public string PartName;
-        public string BuildType;
-        
+        /// <summary>
+        /// Other PartDescription Entities that this depends on.
+        /// </summary>
+        [SerializeField]
+        private List<EntityLink> depends = new List<EntityLink>();
+
+        /// <summary>
+        /// Not sure what this is.
+        /// </summary>
+        [SerializeField]
+        private string partName = string.Empty;
+
+        /// <summary>
+        /// Not sure what this is.
+        /// </summary>
+        [SerializeField]
+        private string buildType = string.Empty;
+
+        /// <inheritdoc />
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
+        {
+            foreach (var link in this.depends)
+            {
+                link.ResolveReference(tryGetAsset);
+            }
+        }
+
+        /// <inheritdoc />
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
-            if (propertyData.Name == "depends")
+            switch (propertyData.Name)
             {
-                Depends = (from link in DataSetUtils.GetDynamicArrayValues<FoxEntityLink>(propertyData)
-                           select DataSetUtils.MakeEntityLink(DataSet, link))
-                           .ToList();
-            }
-            else if (propertyData.Name == "partName")
-            {
-                PartName = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
-            }
-            else if (propertyData.Name == "buildType")
-            {
-                BuildType = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
-            }
-        }
-
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
-        {
-            foreach(var link in Depends)
-            {
-                link.ResolveReference(tryGetAsset);
+                case "depends":
+                    this.depends = (from link in DataSetUtils.GetDynamicArrayValues<FoxEntityLink>(propertyData)
+                                    select DataSetUtils.MakeEntityLink(this.DataSet, link))
+                                    .ToList();
+                    break;
+                case "partName":
+                    this.partName = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                    break;
+                case "buildType":
+                    this.buildType = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                    break;
             }
         }
     }

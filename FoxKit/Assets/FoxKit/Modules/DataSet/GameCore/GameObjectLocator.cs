@@ -1,35 +1,60 @@
-﻿using FoxKit.Modules.DataSet.FoxCore;
-using System;
-using FoxTool.Fox;
-using FoxKit.Utils;
-using FoxTool.Fox.Types.Values;
-
-namespace FoxKit.Modules.DataSet.GameCore
+﻿namespace FoxKit.Modules.DataSet.GameCore
 {
+    using System;
+
+    using FoxKit.Modules.DataSet.FoxCore;
+    using FoxKit.Utils;
+
+    using FoxTool.Fox;
+    using FoxTool.Fox.Types.Values;
+
+    using UnityEngine.Assertions;
+
+    /// <inheritdoc />
+    /// <summary>
+    /// A <see cref="GameObject"/> with a position? Not really sure how these classes differ.
+    /// </summary>
     [Serializable]
     public class GameObjectLocator : TransformData
     {
-        public string TypeName;
-        public uint GroupId;
-        public GameObjectLocatorParameter Parameters;
+        /// <summary>
+        /// Name of the GameObject type. This indicates the type of GameObject to spawn.
+        /// </summary>
+        private string typeName;
 
+        /// <summary>
+        /// No idea what this is.
+        /// </summary>
+        private uint groupId;
+
+        /// <summary>
+        /// Type-specific parameters.
+        /// </summary>
+        private GameObjectLocatorParameter parameters;
+
+        /// <inheritdoc />
+        protected override short ClassId => 272;
+
+        /// <inheritdoc />
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
-            if (propertyData.Name == "typeName")
+            switch (propertyData.Name)
             {
-                TypeName = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
-            }
-            else if (propertyData.Name == "groupId")
-            {
-                GroupId = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt32>(propertyData).Value;
-            }
-            else if (propertyData.Name == "parameters")
-            {
-                var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
-                Parameters = initFunctions.GetEntityFromAddress(address) as GameObjectLocatorParameter;
-                Parameters.Owner = this;
+                case "typeName":
+                    this.typeName = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                    break;
+                case "groupId":
+                    this.groupId = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt32>(propertyData).Value;
+                    break;
+                case "parameters":
+                    var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
+                    this.parameters = initFunctions.GetEntityFromAddress(address) as GameObjectLocatorParameter;
+                    Assert.IsNotNull(this.parameters, $"Parameters for {name} was null.");
+
+                    this.parameters.Owner = this;
+                    break;
             }
         }
     }

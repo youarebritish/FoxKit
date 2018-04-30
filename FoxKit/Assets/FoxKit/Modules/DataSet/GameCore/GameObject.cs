@@ -1,47 +1,73 @@
-﻿using FoxKit.Modules.DataSet.FoxCore;
-using FoxKit.Utils;
-using FoxTool.Fox;
-using FoxTool.Fox.Types.Values;
-
-namespace FoxKit.Modules.DataSet.GameCore
+﻿namespace FoxKit.Modules.DataSet.GameCore
 {
+    using FoxKit.Modules.DataSet.FoxCore;
+    using FoxKit.Utils;
+
+    using FoxTool.Fox;
+    using FoxTool.Fox.Types.Values;
+
+    using UnityEngine.Assertions;
+
+    /// <inheritdoc />
+    /// <summary>
+    /// A dynamic Fox Engine Entity, which can be one of many types.
+    /// </summary>
     public class GameObject : Data
     {
-        public string TypeName;
-        public uint GroupId;
-        public uint TotalCount;
-        public uint RealizedCount;
-        public GameObjectParameter Parameters;
+        /// <summary>
+        /// Name of the GameObject type. This indicates the type of GameObject to spawn.
+        /// </summary>
+        private string typeName;
 
+        /// <summary>
+        /// No idea what this is.
+        /// </summary>
+        private uint groupId;
+
+        /// <summary>
+        /// No idea what this is.
+        /// </summary>
+        private uint totalCount;
+
+        /// <summary>
+        /// No idea what this is.
+        /// </summary>
+        private uint realizedCount;
+
+        /// <summary>
+        /// Type-specific parameters.
+        /// </summary>
+        private GameObjectParameter parameters;
+
+        /// <inheritdoc />
+        protected override short ClassId => 88;
+
+        /// <inheritdoc />
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
-            if (propertyData.Name == "typeName")
+            switch (propertyData.Name)
             {
-                TypeName = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
-            }
-            else if (propertyData.Name == "groupId")
-            {
-                GroupId = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt32>(propertyData).Value;
-            }
-            else if (propertyData.Name == "totalCount")
-            {
-                TotalCount = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt32>(propertyData).Value;
-            }
-            else if (propertyData.Name == "realizedCount")
-            {
-                RealizedCount = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt32>(propertyData).Value;
-            }
-            else if (propertyData.Name == "parameters")
-            {
-                var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
-                Parameters = initFunctions.GetEntityFromAddress(address) as GameObjectParameter;
+                case "typeName":
+                    this.typeName = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                    break;
+                case "groupId":
+                    this.groupId = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt32>(propertyData).Value;
+                    break;
+                case "totalCount":
+                    this.totalCount = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt32>(propertyData).Value;
+                    break;
+                case "realizedCount":
+                    this.realizedCount = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt32>(propertyData).Value;
+                    break;
+                case "parameters":
+                    var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
+                    this.parameters = initFunctions.GetEntityFromAddress(address) as GameObjectParameter;
+                    Assert.IsNotNull(this.parameters, $"Parameters for {name} was null.");
 
-                if (Parameters != null)
-                {
-                    Parameters.Owner = this;
-                }
+                    this.parameters.Owner = this;
+                    break;
             }
         }
     }
