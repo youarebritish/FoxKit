@@ -7,27 +7,32 @@ namespace FoxKit.Core
     public class StrCode32StringPairPropertyDrawer : PropertyDrawer
     {
         public string[] options = { "Hash", "String" };
-        public int index = 0;
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             EditorGUI.BeginProperty(position, GUIContent.none, property);
+        
+            var labelPosition = position;
 
-            var isStringOrHash = System.Convert.ToInt32(property.FindPropertyRelative("_isUnhashed").boolValue);
-            var popupRect = new Rect(position.x * 15, position.y, position.width / 4, position.height);
-            isStringOrHash = EditorGUI.Popup(popupRect, isStringOrHash, options);
+            EditorGUI.LabelField(position, property.name);
 
-            var rectPosition = position;
-            rectPosition.width = position.width * .333f;
-            rectPosition.x = position.x * 4.5f;
+            var popupPosition = labelPosition;
+            popupPosition.width = Screen.width / 7;
+            popupPosition.x = position.x + Screen.width / 1.35f;
 
-            if (isStringOrHash == 1)
+            property.FindPropertyRelative("_isUnhashed").boolValue = System.Convert.ToBoolean(EditorGUI.Popup(popupPosition, System.Convert.ToInt32(property.FindPropertyRelative("_isUnhashed").boolValue), options));
+
+            var fieldPosition = labelPosition;
+            fieldPosition.width = Screen.width / 2f;
+            fieldPosition.x = position.x + Screen.width / 3.5f;
+
+            if (property.FindPropertyRelative("_isUnhashed").boolValue == true)
             {
-                EditorGUI.PropertyField(rectPosition, property.FindPropertyRelative("_string"), GUIContent.none);
+                EditorGUI.PropertyField(fieldPosition, property.FindPropertyRelative("_string"), GUIContent.none);
             }
             else
             {
-                EditorGUI.PropertyField(rectPosition, property.FindPropertyRelative("_hash"), GUIContent.none);
+                EditorGUI.PropertyField(fieldPosition, property.FindPropertyRelative("_hash"), GUIContent.none);
             }
 
             EditorGUI.EndProperty();
