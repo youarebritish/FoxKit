@@ -1,91 +1,159 @@
-﻿using System;
-using System.Collections.Generic;
-using FoxTool.Fox;
-using FoxKit.Utils;
-using FoxTool.Fox.Types.Values;
-using System.Linq;
-
-namespace FoxKit.Modules.DataSet.FoxCore
+﻿namespace FoxKit.Modules.DataSet.FoxCore
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using FoxKit.Utils;
+
+    using FoxTool.Fox;
+    using FoxTool.Fox.Types.Values;
+
+    using UnityEngine;
+
+    /// <summary>
+    /// Bit flags for TransformData.
+    /// </summary>
+    [Flags]
+    public enum Flags : uint
+    {
+        /// <summary>
+        /// Whether or not the TransformData is visible.
+        /// </summary>
+        EnableVisibility = 1u,
+
+        /// <summary>
+        /// Whether or not the TransformData is selectable.
+        /// </summary>
+        EnableSelection = 2u,
+
+        /// <summary>
+        /// Whether or not the TransformData inherits its transform from its parent.
+        /// </summary>
+        EnableInheritTransform = 4u
+    }
+
+    /// <inheritdoc />
     /// <summary>
     /// Base class for Entities with a physical location in the world.
     /// </summary>
     [Serializable]
     public abstract class TransformData : Data
     {
-        public TransformData Parent;
-        public TransformEntity Transform;
-        public TransformEntity ShearTransform;
-        public TransformEntity PivotTransform;
-        public List<TransformData> Children = new List<TransformData>();
-        
-        public bool InheritTransform = true;
-        public bool Visibility = true;
-        public bool Selection = true;
+        /// <summary>
+        /// The TransformData, if any, to which this one belongs.
+        /// </summary>
+        [SerializeField]
+        private TransformData parent;
 
+        /// <summary>
+        /// The transform matrix.
+        /// </summary>
+        [SerializeField]
+        private TransformEntity transform;
+
+        /// <summary>
+        /// The shear transform matrix.
+        /// </summary>
+        [SerializeField]
+        private TransformEntity shearTransform;
+
+        /// <summary>
+        /// The pivot transform matrix.
+        /// </summary>
+        [SerializeField]
+        private TransformEntity pivotTransform;
+
+        /// <summary>
+        /// The TransformData Entities, if any, which belong to this one.
+        /// </summary>
+        [SerializeField]
+        private List<TransformData> children = new List<TransformData>();
+
+        /// <summary>
+        /// Unknown. Believed to be a flag for whether or not this TransformData should inherit its owner's transform.
+        /// </summary>
+        [SerializeField]
+        private bool inheritTransform = true;
+
+        /// <summary>
+        /// Whether or not to render this TransformData.
+        /// </summary>
+        [SerializeField]
+        private bool visibility = true;
+
+        /// <summary>
+        /// Unknown. Believed to be a flag for whether or not this TransformData should be selectable in the editor.
+        /// </summary>
+        [SerializeField]
+        private bool selection = true;
+
+        /// <inheritdoc />
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
-            
-            if (propertyData.Name == "parent")
-            {
-                var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityHandle>(propertyData).Handle;
-                Parent = initFunctions.GetEntityFromAddress(address) as TransformData;
-            }
-            else if (propertyData.Name == "transform")
-            {
-                var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
-                Transform = initFunctions.GetEntityFromAddress(address) as TransformEntity;
 
-                if (Transform != null)
-                {
-                    Transform.Owner = this;
-                }
-            }
-            else if (propertyData.Name == "shearTransform")
+            switch (propertyData.Name)
             {
-                var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
-                ShearTransform = initFunctions.GetEntityFromAddress(address) as TransformEntity;
+                case "parent":
+                    {
+                        var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityHandle>(propertyData).Handle;
+                        this.parent = initFunctions.GetEntityFromAddress(address) as TransformData;
+                        break;
+                    }
 
-                if (ShearTransform != null)
-                {
-                    ShearTransform.Owner = this;
-                }
-            }
-            else if (propertyData.Name == "pivotTransform")
-            {
-                var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
-                PivotTransform = initFunctions.GetEntityFromAddress(address) as TransformEntity;
+                case "transform":
+                    {
+                        var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
+                        this.transform = initFunctions.GetEntityFromAddress(address) as TransformEntity;
 
-                if (PivotTransform != null)
-                {
-                    PivotTransform.Owner = this;
-                }
-            }
-            else if (propertyData.Name == "children")
-            {
-                Children = (from handle in DataSetUtils.GetListValues<FoxEntityHandle>(propertyData)
-                           select initFunctions.GetEntityFromAddress(handle.Handle) as TransformData)
-                           .ToList();
-            }
-            else if (propertyData.Name == "flags")
-            {
-                TransformData_Flags flags = (TransformData_Flags)DataSetUtils.GetStaticArrayPropertyValue<FoxUInt32>(propertyData).Value;
-                InheritTransform = flags.HasFlag(TransformData_Flags.ENABLE_INHERIT_TRANSFORM);
-                Visibility = flags.HasFlag(TransformData_Flags.ENABLE_VISIBILITY);
-                Selection = flags.HasFlag(TransformData_Flags.ENABLE_VISIBILITY);
+                        if (this.transform != null)
+                        {
+                            this.transform.Owner = this;
+                        }
+
+                        break;
+                    }
+
+                case "shearTransform":
+                    {
+                        var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
+                        this.shearTransform = initFunctions.GetEntityFromAddress(address) as TransformEntity;
+
+                        if (this.shearTransform != null)
+                        {
+                            this.shearTransform.Owner = this;
+                        }
+
+                        break;
+                    }
+
+                case "pivotTransform":
+                    {
+                        var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
+                        this.pivotTransform = initFunctions.GetEntityFromAddress(address) as TransformEntity;
+
+                        if (this.pivotTransform != null)
+                        {
+                            this.pivotTransform.Owner = this;
+                        }
+
+                        break;
+                    }
+
+                case "children":
+                    this.children = (from handle in DataSetUtils.GetListValues<FoxEntityHandle>(propertyData)
+                                     select initFunctions.GetEntityFromAddress(handle.Handle) as TransformData)
+                                     .ToList();
+                    break;
+
+                case "flags":
+                    var flags = (Flags)DataSetUtils.GetStaticArrayPropertyValue<FoxUInt32>(propertyData).Value;
+                    this.inheritTransform = flags.HasFlag(Flags.EnableInheritTransform);
+                    this.visibility = flags.HasFlag(Flags.EnableVisibility);
+                    this.selection = flags.HasFlag(Flags.EnableVisibility);
+                    break;
             }
         }
-    }
-
-    /// <summary>
-    /// Bit flags for TransformData
-    /// </summary>
-    [Flags]
-    public enum TransformData_Flags : uint
-    {
-        ENABLE_VISIBILITY = 1u,
-        ENABLE_SELECTION = 2u,
-        ENABLE_INHERIT_TRANSFORM = 4u
     }
 }

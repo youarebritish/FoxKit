@@ -1,36 +1,58 @@
-﻿using FoxKit.Utils;
-using FoxTool.Fox;
-using FoxTool.Fox.Types.Structs;
-using System;
-using UnityEngine;
-
-namespace FoxKit.Modules.DataSet.FoxCore
+﻿namespace FoxKit.Modules.DataSet.FoxCore
 {
+    using System;
+
+    using FoxKit.Utils;
+
+    using FoxTool.Fox;
+    using FoxTool.Fox.Types.Structs;
+
+    using UnityEngine;
+
+    /// <inheritdoc />
+    /// <summary>
+    /// A DataElement attached to TransformData Entities representing a transform matrix.
+    /// </summary>
     [Serializable]
     public class TransformEntity : DataElement<TransformData>
     {
-        public Vector3 Translation;        
-        public Quaternion Rotation;
-        public Vector3 Scale;
+        /// <summary>
+        /// The translation.
+        /// </summary>
+        private Vector3 translation;
 
+        /// <summary>
+        /// The rotation.
+        /// </summary>
+        private Quaternion rotation;
+
+        /// <summary>
+        /// The scale.
+        /// </summary>
+        private Vector3 scale;
+
+        /// <inheritdoc />
+        protected override short ClassId => 80;
+
+        /// <inheritdoc />
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
-            if (propertyData.Name == "transform_translation")
+            switch (propertyData.Name)
             {
-                var foxTranslation = DataSetUtils.GetStaticArrayPropertyValue<FoxVector3>(propertyData);
-                Translation = DataSetUtils.FoxToolToUnity(foxTranslation);
-            }
-            else if (propertyData.Name == "transform_rotation_quat")
-            {
-                var foxRotation = DataSetUtils.GetStaticArrayPropertyValue<FoxQuat>(propertyData);
-                Rotation = DataSetUtils.FoxToolToUnity(foxRotation);
-            }
-            else if (propertyData.Name == "transform_scale")
-            {
-                var foxScale = DataSetUtils.GetStaticArrayPropertyValue<FoxVector3>(propertyData);
-                Scale = DataSetUtils.FoxToolToUnity(foxScale);
+                case "transform_translation":
+                    var foxTranslation = DataSetUtils.GetStaticArrayPropertyValue<FoxVector3>(propertyData);
+                    this.translation = DataSetUtils.FoxToolToUnity(foxTranslation);
+                    break;
+                case "transform_rotation_quat":
+                    var foxRotation = DataSetUtils.GetStaticArrayPropertyValue<FoxQuat>(propertyData);
+                    this.rotation = DataSetUtils.FoxToolToUnity(foxRotation);
+                    break;
+                case "transform_scale":
+                    var foxScale = DataSetUtils.GetStaticArrayPropertyValue<FoxVector3>(propertyData);
+                    this.scale = DataSetUtils.FoxToolToUnity(foxScale);
+                    break;
             }
         }
     }

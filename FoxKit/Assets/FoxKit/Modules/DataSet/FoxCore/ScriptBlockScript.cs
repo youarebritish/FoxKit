@@ -1,30 +1,52 @@
-﻿using System;
-using FoxTool.Fox;
-using FoxKit.Utils;
-using FoxTool.Fox.Types.Values;
-
-namespace FoxKit.Modules.DataSet.FoxCore
+﻿namespace FoxKit.Modules.DataSet.FoxCore
 {
+    using System;
+
+    using FoxKit.Utils;
+
+    using FoxTool.Fox;
+    using FoxTool.Fox.Types.Values;
+
+    using UnityEngine;
+
+    /// <inheritdoc />
+    /// <summary>
+    /// The script block script.
+    /// </summary>
     [Serializable]
     public class ScriptBlockScript : Data
     {
-        public UnityEngine.Object Script;
-        public string ScriptPath;
+        /// <summary>
+        /// The Lua script to execute when the ScriptBlock activates.
+        /// </summary>
+        [SerializeField]
+        private UnityEngine.Object script;
 
+        /// <summary>
+        /// The script path.
+        /// </summary>
+        [SerializeField]
+        private string scriptPath;
+
+        /// <inheritdoc />
+        protected override short ClassId => 88;
+
+        /// <inheritdoc />
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
+        {
+            base.OnAssetsImported(tryGetAsset);
+            tryGetAsset(this.scriptPath, out this.script);
+        }
+
+        /// <inheritdoc />
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
             if (propertyData.Name == "script")
             {
-                ScriptPath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                this.scriptPath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
             }
-        }
-
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
-        {
-            base.OnAssetsImported(tryGetAsset);
-            tryGetAsset(ScriptPath, out Script);
         }
     }
 }
