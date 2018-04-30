@@ -4,11 +4,10 @@ using FoxTool.Fox.Types.Values;
 using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel;
-using System;
 
 namespace FoxKit.Modules.DataSet.PartsBuilder
 {
-    public class GeomSkeletonDescription : PartDescription
+    public class ModelDescription : PartDescription
     {
         public UnityEngine.Object ModelFile;
         public UnityEngine.Object ConnectPointFile;

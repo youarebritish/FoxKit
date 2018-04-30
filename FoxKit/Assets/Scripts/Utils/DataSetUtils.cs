@@ -75,9 +75,9 @@ namespace FoxKit.Utils
         public static EntityLink MakeEntityLink(DataSet owningDataSet, FoxEntityLink foxEntityLink)
         {
             return new EntityLink(owningDataSet,
-                foxEntityLink.PackagePathLiteral.ToString(),
-                foxEntityLink.ArchivePathLiteral.ToString(),
-                foxEntityLink.NameInArchiveLiteral.ToString(),
+                foxEntityLink.PackagePathLiteral.Literal,
+                foxEntityLink.ArchivePathLiteral.Literal,
+                foxEntityLink.NameInArchiveLiteral.Literal,
                 foxEntityLink.EntityHandle);
         }
 

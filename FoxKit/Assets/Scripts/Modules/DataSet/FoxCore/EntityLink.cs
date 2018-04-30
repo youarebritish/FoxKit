@@ -6,10 +6,10 @@ namespace FoxKit.Modules.DataSet.FoxCore
     [Serializable]
     public class EntityLink
     {
-        public readonly string PackagePath;
-        public readonly string ArchivePath;
-        public readonly string NameInArchive;
-        public readonly ulong Address;
+        public string PackagePath;
+        public string ArchivePath;
+        public string NameInArchive;
+        public ulong Address;
 
         public DataSet OwningDataSet;
         public Entity ReferencedEntity;
@@ -33,6 +33,11 @@ namespace FoxKit.Modules.DataSet.FoxCore
 
         public bool ResolveReference(AssetPostprocessor.TryGetAssetDelegate tryGetImportedAsset)
         {
+            if (string.IsNullOrEmpty(PackagePath) && string.IsNullOrEmpty(ArchivePath) && string.IsNullOrEmpty(NameInArchive))
+            {
+
+            }
+
             // TODO: Figure out how to deal with this.
             if (IsDataIdentifierEntityLink)
             {

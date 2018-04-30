@@ -9,7 +9,7 @@ using System;
 namespace FoxKit.Modules.DataSet.PartsBuilder
 {
     [Serializable]
-    public class ModelDescription : PartDescription
+    public class GeomSkeletonDescription : PartDescription
     {
         public UnityEngine.Object GsklFile;
         public string GsklFilePath;

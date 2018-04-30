@@ -18,7 +18,6 @@ namespace FoxKit.Core
             foreach (var asset in importedAssets)
             {
                 var loadedAsset = AssetDatabase.LoadAssetAtPath<Object>(asset);
-                //assets.Add(Path.GetFileName(asset), loadedAsset); Need full file path to use AssetDatabase.LoadAssetAtPath
                 assets.Add(asset, loadedAsset);
             }
 
