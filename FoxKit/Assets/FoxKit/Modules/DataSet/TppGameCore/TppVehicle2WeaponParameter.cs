@@ -1,94 +1,150 @@
-﻿using FoxKit.Modules.DataSet.FoxCore;
-using System;
-using FoxTool.Fox;
-using FoxKit.Utils;
-using FoxTool.Fox.Types.Values;
-
-namespace FoxKit.Modules.DataSet.TppGameCore
+﻿namespace FoxKit.Modules.DataSet.TppGameCore
 {
+    using System;
+
+    using FoxKit.Modules.DataSet.FoxCore;
+    using FoxKit.Utils;
+
+    using FoxTool.Fox;
+    using FoxTool.Fox.Types.Values;
+
+    /// <inheritdoc />
+    /// <summary>
+    /// Parameters for a <see cref="TppVehicle2AttachmentData"/> Entity.
+    /// </summary>
     [Serializable]
     public class TppVehicle2WeaponParameter : DataElement<Data>
     {
-        public string AttackId;
-        public string EquipId;
-        public string BulletId;
-        public byte WeaponImplTypeIndex;
-        public float FireInterval;
-        public UnityEngine.Object WeaponFile;
-        public UnityEngine.Object AmmoFile;
-        public string OwnerCnpName;
-        public string WeaponBoneName;
-        public string TurretBoneName;
-        public float MinPitch;
-        public float MaxPitch;
-        public float RotSpeed;
+        /// <summary>
+        /// TODO: Figure out.
+        /// </summary>
+        private string attackId;
 
-        public string WeaponFilePath;
-        public string AmmoFilePath;
+        /// <summary>
+        /// TODO: Figure out.
+        /// </summary>
+        private string equipId;
 
+        /// <summary>
+        /// TODO: Figure out.
+        /// </summary>
+        private string bulletId;
+
+        /// <summary>
+        /// TODO: Figure out.
+        /// </summary>
+        private byte weaponImplTypeIndex;
+
+        /// <summary>
+        /// TODO: Figure out.
+        /// </summary>
+        private float fireInterval;
+
+        /// <summary>
+        /// TODO: Figure out.
+        /// </summary>
+        private UnityEngine.Object weaponFile;
+
+        /// <summary>
+        /// TODO: Figure out.
+        /// </summary>
+        private UnityEngine.Object ammoFile;
+
+        /// <summary>
+        /// TODO: Figure out.
+        /// </summary>
+        private string ownerCnpName = string.Empty;
+
+        /// <summary>
+        /// TODO: Figure out.
+        /// </summary>
+        private string weaponBoneName = string.Empty;
+
+        /// <summary>
+        /// TODO: Figure out.
+        /// </summary>
+        private string turretBoneName = string.Empty;
+
+        /// <summary>
+        /// TODO: Figure out.
+        /// </summary>
+        private float minPitch;
+
+        /// <summary>
+        /// TODO: Figure out.
+        /// </summary>
+        private float maxPitch = 1.5f;
+
+        /// <summary>
+        /// TODO: Figure out.
+        /// </summary>
+        private float rotSpeed = 0.5f;
+
+        /// <summary>
+        /// Path to <see cref="weaponFile"/>.
+        /// </summary>
+        private string weaponFilePath;
+
+        /// <summary>
+        /// Path to <see cref="ammoFile"/>.
+        /// </summary>
+        private string ammoFilePath;
+
+        /// <inheritdoc />
+        protected override short ClassId => 128;
+
+        /// <inheritdoc />
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
+        {
+            base.OnAssetsImported(tryGetAsset);
+            tryGetAsset(this.weaponFilePath, out this.weaponFile);
+            tryGetAsset(this.ammoFilePath, out this.ammoFile);
+        }
+
+        /// <inheritdoc />
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
-            if (propertyData.Name == "attackId")
+            switch (propertyData.Name)
             {
-                AttackId = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                case "attackId":
+                    this.attackId = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                    break;
+                case "equipId":
+                    this.equipId = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                    break;
+                case "bulletId":
+                    this.bulletId = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                    break;
+                case "weaponImplTypeIndex":
+                    this.weaponImplTypeIndex = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
+                    break;
+                case "fireInterval":
+                    this.fireInterval = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+                    break;
+                case "weaponFile":
+                    this.weaponFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    break;
+                case "ammoFile":
+                    this.ammoFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    break;
+                case "weaponBoneName":
+                    this.weaponBoneName = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                    break;
+                case "turretBoneName":
+                    this.turretBoneName = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                    break;
+                case "minPitch":
+                    this.minPitch = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+                    break;
+                case "maxPitch":
+                    this.maxPitch = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+                    break;
+                case "rotSpeed":
+                    this.rotSpeed = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+                    break;
             }
-            else if (propertyData.Name == "equipId")
-            {
-                EquipId = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
-            }
-            else if (propertyData.Name == "bulletId")
-            {
-                BulletId = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
-            }
-            else if (propertyData.Name == "weaponImplTypeIndex")
-            {
-                WeaponImplTypeIndex = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
-            }
-            else if (propertyData.Name == "fireInterval")
-            {
-                FireInterval = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
-            }
-            else if (propertyData.Name == "fireInterval")
-            {
-                FireInterval = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
-            }
-            else if (propertyData.Name == "weaponFile")
-            {
-                WeaponFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
-            }
-            else if (propertyData.Name == "ammoFile")
-            {
-                AmmoFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
-            }
-            else if (propertyData.Name == "weaponBoneName")
-            {
-                WeaponBoneName = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
-            }
-            else if (propertyData.Name == "turretBoneName")
-            {
-                TurretBoneName = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
-            }
-            else if (propertyData.Name == "minPitch")
-            {
-                MinPitch = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
-            }
-            else if (propertyData.Name == "maxPitch")
-            {
-                MaxPitch = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
-            }
-            else if (propertyData.Name == "rotSpeed")
-            {
-                RotSpeed = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
-            }
-        }
-
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
-        {
-            base.OnAssetsImported(tryGetAsset);
-            tryGetAsset(WeaponFilePath, out WeaponFile);
-            tryGetAsset(AmmoFilePath, out AmmoFile);
         }
     }
 }

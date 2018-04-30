@@ -1,86 +1,133 @@
-﻿using FoxKit.Modules.DataSet.FoxCore;
-using FoxKit.Utils;
-using FoxTool.Fox;
-using FoxTool.Fox.Types.Values;
-using System;
-using System.Collections.Generic;
-
-namespace FoxKit.Modules.DataSet.TppGameCore
+﻿namespace FoxKit.Modules.DataSet.TppGameCore
 {
+    using System;
+    using System.Collections.Generic;
+
+    using FoxKit.Modules.DataSet.FoxCore;
+    using FoxKit.Utils;
+
+    using FoxTool.Fox;
+    using FoxTool.Fox.Types.Values;
+
+    using UnityEngine.Assertions;
+
+    /// <inheritdoc />
+    /// <summary>
+    /// TODO: Figure out.
+    /// </summary>
     [Serializable]
     public class TppVehicle2BodyData : Data
     {
-        public byte VehicleTypeIndex;
-        public byte ProxyVehicleTypeIndex;
-        public byte BodyImplTypeIndex;
-        public UnityEngine.Object PartsFile;
-        public byte BodyInstanceCount;
-        public List<TppVehicle2WeaponParameter> WeaponParams;
-        public List<UnityEngine.Object> FovaFiles;
+        /// <summary>
+        /// TODO: Figure out.
+        /// </summary>
+        private byte vehicleTypeIndex;
 
-        public string PartsFilePath;
-        public List<string> FovaFilesPaths;
+        /// <summary>
+        /// TODO: Figure out.
+        /// </summary>
+        private byte proxyVehicleTypeIndex;
 
+        /// <summary>
+        /// TODO: Figure out.
+        /// </summary>
+        private byte bodyImplTypeIndex;
+
+        /// <summary>
+        /// PartsFile defining the vehicle's model data.
+        /// </summary>
+        private UnityEngine.Object partsFile;
+
+        /// <summary>
+        /// TODO: Figure out.
+        /// </summary>
+        private byte bodyInstanceCount = 2;
+
+        /// <summary>
+        /// Weapon parameters.
+        /// </summary>
+        private List<TppVehicle2WeaponParameter> weaponParams = new List<TppVehicle2WeaponParameter>();
+
+        /// <summary>
+        /// Form variation files.
+        /// </summary>
+        private List<UnityEngine.Object> fovaFiles = new List<UnityEngine.Object>();
+
+        /// <summary>
+        /// Path to <see cref="partsFile"/>.
+        /// </summary>
+        private string partsFilePath;
+
+        /// <summary>
+        /// Paths to <see cref="fovaFiles"/>.
+        /// </summary>
+        private List<string> fovaFilesPaths;
+
+        /// <inheritdoc />
+        protected override short ClassId => 128;
+
+        /// <inheritdoc />
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
+        {
+            base.OnAssetsImported(tryGetAsset);
+            tryGetAsset(this.partsFilePath, out this.partsFile);
+
+            foreach (var fovaFilePath in this.fovaFilesPaths)
+            {
+                UnityEngine.Object file;
+                tryGetAsset(fovaFilePath, out file);
+                this.fovaFiles.Add(file);
+            }
+        }
+
+        /// <inheritdoc />
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
-            if (propertyData.Name == "vehicleTypeIndex")
+            switch (propertyData.Name)
             {
-                VehicleTypeIndex = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
-            }
-            else if (propertyData.Name == "proxyVehicleTypeIndex")
-            {
-                ProxyVehicleTypeIndex = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
-            }
-            else if (propertyData.Name == "bodyImplTypeIndex")
-            {
-                BodyImplTypeIndex = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
-            }
-            else if (propertyData.Name == "partsFile")
-            {
-                PartsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
-            }
-            else if (propertyData.Name == "bodyInstanceCount")
-            {
-                BodyInstanceCount = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
-            }
-            else if (propertyData.Name == "weaponParams")
-            {
-                var addresses = DataSetUtils.GetDynamicArrayValues<FoxEntityPtr>(propertyData);
-                WeaponParams = new List<TppVehicle2WeaponParameter>(addresses.Count);
+                case "vehicleTypeIndex":
+                    this.vehicleTypeIndex = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
+                    break;
+                case "proxyVehicleTypeIndex":
+                    this.proxyVehicleTypeIndex = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
+                    break;
+                case "bodyImplTypeIndex":
+                    this.bodyImplTypeIndex = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
+                    break;
+                case "partsFile":
+                    this.partsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    break;
+                case "bodyInstanceCount":
+                    this.bodyInstanceCount = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
+                    break;
+                case "weaponParams":
+                    var addresses = DataSetUtils.GetDynamicArrayValues<FoxEntityPtr>(propertyData);
+                    this.weaponParams = new List<TppVehicle2WeaponParameter>(addresses.Count);
 
-                foreach(var address in addresses)
-                {
-                    var param = initFunctions.GetEntityFromAddress(address.EntityPtr) as TppVehicle2WeaponParameter;
-                    WeaponParams.Add(param);
-                    param.Owner = this;
-                }
-            }
-            else if (propertyData.Name == "fovaFiles")
-            {
-                var filePtrList = DataSetUtils.GetDynamicArrayValues<FoxFilePtr>(propertyData);
-                FovaFiles = new List<UnityEngine.Object>(filePtrList.Count);
-                FovaFilesPaths = new List<string>(filePtrList.Count);
+                    foreach (var address in addresses)
+                    {
+                        var param = initFunctions.GetEntityFromAddress(address.EntityPtr) as TppVehicle2WeaponParameter;
+                        Assert.IsNotNull(param, $"Parameter in {this.name} must not be null.");
 
-                foreach (var filePtr in filePtrList)
-                {
-                    var path = DataSetUtils.ExtractFilePath(filePtr);
-                    FovaFilesPaths.Add(path);
-                }
-            }
-        }
+                        this.weaponParams.Add(param);
+                        param.Owner = this;
+                    }
 
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
-        {
-            base.OnAssetsImported(tryGetAsset);
-            tryGetAsset(PartsFilePath, out PartsFile);
+                    break;
+                case "fovaFiles":
+                    var filePtrList = DataSetUtils.GetDynamicArrayValues<FoxFilePtr>(propertyData);
+                    this.fovaFiles = new List<UnityEngine.Object>(filePtrList.Count);
+                    this.fovaFilesPaths = new List<string>(filePtrList.Count);
 
-            foreach(var fovaFilePath in FovaFilesPaths)
-            {
-                UnityEngine.Object file = null;
-                tryGetAsset(fovaFilePath, out file);
-                FovaFiles.Add(file);
+                    foreach (var filePtr in filePtrList)
+                    {
+                        var path = DataSetUtils.ExtractFilePath(filePtr);
+                        this.fovaFilesPaths.Add(path);
+                    }
+
+                    break;
             }
         }
     }

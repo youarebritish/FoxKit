@@ -1,36 +1,56 @@
-﻿using FoxKit.Modules.DataSet.FoxCore;
-using System;
-using FoxTool.Fox;
-using FoxKit.Utils;
-using FoxTool.Fox.Types.Values;
-
-namespace FoxKit.Modules.DataSet.Sdx
+﻿namespace FoxKit.Modules.DataSet.Sdx
 {
+    using System;
+
+    using FoxKit.Modules.DataSet.FoxCore;
+    using FoxKit.Utils;
+
+    using FoxTool.Fox;
+    using FoxTool.Fox.Types.Values;
+
+    /// <inheritdoc />
+    /// <summary>
+    /// TODO: Figure out what this is.
+    /// </summary>
     [Serializable]
     public class SoundPackage : Data
-    {        
-        public UnityEngine.Object SoundDataFile;
-        public bool SyncLoad;
-        public string SoundDataFilePath;
+    {
+        /// <summary>
+        /// TODO: Figure out what this is.
+        /// </summary>
+        private UnityEngine.Object soundDataFile;
 
+        /// <summary>
+        /// TODO: Figure out what this is.
+        /// </summary>
+        private bool syncLoad;
+
+        /// <summary>
+        /// File path for <see cref="soundDataFile"/>.
+        /// </summary>
+        private string soundDataFilePath;
+
+        /// <inheritdoc />
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
+        {
+            base.OnAssetsImported(tryGetAsset);
+            tryGetAsset(this.soundDataFilePath, out this.soundDataFile);
+        }
+
+        /// <inheritdoc />
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
-            if (propertyData.Name == "soundDataFile")
+            switch (propertyData.Name)
             {
-                SoundDataFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                case "soundDataFile":
+                    this.soundDataFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    break;
+                case "syncLoad":
+                    this.syncLoad = DataSetUtils.GetStaticArrayPropertyValue<FoxBool>(propertyData).Value;
+                    break;
             }
-            else if (propertyData.Name == "syncLoad")
-            {
-                SyncLoad = DataSetUtils.GetStaticArrayPropertyValue<FoxBool>(propertyData).Value;
-            }
-        }
-
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
-        {
-            base.OnAssetsImported(tryGetAsset);
-            tryGetAsset(SoundDataFilePath, out SoundDataFile);
         }
     }
 }
