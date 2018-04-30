@@ -1,19 +1,22 @@
-﻿using FoxKit.Modules.DataSet.FoxCore;
-using FoxKit.Utils;
-using FoxTool.Fox;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using UnityEditor;
-using UnityEditor.Experimental.AssetImporters;
-using UnityEngine;
-using UnityEngine.Assertions;
-using static FoxKit.Modules.DataSet.Importer.EntityFactory;
-
-namespace FoxKit.Modules.DataSet.Importer
+﻿namespace FoxKit.Modules.DataSet.Importer
 {
-    [ScriptedImporter(1, new string[] { "fox2", "parts" })]
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
+    using FoxKit.Modules.DataSet.FoxCore;
+    using FoxKit.Utils;
+
+    using FoxTool.Fox;
+
+    using UnityEditor.Experimental.AssetImporters;
+
+    using UnityEngine;
+
+    using static FoxKit.Modules.DataSet.Importer.EntityFactory;
+
+    [ScriptedImporter(1, new[] { "fox2", "parts" })]
     public class DataSetImporter : ScriptedImporter
     {
         // TODO: Remove/cache
@@ -24,10 +27,10 @@ namespace FoxKit.Modules.DataSet.Importer
 
         public override void OnImportAsset(AssetImportContext ctx)
         {
-            var asset = ScriptableObject.CreateInstance<FoxCore.DataSet>();
+            var asset = ScriptableObject.CreateInstance<DataSet>();
             asset.name = Path.GetFileNameWithoutExtension(ctx.assetPath);
 
-            FoxFile foxFile = null;
+            FoxFile foxFile;
             using (var input = new FileStream(ctx.assetPath, FileMode.Open))
             {
                 var lookupTable = new FoxLookupTable(globalHashNameDictionary);
@@ -42,15 +45,7 @@ namespace FoxKit.Modules.DataSet.Importer
                             .ToDictionary(entry => entry.Instance, entry => entry.Data);
 
             // Find DataSet.
-            FoxCore.DataSet dataSet = null;
-            foreach(var entity in entities.Keys)
-            {
-                if (entity.GetType() == typeof(FoxCore.DataSet))
-                {
-                    dataSet = entity as FoxCore.DataSet;
-                    break;
-                }                
-            }
+            var dataSet = (from entity in entities.Keys where entity.GetType() == typeof(DataSet) select entity as DataSet).FirstOrDefault();
 
             var entityInitializeFunctions = MakeEntityInitializeFunctions(entities);
             foreach (var entity in entities)
@@ -59,18 +54,23 @@ namespace FoxKit.Modules.DataSet.Importer
                 entity.Key.Initialize(dataSet, entity.Value, entityInitializeFunctions);
 
                 // TODO Fix null entries
-                if (entity.Key.GetType() == typeof(FoxCore.DataSet))
+                if (entity.Key.GetType() == typeof(DataSet))
                 {
                     continue;
                 }
 
                 // TODO Make this more elegant
                 ctx.AddObjectToAsset(entity.Key.name, entity.Key);
-                if (!string.IsNullOrEmpty(entity.Key.name))
-                {                    
-                    dataSet.DataList.Add(entity.Key.name, entity.Key);
-                    dataSet.AddressMap.Add(entity.Value.Address, entity.Key);
+                if (string.IsNullOrEmpty(entity.Key.name))
+                {
+                    continue;
                 }
+                if (dataSet == null)
+                {
+                    continue;
+                }
+                dataSet.DataList.Add(entity.Key.name, entity.Key);
+                dataSet.AddressMap.Add(entity.Value.Address, entity.Key);
             }
 
             ctx.AddObjectToAsset("DataSet", dataSet);
@@ -99,37 +99,10 @@ namespace FoxKit.Modules.DataSet.Importer
             Debug.LogError("Unable to find class " + className);
             return null;
         }
-
-        public static bool DoesRequestExistForFile(string filename)
-        {
-            return fileRequests.ContainsKey(filename);
-        }
-
-        public static void ProcessRequestForFile(string filename)
-        {
-            Assert.IsTrue(fileRequests.ContainsKey(filename));
-
-            Debug.Log("Found file: " + filename);
-            var asset = AssetDatabase.LoadAssetAtPath(filename, typeof(UnityEngine.Object));
-            var requestingAssetInstanceId = fileRequests[filename];
-            var requestingAssets = AssetDatabase.FindAssets("name:quest_qih0005");//EditorUtility.InstanceIDToObject(requestingAssetInstanceId);
-            var blah = AssetDatabase.GUIDToAssetPath(requestingAssets[0]);
-            var blah2 = AssetDatabase.LoadAssetAtPath<ScriptBlockScript>(blah);
-            (blah2 as ScriptBlockScript).Script = asset;
-        }
-
-        public static void ClearFileRequests()
-        {
-            fileRequests.Clear();
-        }
-
+                
+        // TODO: Remove
         private static void RequestFile(string filePath, int requestingAssetInstanceId)
         {
-            // When a file is requested:
-            // 1) Check if the file already exists. If so, hand it over immediately.
-            // 2) Add it to FileRequestHandler.
-            // https://docs.unity3d.com/ScriptReference/AssetPostprocessor.OnPostprocessAllAssets.html ?
-            // OnPostprocessAllAssets(): Go through FileRequestHandler's requests and see if any of them were just imported.
             Debug.Log("Requesting file: " + filePath);
             fileRequests.Add(Path.GetFileName(filePath), requestingAssetInstanceId);
         }

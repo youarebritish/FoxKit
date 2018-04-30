@@ -6,7 +6,6 @@ using FoxTool.Fox.Types.Structs;
 using FoxTool.Fox.Types.Values;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine.Assertions;
 
 namespace FoxKit.Utils
