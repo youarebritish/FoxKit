@@ -8,6 +8,8 @@
     using FoxTool.Fox;
     using FoxTool.Fox.Types.Values;
 
+    using UnityEngine;
+
     /// <inheritdoc />
     /// <summary>
     /// Don't know what this is, but it looks like every DataSetFile needs one.
@@ -18,7 +20,8 @@
         /// <summary>
         /// The texture pack path.
         /// </summary>
-        private string texturePackPath;
+        [SerializeField]
+        private string texturePackPath = string.Empty;
 
         /// <inheritdoc />
         protected override short ClassId => 72;

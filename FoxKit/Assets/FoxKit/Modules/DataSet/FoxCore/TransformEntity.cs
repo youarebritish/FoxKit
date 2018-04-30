@@ -19,16 +19,19 @@
         /// <summary>
         /// The translation.
         /// </summary>
+        [SerializeField]
         private Vector3 translation;
 
         /// <summary>
         /// The rotation.
         /// </summary>
+        [SerializeField]
         private Quaternion rotation;
 
         /// <summary>
         /// The scale.
         /// </summary>
+        [SerializeField]
         private Vector3 scale;
 
         /// <inheritdoc />

@@ -6,6 +6,7 @@
     using FoxTool.Fox;
     using FoxTool.Fox.Types.Values;
 
+    using UnityEngine;
     using UnityEngine.Assertions;
 
     /// <inheritdoc />
@@ -17,26 +18,31 @@
         /// <summary>
         /// Name of the GameObject type. This indicates the type of GameObject to spawn.
         /// </summary>
-        private string typeName;
+        [SerializeField]
+        private string typeName = string.Empty;
 
         /// <summary>
         /// No idea what this is.
         /// </summary>
+        [SerializeField]
         private uint groupId;
 
         /// <summary>
         /// No idea what this is.
         /// </summary>
+        [SerializeField]
         private uint totalCount;
 
         /// <summary>
         /// No idea what this is.
         /// </summary>
+        [SerializeField]
         private uint realizedCount;
 
         /// <summary>
         /// Type-specific parameters.
         /// </summary>
+        [SerializeField]
         private GameObjectParameter parameters;
 
         /// <inheritdoc />
