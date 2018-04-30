@@ -19,6 +19,17 @@
         /// </summary>
         public string Name => this.name;
 
+        /// <summary>
+        /// Gets the DataSet that owns this Entity.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="DataSet"/> that owns this Entity.
+        /// </returns>
+        public DataSet GetDataSet()
+        {
+            return this.DataSet;
+        }
+
         /// <inheritdoc />
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
