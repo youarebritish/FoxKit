@@ -1,71 +1,110 @@
-﻿using FoxKit.Modules.DataSet.FoxCore;
-using System;
-using FoxTool.Fox;
-using FoxKit.Utils;
-using FoxTool.Fox.Types.Values;
-using System.Collections.Generic;
-
-namespace FoxKit.Modules.DataSet.TppGameCore
+﻿namespace FoxKit.Modules.DataSet.TppGameCore
 {
+    using System;
+    using System.Collections.Generic;
+
+    using FoxKit.Modules.DataSet.FoxCore;
+    using FoxKit.Utils;
+
+    using FoxTool.Fox;
+    using FoxTool.Fox.Types.Values;
+
+    using UnityEngine.Assertions;
+
+    /// <inheritdoc />
+    /// <summary>
+    /// TODO: Figure this out.
+    /// </summary>
     [Serializable]
     public class TppVehicle2AttachmentData : Data
     {
-        public byte VehicleTypeCode;
-        public byte AttachmentImplTypeIndex;
-        public UnityEngine.Object AttachmentFile;
-        public byte AttachmentInstanceCount;
-        public string BodyCnpName;
-        public string AttachmentBoneName;
-        public List<TppVehicle2WeaponParameter> WeaponParams;
+        /// <summary>
+        /// TODO: Figure this out.
+        /// </summary>
+        private byte vehicleTypeCode;
 
-        public string AttachmentFilePath;
+        /// <summary>
+        /// TODO: Figure this out.
+        /// </summary>
+        private byte attachmentImplTypeIndex;
 
+        /// <summary>
+        /// TODO: Figure this out.
+        /// </summary>
+        private UnityEngine.Object attachmentFile;
+
+        /// <summary>
+        /// TODO: Figure this out.
+        /// </summary>
+        private byte attachmentInstanceCount;
+
+        /// <summary>
+        /// TODO: Figure this out.
+        /// </summary>
+        private string bodyCnpName;
+
+        /// <summary>
+        /// TODO: Figure this out.
+        /// </summary>
+        private string attachmentBoneName;
+
+        /// <summary>
+        /// TODO: Figure this out.
+        /// </summary>
+        private List<TppVehicle2WeaponParameter> weaponParams = new List<TppVehicle2WeaponParameter>();
+
+        /// <summary>
+        /// Path to <see cref="attachmentFile"/>.
+        /// </summary>
+        private string attachmentFilePath;
+
+        /// <inheritdoc />
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
+        {
+            base.OnAssetsImported(tryGetAsset);
+            tryGetAsset(this.attachmentFilePath, out this.attachmentFile);
+        }
+
+        /// <inheritdoc />
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
-            if (propertyData.Name == "vehicleTypeCode")
+            switch (propertyData.Name)
             {
-                VehicleTypeCode = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
-            }
-            else if (propertyData.Name == "attachmentImplTypeIndex")
-            {
-                AttachmentImplTypeIndex = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
-            }
-            else if (propertyData.Name == "attachmentFile")
-            {
-                AttachmentFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
-            }
-            else if (propertyData.Name == "attachmentInstanceCount")
-            {
-                AttachmentInstanceCount = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
-            }
-            else if (propertyData.Name == "bodyCnpName")
-            {
-                BodyCnpName = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
-            }
-            else if (propertyData.Name == "attachmentBoneName")
-            {
-                AttachmentBoneName = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
-            }
-            else if (propertyData.Name == "weaponParams")
-            {
-                var list = DataSetUtils.GetDynamicArrayValues<FoxEntityPtr>(propertyData);
-                WeaponParams = new List<TppVehicle2WeaponParameter>(list.Count);
+                case "vehicleTypeCode":
+                    this.vehicleTypeCode = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
+                    break;
+                case "attachmentImplTypeIndex":
+                    this.attachmentImplTypeIndex = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
+                    break;
+                case "attachmentFile":
+                    this.attachmentFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    break;
+                case "attachmentInstanceCount":
+                    this.attachmentInstanceCount = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
+                    break;
+                case "bodyCnpName":
+                    this.bodyCnpName = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                    break;
+                case "attachmentBoneName":
+                    this.attachmentBoneName = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                    break;
+                case "weaponParams":
+                    var list = DataSetUtils.GetDynamicArrayValues<FoxEntityPtr>(propertyData);
+                    this.weaponParams = new List<TppVehicle2WeaponParameter>(list.Count);
 
-                foreach (var param in list)
-                {
-                    var entity = initFunctions.GetEntityFromAddress(param.EntityPtr) as TppVehicle2WeaponParameter;
-                    WeaponParams.Add(entity);
-                    entity.Owner = this;
-                }
-            }
-        }
+                    foreach (var param in list)
+                    {
+                        var entity = initFunctions.GetEntityFromAddress(param.EntityPtr) as TppVehicle2WeaponParameter;
+                        Assert.IsNotNull(entity);
 
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
-        {
-            base.OnAssetsImported(tryGetAsset);
-            tryGetAsset(AttachmentFilePath, out AttachmentFile);
+                        this.weaponParams.Add(entity);
+                        entity.Owner = this;
+                    }
+
+                    break;
+            }
         }
     }
 }

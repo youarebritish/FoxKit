@@ -1,63 +1,100 @@
-﻿using FoxKit.Modules.DataSet.FoxCore;
-using System;
-using FoxTool.Fox;
-using FoxKit.Utils;
-using FoxTool.Fox.Types.Values;
-
-namespace FoxKit.Modules.DataSet.TppGameKit
+﻿namespace FoxKit.Modules.DataSet.TppGameKit
 {
+    using System;
+
+    using FoxKit.Modules.DataSet.FoxCore;
+    using FoxKit.Utils;
+
+    using FoxTool.Fox;
+    using FoxTool.Fox.Types.Values;
+
+    using UnityEngine;
+    using UnityEngine.Assertions;
+
+    /// <inheritdoc />
     /// <summary>
     /// Note: Gimmicks are weird. They're Data, not TransformData, and get their transform from an lba.
     /// </summary>
     [Serializable]
     public class TppPermanentGimmickData : Data
     {
-        public UnityEngine.Object PartsFile;
-        public UnityEngine.Object LocatorFile;
-        public TppPermanentGimmickParameter Parameters;
-        public uint Flags1;
-        public uint Flags2;
+        /// <summary>
+        /// TODO Figure out.
+        /// </summary>
+        [SerializeField]
+        private UnityEngine.Object partsFile;
 
-        public string PartsFilePath;
-        public string LocatorFilePath;
+        /// <summary>
+        /// TODO Figure out.
+        /// </summary>
+        [SerializeField]
+        private UnityEngine.Object locatorFile;
 
+        /// <summary>
+        /// TODO Figure out.
+        /// </summary>
+        [SerializeField]
+        private TppPermanentGimmickParameter parameters;
+
+        /// <summary>
+        /// TODO Figure out.
+        /// </summary>
+        [SerializeField]
+        private uint flags1 = 5;
+
+        /// <summary>
+        /// TODO Figure out.
+        /// </summary>
+        [SerializeField]
+        private uint flags2;
+
+        /// <summary>
+        /// Path to <see cref="partsFile"/>.
+        /// </summary>
+        [SerializeField]
+        private string partsFilePath = string.Empty;
+
+        /// <summary>
+        /// Path to <see cref="locatorFile"/>.
+        /// </summary>
+        [SerializeField]
+        private string locatorFilePath = string.Empty;
+
+        /// <inheritdoc />
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
+        {
+            base.OnAssetsImported(tryGetAsset);
+            tryGetAsset(this.partsFilePath, out this.partsFile);
+            tryGetAsset(this.locatorFilePath, out this.locatorFile);
+        }
+
+        /// <inheritdoc />
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
-            if (propertyData.Name == "partsFile")
+            switch (propertyData.Name)
             {
-                PartsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
-            }
-            else if (propertyData.Name == "locaterFile")
-            {
-                LocatorFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
-            }
-            else if (propertyData.Name == "parameters")
-            {
-                var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
-                Parameters = initFunctions.GetEntityFromAddress(address) as TppPermanentGimmickParameter;
+                case "partsFile":
+                    this.partsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    break;
+                case "locaterFile":
+                    this.locatorFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    break;
+                case "parameters":
+                    var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
+                    this.parameters = initFunctions.GetEntityFromAddress(address) as TppPermanentGimmickParameter;
 
-                if (Parameters != null)
-                {
-                    Parameters.Owner = this;
-                }
+                    Assert.IsNotNull(this.parameters);
+                    this.parameters.Owner = this;
+                    break;
+                case "flags1":
+                    this.flags1 = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt32>(propertyData).Value;
+                    break;
+                case "flags2":
+                    this.flags2 = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt32>(propertyData).Value;
+                    break;
             }
-            else if (propertyData.Name == "flags1")
-            {
-                Flags1 = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt32>(propertyData).Value;
-            }
-            else if (propertyData.Name == "flags2")
-            {
-                Flags2 = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt32>(propertyData).Value;
-            }
-        }
-
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
-        {
-            base.OnAssetsImported(tryGetAsset);
-            tryGetAsset(PartsFilePath, out PartsFile);
-            tryGetAsset(LocatorFilePath, out LocatorFile);
         }
     }
 }

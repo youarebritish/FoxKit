@@ -1,73 +1,117 @@
-﻿using FoxTool.Fox;
-using FoxTool.Fox.Types.Values;
-using FoxKit.Utils;
-using FoxKit.Modules.DataSet.GameCore;
-using FoxKit.Utils.UI.StringMap;
-
-namespace FoxKit.Modules.DataSet.TppGameCore
+﻿namespace FoxKit.Modules.DataSet.TppGameCore
 {
+    using FoxKit.Modules.DataSet.GameCore;
+    using FoxKit.Utils;
+    using FoxKit.Utils.UI.StringMap;
+
+    using FoxTool.Fox;
+    using FoxTool.Fox.Types.Values;
+
+    /// <inheritdoc />
+    /// <summary>
+    /// Parameters for a <see cref="GameObject"/> of type TppHostage2.
+    /// </summary>
     public class TppHostage2Parameter : GameObjectParameter
     {
-        public UnityEngine.Object PartsFile;
-        public UnityEngine.Object MotionGraphFile;
-        public UnityEngine.Object MtarFile;
-        public UnityEngine.Object ExtensionMtarFile;
-        public ObjectStringMap VfxFiles;
+        /// <summary>
+        /// TODO Figure out.
+        /// </summary>
+        private UnityEngine.Object partsFile;
 
-        public string PartsFilePath;
-        public string MotionGraphFilePath;
-        public string MtarFilePath;
-        public string ExtensionMtarFilePath;
-        public StringStringMap VfxFilePaths;
+        /// <summary>
+        /// TODO Figure out.
+        /// </summary>
+        private UnityEngine.Object motionGraphFile;
 
-        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
-        {
-            base.ReadProperty(propertyData, initFunctions);
-            
-            if (propertyData.Name == "partsFile")
-            {
-                PartsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
-            }
-            else if (propertyData.Name == "motionGraphFile")
-            {
-                MotionGraphFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
-            }
-            else if (propertyData.Name == "mtarFile")
-            {
-                MtarFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
-            }
-            else if (propertyData.Name == "extensionMtarFile")
-            {
-                ExtensionMtarFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
-            }
-            else if (propertyData.Name == "vfxFiles")
-            {
-                var dictionary = DataSetUtils.GetStringMap<FoxFilePtr>(propertyData);
+        /// <summary>
+        /// TODO Figure out.
+        /// </summary>
+        private UnityEngine.Object mtarFile;
 
-                VfxFilePaths = new StringStringMap();
-                foreach(var entry in dictionary)
-                {
-                    var path = ExtensionMtarFilePath = DataSetUtils.ExtractFilePath(entry.Value);
-                    VfxFilePaths.Add(entry.Key.ToString(), path);
-                }
-            }
-        }
+        /// <summary>
+        /// TODO Figure out.
+        /// </summary>
+        private UnityEngine.Object extensionMtarFile;
 
+        /// <summary>
+        /// TODO Figure out.
+        /// </summary>
+        private ObjectStringMap vfxFiles;
+
+        /// <summary>
+        /// TODO Figure out.
+        /// </summary>
+        private string partsFilePath;
+
+        /// <summary>
+        /// Path to <see cref="motionGraphFile"/>.
+        /// </summary>
+        private string motionGraphFilePath;
+
+        /// <summary>
+        /// Path to <see cref="mtarFilePath"/>.
+        /// </summary>
+        private string mtarFilePath;
+
+        /// <summary>
+        /// Path to <see cref="extensionMtarFile"/>.
+        /// </summary>
+        private string extensionMtarFilePath;
+
+        /// <summary>
+        /// Paths to <see cref="vfxFiles"/>.
+        /// </summary>
+        private StringStringMap vfxFilePaths;
+
+        /// <inheritdoc />
         public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
             base.OnAssetsImported(tryGetAsset);
 
-            tryGetAsset(PartsFilePath, out PartsFile);
-            tryGetAsset(MotionGraphFilePath, out MotionGraphFile);
-            tryGetAsset(MtarFilePath, out MtarFile);
-            tryGetAsset(ExtensionMtarFilePath, out ExtensionMtarFile);
+            tryGetAsset(this.partsFilePath, out this.partsFile);
+            tryGetAsset(this.motionGraphFilePath, out this.motionGraphFile);
+            tryGetAsset(this.mtarFilePath, out this.mtarFile);
+            tryGetAsset(this.extensionMtarFilePath, out this.extensionMtarFile);
 
-            VfxFiles = new ObjectStringMap();
-            foreach (var entry in VfxFilePaths)
+            this.vfxFiles = new ObjectStringMap();
+            foreach (var entry in this.vfxFilePaths)
             {
-                UnityEngine.Object asset = null;
+                UnityEngine.Object asset;
                 tryGetAsset(entry.Value, out asset);
-                VfxFiles.Add(entry.Key, asset);
+                this.vfxFiles.Add(entry.Key, asset);
+            }
+        }
+
+        /// <inheritdoc />
+        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
+        {
+            base.ReadProperty(propertyData, initFunctions);
+
+            switch (propertyData.Name)
+            {
+                case "partsFile":
+                    this.partsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    break;
+                case "motionGraphFile":
+                    this.motionGraphFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    break;
+                case "mtarFile":
+                    this.mtarFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    break;
+                case "extensionMtarFile":
+                    this.extensionMtarFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    break;
+                case "vfxFiles":
+                    var dictionary = DataSetUtils.GetStringMap<FoxFilePtr>(propertyData);
+
+                    this.vfxFilePaths = new StringStringMap();
+                    foreach (var entry in dictionary)
+                    {
+                        var path = this.extensionMtarFilePath = DataSetUtils.ExtractFilePath(entry.Value);
+                        this.vfxFilePaths.Add(entry.Key.ToString(), path);
+                    }
+
+                    break;
             }
         }
     }

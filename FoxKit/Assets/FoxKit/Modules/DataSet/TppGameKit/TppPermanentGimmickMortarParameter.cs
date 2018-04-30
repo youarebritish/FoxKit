@@ -1,53 +1,85 @@
-﻿using System;
-using FoxTool.Fox;
-using FoxTool.Fox.Types.Values;
-using FoxKit.Utils;
-
-namespace FoxKit.Modules.DataSet.TppGameKit
+﻿namespace FoxKit.Modules.DataSet.TppGameKit
 {
+    using System;
+
+    using FoxKit.Utils;
+
+    using FoxTool.Fox;
+    using FoxTool.Fox.Types.Values;
+
+    /// <inheritdoc />
+    /// <summary>
+    /// Mortar parameters for <see cref="TppPermanentGimmickData"/>.
+    /// </summary>
     [Serializable]
     public class TppPermanentGimmickMortarParameter : TppPermanentGimmickParameter
     {
-        public float RotationLimitLeftRight;
-        public float RotationLimitUp;
-        public float RotationLimitDown;
-        public UnityEngine.Object DefaultShellPartsFile;
-        public UnityEngine.Object FlareShellPartsFile;
+        /// <summary>
+        /// TODO: Figure out.
+        /// </summary>
+        private float rotationLimitLeftRight;
 
-        public string DefaultShellPartsFilePath;
-        public string FlareShellPartsFilePath;
+        /// <summary>
+        /// TODO: Figure out.
+        /// </summary>
+        private float rotationLimitUp;
 
+        /// <summary>
+        /// TODO: Figure out.
+        /// </summary>
+        private float rotationLimitDown;
+
+        /// <summary>
+        /// TODO: Figure out.
+        /// </summary>
+        private UnityEngine.Object defaultShellPartsFile;
+
+        /// <summary>
+        /// TODO: Figure out.
+        /// </summary>
+        private UnityEngine.Object flareShellPartsFile;
+
+        /// <summary>
+        /// Path to <see cref="defaultShellPartsFile"/>.
+        /// </summary>
+        private string defaultShellPartsFilePath;
+
+        /// <summary>
+        /// Path to <see cref="flareShellPartsFile"/>.
+        /// </summary>
+        private string flareShellPartsFilePath;
+
+        /// <inheritdoc />
+        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
+        {
+            base.OnAssetsImported(tryGetAsset);
+            tryGetAsset(this.defaultShellPartsFilePath, out this.defaultShellPartsFile);
+            tryGetAsset(this.flareShellPartsFilePath, out this.flareShellPartsFile);
+        }
+
+        /// <inheritdoc />
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
-            if (propertyData.Name == "rotationLimitLeftRight")
+            switch (propertyData.Name)
             {
-                RotationLimitLeftRight = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+                case "rotationLimitLeftRight":
+                    this.rotationLimitLeftRight = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+                    break;
+                case "rotationLimitUp":
+                    this.rotationLimitUp = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+                    break;
+                case "rotationLimitDown":
+                    this.rotationLimitDown = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+                    break;
+                case "defaultShellPartsFile":
+                    this.defaultShellPartsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    break;
+                case "flareShellPartsFile":
+                    this.flareShellPartsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    break;
             }
-            else if (propertyData.Name == "rotationLimitUp")
-            {
-                RotationLimitUp = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
-            }
-            else if (propertyData.Name == "rotationLimitDown")
-            {
-                RotationLimitDown = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
-            }
-            else if (propertyData.Name == "defaultShellPartsFile")
-            {
-                DefaultShellPartsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
-            }
-            else if (propertyData.Name == "flareShellPartsFile")
-            {
-                FlareShellPartsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
-            }
-        }
-
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
-        {
-            base.OnAssetsImported(tryGetAsset);
-            tryGetAsset(DefaultShellPartsFilePath, out DefaultShellPartsFile);
-            tryGetAsset(FlareShellPartsFilePath, out FlareShellPartsFile);
         }
     }
 }
