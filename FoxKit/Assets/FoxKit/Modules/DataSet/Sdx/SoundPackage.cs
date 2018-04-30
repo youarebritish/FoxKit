@@ -8,6 +8,8 @@
     using FoxTool.Fox;
     using FoxTool.Fox.Types.Values;
 
+    using UnityEngine;
+
     /// <inheritdoc />
     /// <summary>
     /// TODO: Figure out what this is.
@@ -18,17 +20,23 @@
         /// <summary>
         /// TODO: Figure out what this is.
         /// </summary>
+        [SerializeField]
         private UnityEngine.Object soundDataFile;
 
         /// <summary>
         /// TODO: Figure out what this is.
         /// </summary>
+        [SerializeField]
         private bool syncLoad;
 
         /// <summary>
         /// File path for <see cref="soundDataFile"/>.
         /// </summary>
+        [SerializeField]
         private string soundDataFilePath;
+
+        /// <inheritdoc />
+        protected override short ClassId => 96;
 
         /// <inheritdoc />
         public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)

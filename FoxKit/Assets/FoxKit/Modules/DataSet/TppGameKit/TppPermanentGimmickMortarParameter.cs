@@ -7,6 +7,8 @@
     using FoxTool.Fox;
     using FoxTool.Fox.Types.Values;
 
+    using UnityEngine;
+
     /// <inheritdoc />
     /// <summary>
     /// Mortar parameters for <see cref="TppPermanentGimmickData"/>.
@@ -17,37 +19,47 @@
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
+        [SerializeField]
         private float rotationLimitLeftRight;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
+        [SerializeField]
         private float rotationLimitUp;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
+        [SerializeField]
         private float rotationLimitDown;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
+        [SerializeField]
         private UnityEngine.Object defaultShellPartsFile;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
+        [SerializeField]
         private UnityEngine.Object flareShellPartsFile;
 
         /// <summary>
         /// Path to <see cref="defaultShellPartsFile"/>.
         /// </summary>
+        [SerializeField]
         private string defaultShellPartsFilePath;
 
         /// <summary>
         /// Path to <see cref="flareShellPartsFile"/>.
         /// </summary>
+        [SerializeField]
         private string flareShellPartsFilePath;
+
+        /// <inheritdoc />
+        protected override short ClassId => 88;
 
         /// <inheritdoc />
         public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)

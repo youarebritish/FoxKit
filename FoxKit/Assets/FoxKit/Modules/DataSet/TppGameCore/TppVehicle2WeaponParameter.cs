@@ -8,6 +8,8 @@
     using FoxTool.Fox;
     using FoxTool.Fox.Types.Values;
 
+    using UnityEngine;
+
     /// <inheritdoc />
     /// <summary>
     /// Parameters for a <see cref="TppVehicle2AttachmentData"/> Entity.
@@ -18,76 +20,91 @@
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
+        [SerializeField]
         private string attackId;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
+        [SerializeField]
         private string equipId;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
+        [SerializeField]
         private string bulletId;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
+        [SerializeField]
         private byte weaponImplTypeIndex;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
+        [SerializeField]
         private float fireInterval;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
+        [SerializeField]
         private UnityEngine.Object weaponFile;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
+        [SerializeField]
         private UnityEngine.Object ammoFile;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
+        [SerializeField]
         private string ownerCnpName = string.Empty;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
+        [SerializeField]
         private string weaponBoneName = string.Empty;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
+        [SerializeField]
         private string turretBoneName = string.Empty;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
+        [SerializeField]
         private float minPitch;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
+        [SerializeField]
         private float maxPitch = 1.5f;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
+        [SerializeField]
         private float rotSpeed = 0.5f;
 
         /// <summary>
         /// Path to <see cref="weaponFile"/>.
         /// </summary>
+        [SerializeField]
         private string weaponFilePath;
 
         /// <summary>
         /// Path to <see cref="ammoFile"/>.
         /// </summary>
+        [SerializeField]
         private string ammoFilePath;
 
         /// <inheritdoc />

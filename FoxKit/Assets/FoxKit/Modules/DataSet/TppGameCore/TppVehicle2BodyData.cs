@@ -9,6 +9,7 @@
     using FoxTool.Fox;
     using FoxTool.Fox.Types.Values;
 
+    using UnityEngine;
     using UnityEngine.Assertions;
 
     /// <inheritdoc />
@@ -21,46 +22,55 @@
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
+        [SerializeField]
         private byte vehicleTypeIndex;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
+        [SerializeField]
         private byte proxyVehicleTypeIndex;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
+        [SerializeField]
         private byte bodyImplTypeIndex;
 
         /// <summary>
         /// PartsFile defining the vehicle's model data.
         /// </summary>
+        [SerializeField]
         private UnityEngine.Object partsFile;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
+        [SerializeField]
         private byte bodyInstanceCount = 2;
 
         /// <summary>
         /// Weapon parameters.
         /// </summary>
+        [SerializeField]
         private List<TppVehicle2WeaponParameter> weaponParams = new List<TppVehicle2WeaponParameter>();
 
         /// <summary>
         /// Form variation files.
         /// </summary>
+        [SerializeField]
         private List<UnityEngine.Object> fovaFiles = new List<UnityEngine.Object>();
 
         /// <summary>
         /// Path to <see cref="partsFile"/>.
         /// </summary>
+        [SerializeField]
         private string partsFilePath;
 
         /// <summary>
         /// Paths to <see cref="fovaFiles"/>.
         /// </summary>
+        [SerializeField]
         private List<string> fovaFilesPaths;
 
         /// <inheritdoc />

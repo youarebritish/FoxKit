@@ -61,6 +61,9 @@
         private string locatorFilePath = string.Empty;
 
         /// <inheritdoc />
+        protected override short ClassId => 144;
+
+        /// <inheritdoc />
         public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
             base.OnAssetsImported(tryGetAsset);

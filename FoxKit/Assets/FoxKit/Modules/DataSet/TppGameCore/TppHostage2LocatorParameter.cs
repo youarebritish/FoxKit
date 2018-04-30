@@ -6,6 +6,8 @@
     using FoxTool.Fox;
     using FoxTool.Fox.Types.Values;
 
+    using UnityEngine;
+
     /// <inheritdoc />
     /// <summary>
     /// Parameters for a <see cref="GameObjectLocator"/> with the type TppHostage2.
@@ -15,7 +17,11 @@
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
+        [SerializeField]
         private string identifier;
+
+        /// <inheritdoc />
+        protected override short ClassId => 32;
 
         /// <inheritdoc />
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)

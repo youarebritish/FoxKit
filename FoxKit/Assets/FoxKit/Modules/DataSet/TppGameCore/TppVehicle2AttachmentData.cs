@@ -9,6 +9,7 @@
     using FoxTool.Fox;
     using FoxTool.Fox.Types.Values;
 
+    using UnityEngine;
     using UnityEngine.Assertions;
 
     /// <inheritdoc />
@@ -21,42 +22,53 @@
         /// <summary>
         /// TODO: Figure this out.
         /// </summary>
+        [SerializeField]
         private byte vehicleTypeCode;
 
         /// <summary>
         /// TODO: Figure this out.
         /// </summary>
+        [SerializeField]
         private byte attachmentImplTypeIndex;
 
         /// <summary>
         /// TODO: Figure this out.
         /// </summary>
+        [SerializeField]
         private UnityEngine.Object attachmentFile;
 
         /// <summary>
         /// TODO: Figure this out.
         /// </summary>
+        [SerializeField]
         private byte attachmentInstanceCount;
 
         /// <summary>
         /// TODO: Figure this out.
         /// </summary>
+        [SerializeField]
         private string bodyCnpName;
 
         /// <summary>
         /// TODO: Figure this out.
         /// </summary>
+        [SerializeField]
         private string attachmentBoneName;
 
         /// <summary>
         /// TODO: Figure this out.
         /// </summary>
+        [SerializeField]
         private List<TppVehicle2WeaponParameter> weaponParams = new List<TppVehicle2WeaponParameter>();
 
         /// <summary>
         /// Path to <see cref="attachmentFile"/>.
         /// </summary>
+        [SerializeField]
         private string attachmentFilePath;
+
+        /// <inheritdoc />
+        protected override short ClassId => 120;
 
         /// <inheritdoc />
         public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
