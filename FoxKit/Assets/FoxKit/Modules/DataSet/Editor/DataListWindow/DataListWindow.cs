@@ -1,14 +1,20 @@
 ﻿namespace FoxKit.Modules.DataSet.Editor.DataListWindow
 {
     using System.Collections.Generic;
+    using System.IO;
+
+    using FoxKit.Modules.DataSet.FoxCore;
 
     using UnityEditor;
+    using UnityEditor.Callbacks;
     using UnityEditor.IMGUI.Controls;
 
     using UnityEngine;
 
     public class DataListWindow : EditorWindow
     {
+        private static HashSet<DataSet> openDataSets = new HashSet<DataSet>();
+
         // SerializeField is used to ensure the view state is written to the window 
         // layout file. This means that the state survives restarting Unity as long as the window
         // is not closed. If the attribute is omitted then the state is still serialized/deserialized.
@@ -17,6 +23,25 @@
 
         //The TreeView is not serializable, so it should be reconstructed from the tree data.
         private SimpleTreeView mSimpleTreeView;
+
+        public static void OpenDataSet(DataSet dataSet)
+        {
+            Debug.Log("Opening " + dataSet.name);
+            openDataSets.Add(dataSet);
+        }
+
+        [OnOpenAsset]
+        static bool OnOpenedAsset(int instanceID, int line)
+        {
+            var asset = EditorUtility.InstanceIDToObject(instanceID);
+            var dataSet = asset as DataSet;
+            if (dataSet == null)
+            {
+                return false;
+            }
+            OpenDataSet(dataSet);
+            return true;
+        }
 
         void OnEnable()
         {
@@ -36,14 +61,9 @@
             EditorGUILayout.BeginHorizontal("Toolbar", GUILayout.ExpandWidth(true));
             if (GUILayout.Button("Load", "ToolbarButton", GUILayout.Width(45f)))
             {
-                Debug.Log("You click Clear button");
+                EditorGUIUtility.ShowObjectPicker<DataSet>(null, false, string.Empty, 0);
             }
             GUILayout.Space(5f);
-            /*
-            // Create toggles button.
-            collapsed = GUILayout.Toggle(collapsed, "Collapse", "ToolbarButton");
-            clearOnPlay = GUILayout.Toggle(clearOnPlay, "Clear on Play", "ToolbarButton");*/
-            // Push content to be what they should be. (ex. width)
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
 

@@ -5,6 +5,9 @@
     using FoxKit.Utils;
     using FoxKit.Utils.UI.StringMap;
 
+    using UnityEditor;
+    using UnityEditor.Callbacks;
+
     using UnityEngine;
 
     /// <inheritdoc />
