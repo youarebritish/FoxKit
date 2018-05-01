@@ -34,16 +34,12 @@ namespace FoxKit.Modules.DataSet.Importer
         public class EntityInitializeFunctions
         {
             public delegate Entity GetEntityFromAddressDelegate(ulong address);
-            public delegate void DeliverRequestedFileDelegate(UnityEngine.Object requestedFile);
-            public delegate void RequestFileDelegate(string requestedFilePath, int requestingAssetPath);
 
             public GetEntityFromAddressDelegate GetEntityFromAddress { get; }
-            public RequestFileDelegate RequestFile { get; }
 
-            public EntityInitializeFunctions(GetEntityFromAddressDelegate getEntityFromAddress, RequestFileDelegate requestFile)
+            public EntityInitializeFunctions(GetEntityFromAddressDelegate getEntityFromAddress)
             {
                 this.GetEntityFromAddress = getEntityFromAddress;
-                this.RequestFile = requestFile;
             }
         }
     }
