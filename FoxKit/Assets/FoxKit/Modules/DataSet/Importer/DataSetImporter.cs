@@ -126,14 +126,16 @@
                 {
                     continue;
                 }
-
-                ctx.AddObjectToAsset(entity.Key.name, entity.Key);
+                
                 if (string.IsNullOrEmpty(entity.Key.name))
                 {
+                    entity.Key.name = $"{entity.Value.ClassName}<{entity.Value.Address:X}>";
+                    ctx.AddObjectToAsset(entity.Key.name, entity.Key);
                     continue;
                 }
+                ctx.AddObjectToAsset(entity.Key.name, entity.Key);
 
-                dataSet.AddData(entity.Key.name, entity.Value.Address, entity.Key);
+                dataSet.AddData(entity.Key.name, entity.Value.Address, entity.Key as Data);
             }
         }
 

@@ -18,7 +18,7 @@
         /// The data list.
         /// </summary>
         [SerializeField]
-        private EntityStringMap dataList = new EntityStringMap();
+        private DataStringMap dataList = new DataStringMap();
 
         /// <summary>
         /// The address map.
@@ -38,7 +38,7 @@
         /// <returns>
         /// The <see cref="Entity"/> with the given name.
         /// </returns>
-        public Entity this[string key] => this.dataList[key];
+        public Data this[string key] => this.dataList[key];
 
         /// <summary>
         /// Gets an Entity by address. Only valid for Entities loaded from DataSet files.
@@ -74,7 +74,7 @@
         /// <param name="entity">
         /// The entity to add.
         /// </param>
-        public void AddData(string key, ulong address, Entity entity)
+        public void AddData(string key, ulong address, Data entity)
         {
             this.dataList.Add(key, entity);
             this.addressMap.Add(address, entity);
@@ -100,7 +100,7 @@
         /// <returns>
         /// All registered <see cref="Data"/> entries with their keys.
         /// </returns>
-        public EntityStringMap GetDataList()
+        public DataStringMap GetDataList()
         {
             return this.dataList;
         }
