@@ -13,7 +13,7 @@
 
     public class DataListWindow : EditorWindow
     {
-        private static HashSet<DataSet> openDataSets = new HashSet<DataSet>();
+        public static HashSet<DataSet> openDataSets = new HashSet<DataSet>();
 
         // SerializeField is used to ensure the view state is written to the window 
         // layout file. This means that the state survives restarting Unity as long as the window
@@ -67,14 +67,15 @@
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
 
-            this.mSimpleTreeView.OnGUI(new Rect(0, 17, position.width, position.height));
+            if (openDataSets.Count > 0)
+            {
+                this.mSimpleTreeView.OnGUI(new Rect(0, 17, position.width, position.height));
+            }
         }
-
-        // Add menu named "My Window" to the Window menu
+        
         [MenuItem("FoxKit/Data List Window")]
         static void ShowWindow()
         {
-            // Get existing open window or if none, make a new one:
             var window = GetWindow<DataListWindow>();
             window.titleContent = new GUIContent("Data List");
             window.Show();
@@ -83,6 +84,8 @@
 
     public class SimpleTreeView : TreeView
     {
+        private readonly HashSet<DataSet> dataSets = new HashSet<DataSet>();
+
         public SimpleTreeView(TreeViewState treeViewState)
             : base(treeViewState)
         {
@@ -90,33 +93,33 @@
             Reload();
         }
 
+        public void AddDataSet(DataSet dataSet)
+        {
+            this.dataSets.Add(dataSet);
+            this.Reload();
+        }
+
         protected override TreeViewItem BuildRoot()
         {
-            // BuildRoot is called every time Reload is called to ensure that TreeViewItems 
-            // are created from data. Here we create a fixed set of items. In a real world example,
-            // a data model should be passed into the TreeView and the items created from the model.
+            int index = 1;
+            foreach (var dataSet in DataListWindow.openDataSets)
+            {
+                var root = new TreeViewItem { id = 0, depth = -1, displayName = dataSet.name };
 
-            // This section illustrates that IDs should be unique. The root item is required to 
-            // have a depth of -1, and the rest of the items increment from that.
-            var root = new TreeViewItem { id = 0, depth = -1, displayName = "Root" };
-            var allItems = new List<TreeViewItem>
-                               {
-                                   new TreeViewItem {id = 1, depth = 0, displayName = "Animals"},
-                                   new TreeViewItem {id = 2, depth = 1, displayName = "Mammals"},
-                                   new TreeViewItem {id = 3, depth = 2, displayName = "Tiger"},
-                                   new TreeViewItem {id = 4, depth = 2, displayName = "Elephant"},
-                                   new TreeViewItem {id = 5, depth = 2, displayName = "Okapi"},
-                                   new TreeViewItem {id = 6, depth = 2, displayName = "Armadillo"},
-                                   new TreeViewItem {id = 7, depth = 1, displayName = "Reptiles"},
-                                   new TreeViewItem {id = 8, depth = 2, displayName = "Crocodile"},
-                                   new TreeViewItem {id = 9, depth = 2, displayName = "Lizard"},
-                               };
+                foreach (var data in dataSet.GetDataList())
+                {
+                    var child = new TreeViewItem { id = index, displayName = data.Key };
+                    child.AddChild(new TreeViewItem { id = index + 1, displayName = "test" });
+                    root.AddChild(child);
 
-            // Utility method that initializes the TreeViewItem.children and .parent for all items.
-            SetupParentsAndChildrenFromDepths(root, allItems);
+                    index += 2;
+                }
 
-            // Return root of the tree
-            return root;
+                SetupDepthsFromParentsAndChildren(root);
+                return root;
+            }
+
+            return new TreeViewItem { id = 0, depth = -1, displayName = "error" };
         }
     }
 }
