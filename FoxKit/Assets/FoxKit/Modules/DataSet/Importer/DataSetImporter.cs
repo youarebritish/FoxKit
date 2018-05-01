@@ -159,7 +159,7 @@
         /// </returns>
         private static EntityInitializeFunctions MakeEntityInitializeFunctions(Dictionary<Entity, FoxEntity> entities)
         {
-            return new EntityInitializeFunctions((address) => entities.FirstOrDefault(e => e.Value.Address == address).Key);
+            return new EntityInitializeFunctions(address => entities.FirstOrDefault(e => e.Value.Address == address).Key);
         }
 
         /// <summary>
