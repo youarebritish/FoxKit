@@ -1,41 +1,74 @@
 namespace FoxKit.Core
 {
+    using System;
     using UnityEngine;
     using UnityEditor;
+    using OneLine;
+    using RectEx;
 
     [CustomPropertyDrawer(typeof(StrCode32StringPair))]
-    public class StrCode32StringPairPropertyDrawer : PropertyDrawer
+    public class StrCode32StringPairPropertyDrawer : OneLinePropertyDrawer
     {
-        public string[] options = { "Hash", "String" };
+        private ComplexFieldDrawer directoryDrawer;
+        private RootDirectoryDrawer rootDirectoryDrawer;
+
+        private SlicesCache cache;
+        private InspectorUtil inspectorUtil;
+        private ArraysSizeObserver arraysSizeObserver;
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            EditorGUI.BeginProperty(position, GUIContent.none, property);
-        
-            var labelPosition = position;
+            directoryDrawer = new DirectoryDrawer(GetDrawer);
+            rootDirectoryDrawer = new RootDirectoryDrawer(GetDrawer);
 
-            EditorGUI.LabelField(position, property.name);
+            inspectorUtil = new InspectorUtil();
+            ResetCache();
+            Undo.undoRedoPerformed += ResetCache;
+            arraysSizeObserver = new ArraysSizeObserver();
 
-            var popupPosition = labelPosition;
-            popupPosition.width = Screen.width / 7;
-            popupPosition.x = position.x + Screen.width / 1.35f;
+            if (Event.current.type == EventType.Layout) { return; } // In [Expandable] popup it happens
+            if (inspectorUtil.IsOutOfScreen(position)) { return; } // Culling
 
-            property.FindPropertyRelative("_isUnhashed").boolValue = System.Convert.ToBoolean(EditorGUI.Popup(popupPosition, System.Convert.ToInt32(property.FindPropertyRelative("_isUnhashed").boolValue), options));
+            if (arraysSizeObserver.IsArraySizeChanged(property)) { ResetCache(); }
 
-            var fieldPosition = labelPosition;
-            fieldPosition.width = Screen.width / 2f;
-            fieldPosition.x = position.x + Screen.width / 3.5f;
+            rootDirectoryDrawer.RootDepth = property.depth;
+            directoryDrawer.RootDepth = property.depth;
+            position = rootDirectoryDrawer.DrawPrefixLabel(position, property);
 
-            if (property.FindPropertyRelative("_isUnhashed").boolValue == true)
+            int indentLevel = EditorGUI.indentLevel;
+            EditorGUI.indentLevel = 0;
+
+            position = DrawHeaderIfNeed(position, property);
+            DrawLine(position, property, (slice, rect) => slice.Draw(rect));
+
+            EditorGUI.indentLevel = indentLevel;
+        }
+
+        private void DrawLine(Rect position, SerializedProperty property, Action<Slice, Rect> draw)
+        {
+            var slices = cache[property];
+            var rects = position.Row(slices.Weights, slices.Widthes, 2);
+
+            rects[1].width = rects[2].width;
+
+            if (property.FindPropertyRelative("_isUnhashed").enumValueIndex == 0)
             {
-                EditorGUI.PropertyField(fieldPosition, property.FindPropertyRelative("_string"), GUIContent.none);
+                draw(slices[0], rects[0]);
             }
             else
             {
-                EditorGUI.PropertyField(fieldPosition, property.FindPropertyRelative("_hash"), GUIContent.none);
+                draw(slices[1], rects[0]);
             }
 
-            EditorGUI.EndProperty();
+            draw(slices[2], rects[1]);
         }
-    }
+
+        private void ResetCache()
+        {
+            if (cache == null || cache.IsDirty)
+            {
+                cache = new SlicesCache(rootDirectoryDrawer.AddSlices);
+            }
+        }
+	}
 }

@@ -7,7 +7,7 @@ using UnityEngine;
 using RectEx;
 
 namespace OneLine {
-    internal abstract class Drawer {
+    public abstract class Drawer {
 
         public abstract void AddSlices(SerializedProperty property, Slices slices);
 

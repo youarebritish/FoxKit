@@ -7,6 +7,8 @@ namespace FoxKit.Core
     {
         string String { get; }
         THash Hash { get; }
-        bool IsUnhashed { get; }
+        IsStringOrHash IsUnhashed { get; }
     }
+
+    public enum IsStringOrHash : uint { String, Hash }
 }

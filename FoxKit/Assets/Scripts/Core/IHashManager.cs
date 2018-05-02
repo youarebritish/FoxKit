@@ -49,7 +49,7 @@ namespace FoxKit.Core
             where TStringPair : IStringHashPair<UHash>
             where UHash : struct
         {
-            if (stringPair.IsUnhashed == true)
+            if (stringPair.IsUnhashed == 0)
             {
                 return hashManager.GetHash(stringPair.String);
             }

@@ -85,12 +85,12 @@
 
             modelFileHash = fileHashManager.GetHashFromStringPair(modelFileName);
 
-            if (frdvFileName.String == string.Empty && frdvFileName.IsUnhashed == true)
+            if (frdvFileName.String == string.Empty && frdvFileName.IsUnhashed == 0)
             {
                 frdvFileHash = fileHashManager.GetHashFromStringPair(frdvFileName);
             }
 
-            if (simFileName.String == string.Empty && simFileName.IsUnhashed == true)
+            if (simFileName.String == string.Empty && simFileName.IsUnhashed == 0)
             {
                 simFileHash = fileHashManager.GetHashFromStringPair(simFileName);
             }

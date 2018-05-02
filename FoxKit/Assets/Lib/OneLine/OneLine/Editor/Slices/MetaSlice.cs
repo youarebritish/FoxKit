@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 namespace OneLine {
-	internal class MetaSlice : Slice {
+    public class MetaSlice : Slice {
 		public int Before { get; set; }
 		public int After { get; set; }
 		public bool Expand { get; private set; }

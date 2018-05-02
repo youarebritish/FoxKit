@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 namespace OneLine {
-	internal class Slice {
+    public class Slice {
 
 		public float Weight { get; private set; }
 		public float Width { get; private set; }

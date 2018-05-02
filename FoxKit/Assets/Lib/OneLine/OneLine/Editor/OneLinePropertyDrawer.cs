@@ -37,11 +37,11 @@ namespace OneLine {
             arraysSizeObserver = new ArraysSizeObserver();
         }
 
-        private void OnDestroy(){
+        protected void OnDestroy(){
             Undo.undoRedoPerformed -= ResetCache;
         }
 
-        private Drawer GetDrawer(SerializedProperty property) {
+        protected Drawer GetDrawer(SerializedProperty property) {
             if (property.isArray && !(property.propertyType == SerializedPropertyType.String)) {
                 if (property.GetCustomAttribute<ArrayLengthAttribute>() == null) {
                     return dynamicArrayDrawer;
@@ -67,7 +67,7 @@ namespace OneLine {
             }
         }
 
-        private void InvalidateCache(SerializedProperty property){
+        protected void InvalidateCache(SerializedProperty property){
             cache.InvalidateLastUsedId();
         }
 
@@ -80,7 +80,7 @@ namespace OneLine {
             return lineHeight + headerHeight;
         }
 
-        private bool NeedDrawHeader(SerializedProperty property){
+        protected bool NeedDrawHeader(SerializedProperty property){
             if (Header == LineHeader.None){ return false; }
 
             bool notArray = ! property.IsArrayElement();
@@ -111,7 +111,7 @@ namespace OneLine {
             EditorGUI.indentLevel = indentLevel;
         }
 
-        private Rect DrawHeaderIfNeed(Rect position, SerializedProperty property){
+        protected Rect DrawHeaderIfNeed(Rect position, SerializedProperty property){
             if (! NeedDrawHeader(property)) return position;
 
             var rects = position.Column(2, 2);
@@ -137,7 +137,7 @@ namespace OneLine {
             }
         }
 
-        private Rect CalculateMetaSliceRect(MetaSlice slice, Rect wholeRect, Rect[] rects, int currentRect){
+        protected Rect CalculateMetaSliceRect(MetaSlice slice, Rect wholeRect, Rect[] rects, int currentRect){
             var from = rects[currentRect - slice.Before];
             var to = rects[currentRect + slice.After - 1];
             var result = from.Union(to);

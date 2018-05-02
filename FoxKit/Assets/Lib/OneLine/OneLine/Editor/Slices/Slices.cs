@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 namespace OneLine {
-	internal class Slices : IEnumerable<Slice> {
+    public class Slices : IEnumerable<Slice> {
 
 		private List<Slice> slices = new List<Slice>();
 		
