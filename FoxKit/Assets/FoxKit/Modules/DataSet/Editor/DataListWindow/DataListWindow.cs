@@ -1,7 +1,7 @@
 ﻿namespace FoxKit.Modules.DataSet.Editor.DataListWindow
 {
     using System.Collections.Generic;
-    using System.IO;
+    using System.Linq;
 
     using FoxKit.Modules.DataSet.FoxCore;
 
@@ -13,50 +13,98 @@
 
     public class DataListWindow : EditorWindow
     {
-        public static HashSet<DataSet> openDataSets = new HashSet<DataSet>();
-
-        // SerializeField is used to ensure the view state is written to the window 
-        // layout file. This means that the state survives restarting Unity as long as the window
-        // is not closed. If the attribute is omitted then the state is still serialized/deserialized.
+        /// <summary>
+        /// DataSets currently open in the window.
+        /// </summary>
         [SerializeField]
-        private TreeViewState mTreeViewState;
+        private readonly List<DataSet> openDataSets = new List<DataSet>();
 
-        //The TreeView is not serializable, so it should be reconstructed from the tree data.
-        private SimpleTreeView mSimpleTreeView;
+        /// <summary>
+        /// Serializable state of the TreeView.
+        /// </summary>
+        [SerializeField]
+        private TreeViewState treeViewState;
 
-        public static void OpenDataSet(DataSet dataSet)
-        {
-            Debug.Log("Opening " + dataSet.name);
-            openDataSets.Add(dataSet);
-        }
+        /// <summary>
+        /// Tree view widget.
+        /// </summary>
+        private SimpleTreeView simpleTreeView;
 
+        /// <summary>
+        /// Called when the user double clicks on an asset.
+        /// Checks if the asset is a DataSet, and if so, opens it in the Data List Window and gives it focus.
+        /// </summary>
+        /// <param name="instanceId">
+        /// The instance ID of the selected asset.
+        /// </param>
+        /// <returns>
+        /// True if the asset's opening was handled by the Data List Window, else false.
+        /// </returns>
         [OnOpenAsset]
-        static bool OnOpenedAsset(int instanceID, int line)
+        private static bool OnOpenedAsset(int instanceId, int line = -1)
         {
-            var asset = EditorUtility.InstanceIDToObject(instanceID);
-            var dataSet = asset as DataSet;
-            if (dataSet == null)
+            var asset = EditorUtility.InstanceIDToObject(instanceId) as DataSet;
+
+            if (asset == null)
             {
                 return false;
             }
-            OpenDataSet(dataSet);
+
+            var window = MakeOrGetWindow();
+            window.OpenDataSet(asset);
+            window.Focus();
             return true;
         }
 
-        void OnEnable()
+        /// <summary>
+        /// Gets the current Data List Window or makes a new instance if it's not currently open.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="DataListWindow"/>.
+        /// </returns>
+        [MenuItem("FoxKit/Data List Window")]
+        private static DataListWindow MakeOrGetWindow()
         {
-            // Check whether there is already a serialized view state (state 
-            // that survived assembly reloading)
-            if (this.mTreeViewState == null) this.mTreeViewState = new TreeViewState();
-
-            this.mSimpleTreeView = new SimpleTreeView(this.mTreeViewState);
+            var window = GetWindow<DataListWindow>();
+            window.titleContent = new GUIContent("Data List");
+            window.Show();
+            return window;
         }
 
-        private bool collapsed;
+        /// <summary>
+        /// When the window is loaded, initialize the TreeView.
+        /// </summary>
+        private void OnEnable()
+        {
+            if (this.treeViewState == null)
+            {
+                this.treeViewState = new TreeViewState();
+            }
 
-        private bool clearOnPlay;
+            this.simpleTreeView = new SimpleTreeView(this.treeViewState, this.openDataSets);
+        }
 
-        void OnGUI()
+        /// <summary>
+        /// Opens a DataSet in the Data List Window.
+        /// </summary>
+        /// <param name="dataSet">
+        /// The DataSet to open.
+        /// </param>
+        private void OpenDataSet(DataSet dataSet)
+        {
+            if (this.openDataSets.Contains(dataSet))
+            {
+                return;
+            }
+
+            this.openDataSets.Add(dataSet);
+            this.simpleTreeView.Reload();
+        }
+
+        /// <summary>
+        /// Update and draw the window's UI.
+        /// </summary>
+        private void OnGUI()
         {
             EditorGUILayout.BeginHorizontal("Toolbar", GUILayout.ExpandWidth(true));
             if (GUILayout.Button("Load", "ToolbarButton", GUILayout.Width(45f)))
@@ -67,59 +115,58 @@
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
 
-            if (openDataSets.Count > 0)
+            if (this.openDataSets.Count > 0)
             {
-                this.mSimpleTreeView.OnGUI(new Rect(0, 17, position.width, position.height));
+                this.simpleTreeView.OnGUI(new Rect(0, 17, position.width, position.height - 17));
             }
         }
-        
-        [MenuItem("FoxKit/Data List Window")]
-        static void ShowWindow()
-        {
-            var window = GetWindow<DataListWindow>();
-            window.titleContent = new GUIContent("Data List");
-            window.Show();
-        }
+
     }
 
     public class SimpleTreeView : TreeView
     {
-        private readonly HashSet<DataSet> dataSets = new HashSet<DataSet>();
+        private readonly Dictionary<int, Data> idToDataMap = new Dictionary<int, Data>();
 
-        public SimpleTreeView(TreeViewState treeViewState)
+        [SerializeField]
+        private readonly List<DataSet> openDataSets;
+
+        public SimpleTreeView(TreeViewState treeViewState, List<DataSet> openDataSets)
             : base(treeViewState)
         {
-            showAlternatingRowBackgrounds = true;
-            Reload();
+            this.showAlternatingRowBackgrounds = true;
+            this.openDataSets = openDataSets;
         }
-
-        public void AddDataSet(DataSet dataSet)
-        {
-            this.dataSets.Add(dataSet);
-            this.Reload();
-        }
-
+        
         protected override TreeViewItem BuildRoot()
         {
-            int index = 1;
-            foreach (var dataSet in DataListWindow.openDataSets)
+            this.idToDataMap.Clear();
+
+            var index = 1;
+            var root = new TreeViewItem { id = 0, depth = -1, displayName = "root" };
+            foreach (var dataSet in openDataSets)
             {
-                var root = new TreeViewItem { id = 0, depth = -1, displayName = dataSet.name };
+                var dataSetNode = new TreeViewItem { id = index, displayName = dataSet.name };
+                this.idToDataMap.Add(index, dataSet);
+                root.AddChild(dataSetNode);
+                index++;
 
                 foreach (var data in dataSet.GetDataList())
                 {
                     var child = new TreeViewItem { id = index, displayName = data.Key };
-                    child.AddChild(new TreeViewItem { id = index + 1, displayName = "test" });
-                    root.AddChild(child);
-
-                    index += 2;
+                    dataSetNode.AddChild(child);
+                    this.idToDataMap.Add(index, data.Value);
+                    index++;
                 }
 
-                SetupDepthsFromParentsAndChildren(root);
-                return root;
+                TreeView.SetupDepthsFromParentsAndChildren(root);
             }
 
-            return new TreeViewItem { id = 0, depth = -1, displayName = "error" };
+            return root;
+        }
+
+        protected override void SelectionChanged(IList<int> selectedIds)
+        {
+            Selection.objects = (from id in selectedIds select this.idToDataMap[id]).ToArray();
         }
     }
 }
