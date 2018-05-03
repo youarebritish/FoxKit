@@ -14,6 +14,8 @@
 
     public class DataListWindow : EditorWindow
     {
+        private const string PreferenceKeyOpenDataSets = "FoxKit.DataListWindow.OpenDataSets";
+
         /// <summary>
         /// DataSets currently open in the window.
         /// </summary>
@@ -60,6 +62,18 @@
             return true;
         }
 
+        private static void SaveOpenDataSets(IEnumerable<DataSet> openDataSets)
+        {
+            var openDataSetsPaths = from dataSet in openDataSets select AssetDatabase.GetAssetPath(dataSet);
+            PlayerPrefsX.SetStringArray(PreferenceKeyOpenDataSets, openDataSetsPaths.ToArray());
+        }
+
+        private static IEnumerable<DataSet> GetLastOpenDataSets()
+        {
+            var lastOpenDataSetsPaths = PlayerPrefsX.GetStringArray(PreferenceKeyOpenDataSets);
+            return from path in lastOpenDataSetsPaths select AssetDatabase.LoadAssetAtPath<DataSet>(path);
+        }
+
         /// <summary>
         /// Gets the current Data List Window or makes a new instance if it's not currently open.
         /// </summary>
@@ -90,9 +104,14 @@
                 this.openDataSets = new List<DataSet>();
             }
 
-
+            this.openDataSets = GetLastOpenDataSets().ToList();
             this.simpleTreeView = new SimpleTreeView(this.treeViewState, this.openDataSets);
             this.simpleTreeView.Reload();
+        }
+
+        private void OnDisable()
+        {
+            SaveOpenDataSets(this.openDataSets);
         }
 
         /// <summary>
