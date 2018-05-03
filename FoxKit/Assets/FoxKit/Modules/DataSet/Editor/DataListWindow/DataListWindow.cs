@@ -1,5 +1,6 @@
 ﻿namespace FoxKit.Modules.DataSet.Editor.DataListWindow
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -36,6 +37,9 @@
         /// </summary>
         /// <param name="instanceId">
         /// The instance ID of the selected asset.
+        /// </param>
+        /// <param name="line">
+        /// The line number.
         /// </param>
         /// <returns>
         /// True if the asset's opening was handled by the Data List Window, else false.
@@ -120,7 +124,54 @@
                 this.simpleTreeView.OnGUI(new Rect(0, 17, position.width, position.height - 17));
             }
         }
+    }
 
+    public static class DataListWindowItemContextMenuFactory
+    {
+        public delegate void ShowContextMenuDelegate();
+
+        public static ShowContextMenuDelegate Create()
+        {
+            return ShowContextMenu;
+        }
+
+        private static void ShowContextMenu()
+        {
+            var menu = new GenericMenu();
+            AddMenuItem(menu, "Set Active DataSet", OnSetActiveDataSet);
+
+            menu.AddSeparator(string.Empty);
+
+            AddMenuItem(menu, "Save DataSet", OnSetActiveDataSet);
+            AddMenuItem(menu, "Save DataSet As", OnSetActiveDataSet);
+            AddMenuItem(menu, "Save All", OnSetActiveDataSet);
+
+            menu.AddSeparator(string.Empty);
+
+            AddMenuItem(menu, "Unload DataSet", OnSetActiveDataSet);
+            AddMenuItem(menu, "Remove DataSet", OnSetActiveDataSet);
+
+            menu.AddSeparator(string.Empty);
+
+            AddMenuItem(menu, "Discard changes", OnSetActiveDataSet);
+
+            menu.AddSeparator(string.Empty);
+
+            AddMenuItem(menu, "Select DataSet Asset", OnSetActiveDataSet);
+            AddMenuItem(menu, "Add Entity", OnSetActiveDataSet);
+
+            menu.ShowAsContext();
+        }
+
+        private static void AddMenuItem(GenericMenu menu, string text, GenericMenu.MenuFunction callback)
+        {
+            menu.AddItem(new GUIContent(text), false, callback);
+        }
+
+        private static void OnSetActiveDataSet()
+        {
+            // TODO
+        }
     }
 
     public class SimpleTreeView : TreeView
@@ -128,8 +179,8 @@
         private readonly Dictionary<int, Data> idToDataMap = new Dictionary<int, Data>();
 
         [SerializeField]
-        private readonly List<DataSet> openDataSets;
-
+        private List<DataSet> openDataSets;
+        
         public SimpleTreeView(TreeViewState treeViewState, List<DataSet> openDataSets)
             : base(treeViewState)
         {
@@ -167,6 +218,11 @@
         protected override void SelectionChanged(IList<int> selectedIds)
         {
             Selection.objects = (from id in selectedIds select this.idToDataMap[id]).ToArray();
+        }
+
+        protected override void ContextClickedItem(int id)
+        {
+            DataListWindowItemContextMenuFactory.Create()();
         }
     }
 }
