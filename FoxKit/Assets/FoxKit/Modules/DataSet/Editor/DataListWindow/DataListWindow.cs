@@ -18,7 +18,7 @@
         /// DataSets currently open in the window.
         /// </summary>
         [SerializeField]
-        private readonly List<DataSet> openDataSets = new List<DataSet>();
+        private List<DataSet> openDataSets;
 
         /// <summary>
         /// Serializable state of the TreeView.
@@ -85,7 +85,14 @@
                 this.treeViewState = new TreeViewState();
             }
 
+            if (this.openDataSets == null)
+            {
+                this.openDataSets = new List<DataSet>();
+            }
+
+
             this.simpleTreeView = new SimpleTreeView(this.treeViewState, this.openDataSets);
+            this.simpleTreeView.Reload();
         }
 
         /// <summary>
@@ -115,6 +122,7 @@
             {
                 EditorGUIUtility.ShowObjectPicker<DataSet>(null, false, string.Empty, 0);
             }
+
             GUILayout.Space(5f);
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
