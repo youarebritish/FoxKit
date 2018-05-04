@@ -11,6 +11,7 @@
     using UnityEditor.IMGUI.Controls;
 
     using UnityEngine;
+    using UnityEngine.Assertions;
 
     public class DataListWindow : EditorWindow
     {
@@ -149,23 +150,20 @@
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
 
-            if (this.openDataSets.Count > 0)
-            {
-                this.simpleTreeView.OnGUI(new Rect(0, 17, this.position.width, this.position.height - 17));
-            }
+            this.simpleTreeView.OnGUI(new Rect(0, 17, this.position.width, this.position.height - 17));
         }
     }
 
     public static class DataListWindowItemContextMenuFactory
     {
-        public delegate void ShowContextMenuDelegate();
+        public delegate void ShowContextMenuDelegate(int id);
 
-        public static ShowContextMenuDelegate Create()
+        public static ShowContextMenuDelegate Create(GenericMenu.MenuFunction2 onRemoveDataSet)
         {
-            return ShowContextMenu;
+            return id => ShowContextMenu(id, onRemoveDataSet);
         }
 
-        private static void ShowContextMenu()
+        private static void ShowContextMenu(int id, GenericMenu.MenuFunction2 onRemoveDataSet)
         {
             var menu = new GenericMenu();
             AddMenuItem(menu, "Set Active DataSet", OnSetActiveDataSet);
@@ -179,7 +177,7 @@
             menu.AddSeparator(string.Empty);
 
             AddMenuItem(menu, "Unload DataSet", OnSetActiveDataSet);
-            AddMenuItem(menu, "Remove DataSet", OnSetActiveDataSet);
+            AddMenuItem(menu, "Remove DataSet", onRemoveDataSet, id);
 
             menu.AddSeparator(string.Empty);
 
@@ -198,9 +196,19 @@
             menu.AddItem(new GUIContent(text), false, callback);
         }
 
+        private static void AddMenuItem(GenericMenu menu, string text, GenericMenu.MenuFunction2 callback, object userData)
+        {
+            menu.AddItem(new GUIContent(text), false, callback, userData);
+        }
+
         private static void OnSetActiveDataSet()
         {
             // TODO
+        }
+
+        private static void OnRemoveDataSet()
+        {
+            
         }
     }
 
@@ -241,6 +249,12 @@
             // ID 0 is the root, not an actual Data reference.
             this.idToDataMap.Add(null);
 
+            if (this.openDataSets.Count == 0)
+            {
+                root.children = new List<TreeViewItem>();
+                return root;
+            }
+
             foreach (var dataSet in this.openDataSets)
             {
                 var dataSetNode = new TreeViewItem { id = index, displayName = dataSet.name };
@@ -272,8 +286,18 @@
         {
             if (this.dataSetTreeIds.Contains(id))
             {
-                DataListWindowItemContextMenuFactory.Create()();
+                DataListWindowItemContextMenuFactory.Create(this.RemoveDataSet)(id);
             }
+        }
+
+        private void RemoveDataSet(object id)
+        {
+            var dataSetId = (int)id;
+            var dataSet = this.idToDataMap[dataSetId] as DataSet;
+            Assert.IsNotNull(dataSet);
+
+            this.openDataSets.Remove(dataSet);
+            this.Reload();
         }
     }
 }
