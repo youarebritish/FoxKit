@@ -64,14 +64,17 @@
 
         private static void SaveOpenDataSets(IEnumerable<DataSet> openDataSets)
         {
-            var openDataSetsPaths = from dataSet in openDataSets select AssetDatabase.GetAssetPath(dataSet);
+            var openDataSetsPaths = from dataSet in openDataSets
+                                    select AssetDatabase.GetAssetPath(dataSet);
             PlayerPrefsX.SetStringArray(PreferenceKeyOpenDataSets, openDataSetsPaths.ToArray());
         }
 
         private static IEnumerable<DataSet> GetLastOpenDataSets()
         {
             var lastOpenDataSetsPaths = PlayerPrefsX.GetStringArray(PreferenceKeyOpenDataSets);
-            return from path in lastOpenDataSetsPaths select AssetDatabase.LoadAssetAtPath<DataSet>(path);
+            return from path in lastOpenDataSetsPaths
+                   where !string.IsNullOrEmpty(path)
+                   select AssetDatabase.LoadAssetAtPath<DataSet>(path);
         }
 
         /// <summary>
@@ -148,7 +151,7 @@
 
             if (this.openDataSets.Count > 0)
             {
-                this.simpleTreeView.OnGUI(new Rect(0, 17, position.width, position.height - 17));
+                this.simpleTreeView.OnGUI(new Rect(0, 17, this.position.width, this.position.height - 17));
             }
         }
     }
@@ -203,11 +206,24 @@
 
     public class SimpleTreeView : TreeView
     {
-        private readonly Dictionary<int, Data> idToDataMap = new Dictionary<int, Data>();
-
+        /// <summary>
+        /// The currently open DataSets.
+        /// </summary>
         [SerializeField]
         private List<DataSet> openDataSets;
-        
+
+        /// <summary>
+        /// The index of this list is the tree item ID of a given Data.
+        /// </summary>
+        [SerializeField]
+        private List<Data> idToDataMap = new List<Data>();
+
+        /// <summary>
+        /// Tree view IDs of DataSet entries.
+        /// </summary>
+        [SerializeField]
+        private List<int> dataSetTreeIds = new List<int>();
+
         public SimpleTreeView(TreeViewState treeViewState, List<DataSet> openDataSets)
             : base(treeViewState)
         {
@@ -221,10 +237,15 @@
 
             var index = 1;
             var root = new TreeViewItem { id = 0, depth = -1, displayName = "root" };
-            foreach (var dataSet in openDataSets)
+
+            // ID 0 is the root, not an actual Data reference.
+            this.idToDataMap.Add(null);
+
+            foreach (var dataSet in this.openDataSets)
             {
                 var dataSetNode = new TreeViewItem { id = index, displayName = dataSet.name };
-                this.idToDataMap.Add(index, dataSet);
+                this.idToDataMap.Add(dataSet);
+                this.dataSetTreeIds.Add(index);
                 root.AddChild(dataSetNode);
                 index++;
 
@@ -232,7 +253,7 @@
                 {
                     var child = new TreeViewItem { id = index, displayName = data.Key };
                     dataSetNode.AddChild(child);
-                    this.idToDataMap.Add(index, data.Value);
+                    this.idToDataMap.Add(data.Value);
                     index++;
                 }
 
@@ -249,7 +270,10 @@
 
         protected override void ContextClickedItem(int id)
         {
-            DataListWindowItemContextMenuFactory.Create()();
+            if (this.dataSetTreeIds.Contains(id))
+            {
+                DataListWindowItemContextMenuFactory.Create()();
+            }
         }
     }
 }
