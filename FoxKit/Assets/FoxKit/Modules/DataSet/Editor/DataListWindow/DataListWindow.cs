@@ -135,6 +135,7 @@
         {
             this.activeDataSet = dataSet;
             this.treeView.SetActiveDataSet(dataSet);
+            this.treeView.SelectDataSet(dataSet);
 
             if (this.openDataSets.Contains(dataSet))
             {
