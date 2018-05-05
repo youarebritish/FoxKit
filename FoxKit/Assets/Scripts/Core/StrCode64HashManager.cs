@@ -60,7 +60,7 @@
         /// <returns>The hash from string pair.</returns>
         public ulong GetHashFromStringPair(StrCode64StringPair stringPair)
         {
-            return this.GetHashFromStringPair(stringPair);
+            return this.RetrieveHashFromStringPair(stringPair);
         }
     }
 }

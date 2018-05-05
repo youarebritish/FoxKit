@@ -45,7 +45,7 @@ namespace FoxKit.Core
             }
         }
 
-        public static UHash GetHashFromStringPair<TStringPair, UHash>(this IHashManager<UHash> hashManager, TStringPair stringPair)
+        public static UHash RetrieveHashFromStringPair<TStringPair, UHash>(this IHashManager<UHash> hashManager, TStringPair stringPair)
             where TStringPair : IStringHashPair<UHash>
             where UHash : struct
         {

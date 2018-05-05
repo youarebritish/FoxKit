@@ -98,14 +98,34 @@
 
             modelFileHash = fileHashManager.GetHashFromStringPair(modelFileName);
 
-            if (frdvFileName.String == string.Empty && frdvFileName.IsUnhashed == 0)
+            if (frdvFileName.IsUnhashed == IsStringOrHash.String)
             {
-                frdvFileHash = fileHashManager.GetHashFromStringPair(frdvFileName);
+                if (frdvFileName.String != string.Empty)
+                {
+                    frdvFileHash = fileHashManager.GetHashFromStringPair(frdvFileName);
+                }
+            }
+            else if (frdvFileName.IsUnhashed == IsStringOrHash.Hash)
+            {
+                if (frdvFileName.Hash != 0)
+                {
+                    frdvFileHash = frdvFileName.Hash;
+                }
             }
 
-            if (simFileName.String == string.Empty && simFileName.IsUnhashed == 0)
+            if (simFileName.IsUnhashed == IsStringOrHash.String)
             {
-                simFileHash = fileHashManager.GetHashFromStringPair(simFileName);
+                if (simFileName.String != string.Empty)
+                {
+                    simFileHash = fileHashManager.GetHashFromStringPair(simFileName);
+                }
+            }
+            else if (simFileName.IsUnhashed == IsStringOrHash.Hash)
+            {
+                if (simFileName.Hash != 0)
+                {
+                    simFileHash = simFileName.Hash;
+                }
             }
 
             return new FoxLib.FormVariation.CNPAttachment(CNPHash, modelFileHash, frdvFileHash, simFileHash);

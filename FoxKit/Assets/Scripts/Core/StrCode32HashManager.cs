@@ -60,7 +60,7 @@
         /// <returns>The hash from string pair.</returns>s
         public uint GetHashFromStringPair(StrCode32StringPair stringPair)
         {
-            return this.GetHashFromStringPair(stringPair);
+            return this.RetrieveHashFromStringPair(stringPair);
         }
     }
 }
