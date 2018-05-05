@@ -10,7 +10,6 @@
     using UnityEditor.IMGUI.Controls;
 
     using UnityEngine;
-    using UnityEngine.Assertions;
 
     public class DataListWindow : EditorWindow
     {
@@ -34,7 +33,7 @@
         /// <summary>
         /// Tree view widget.
         /// </summary>
-        private SimpleTreeView simpleTreeView;
+        private DataListTreeView dataListTreeView;
 
         /// <summary>
         /// Called when the user double clicks on an asset.
@@ -111,8 +110,8 @@
             }
 
             this.openDataSets = GetLastOpenDataSets().ToList();
-            this.simpleTreeView = new SimpleTreeView(this.treeViewState, this.openDataSets);
-            this.simpleTreeView.Reload();
+            this.dataListTreeView = new DataListTreeView(this.treeViewState, this.openDataSets);
+            this.dataListTreeView.Reload();
         }
 
         private void OnDisable()
@@ -129,7 +128,7 @@
         private void OpenDataSet(DataSet dataSet)
         {
             this.activeDataSet = dataSet;
-            this.simpleTreeView.SetActiveDataSet(dataSet);
+            this.dataListTreeView.SetActiveDataSet(dataSet);
 
             if (this.openDataSets.Contains(dataSet))
             {
@@ -138,7 +137,7 @@
 
             dataSet.LoadAllEntities();
             this.openDataSets.Add(dataSet);
-            this.simpleTreeView.Reload();
+            this.dataListTreeView.Reload();
         }
 
         /// <summary>
@@ -156,206 +155,7 @@
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
 
-            this.simpleTreeView.OnGUI(new Rect(0, 17, this.position.width, this.position.height - 17));
-        }
-    }
-
-    public static class DataListWindowItemContextMenuFactory
-    {
-        public delegate void ShowContextMenuDelegate(int id);
-
-        public static ShowContextMenuDelegate Create(GenericMenu.MenuFunction2 onRemoveDataSet)
-        {
-            return id => ShowContextMenu(id, onRemoveDataSet);
-        }
-
-        private static void ShowContextMenu(int id, GenericMenu.MenuFunction2 onRemoveDataSet)
-        {
-            var menu = new GenericMenu();
-            AddMenuItem(menu, "Set Active DataSet", OnSetActiveDataSet);
-
-            menu.AddSeparator(string.Empty);
-
-            AddMenuItem(menu, "Save DataSet", OnSetActiveDataSet);
-            AddMenuItem(menu, "Save DataSet As", OnSetActiveDataSet);
-            AddMenuItem(menu, "Save All", OnSetActiveDataSet);
-
-            menu.AddSeparator(string.Empty);
-
-            AddMenuItem(menu, "Unload DataSet", OnSetActiveDataSet);
-            AddMenuItem(menu, "Remove DataSet", onRemoveDataSet, id);
-
-            menu.AddSeparator(string.Empty);
-
-            AddMenuItem(menu, "Discard changes", OnSetActiveDataSet);
-
-            menu.AddSeparator(string.Empty);
-
-            AddMenuItem(menu, "Select DataSet Asset", OnSetActiveDataSet);
-            AddMenuItem(menu, "Add Entity", OnSetActiveDataSet);
-
-            menu.ShowAsContext();
-        }
-
-        private static void AddMenuItem(GenericMenu menu, string text, GenericMenu.MenuFunction callback)
-        {
-            menu.AddItem(new GUIContent(text), false, callback);
-        }
-
-        private static void AddMenuItem(GenericMenu menu, string text, GenericMenu.MenuFunction2 callback, object userData)
-        {
-            menu.AddItem(new GUIContent(text), false, callback, userData);
-        }
-
-        private static void OnSetActiveDataSet()
-        {
-            // TODO
-        }
-    }
-
-    public class SimpleTreeView : TreeView
-    {
-        /// <summary>
-        /// Width of icons.
-        /// </summary>
-        private const float IconWidth = 16f;
-
-        /// <summary>
-        /// Amount of horizontal space between icons and labels.
-        /// </summary>
-        private const float SpaceBetweenIconAndText = 2f;
-
-        /// <summary>
-        /// The currently open DataSets.
-        /// </summary>
-        [SerializeField]
-        private List<DataSet> openDataSets;
-
-        /// <summary>
-        /// The index of this list is the tree item ID of a given Data.
-        /// </summary>
-        [SerializeField]
-        private List<Data> idToDataMap = new List<Data>();
-
-        /// <summary>
-        /// Tree view IDs of DataSet entries.
-        /// </summary>
-        [SerializeField]
-        private List<int> dataSetTreeIds = new List<int>();
-
-        [SerializeField]
-        private DataSet activeDataSet;
-
-        public SimpleTreeView(TreeViewState treeViewState, List<DataSet> openDataSets)
-            : base(treeViewState)
-        {
-            this.showAlternatingRowBackgrounds = true;
-            this.openDataSets = openDataSets;
-        }
-
-        public void SetActiveDataSet(DataSet dataSet)
-        {
-            this.activeDataSet = dataSet;
-        }
-
-        protected override void RowGUI(RowGUIArgs args)
-        {
-            var useBoldFont = this.activeDataSet == this.idToDataMap[args.item.id]; //this.dataSetTreeIds.Contains(args.item.id);
-            this.OnContentGUI(args.rowRect, args.item, args.label, args.selected, args.focused, useBoldFont);
-        }
-
-        protected override TreeViewItem BuildRoot()
-        {
-            this.idToDataMap.Clear();
-
-            var index = 1;
-            var root = new TreeViewItem { id = 0, depth = -1, displayName = "root" };
-
-            // ID 0 is the root, not an actual Data reference.
-            this.idToDataMap.Add(null);
-
-            if (this.openDataSets.Count == 0)
-            {
-                root.children = new List<TreeViewItem>();
-                return root;
-            }
-
-            foreach (var dataSet in this.openDataSets)
-            {
-                var dataSetNode = new TreeViewItem { id = index, displayName = dataSet.name };
-                this.idToDataMap.Add(dataSet);
-                this.dataSetTreeIds.Add(index);
-                root.AddChild(dataSetNode);
-                index++;
-
-                foreach (var data in dataSet.GetDataList())
-                {
-                    var child = new TreeViewItem { id = index, displayName = data.Key };
-                    dataSetNode.AddChild(child);
-                    this.idToDataMap.Add(data.Value);
-                    index++;
-                }
-
-                TreeView.SetupDepthsFromParentsAndChildren(root);
-            }
-
-            return root;
-        }
-
-        protected override void SelectionChanged(IList<int> selectedIds)
-        {
-            Selection.objects = (from id in selectedIds select this.idToDataMap[id]).ToArray();
-        }
-
-        protected override void ContextClickedItem(int id)
-        {
-            if (this.dataSetTreeIds.Contains(id))
-            {
-                DataListWindowItemContextMenuFactory.Create(this.RemoveDataSet)(id);
-            }
-        }
-
-        private void RemoveDataSet(object id)
-        {
-            var dataSetId = (int)id;
-            var dataSet = this.idToDataMap[dataSetId] as DataSet;
-            Assert.IsNotNull(dataSet);
-
-            this.openDataSets.Remove(dataSet);
-            this.Reload();
-        }
-
-        private void OnContentGUI(Rect rect, TreeViewItem item, string label, bool selected, bool focused, bool useBoldFont)
-        {
-            if (Event.current.rawType != EventType.Repaint)
-            {
-                return;
-            }
-            
-            var indent = this.GetContentIndent(item) + this.extraSpaceBeforeIconAndLabel;
-            rect.xMin += indent;
-
-            var lineStyle = useBoldFont ? DefaultStyles.boldLabel : DefaultStyles.label;
-
-            // Draw icon.
-            var iconRect = rect;
-            iconRect.width = IconWidth;
-
-            var icon = item.icon;
-            if (icon != null)
-            {
-                GUI.DrawTexture(iconRect, icon, ScaleMode.ScaleToFit);
-            }
-
-            // Draw text.
-            lineStyle.padding.left = 0;
-
-            if (icon != null)
-            {
-                rect.xMin += IconWidth + SpaceBetweenIconAndText;
-            }
-
-            lineStyle.Draw(rect, label, false, false, selected, focused);
+            this.dataListTreeView.OnGUI(new Rect(0, 17, this.position.width, this.position.height - 17));
         }
     }
 }
