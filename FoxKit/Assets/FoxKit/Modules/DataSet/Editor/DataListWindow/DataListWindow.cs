@@ -1,6 +1,5 @@
 ﻿namespace FoxKit.Modules.DataSet.Editor.DataListWindow
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -205,11 +204,6 @@
         {
             // TODO
         }
-
-        private static void OnRemoveDataSet()
-        {
-            
-        }
     }
 
     public class SimpleTreeView : TreeView
@@ -232,13 +226,29 @@
         [SerializeField]
         private List<int> dataSetTreeIds = new List<int>();
 
+        /// <summary>
+        /// Width of icons.
+        /// </summary>
+        private const float IconWidth = 16f;
+
+        /// <summary>
+        /// Amount of horizontal space between icons and labels.
+        /// </summary>
+        private const float SpaceBetweenIconAndText = 2f;
+
         public SimpleTreeView(TreeViewState treeViewState, List<DataSet> openDataSets)
             : base(treeViewState)
         {
             this.showAlternatingRowBackgrounds = true;
             this.openDataSets = openDataSets;
         }
-        
+
+        protected override void RowGUI(RowGUIArgs args)
+        {
+            var useBoldFont = this.dataSetTreeIds.Contains(args.item.id);
+            this.OnContentGUI(args.rowRect, args.item, args.label, args.selected, args.focused, useBoldFont);
+        }
+
         protected override TreeViewItem BuildRoot()
         {
             this.idToDataMap.Clear();
@@ -298,6 +308,39 @@
 
             this.openDataSets.Remove(dataSet);
             this.Reload();
+        }
+
+        private void OnContentGUI(Rect rect, TreeViewItem item, string label, bool selected, bool focused, bool useBoldFont)
+        {
+            if (Event.current.rawType != EventType.Repaint)
+            {
+                return;
+            }
+            
+            var indent = this.GetContentIndent(item) + this.extraSpaceBeforeIconAndLabel;
+            rect.xMin += indent;
+
+            var lineStyle = useBoldFont ? DefaultStyles.boldLabel : DefaultStyles.label;
+
+            // Draw icon.
+            var iconRect = rect;
+            iconRect.width = IconWidth;
+
+            var icon = item.icon;
+            if (icon != null)
+            {
+                GUI.DrawTexture(iconRect, icon, ScaleMode.ScaleToFit);
+            }
+
+            // Draw text.
+            lineStyle.padding.left = 0;
+
+            if (icon != null)
+            {
+                rect.xMin += IconWidth + SpaceBetweenIconAndText;
+            }
+
+            lineStyle.Draw(rect, label, false, false, selected, focused);
         }
     }
 }
