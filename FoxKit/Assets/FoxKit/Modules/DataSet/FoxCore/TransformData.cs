@@ -98,10 +98,17 @@
             this.CreateSceneProxy();
         }
 
+        /// <inheritdoc />
         public override void OnUnloaded()
         {
             base.OnUnloaded();
             this.DestroySceneProxy();
+        }
+
+        /// <inheritdoc />
+        public override IEnumerable<Entity> GetChildren()
+        {
+            return this.children;
         }
 
         protected virtual void CreateSceneProxy()

@@ -127,7 +127,7 @@
         public void SelectDataSet(DataSet dataSet)
         {
             var id = this.idToDataMap.IndexOf(dataSet);
-            this.SetSelection(new List<int> {id});
+            this.SetSelection(new List<int> { id });
         }
 
         private void RemoveDataSet(object id)

@@ -1,6 +1,7 @@
 ﻿namespace FoxKit.Modules.DataSet.FoxCore
 {
     using System;
+    using System.Collections.Generic;
 
     using FoxTool.Fox;
 
@@ -75,6 +76,17 @@
         /// </summary>
         public virtual void OnUnloaded()
         {
+        }
+
+        /// <summary>
+        /// Gets the children of this Entity, if any.
+        /// </summary>
+        /// <returns>
+        /// The Entity's children.
+        /// </returns>
+        public virtual IEnumerable<Entity> GetChildren()
+        {
+            return new List<Entity>(0);
         }
 
         /// <summary>
