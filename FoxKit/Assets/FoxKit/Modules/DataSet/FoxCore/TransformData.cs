@@ -112,7 +112,7 @@
 
         protected virtual void DestroySceneProxy()
         {
-            Destroy(this.sceneProxyGameObject);
+            GameObject.DestroyImmediate(this.sceneProxyGameObject);
             this.sceneProxyGameObject = null;
         }
 

@@ -58,7 +58,7 @@
 
         protected override void RowGUI(RowGUIArgs args)
         {
-            var useBoldFont = this.activeDataSet == this.idToDataMap[args.item.id]; //this.dataSetTreeIds.Contains(args.item.id);
+            var useBoldFont = this.activeDataSet == this.idToDataMap[args.item.id];
             this.OnContentGUI(args.rowRect, args.item, args.label, args.selected, args.focused, useBoldFont);
         }
 
@@ -107,10 +107,21 @@
 
         protected override void ContextClickedItem(int id)
         {
-            if (this.dataSetTreeIds.Contains(id))
+            // For the time being, we only care about right clicking on the DataSet, not its children.
+            // So, don't open the menu if the user didn't right click on a DataSet.
+            if (!this.dataSetTreeIds.Contains(id))
             {
-                DataListWindowItemContextMenuFactory.Create(this.RemoveDataSet)(id);
+                return;
             }
+
+            var dataSet = this.idToDataMap[id] as DataSet;
+            DataListWindow.GetInstance().MakeShowItemContextMenuDelegate()(dataSet);
+        }
+
+        public void RemoveDataSet(DataSet dataSet)
+        {
+            var id = this.idToDataMap.IndexOf(dataSet);
+            this.RemoveDataSet(id);
         }
 
         private void RemoveDataSet(object id)
@@ -118,8 +129,7 @@
             var dataSetId = (int)id;
             var dataSet = this.idToDataMap[dataSetId] as DataSet;
             Assert.IsNotNull(dataSet);
-
-            this.openDataSets.Remove(dataSet);
+            
             this.Reload();
         }
 

@@ -1,19 +1,21 @@
 ﻿namespace FoxKit.Modules.DataSet.Editor.DataListWindow
 {
+    using FoxKit.Modules.DataSet.FoxCore;
+
     using UnityEditor;
 
     using UnityEngine;
     
     public static class DataListWindowItemContextMenuFactory
     {
-        public delegate void ShowContextMenuDelegate(int id);
+        public delegate void ShowItemContextMenuDelegate(DataSet dataSet);
 
-        public static ShowContextMenuDelegate Create(GenericMenu.MenuFunction2 onRemoveDataSet)
+        public static ShowItemContextMenuDelegate Create(GenericMenu.MenuFunction2 onRemoveDataSet)
         {
-            return id => ShowContextMenu(id, onRemoveDataSet);
+            return dataSet => ShowContextMenu(dataSet, onRemoveDataSet);
         }
 
-        private static void ShowContextMenu(int id, GenericMenu.MenuFunction2 onRemoveDataSet)
+        private static void ShowContextMenu(DataSet dataSet, GenericMenu.MenuFunction2 onRemoveDataSet)
         {
             var menu = new GenericMenu();
             AddMenuItem(menu, "Set Active DataSet", OnSetActiveDataSet);
@@ -27,7 +29,7 @@
             menu.AddSeparator(string.Empty);
 
             AddMenuItem(menu, "Unload DataSet", OnSetActiveDataSet);
-            AddMenuItem(menu, "Remove DataSet", onRemoveDataSet, id);
+            AddMenuItem(menu, "Remove DataSet", onRemoveDataSet, dataSet);
 
             menu.AddSeparator(string.Empty);
 

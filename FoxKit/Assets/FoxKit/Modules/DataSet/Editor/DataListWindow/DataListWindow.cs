@@ -10,6 +10,7 @@
     using UnityEditor.IMGUI.Controls;
 
     using UnityEngine;
+    using UnityEngine.Assertions;
 
     public class DataListWindow : EditorWindow
     {
@@ -33,7 +34,12 @@
         /// <summary>
         /// Tree view widget.
         /// </summary>
-        private DataListTreeView dataListTreeView;
+        private DataListTreeView treeView;
+
+        public DataListWindowItemContextMenuFactory.ShowItemContextMenuDelegate MakeShowItemContextMenuDelegate()
+        {
+            return DataListWindowItemContextMenuFactory.Create(this.UnloadDataSet);
+        }
 
         /// <summary>
         /// Called when the user double clicks on an asset.
@@ -58,7 +64,7 @@
                 return false;
             }
             
-            var window = MakeOrGetWindow();
+            var window = GetInstance();
             window.OpenDataSet(asset);
             window.Focus();
             return true;
@@ -86,7 +92,7 @@
         /// The <see cref="DataListWindow"/>.
         /// </returns>
         [MenuItem("FoxKit/Data List Window")]
-        private static DataListWindow MakeOrGetWindow()
+        public static DataListWindow GetInstance()
         {
             var window = GetWindow<DataListWindow>();
             window.titleContent = new GUIContent("Data List");
@@ -110,8 +116,8 @@
             }
 
             this.openDataSets = GetLastOpenDataSets().ToList();
-            this.dataListTreeView = new DataListTreeView(this.treeViewState, this.openDataSets);
-            this.dataListTreeView.Reload();
+            this.treeView = new DataListTreeView(this.treeViewState, this.openDataSets);
+            this.treeView.Reload();
         }
 
         private void OnDisable()
@@ -128,7 +134,7 @@
         private void OpenDataSet(DataSet dataSet)
         {
             this.activeDataSet = dataSet;
-            this.dataListTreeView.SetActiveDataSet(dataSet);
+            this.treeView.SetActiveDataSet(dataSet);
 
             if (this.openDataSets.Contains(dataSet))
             {
@@ -137,7 +143,31 @@
 
             dataSet.LoadAllEntities();
             this.openDataSets.Add(dataSet);
-            this.dataListTreeView.Reload();
+            this.treeView.Reload();
+        }
+
+        private void UnloadDataSet(object userData)
+        {
+            var dataSet = userData as DataSet;
+            Assert.IsNotNull(dataSet);
+
+            dataSet.UnloadAllEntities();
+
+            if (this.activeDataSet == dataSet)
+            {
+                if (this.openDataSets.Count > 1)
+                {
+                    this.activeDataSet = this.openDataSets[0];
+                }
+                else
+                {
+                    this.activeDataSet = null;
+                }
+            }
+
+            this.openDataSets.Remove(dataSet);
+            this.treeView.RemoveDataSet(dataSet);
+            this.treeView.Reload();
         }
 
         /// <summary>
@@ -155,7 +185,7 @@
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
 
-            this.dataListTreeView.OnGUI(new Rect(0, 17, this.position.width, this.position.height - 17));
+            this.treeView.OnGUI(new Rect(0, 17, this.position.width, this.position.height - 17));
         }
     }
 }
