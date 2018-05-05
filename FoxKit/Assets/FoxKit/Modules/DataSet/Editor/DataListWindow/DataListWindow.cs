@@ -38,7 +38,7 @@
 
         public DataListWindowItemContextMenuFactory.ShowItemContextMenuDelegate MakeShowItemContextMenuDelegate()
         {
-            return DataListWindowItemContextMenuFactory.Create(this.UnloadDataSet);
+            return DataListWindowItemContextMenuFactory.Create(this.RemoveDataSet);
         }
 
         /// <summary>
@@ -146,7 +146,7 @@
             this.treeView.Reload();
         }
 
-        private void UnloadDataSet(object userData)
+        private void RemoveDataSet(object userData)
         {
             var dataSet = userData as DataSet;
             Assert.IsNotNull(dataSet);
@@ -158,6 +158,7 @@
                 if (this.openDataSets.Count > 1)
                 {
                     this.activeDataSet = this.openDataSets[0];
+                    this.treeView.SetActiveDataSet(this.activeDataSet);
                 }
                 else
                 {
