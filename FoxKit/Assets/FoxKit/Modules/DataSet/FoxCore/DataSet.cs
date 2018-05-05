@@ -5,9 +5,6 @@
     using FoxKit.Utils;
     using FoxKit.Utils.UI.StringMap;
 
-    using UnityEditor;
-    using UnityEditor.Callbacks;
-
     using UnityEngine;
 
     /// <inheritdoc />
@@ -53,6 +50,28 @@
         /// The <see cref="Entity"/> with the given address.
         /// </returns>
         public Entity this[ulong address] => this.addressMap[address];
+
+        /// <summary>
+        /// Loads all owned Entities.
+        /// </summary>
+        public void LoadAllEntities()
+        {
+            foreach (var data in this.dataList.Values)
+            {
+                data.OnLoaded();
+            }
+        }
+
+        /// <summary>
+        /// Unloads all owned Entities.
+        /// </summary>
+        public void UnloadAllEntities()
+        {
+            foreach (var data in this.dataList.Values)
+            {
+                data.OnUnloaded();
+            }
+        }
 
         /// <inheritdoc />
         public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)

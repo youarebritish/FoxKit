@@ -64,6 +64,20 @@
         }
 
         /// <summary>
+        /// Invoked when the containing DataSet is loaded.
+        /// </summary>
+        public virtual void OnLoaded()
+        {
+        }
+
+        /// <summary>
+        /// Invoked when the containing DataSet is unloaded.
+        /// </summary>
+        public virtual void OnUnloaded()
+        {
+        }
+
+        /// <summary>
         /// Initializes a property from data loaded from a DataSet file.
         /// </summary>
         /// <param name="propertyData">

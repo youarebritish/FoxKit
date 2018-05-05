@@ -28,6 +28,9 @@
         [SerializeField]
         private TreeViewState treeViewState;
 
+        [SerializeField]
+        private DataSet activeDataSet;
+
         /// <summary>
         /// Tree view widget.
         /// </summary>
@@ -55,7 +58,7 @@
             {
                 return false;
             }
-
+            
             var window = MakeOrGetWindow();
             window.OpenDataSet(asset);
             window.Focus();
@@ -125,11 +128,15 @@
         /// </param>
         private void OpenDataSet(DataSet dataSet)
         {
+            this.activeDataSet = dataSet;
+            this.simpleTreeView.SetActiveDataSet(dataSet);
+
             if (this.openDataSets.Contains(dataSet))
             {
                 return;
             }
 
+            dataSet.LoadAllEntities();
             this.openDataSets.Add(dataSet);
             this.simpleTreeView.Reload();
         }
@@ -209,6 +216,16 @@
     public class SimpleTreeView : TreeView
     {
         /// <summary>
+        /// Width of icons.
+        /// </summary>
+        private const float IconWidth = 16f;
+
+        /// <summary>
+        /// Amount of horizontal space between icons and labels.
+        /// </summary>
+        private const float SpaceBetweenIconAndText = 2f;
+
+        /// <summary>
         /// The currently open DataSets.
         /// </summary>
         [SerializeField]
@@ -226,15 +243,8 @@
         [SerializeField]
         private List<int> dataSetTreeIds = new List<int>();
 
-        /// <summary>
-        /// Width of icons.
-        /// </summary>
-        private const float IconWidth = 16f;
-
-        /// <summary>
-        /// Amount of horizontal space between icons and labels.
-        /// </summary>
-        private const float SpaceBetweenIconAndText = 2f;
+        [SerializeField]
+        private DataSet activeDataSet;
 
         public SimpleTreeView(TreeViewState treeViewState, List<DataSet> openDataSets)
             : base(treeViewState)
@@ -243,9 +253,14 @@
             this.openDataSets = openDataSets;
         }
 
+        public void SetActiveDataSet(DataSet dataSet)
+        {
+            this.activeDataSet = dataSet;
+        }
+
         protected override void RowGUI(RowGUIArgs args)
         {
-            var useBoldFont = this.dataSetTreeIds.Contains(args.item.id);
+            var useBoldFont = this.activeDataSet == this.idToDataMap[args.item.id]; //this.dataSetTreeIds.Contains(args.item.id);
             this.OnContentGUI(args.rowRect, args.item, args.label, args.selected, args.focused, useBoldFont);
         }
 

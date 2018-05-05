@@ -34,6 +34,11 @@
         [SerializeField]
         private Vector3 scale;
 
+        /// <summary>
+        /// The translation.
+        /// </summary>
+        public Vector3 Translation => this.translation;
+
         /// <inheritdoc />
         protected override short ClassId => 80;
 

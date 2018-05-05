@@ -88,6 +88,34 @@
         [SerializeField]
         private bool selection = true;
 
+        [SerializeField]
+        private GameObject sceneProxyGameObject;
+
+        /// <inheritdoc />
+        public override void OnLoaded()
+        {
+            base.OnLoaded();
+            this.CreateSceneProxy();
+        }
+
+        public override void OnUnloaded()
+        {
+            base.OnUnloaded();
+            this.DestroySceneProxy();
+        }
+
+        protected virtual void CreateSceneProxy()
+        {
+            this.sceneProxyGameObject = new GameObject { name = this.Name };
+            this.sceneProxyGameObject.transform.position = this.transform.Translation;
+        }
+
+        protected virtual void DestroySceneProxy()
+        {
+            Destroy(this.sceneProxyGameObject);
+            this.sceneProxyGameObject = null;
+        }
+
         /// <inheritdoc />
         protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
