@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using FoxTool.Fox;
 
@@ -86,7 +87,7 @@
         /// </returns>
         public virtual IEnumerable<Entity> GetChildren()
         {
-            return new List<Entity>(0);
+            return new List<Entity>();
         }
 
         /// <summary>

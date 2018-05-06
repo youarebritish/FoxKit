@@ -77,7 +77,7 @@
                 root.children = new List<TreeViewItem>();
                 return root;
             }
-
+            
             foreach (var dataSet in this.openDataSets)
             {
                 var dataSetNode = new TreeViewItem { id = index, displayName = dataSet.name };
@@ -86,16 +86,11 @@
                 root.AddChild(dataSetNode);
                 index++;
 
-                foreach (var data in dataSet.GetDataList())
-                {
-                    var child = new TreeViewItem { id = index, displayName = data.Key };
-                    dataSetNode.AddChild(child);
-                    this.idToDataMap.Add(data.Value);
-                    index++;
-                }
-
-                TreeView.SetupDepthsFromParentsAndChildren(root);
+                index = dataSet.GetChildren()
+                    .Aggregate(index, (current, data) => this.AddEntity(data as Data, dataSetNode, current));
             }
+
+            TreeView.SetupDepthsFromParentsAndChildren(root);
 
             return root;
         }
@@ -128,6 +123,22 @@
         {
             var id = this.idToDataMap.IndexOf(dataSet);
             this.SetSelection(new List<int> { id });
+        }
+
+        private int AddEntity(Data entity, TreeViewItem parent, int id)
+        {
+            if (entity == null || this.idToDataMap.Contains(entity))
+            {
+                return id;
+            }
+            
+            var node = new TreeViewItem { id = id, displayName = entity.Name };
+            this.idToDataMap.Add(entity);
+            parent.AddChild(node);
+            id++;
+
+            return entity.GetChildren()
+                .Aggregate(id, (current, child) => this.AddEntity(child as Data, node, current));
         }
 
         private void RemoveDataSet(object id)

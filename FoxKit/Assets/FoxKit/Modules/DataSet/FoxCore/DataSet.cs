@@ -1,6 +1,7 @@
 ﻿namespace FoxKit.Modules.DataSet.FoxCore
 {
     using System;
+    using System.Collections.Generic;
 
     using FoxKit.Utils;
     using FoxKit.Utils.UI.StringMap;
@@ -82,6 +83,12 @@
             {
                 data.OnAssetsImported(tryGetAsset);
             }
+        }
+
+        /// <inheritdoc />
+        public override IEnumerable<Entity> GetChildren()
+        {
+            return this.GetDataList().Values;
         }
 
         /// <summary>
