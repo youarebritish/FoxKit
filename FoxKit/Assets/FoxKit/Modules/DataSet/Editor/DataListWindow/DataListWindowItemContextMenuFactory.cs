@@ -10,15 +10,15 @@
     {
         public delegate void ShowItemContextMenuDelegate(DataSet dataSet);
 
-        public static ShowItemContextMenuDelegate Create(GenericMenu.MenuFunction2 onRemoveDataSet)
+        public static ShowItemContextMenuDelegate Create(GenericMenu.MenuFunction2 setActiveDataSet, GenericMenu.MenuFunction2 onRemoveDataSet)
         {
-            return dataSet => ShowContextMenu(dataSet, onRemoveDataSet);
+            return dataSet => ShowContextMenu(dataSet, setActiveDataSet, onRemoveDataSet);
         }
 
-        private static void ShowContextMenu(DataSet dataSet, GenericMenu.MenuFunction2 onRemoveDataSet)
+        private static void ShowContextMenu(DataSet dataSet, GenericMenu.MenuFunction2 setActiveDataSet, GenericMenu.MenuFunction2 onRemoveDataSet)
         {
             var menu = new GenericMenu();
-            AddMenuItem(menu, "Set Active DataSet", OnSetActiveDataSet);
+            AddMenuItem(menu, "Set Active DataSet", setActiveDataSet, dataSet);
 
             menu.AddSeparator(string.Empty);
 

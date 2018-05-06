@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.CompilerServices;
 
     using FoxKit.Modules.DataSet.FoxCore;
 
@@ -38,7 +39,7 @@
 
         public DataListWindowItemContextMenuFactory.ShowItemContextMenuDelegate MakeShowItemContextMenuDelegate()
         {
-            return DataListWindowItemContextMenuFactory.Create(this.RemoveDataSet);
+            return DataListWindowItemContextMenuFactory.Create(this.SetActiveDataSet, this.RemoveDataSet);
         }
 
         /// <summary>
@@ -84,7 +85,7 @@
                    where !string.IsNullOrEmpty(path)
                    select AssetDatabase.LoadAssetAtPath<DataSet>(path);
         }
-
+        
         /// <summary>
         /// Gets the current Data List Window or makes a new instance if it's not currently open.
         /// </summary>
@@ -145,6 +146,15 @@
             dataSet.LoadAllEntities();
             this.openDataSets.Add(dataSet);
             this.treeView.Reload();
+        }
+        
+        private void SetActiveDataSet(object userData)
+        {
+            var dataSet = userData as DataSet;
+            Assert.IsNotNull(dataSet);
+
+            this.activeDataSet = dataSet;
+            this.treeView.SetActiveDataSet(dataSet);
         }
 
         private void RemoveDataSet(object userData)
