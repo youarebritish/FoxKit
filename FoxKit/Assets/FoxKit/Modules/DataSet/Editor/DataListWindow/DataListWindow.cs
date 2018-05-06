@@ -117,7 +117,7 @@
             }
 
             this.openDataSets = GetLastOpenDataSets().ToList();
-            this.treeView = new DataListTreeView(this.treeViewState, this.openDataSets);
+            this.treeView = new DataListTreeView(this.treeViewState, this.openDataSets, this.activeDataSet);
             this.treeView.Reload();
         }
 

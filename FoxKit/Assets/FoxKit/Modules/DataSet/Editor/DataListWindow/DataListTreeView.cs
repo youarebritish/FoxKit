@@ -41,15 +41,15 @@
         /// </summary>
         [SerializeField]
         private List<int> dataSetTreeIds = new List<int>();
-
-        [SerializeField]
+        
         private DataSet activeDataSet;
 
-        public DataListTreeView(TreeViewState treeViewState, List<DataSet> openDataSets)
+        public DataListTreeView(TreeViewState treeViewState, List<DataSet> openDataSets, DataSet activeDataSet)
             : base(treeViewState)
         {
             this.showAlternatingRowBackgrounds = true;
             this.openDataSets = openDataSets;
+            this.activeDataSet = activeDataSet;
         }
 
         public void SetActiveDataSet(DataSet dataSet)
