@@ -1,5 +1,6 @@
 ﻿namespace FoxKit.Modules.PartsBuilder.FormVariation
 {
+    using System.Collections.Generic;
     using System.Linq;
     using UnityEngine;
     using FoxKit.Core;
@@ -10,11 +11,11 @@
     [CreateAssetMenu(fileName = "New Form Variation", menuName = "FoxKit/Part Builder/Form Variation")]
     public class FormVariation : ScriptableObject
     {
-        public HiddenMeshGroup[] HiddenMeshGroups;
-        public ShownMeshGroup[] ShownMeshGroups;
-        public TextureSwap[] TextureSwaps;
-        public BoneAttachment[] BoneAttachments;
-        public CNPAttachment[] CNPAttachments;
+        public List<HiddenMeshGroup> HiddenMeshGroups;
+        public List<ShownMeshGroup> ShownMeshGroups;
+        public List<TextureSwap> TextureSwaps;
+        public List<BoneAttachment> BoneAttachments;
+        public List<CNPAttachment> CNPAttachments;
 
         /// <summary>
         /// Makes a FoxKit FormVariation from a FoxLib FormVariation.
@@ -25,15 +26,15 @@
         /// <returns>The FoxKit FormVariation.</returns>
         public static FormVariation MakeFoxKitFormVariation(FoxLib.FormVariation.FormVariation formVariation, StrCode32HashManager nameHashManager, StrCode64HashManager fileHashManager)
         {
-            var hiddenMeshGroups = (from hiddenMeshGroup in formVariation.HiddenMeshGroups select HiddenMeshGroup.MakeFoxKitHiddenMeshGroup(hiddenMeshGroup, nameHashManager)).ToArray();
+            var hiddenMeshGroups = (from hiddenMeshGroup in formVariation.HiddenMeshGroups select HiddenMeshGroup.MakeFoxKitHiddenMeshGroup(hiddenMeshGroup, nameHashManager)).ToList();
 
-            var shownMeshGroups = (from shownMeshGroup in formVariation.ShownMeshGroups select ShownMeshGroup.MakeFoxKitShownMeshGroup(shownMeshGroup, nameHashManager)).ToArray();
+            var shownMeshGroups = (from shownMeshGroup in formVariation.ShownMeshGroups select ShownMeshGroup.MakeFoxKitShownMeshGroup(shownMeshGroup, nameHashManager)).ToList();
 
-            var textureSwaps = (from textureSwap in formVariation.TextureSwaps select TextureSwap.MakeFoxKitTextureSwap(textureSwap, nameHashManager, fileHashManager)).ToArray();
+            var textureSwaps = (from textureSwap in formVariation.TextureSwaps select TextureSwap.MakeFoxKitTextureSwap(textureSwap, nameHashManager, fileHashManager)).ToList();
 
-            var boneAttachments = (from boneAttachment in formVariation.BoneAttachments select BoneAttachment.MakeFoxKitBoneAttachment(boneAttachment, fileHashManager)).ToArray();
+            var boneAttachments = (from boneAttachment in formVariation.BoneAttachments select BoneAttachment.MakeFoxKitBoneAttachment(boneAttachment, fileHashManager)).ToList();
 
-            var CNPAttachments = (from cNPAttachment in formVariation.CNPAttachments select CNPAttachment.MakeFoxKitCNPAttachment(cNPAttachment, nameHashManager, fileHashManager)).ToArray();
+            var CNPAttachments = (from cNPAttachment in formVariation.CNPAttachments select CNPAttachment.MakeFoxKitCNPAttachment(cNPAttachment, nameHashManager, fileHashManager)).ToList();
 
             var newFormVariation = CreateInstance<FormVariation>();
 
