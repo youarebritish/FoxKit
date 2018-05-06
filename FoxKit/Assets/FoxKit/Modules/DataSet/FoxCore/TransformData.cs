@@ -91,6 +91,8 @@
         [SerializeField]
         private GameObject sceneProxyGameObject;
 
+        public Vector3 SceneProxyPosition => this.sceneProxyGameObject.transform.position;
+
         /// <inheritdoc />
         public override void OnLoaded()
         {

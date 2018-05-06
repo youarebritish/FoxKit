@@ -4,6 +4,7 @@
     using System.Linq;
 
     using FoxKit.Modules.DataSet.FoxCore;
+    using FoxKit.Utils;
 
     using UnityEditor;
     using UnityEditor.IMGUI.Controls;
@@ -54,6 +55,24 @@
         public void SetActiveDataSet(DataSet dataSet)
         {
             this.activeDataSet = dataSet;
+        }
+
+        protected override void DoubleClickedItem(int id)
+        {
+            base.DoubleClickedItem(id);
+
+            // If the user double clicked a DataSet, then make it active.
+            if (this.dataSetTreeIds.Contains(id))
+            {
+                DataListWindow.GetInstance().SetActiveDataSet(this.idToDataMap[id]);
+            }
+            else if (this.idToDataMap[id] is TransformData)
+            {
+                // If the user double clicked a TransformData, navigate to its scene proxy.
+                var sceneProxyPosition = ((TransformData)this.idToDataMap[id]).SceneProxyPosition;
+                SceneView.lastActiveSceneView.LookAt(sceneProxyPosition);
+            }
+
         }
 
         protected override void RowGUI(RowGUIArgs args)

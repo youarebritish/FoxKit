@@ -148,7 +148,7 @@
             this.treeView.Reload();
         }
         
-        private void SetActiveDataSet(object userData)
+        public void SetActiveDataSet(object userData)
         {
             var dataSet = userData as DataSet;
             Assert.IsNotNull(dataSet);
