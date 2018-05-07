@@ -18,13 +18,13 @@
         /// <summary>
         /// The data list.
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private DataStringMap dataList = new DataStringMap();
 
         /// <summary>
         /// The address map.
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private AddressEntityDictionary addressMap = new AddressEntityDictionary();
 
         /// <inheritdoc />

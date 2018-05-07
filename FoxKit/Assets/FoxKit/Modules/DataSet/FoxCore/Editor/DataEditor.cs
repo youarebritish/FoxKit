@@ -12,6 +12,11 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
             {
                 do
                 {
+                    // We don't care about Unity's default "script" field.
+                    if (prop.name == "m_Script")
+                    {
+                        continue;
+                    }
                     EditorGUILayout.PropertyField(this.serializedObject.FindProperty(prop.name), true);
                 }
                 while (prop.NextVisible(false));

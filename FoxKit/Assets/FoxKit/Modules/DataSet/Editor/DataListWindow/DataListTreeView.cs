@@ -4,12 +4,14 @@
     using System.Linq;
 
     using FoxKit.Modules.DataSet.FoxCore;
+    using FoxKit.Modules.DataSet.Sdx;
 
     using UnityEditor;
     using UnityEditor.IMGUI.Controls;
 
     using UnityEngine;
     using UnityEngine.Assertions;
+    using UnityEngine.UI;
 
     public class DataListTreeView : TreeView
     {
@@ -99,13 +101,14 @@
             foreach (var dataSet in this.openDataSets)
             {
                 var dataSetNode = new TreeViewItem { id = index, displayName = dataSet.name };
+                dataSetNode.icon = EditorGUIUtility.ObjectContent(null, typeof(BoxCollider)).image as Texture2D;
+
                 this.idToDataMap.Add(dataSet);
                 this.dataSetTreeIds.Add(index);
                 root.AddChild(dataSetNode);
                 index++;
 
                 index = dataSet.Children
-                    //.Where(child => child.Parent == dataSet)
                     .Aggregate(index, (current, data) => this.AddEntity(data as Data, dataSetNode, current));
             }
 
@@ -157,6 +160,21 @@
             }
             
             var node = new TreeViewItem { id = id, displayName = entity.Name };
+
+            // TODO make not crappy
+            if (entity is DataSet)
+            {
+                node.icon = EditorGUIUtility.ObjectContent(null, typeof(Grid)).image as Texture2D;
+            }
+            if (entity is Locator)
+            {
+                node.icon = EditorGUIUtility.ObjectContent(null, typeof(Transform)).image as Texture2D;
+            }
+            else if (entity is StaticModel)
+            {
+                node.icon = EditorGUIUtility.ObjectContent(null, typeof(MeshRenderer)).image as Texture2D;
+            }
+
             this.idToDataMap.Add(entity);
             parent.AddChild(node);
             id++;
