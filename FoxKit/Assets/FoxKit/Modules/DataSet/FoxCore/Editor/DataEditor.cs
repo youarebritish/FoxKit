@@ -9,6 +9,7 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
     {
         public override void OnInspectorGUI()
         {
+            this.serializedObject.Update();
             var prop = this.serializedObject.GetIterator();
             if (prop.NextVisible(true))
             {

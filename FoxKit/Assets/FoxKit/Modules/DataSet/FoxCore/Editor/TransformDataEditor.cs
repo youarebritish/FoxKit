@@ -7,14 +7,22 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
     [CustomEditor(typeof(TransformData), true)]
     public class TransformDataEditor : DataEditor
     {
-        private void OnEnable()
+        public override void OnInspectorGUI()
         {
-            //ActiveEditorTracker.sharedTracker.isLocked = true;
-        }
+            var transform = ((TransformData)this.target).SceneProxyTransform;
+            var transformEntity = new SerializedObject(transform);
+            
+            transformEntity.Update();
 
-        private void OnDisable()
-        {
-            //ActiveEditorTracker.sharedTracker.isLocked = false;
+            EditorGUILayout.PropertyField(transformEntity.FindProperty("m_LocalPosition"), new GUIContent("Position"), true);
+            transform.localRotation = Quaternion.Euler(EditorGUILayout.Vector3Field(
+                new GUIContent("Rotation"),
+                transformEntity.FindProperty("m_LocalRotation").quaternionValue.eulerAngles));
+            EditorGUILayout.PropertyField(transformEntity.FindProperty("m_LocalScale"), new GUIContent("Scale"), true);
+
+            transformEntity.ApplyModifiedProperties();
+
+            base.OnInspectorGUI();
         }
     }
 }
