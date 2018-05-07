@@ -110,13 +110,13 @@
         /// <summary>
         /// The model file path.
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private string modelFilePath;
 
         /// <summary>
         /// The collision file path.
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private string geomFilePath;
 
         /// <inheritdoc />

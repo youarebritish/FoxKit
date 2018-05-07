@@ -18,7 +18,7 @@
         /// Just use the ScriptableObject's name for now.
         /// </summary>
         public string Name => this.name;
-
+        
         /// <summary>
         /// Gets the DataSet that owns this Entity.
         /// </summary>

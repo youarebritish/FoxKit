@@ -44,31 +44,31 @@
         /// <summary>
         /// The TransformData, if any, to which this one belongs.
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private TransformData parent;
 
         /// <summary>
         /// The transform matrix.
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private TransformEntity transform;
 
         /// <summary>
         /// The shear transform matrix.
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private TransformEntity shearTransform;
 
         /// <summary>
         /// The pivot transform matrix.
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private TransformEntity pivotTransform;
 
         /// <summary>
         /// The TransformData Entities, if any, which belong to this one.
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private List<TransformData> children = new List<TransformData>();
 
         /// <summary>
@@ -89,7 +89,7 @@
         [SerializeField]
         private bool selection = true;
 
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private GameObject sceneProxyGameObject;
 
         public Vector3 SceneProxyPosition => this.sceneProxyGameObject.transform.position;
