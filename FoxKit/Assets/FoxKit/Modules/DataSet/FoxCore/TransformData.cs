@@ -95,6 +95,9 @@
         public Vector3 SceneProxyPosition => this.sceneProxyGameObject.transform.position;
 
         /// <inheritdoc />
+        public override IEnumerable<Entity> Children => this.children;
+
+        /// <inheritdoc />
         public override Entity Parent => this.parent ?? (Entity)this.DataSet;
 
         /// <inheritdoc />
@@ -108,7 +111,7 @@
         public override void PostOnLoaded()
         {
             base.PostOnLoaded();
-
+            
             foreach (var child in this.children)
             {
                 if (child == null)
@@ -126,16 +129,7 @@
             base.OnUnloaded();
             this.DestroySceneProxy();
         }
-
-        /// <inheritdoc />
-        public override IEnumerable<Entity> Children
-        {
-            get
-            {
-                return this.children;
-            }
-        }
-
+        
         public void SetSceneProxyParent(Transform parent)
         {
             Assert.IsNotNull(this.sceneProxyGameObject);
