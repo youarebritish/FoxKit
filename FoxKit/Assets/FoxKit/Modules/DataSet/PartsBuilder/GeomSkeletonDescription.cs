@@ -7,7 +7,10 @@
     using FoxTool.Fox;
     using FoxTool.Fox.Types.Values;
 
+    using UnityEditor;
+
     using UnityEngine;
+    using UnityEngine.UI;
 
     /// <inheritdoc />
     /// <summary>
@@ -25,8 +28,11 @@
         /// <summary>
         /// The GeoGsklFile file path.
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private string gsklFilePath;
+
+        /// <inheritdoc />
+        public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(CharacterJoint)).image as Texture2D;
 
         /// <inheritdoc />
         protected override short ClassId => 112;

@@ -11,7 +11,10 @@
     using FoxTool.Fox.Types.Structs;
     using FoxTool.Fox.Types.Values;
 
+    using UnityEditor;
+
     using UnityEngine;
+    using UnityEngine.UI;
 
     /// <inheritdoc />
     /// <summary>
@@ -37,6 +40,9 @@
         /// </summary>
         [SerializeField]
         private string buildType = string.Empty;
+
+        /// <inheritdoc />
+        public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(MeshFilter)).image as Texture2D;
 
         /// <inheritdoc />
         public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)

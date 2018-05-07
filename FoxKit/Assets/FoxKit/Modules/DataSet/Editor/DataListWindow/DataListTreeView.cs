@@ -100,8 +100,7 @@
             
             foreach (var dataSet in this.openDataSets)
             {
-                var dataSetNode = new TreeViewItem { id = index, displayName = dataSet.name };
-                dataSetNode.icon = EditorGUIUtility.ObjectContent(null, typeof(BoxCollider)).image as Texture2D;
+                var dataSetNode = new TreeViewItem { id = index, displayName = dataSet.name, icon = dataSet.Icon };
 
                 this.idToDataMap.Add(dataSet);
                 this.dataSetTreeIds.Add(index);
@@ -159,27 +158,14 @@
                 return id;
             }
             
-            var node = new TreeViewItem { id = id, displayName = entity.Name };
-
-            // TODO make not crappy
-            if (entity is DataSet)
-            {
-                node.icon = EditorGUIUtility.ObjectContent(null, typeof(Grid)).image as Texture2D;
-            }
-            if (entity is Locator)
-            {
-                node.icon = EditorGUIUtility.ObjectContent(null, typeof(Transform)).image as Texture2D;
-            }
-            else if (entity is StaticModel)
-            {
-                node.icon = EditorGUIUtility.ObjectContent(null, typeof(MeshRenderer)).image as Texture2D;
-            }
+            var node = new TreeViewItem { id = id, displayName = entity.Name, icon = entity.Icon };
 
             this.idToDataMap.Add(entity);
             parent.AddChild(node);
             id++;
 
-            return entity.Children                .Aggregate(id, (current, child) => this.AddEntity(child as Data, node, current));
+            return entity.Children
+                .Aggregate(id, (current, child) => this.AddEntity(child as Data, node, current));
         }
 
         private void RemoveDataSet(object id)

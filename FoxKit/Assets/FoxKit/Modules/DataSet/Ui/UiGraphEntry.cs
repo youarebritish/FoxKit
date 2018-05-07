@@ -9,8 +9,11 @@
     using FoxTool.Fox;
     using FoxTool.Fox.Types.Values;
 
+    using UnityEditor;
+
     using UnityEngine;
-    
+    using UnityEngine.UI;
+
     /// <inheritdoc />
     /// <summary>
     /// TODO: Figure out.
@@ -33,14 +36,17 @@
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private List<string> filesPaths = new List<string>();
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private List<string> rawFilesPaths = new List<string>();
+
+        /// <inheritdoc />
+        public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(LayoutElement)).image as Texture2D;
 
         /// <inheritdoc />
         protected override short ClassId => 96;

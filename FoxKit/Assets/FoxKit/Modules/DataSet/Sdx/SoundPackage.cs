@@ -8,6 +8,8 @@
     using FoxTool.Fox;
     using FoxTool.Fox.Types.Values;
 
+    using UnityEditor;
+
     using UnityEngine;
 
     /// <inheritdoc />
@@ -32,8 +34,11 @@
         /// <summary>
         /// File path for <see cref="soundDataFile"/>.
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private string soundDataFilePath;
+
+        /// <inheritdoc />
+        public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(AudioClip)).image as Texture2D;
 
         /// <inheritdoc />
         protected override short ClassId => 96;

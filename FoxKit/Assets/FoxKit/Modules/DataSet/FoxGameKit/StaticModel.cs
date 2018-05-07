@@ -2,7 +2,6 @@
 {
     using System;
 
-    using FoxKit.Core;
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Modules.DataSet.PartsBuilder;
     using FoxKit.Utils;
@@ -11,7 +10,11 @@
     using FoxTool.Fox.Types.Structs;
     using FoxTool.Fox.Types.Values;
 
+    using UnityEditor;
+
     using UnityEngine;
+
+    using AssetPostprocessor = FoxKit.Core.AssetPostprocessor;
 
     /// <summary>
     /// TODO: Figure out.
@@ -118,6 +121,9 @@
         /// </summary>
         [SerializeField, HideInInspector]
         private string geomFilePath;
+
+        /// <inheritdoc />
+        public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(MeshRenderer)).image as Texture2D;
 
         /// <inheritdoc />
         protected override short ClassId => 352;

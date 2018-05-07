@@ -1,8 +1,6 @@
 ﻿namespace FoxKit.Modules.DataSet.Ui
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
@@ -10,6 +8,8 @@
 
     using FoxTool.Fox;
     using FoxTool.Fox.Types.Values;
+
+    using UnityEditor;
 
     using UnityEngine;
 
@@ -35,8 +35,11 @@
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private StringStringMap createWindowParamsPaths = new StringStringMap();
+
+        /// <inheritdoc />
+        public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(Canvas)).image as Texture2D;
 
         /// <inheritdoc />
         protected override short ClassId => 120;

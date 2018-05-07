@@ -6,6 +6,8 @@
     using FoxKit.Utils;
     using FoxKit.Utils.UI.StringMap;
 
+    using UnityEditor;
+
     using UnityEngine;
 
     /// <inheritdoc />
@@ -29,6 +31,9 @@
 
         /// <inheritdoc />
         public override IEnumerable<Entity> Children => this.GetDataList().Values;
+
+        /// <inheritdoc />
+        public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(BoxCollider)).image as Texture2D;
 
         /// <inheritdoc />
         protected override short ClassId => 232;

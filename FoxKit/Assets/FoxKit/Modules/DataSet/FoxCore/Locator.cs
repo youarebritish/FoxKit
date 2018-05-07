@@ -7,6 +7,8 @@
     using FoxTool.Fox;
     using FoxTool.Fox.Types.Values;
 
+    using UnityEditor;
+
     using UnityEngine;
 
     /// <inheritdoc />
@@ -21,6 +23,9 @@
         /// </summary>
         [SerializeField]
         private float size = 1.0f;
+
+        /// <inheritdoc />
+        public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(Transform)).image as Texture2D;
 
         /// <inheritdoc />
         protected override short ClassId => 272;

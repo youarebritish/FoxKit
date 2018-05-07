@@ -5,6 +5,8 @@
 
     using FoxTool.Fox;
 
+    using UnityEditor;
+
     using UnityEngine;
     using UnityEngine.Assertions;
 
@@ -27,6 +29,11 @@
         /// The Entity's children.
         /// </returns>
         public virtual IEnumerable<Entity> Children => new List<Entity>();
+
+        /// <summary>
+        /// The icon to use in the Data List window.
+        /// </summary>
+        public virtual Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(GameObject)).image as Texture2D;
 
         /// <summary>
         /// Gets the DataSet this Entity belongs to.

@@ -7,6 +7,8 @@
     using FoxTool.Fox;
     using FoxTool.Fox.Types.Values;
 
+    using UnityEditor;
+
     using UnityEngine;
 
     /// <inheritdoc />
@@ -25,8 +27,11 @@
         /// <summary>
         /// The script path.
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private string scriptPath;
+
+        /// <inheritdoc />
+        public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(MonoScript)).image as Texture2D;
 
         /// <inheritdoc />
         protected override short ClassId => 88;

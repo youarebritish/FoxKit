@@ -8,6 +8,8 @@
     using FoxTool.Fox;
     using FoxTool.Fox.Types.Values;
 
+    using UnityEditor;
+
     using UnityEngine;
 
     /// <inheritdoc />
@@ -22,6 +24,9 @@
         /// </summary>
         [SerializeField]
         private string texturePackPath = string.Empty;
+
+        /// <inheritdoc />
+        public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(Texture)).image as Texture2D;
 
         /// <inheritdoc />
         protected override short ClassId => 72;
