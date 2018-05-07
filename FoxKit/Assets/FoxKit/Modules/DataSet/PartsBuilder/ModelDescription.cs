@@ -175,37 +175,37 @@
         /// <summary>
         /// The model file path.
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private string modelFilePath;
 
         /// <summary>
         /// The connect point file path.
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private string connectPointFilePath;
 
         /// <summary>
         /// The game rig file path.
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private string gameRigFilePath;
 
         /// <summary>
         /// The help bone file path.
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private string helpBoneFilePath;
 
         /// <summary>
         /// The lip adjust binary file path.
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private string lipAdjustBinaryFilePath;
 
         /// <summary>
         /// The facial setting file path.
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private string facialSettingFilePath;
         
         /// <inheritdoc />

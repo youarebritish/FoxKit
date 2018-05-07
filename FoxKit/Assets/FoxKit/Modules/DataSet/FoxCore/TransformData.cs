@@ -92,7 +92,7 @@
         [SerializeField, HideInInspector]
         private GameObject sceneProxyGameObject;
 
-        public Vector3 SceneProxyPosition => this.sceneProxyGameObject.transform.position;
+        public Transform SceneProxyTransform => this.sceneProxyGameObject.transform;
 
         /// <inheritdoc />
         public override IEnumerable<Entity> Children => this.children;

@@ -4,14 +4,12 @@
     using System.Linq;
 
     using FoxKit.Modules.DataSet.FoxCore;
-    using FoxKit.Modules.DataSet.Sdx;
 
     using UnityEditor;
     using UnityEditor.IMGUI.Controls;
 
     using UnityEngine;
     using UnityEngine.Assertions;
-    using UnityEngine.UI;
 
     public class DataListTreeView : TreeView
     {
@@ -70,7 +68,7 @@
             else if (this.idToDataMap[id] is TransformData)
             {
                 // If the user double clicked a TransformData, navigate to its scene proxy.
-                var sceneProxyPosition = ((TransformData)this.idToDataMap[id]).SceneProxyPosition;
+                var sceneProxyPosition = ((TransformData)this.idToDataMap[id]).SceneProxyTransform.position;
                 SceneView.lastActiveSceneView.LookAt(sceneProxyPosition);
             }
 
@@ -118,7 +116,16 @@
 
         protected override void SelectionChanged(IList<int> selectedIds)
         {
+            // Lock the inspector to the selected entities so that we can edit the scene proxies without changing the Inspector.
+            ActiveEditorTracker.sharedTracker.isLocked = false;
             Selection.objects = (from id in selectedIds select this.idToDataMap[id]).ToArray();
+            ActiveEditorTracker.sharedTracker.isLocked = true;
+            
+            // Replace any selection of TransformDatas with their scene proxies.
+            Selection.objects =
+                (from obj in Selection.objects
+                 select (obj as TransformData)?.SceneProxyTransform.gameObject ?? obj)
+                 .ToArray();
         }
 
         protected override void ContextClickedItem(int id)

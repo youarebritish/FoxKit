@@ -116,6 +116,8 @@
                 this.openDataSets = new List<DataSet>();
             }
 
+            Selection.selectionChanged += this.OnUnitySelectionChange;
+
             this.openDataSets = GetLastOpenDataSets().ToList();
             this.treeView = new DataListTreeView(this.treeViewState, this.openDataSets, this.activeDataSet);
             this.treeView.Reload();
@@ -124,6 +126,7 @@
         private void OnDisable()
         {
             SaveOpenDataSets(this.openDataSets);
+            Selection.selectionChanged -= this.OnUnitySelectionChange;
         }
 
         /// <summary>
@@ -148,6 +151,16 @@
             this.treeView.Reload();
         }
         
+        private void OnUnitySelectionChange()
+        {
+            if (EditorWindow.focusedWindow == this)
+            {
+                return;
+            }
+            // TODO: Only unlock if it was forced to lock by the Data List window.
+            ActiveEditorTracker.sharedTracker.isLocked = false;
+        }
+
         public void SetActiveDataSet(object userData)
         {
             var dataSet = userData as DataSet;
