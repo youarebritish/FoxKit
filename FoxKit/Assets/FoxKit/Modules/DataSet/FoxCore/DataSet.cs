@@ -26,7 +26,10 @@
         /// </summary>
         [SerializeField]
         private AddressEntityDictionary addressMap = new AddressEntityDictionary();
-        
+
+        /// <inheritdoc />
+        public override IEnumerable<Entity> Children => this.GetDataList().Values;
+
         /// <inheritdoc />
         protected override short ClassId => 232;
 
@@ -61,6 +64,11 @@
             {
                 data.OnLoaded();
             }
+
+            foreach (var data in this.dataList.Values)
+            {
+                data.PostOnLoaded();
+            }
         }
 
         /// <summary>
@@ -83,12 +91,6 @@
             {
                 data.OnAssetsImported(tryGetAsset);
             }
-        }
-
-        /// <inheritdoc />
-        public override IEnumerable<Entity> GetChildren()
-        {
-            return this.GetDataList().Values;
         }
 
         /// <summary>

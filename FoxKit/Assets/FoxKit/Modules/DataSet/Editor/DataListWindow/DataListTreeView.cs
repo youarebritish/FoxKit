@@ -4,7 +4,6 @@
     using System.Linq;
 
     using FoxKit.Modules.DataSet.FoxCore;
-    using FoxKit.Utils;
 
     using UnityEditor;
     using UnityEditor.IMGUI.Controls;
@@ -105,7 +104,8 @@
                 root.AddChild(dataSetNode);
                 index++;
 
-                index = dataSet.GetChildren()
+                index = dataSet.Children
+                    //.Where(child => child.Parent == dataSet)
                     .Aggregate(index, (current, data) => this.AddEntity(data as Data, dataSetNode, current));
             }
 
@@ -151,13 +151,17 @@
                 return id;
             }
             
+            if (entity.Parent != this.idToDataMap[parent.id] && entity.Parent != null)
+            {
+                return id;
+            }
+            
             var node = new TreeViewItem { id = id, displayName = entity.Name };
             this.idToDataMap.Add(entity);
             parent.AddChild(node);
             id++;
 
-            return entity.GetChildren()
-                .Aggregate(id, (current, child) => this.AddEntity(child as Data, node, current));
+            return entity.Children                .Aggregate(id, (current, child) => this.AddEntity(child as Data, node, current));
         }
 
         private void RemoveDataSet(object id)

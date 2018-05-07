@@ -10,6 +10,7 @@
     using FoxTool.Fox.Types.Values;
 
     using UnityEngine;
+    using UnityEngine.Assertions;
 
     /// <summary>
     /// Bit flags for TransformData.
@@ -94,10 +95,29 @@
         public Vector3 SceneProxyPosition => this.sceneProxyGameObject.transform.position;
 
         /// <inheritdoc />
+        public override Entity Parent => this.parent ?? (Entity)this.DataSet;
+
+        /// <inheritdoc />
         public override void OnLoaded()
         {
             base.OnLoaded();
             this.CreateSceneProxy();
+        }
+
+        /// <inheritdoc />
+        public override void PostOnLoaded()
+        {
+            base.PostOnLoaded();
+
+            foreach (var child in this.children)
+            {
+                if (child == null)
+                {
+                    continue;
+                }
+
+                child.SetSceneProxyParent(this.sceneProxyGameObject.transform);
+            }
         }
 
         /// <inheritdoc />
@@ -108,9 +128,18 @@
         }
 
         /// <inheritdoc />
-        public override IEnumerable<Entity> GetChildren()
+        public override IEnumerable<Entity> Children
         {
-            return this.children;
+            get
+            {
+                return this.children;
+            }
+        }
+
+        public void SetSceneProxyParent(Transform parent)
+        {
+            Assert.IsNotNull(this.sceneProxyGameObject);
+            this.sceneProxyGameObject.transform.SetParent(parent);
         }
 
         protected virtual void CreateSceneProxy()

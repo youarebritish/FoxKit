@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     using FoxTool.Fox;
 
@@ -16,6 +15,19 @@
     [Serializable]
     public abstract class Entity : ScriptableObject
     {
+        /// <summary>
+        /// Gets the parent of this Entity, if any.
+        /// </summary>
+        public virtual Entity Parent => this.DataSet;
+
+        /// <summary>
+        /// Gets the children of this Entity, if any.
+        /// </summary>
+        /// <returns>
+        /// The Entity's children.
+        /// </returns>
+        public virtual IEnumerable<Entity> Children => new List<Entity>();
+
         /// <summary>
         /// Gets the DataSet this Entity belongs to.
         /// </summary>
@@ -73,21 +85,18 @@
         }
 
         /// <summary>
+        /// Invoked for all Entities in a DataSet after OnLoaded() has been called for each of them.
+        /// </summary>
+        public virtual void PostOnLoaded()
+        {
+        }
+
+
+        /// <summary>
         /// Invoked when the containing DataSet is unloaded.
         /// </summary>
         public virtual void OnUnloaded()
         {
-        }
-
-        /// <summary>
-        /// Gets the children of this Entity, if any.
-        /// </summary>
-        /// <returns>
-        /// The Entity's children.
-        /// </returns>
-        public virtual IEnumerable<Entity> GetChildren()
-        {
-            return new List<Entity>();
         }
 
         /// <summary>
