@@ -74,20 +74,20 @@
         /// <summary>
         /// Unknown. Believed to be a flag for whether or not this TransformData should inherit its owner's transform.
         /// </summary>
-        [SerializeField]
-        private bool inheritTransform = true;
+        [SerializeField, Category("Flags")]
+        protected bool inheritTransform = true;
 
         /// <summary>
         /// Whether or not to render this TransformData.
         /// </summary>
-        [SerializeField]
-        private bool visibility = true;
+        [SerializeField, Category("Flags")]
+        protected bool visibility = true;
 
         /// <summary>
         /// Unknown. Believed to be a flag for whether or not this TransformData should be selectable in the editor.
         /// </summary>
-        [SerializeField]
-        private bool selection = true;
+        [SerializeField, Category("Flags")]
+        protected bool selection = true;
 
         [SerializeField, HideInInspector]
         private GameObject sceneProxyGameObject;

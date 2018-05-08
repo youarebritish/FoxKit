@@ -2,15 +2,22 @@
 
 namespace FoxKit.Modules.DataSet.FoxCore.Editor
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
     using UnityEngine;
 
     [CustomEditor(typeof(Data), true)]
     public class DataEditor : UnityEditor.Editor
     {
+        const float kIconSize = 16;
+
         public override void OnInspectorGUI()
         {
             this.serializedObject.Update();
-            var prop = this.serializedObject.GetIterator();
+            /*var prop = this.serializedObject.GetIterator();
             if (prop.NextVisible(true))
             {
                 do
@@ -23,12 +30,12 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
                     EditorGUILayout.PropertyField(this.serializedObject.FindProperty(prop.name), true);
                 }
                 while (prop.NextVisible(false));
-            }
+            }*/
+
+            this.DoCategorizedFields();
 
             this.serializedObject.ApplyModifiedProperties();
         }
-
-        const float kIconSize = 16;
 
         protected override void OnHeaderGUI()
         {
@@ -48,6 +55,38 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.EndVertical();
+        }
+
+        private void DoCategorizedFields()
+        {
+            var fieldGroups = GetFieldsSortedByCategory(this.target);
+
+            foreach (var fieldGroup in fieldGroups)
+            {
+                //EditorGUILayout.Foldout(foldouts[fieldGroup.Key], fieldGroup.Key);
+                EditorGUILayout.Foldout(true, fieldGroup.Key);
+                //EditorGUILayout.LabelField(fieldGroup.Key);
+
+                foreach (var field in fieldGroup)
+                {
+                    EditorGUILayout.PropertyField(this.serializedObject.FindProperty(field.Name), true);
+                }
+            }
+        }
+
+        private static IEnumerable<FieldInfo> GetCategorizedFields(object obj)
+        {
+            return from field in obj.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
+                   where field.IsDefined(typeof(CategoryAttribute), true)
+                   select field;
+        }
+
+        private static IEnumerable<IGrouping<string, FieldInfo>> GetFieldsSortedByCategory(object obj)
+        {
+            return from field in GetCategorizedFields(obj)
+                   group field by field.GetCustomAttribute<CategoryAttribute>().Category
+                   into category
+                   select category;
         }
     }
 }
