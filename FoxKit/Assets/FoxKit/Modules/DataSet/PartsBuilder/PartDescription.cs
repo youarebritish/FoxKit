@@ -14,7 +14,6 @@
     using UnityEditor;
 
     using UnityEngine;
-    using UnityEngine.UI;
 
     /// <inheritdoc />
     /// <summary>
@@ -26,19 +25,19 @@
         /// <summary>
         /// Other PartDescription Entities that this depends on.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Part Description")]
         private List<EntityLink> depends = new List<EntityLink>();
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Part Description")]
         private string partName = string.Empty;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Part Description")]
         private string buildType = string.Empty;
 
         /// <inheritdoc />

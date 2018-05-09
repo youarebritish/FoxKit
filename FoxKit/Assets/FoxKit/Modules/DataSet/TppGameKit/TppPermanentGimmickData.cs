@@ -21,31 +21,31 @@
         /// <summary>
         /// TODO Figure out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Gimmick")]
         private UnityEngine.Object partsFile;
 
         /// <summary>
         /// TODO Figure out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Gimmick")]
         private UnityEngine.Object locatorFile;
 
         /// <summary>
         /// TODO Figure out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Gimmick")]
         private TppPermanentGimmickParameter parameters;
 
         /// <summary>
         /// TODO Figure out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Gimmick")]
         private uint flags1 = 5;
 
         /// <summary>
         /// TODO Figure out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Gimmick")]
         private uint flags2;
 
         /// <summary>

@@ -10,7 +10,6 @@
     using UnityEditor;
 
     using UnityEngine;
-    using UnityEngine.UI;
 
     /// <inheritdoc />
     /// <summary>
@@ -22,7 +21,7 @@
         /// <summary>
         /// The GeoGsklFile file.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("GeomSkeleton Description")]
         private UnityEngine.Object gsklFile;
 
         /// <summary>

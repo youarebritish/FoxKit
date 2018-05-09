@@ -2,7 +2,6 @@
 
 namespace FoxKit.Modules.DataSet.FoxCore.Editor
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -12,25 +11,12 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
     [CustomEditor(typeof(Data), true)]
     public class DataEditor : UnityEditor.Editor
     {
-        const float kIconSize = 16;
+        private const float iconSize = 16;
 
         public override void OnInspectorGUI()
         {
             this.serializedObject.Update();
-            /*var prop = this.serializedObject.GetIterator();
-            if (prop.NextVisible(true))
-            {
-                do
-                {
-                    // We don't care about Unity's default "script" field.
-                    if (prop.name == "m_Script")
-                    {
-                        continue;
-                    }
-                    EditorGUILayout.PropertyField(this.serializedObject.FindProperty(prop.name), true);
-                }
-                while (prop.NextVisible(false));
-            }*/
+            EditorGUIUtility.labelWidth = 200;
 
             this.DoCategorizedFields();
 
@@ -43,7 +29,7 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
 
             EditorGUILayout.BeginHorizontal();
             GUI.DrawTexture(
-                GUILayoutUtility.GetRect(kIconSize, kIconSize, GUILayout.ExpandWidth(false)),
+                GUILayoutUtility.GetRect(iconSize, iconSize, GUILayout.ExpandWidth(false)),
                 (this.target as Data).Icon);
             var style = new GUIStyle(GUI.skin.label)
                             {
@@ -56,6 +42,8 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
 
             EditorGUILayout.EndVertical();
         }
+        
+        private readonly Dictionary<string, bool> foldouts = new Dictionary<string, bool>();
 
         private void DoCategorizedFields()
         {
@@ -63,13 +51,39 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
 
             foreach (var fieldGroup in fieldGroups)
             {
-                //EditorGUILayout.Foldout(foldouts[fieldGroup.Key], fieldGroup.Key);
-                EditorGUILayout.Foldout(true, fieldGroup.Key);
-                //EditorGUILayout.LabelField(fieldGroup.Key);
+                var wasUnfolded = true;
+                var wasUnfoldedValueFound = this.foldouts.TryGetValue(fieldGroup.Key, out wasUnfolded);
+                var unfolded = DataEditorUI.Foldout(fieldGroup.Key, wasUnfolded);
+
+                if (wasUnfoldedValueFound)
+                {
+                    this.foldouts[fieldGroup.Key] = unfolded;
+                }
+                else
+                {
+                    this.foldouts.Add(fieldGroup.Key, unfolded);
+                }
+
+                if (!unfolded)
+                {
+                    continue;
+                }
 
                 foreach (var field in fieldGroup)
                 {
-                    EditorGUILayout.PropertyField(this.serializedObject.FindProperty(field.Name), true);
+                    using (new EditorGUI.IndentLevelScope())
+                    {
+                        var serializedProperty = this.serializedObject.FindProperty(field.Name);
+                        if (field.GetCustomAttribute<CategoryAttribute>().ShowNestedInspector)
+                        {
+                            var nestedEditor = CreateEditor(serializedProperty.objectReferenceValue);
+                            nestedEditor.DrawDefaultInspector();
+                        }
+                        else
+                        {
+                            EditorGUILayout.PropertyField(serializedProperty, true);
+                        }
+                    }
                 }
             }
         }
@@ -86,7 +100,41 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
             return from field in GetCategorizedFields(obj)
                    group field by field.GetCustomAttribute<CategoryAttribute>().Category
                    into category
+                   orderby category.Key
                    select category;
+        }
+    }
+
+    public static class DataEditorUI
+    {
+        public static bool Foldout(string title, bool display)
+        {
+            var style = new GUIStyle("ShurikenModuleTitle")
+                            {
+                                font = new GUIStyle(EditorStyles.label).font,
+                                border = new RectOffset(15, 7, 4, 4),
+                                fixedHeight = 22,
+                                contentOffset = new Vector2(20f, -2f)
+                            };
+
+            var rect = GUILayoutUtility.GetRect(16f, 22f, style);
+            GUI.Box(rect, title, style);
+
+            var e = Event.current;
+
+            var toggleRect = new Rect(rect.x + 4f, rect.y + 2f, 13f, 13f);
+            if (e.type == EventType.Repaint)
+            {
+                EditorStyles.foldout.Draw(toggleRect, false, false, display, false);
+            }
+
+            if (e.type == EventType.MouseDown && rect.Contains(e.mousePosition))
+            {
+                display = !display;
+                e.Use();
+            }
+
+            return display;
         }
     }
 }

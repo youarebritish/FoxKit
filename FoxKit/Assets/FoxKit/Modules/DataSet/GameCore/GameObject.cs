@@ -18,31 +18,31 @@
         /// <summary>
         /// Name of the GameObject type. This indicates the type of GameObject to spawn.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("GameObject")]
         private string typeName = string.Empty;
 
         /// <summary>
         /// No idea what this is.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("GameObject")]
         private uint groupId;
 
         /// <summary>
         /// No idea what this is.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("GameObject")]
         private uint totalCount;
 
         /// <summary>
         /// No idea what this is.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("GameObject")]
         private uint realizedCount;
 
         /// <summary>
         /// Type-specific parameters.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("GameObject")]
         private GameObjectParameter parameters;
 
         /// <inheritdoc />

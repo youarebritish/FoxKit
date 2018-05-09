@@ -47,67 +47,67 @@
         /// <summary>
         /// The model file.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Model")]
         private UnityEngine.Object modelFile;
 
         /// <summary>
         /// The collision file.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Geom")]
         private UnityEngine.Object geomFile;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Geom")]
         private bool isVisibleGeom;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Model")]
         private bool isIsolated = true;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("LOD")]
         private float lodFarSize = -1;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("LOD")]
         private float lodNearSize = -1;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("LOD")]
         private float lodPolygonSize = -1;
 
         /// <summary>
         /// TODO: Figure this out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Rendering")]
         private Color color = UnityEngine.Color.white;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Rendering")]
         private DrawRejectionLevel drawRejectionLevel = DrawRejectionLevel.Default;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Rendering")]
         private DrawMode drawMode = DrawMode.Normal;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Rendering")]
         private RejectFarRangeShadowCast rejectFarRangeShadowCast = RejectFarRangeShadowCast.Default;
 
         /// <summary>

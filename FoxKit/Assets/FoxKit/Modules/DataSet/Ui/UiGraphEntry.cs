@@ -24,13 +24,13 @@
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("UI")]
         private List<UnityEngine.Object> files = new List<UnityEngine.Object>();
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("UI")]
         private List<UnityEngine.Object> rawFiles = new List<UnityEngine.Object>();
 
         /// <summary>

@@ -2,14 +2,17 @@
 {
     using System;
 
-    [AttributeUsage(AttributeTargets.Field, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Field)]
     public class CategoryAttribute : Attribute
     {
-        public string Category { get; private set; }
+        public string Category { get; }
 
-        public CategoryAttribute(string category)
+        public bool ShowNestedInspector { get; }
+        
+        public CategoryAttribute(string category, bool showNestedInspector = false)
         {
             this.Category = category;
+            this.ShowNestedInspector = showNestedInspector;
         }
     }
 }

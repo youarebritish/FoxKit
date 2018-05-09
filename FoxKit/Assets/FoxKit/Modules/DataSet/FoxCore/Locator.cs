@@ -21,7 +21,7 @@
         /// <summary>
         /// TODO: Figure this out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Locator")]
         private float size = 1.0f;
 
         /// <inheritdoc />

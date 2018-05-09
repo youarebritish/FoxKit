@@ -22,55 +22,55 @@
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Vehicle Body")]
         private byte vehicleTypeIndex;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Vehicle Body")]
         private byte proxyVehicleTypeIndex;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Vehicle Body")]
         private byte bodyImplTypeIndex;
 
         /// <summary>
         /// PartsFile defining the vehicle's model data.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Vehicle Body")]
         private UnityEngine.Object partsFile;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Vehicle Body")]
         private byte bodyInstanceCount = 2;
 
         /// <summary>
         /// Weapon parameters.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Vehicle Body")]
         private List<TppVehicle2WeaponParameter> weaponParams = new List<TppVehicle2WeaponParameter>();
 
         /// <summary>
         /// Form variation files.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Vehicle Body")]
         private List<UnityEngine.Object> fovaFiles = new List<UnityEngine.Object>();
 
         /// <summary>
         /// Path to <see cref="partsFile"/>.
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private string partsFilePath;
 
         /// <summary>
         /// Paths to <see cref="fovaFiles"/>.
         /// </summary>
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private List<string> fovaFilesPaths;
 
         /// <inheritdoc />

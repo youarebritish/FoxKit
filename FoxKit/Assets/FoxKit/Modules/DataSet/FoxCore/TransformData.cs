@@ -50,8 +50,8 @@
         /// <summary>
         /// The transform matrix.
         /// </summary>
-        [SerializeField, HideInInspector]
-        private TransformEntity transform;
+        [SerializeField, Category("Transform", true)]
+        protected TransformEntity transform;
 
         /// <summary>
         /// The shear transform matrix.

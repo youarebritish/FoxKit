@@ -22,49 +22,49 @@
         /// <summary>
         /// TODO: Figure this out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Vehicle Attachment")]
         private byte vehicleTypeCode;
 
         /// <summary>
         /// TODO: Figure this out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Vehicle Attachment")]
         private byte attachmentImplTypeIndex;
 
         /// <summary>
         /// TODO: Figure this out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Vehicle Attachment")]
         private UnityEngine.Object attachmentFile;
 
         /// <summary>
         /// TODO: Figure this out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Vehicle Attachment")]
         private byte attachmentInstanceCount;
 
         /// <summary>
         /// TODO: Figure this out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Vehicle Attachment")]
         private string bodyCnpName;
 
         /// <summary>
         /// TODO: Figure this out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Vehicle Attachment")]
         private string attachmentBoneName;
 
         /// <summary>
         /// TODO: Figure this out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Vehicle Attachment")]
         private List<TppVehicle2WeaponParameter> weaponParams = new List<TppVehicle2WeaponParameter>();
 
         /// <summary>
         /// Path to <see cref="attachmentFile"/>.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Vehicle Attachment")]
         private string attachmentFilePath;
 
         /// <inheritdoc />

@@ -22,13 +22,13 @@
         /// <summary>
         /// TODO: Figure out what this is.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Sound Description")]
         private UnityEngine.Object soundDataFile;
 
         /// <summary>
         /// TODO: Figure out what this is.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Sound Description")]
         private bool syncLoad;
 
         /// <summary>

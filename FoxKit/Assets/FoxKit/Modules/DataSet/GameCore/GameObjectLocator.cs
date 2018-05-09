@@ -8,6 +8,7 @@
     using FoxTool.Fox;
     using FoxTool.Fox.Types.Values;
 
+    using UnityEngine;
     using UnityEngine.Assertions;
 
     /// <inheritdoc />
@@ -20,16 +21,19 @@
         /// <summary>
         /// Name of the GameObject type. This indicates the type of GameObject to spawn.
         /// </summary>
+        [SerializeField, Category("GameObjectLocator")]
         private string typeName;
 
         /// <summary>
         /// No idea what this is.
         /// </summary>
+        [SerializeField, Category("GameObjectLocator")]
         private uint groupId;
 
         /// <summary>
         /// Type-specific parameters.
         /// </summary>
+        [SerializeField, Category("GameObjectLocator")]
         private GameObjectLocatorParameter parameters;
 
         /// <inheritdoc />

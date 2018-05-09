@@ -22,7 +22,7 @@
         /// <summary>
         /// The texture pack path.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Path")]
         private string texturePackPath = string.Empty;
 
         /// <inheritdoc />
