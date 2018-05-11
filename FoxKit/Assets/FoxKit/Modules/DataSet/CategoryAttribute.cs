@@ -7,12 +7,18 @@
     {
         public string Category { get; }
 
-        public bool ShowNestedInspector { get; }
+        public NestedInspectorMode ShowNestedInspector { get; }
         
-        public CategoryAttribute(string category, bool showNestedInspector = false)
+        public CategoryAttribute(string category, NestedInspectorMode showNestedInspector = NestedInspectorMode.DontDraw)
         {
             this.Category = category;
             this.ShowNestedInspector = showNestedInspector;
+        }
+
+        public enum NestedInspectorMode
+        {
+            DontDraw,
+            Draw
         }
     }
 }

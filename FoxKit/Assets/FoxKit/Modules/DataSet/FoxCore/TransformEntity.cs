@@ -19,19 +19,19 @@
         /// <summary>
         /// The translation.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Transform")]
         private Vector3 translation;
 
         /// <summary>
         /// The rotation.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Transform")]
         private Quaternion rotation;
 
         /// <summary>
         /// The scale.
         /// </summary>
-        [SerializeField]
+        [SerializeField, Category("Transform")]
         private Vector3 scale;
 
         /// <summary>

@@ -42,16 +42,16 @@
     public abstract class TransformData : Data
     {
         /// <summary>
+        /// The transform matrix.
+        /// </summary>
+        [SerializeField, Category("Transform", CategoryAttribute.NestedInspectorMode.Draw)]
+        protected TransformEntity transform;
+
+        /// <summary>
         /// The TransformData, if any, to which this one belongs.
         /// </summary>
         [SerializeField, HideInInspector]
         private TransformData parent;
-
-        /// <summary>
-        /// The transform matrix.
-        /// </summary>
-        [SerializeField, Category("Transform", true)]
-        protected TransformEntity transform;
 
         /// <summary>
         /// The shear transform matrix.
