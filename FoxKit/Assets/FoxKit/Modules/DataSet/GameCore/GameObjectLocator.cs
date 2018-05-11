@@ -21,19 +21,19 @@
         /// <summary>
         /// Name of the GameObject type. This indicates the type of GameObject to spawn.
         /// </summary>
-        [SerializeField, Category("GameObjectLocator")]
+        [SerializeField, Modules.DataSet.Property("GameObjectLocator")]
         private string typeName;
 
         /// <summary>
         /// No idea what this is.
         /// </summary>
-        [SerializeField, Category("GameObjectLocator")]
+        [SerializeField, Modules.DataSet.Property("GameObjectLocator")]
         private uint groupId;
 
         /// <summary>
         /// Type-specific parameters.
         /// </summary>
-        [SerializeField, Category("GameObjectLocator")]
+        [SerializeField, Modules.DataSet.Property("GameObjectLocator")]
         private GameObjectLocatorParameter parameters;
 
         /// <inheritdoc />

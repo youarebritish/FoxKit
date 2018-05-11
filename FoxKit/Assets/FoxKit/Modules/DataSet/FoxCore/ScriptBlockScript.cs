@@ -21,7 +21,7 @@
         /// <summary>
         /// The Lua script to execute when the ScriptBlock activates.
         /// </summary>
-        [SerializeField, Category("ScriptBlockScript")]
+        [SerializeField, Modules.DataSet.Property("ScriptBlockScript")]
         private UnityEngine.Object script;
 
         /// <summary>

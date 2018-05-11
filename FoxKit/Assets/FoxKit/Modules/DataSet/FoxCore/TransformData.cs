@@ -12,6 +12,8 @@
     using UnityEngine;
     using UnityEngine.Assertions;
 
+    using PropertyAttribute = FoxKit.Modules.DataSet.PropertyAttribute;
+
     /// <summary>
     /// Bit flags for TransformData.
     /// </summary>
@@ -44,7 +46,7 @@
         /// <summary>
         /// The transform matrix.
         /// </summary>
-        [SerializeField, Category("Transform", CategoryAttribute.NestedInspectorMode.Draw)]
+        [SerializeField, Modules.DataSet.Property("Transform", PropertyAttribute.NestedInspectorMode.Draw)]
         protected TransformEntity transform;
 
         /// <summary>
@@ -74,19 +76,19 @@
         /// <summary>
         /// Unknown. Believed to be a flag for whether or not this TransformData should inherit its owner's transform.
         /// </summary>
-        [SerializeField, Category("Flags")]
+        [SerializeField, Property("Flags")]
         protected bool inheritTransform = true;
 
         /// <summary>
         /// Whether or not to render this TransformData.
         /// </summary>
-        [SerializeField, Category("Flags")]
+        [SerializeField, Property("Flags")]
         protected bool visibility = true;
 
         /// <summary>
         /// Unknown. Believed to be a flag for whether or not this TransformData should be selectable in the editor.
         /// </summary>
-        [SerializeField, Category("Flags")]
+        [SerializeField, Property("Flags")]
         protected bool selection = true;
 
         [SerializeField, HideInInspector]

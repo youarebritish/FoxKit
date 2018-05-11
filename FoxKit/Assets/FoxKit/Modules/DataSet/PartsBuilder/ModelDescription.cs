@@ -103,73 +103,73 @@
         /// <summary>
         /// The model file.
         /// </summary>
-        [SerializeField, Modules.DataSet.Category("Model Files")]
+        [SerializeField, Modules.DataSet.Property("Model Files")]
         private UnityEngine.Object modelFile;
 
         /// <summary>
         /// The connect point file.
         /// </summary>
-        [SerializeField, Modules.DataSet.Category("Model Files")]
+        [SerializeField, Modules.DataSet.Property("Model Files")]
         private UnityEngine.Object connectPointFile;
 
         /// <summary>
         /// The game rig file.
         /// </summary>
-        [SerializeField, Modules.DataSet.Category("Model Files")]
+        [SerializeField, Modules.DataSet.Property("Model Files")]
         private UnityEngine.Object gameRigFile;
 
         /// <summary>
         /// The help bone file.
         /// </summary>
-        [SerializeField, Modules.DataSet.Category("Model Files")]
+        [SerializeField, Modules.DataSet.Property("Model Files")]
         private UnityEngine.Object helpBoneFile;
 
         /// <summary>
         /// The lip adjust binary file.
         /// </summary>
-        [SerializeField, Modules.DataSet.Category("Model Files")]
+        [SerializeField, Modules.DataSet.Property("Model Files")]
         private UnityEngine.Object lipAdjustBinaryFile;
 
         /// <summary>
         /// The facial setting file.
         /// </summary>
-        [SerializeField, Modules.DataSet.Category("Model Files")]
+        [SerializeField, Modules.DataSet.Property("Model Files")]
         private UnityEngine.Object facialSettingFile;
 
         /// <summary>
         /// The invisible mesh names.
         /// </summary>
-        [SerializeField, Modules.DataSet.Category("Rendering")]
+        [SerializeField, Modules.DataSet.Property("Rendering")]
         private List<string> invisibleMeshNames;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField, Modules.DataSet.Category("LOD")]
+        [SerializeField, Modules.DataSet.Property("LOD")]
         private float lodFarPixelSize = 50.0f;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField, Modules.DataSet.Category("LOD")]
+        [SerializeField, Modules.DataSet.Property("LOD")]
         private float lodNearPixelSize = 400.0f;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField, Modules.DataSet.Category("LOD")]
+        [SerializeField, Modules.DataSet.Property("LOD")]
         private float lodPolygonSize = -1;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField, Modules.DataSet.Category("Rendering")]
+        [SerializeField, Modules.DataSet.Property("Rendering")]
         private DrawRejectionLevel drawRejectionLevel = DrawRejectionLevel.Default;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField, Modules.DataSet.Category("Rendering")]
+        [SerializeField, Modules.DataSet.Property("Rendering")]
         private RejectFarRangeShadowCast rejectFarRangeShadowCast = RejectFarRangeShadowCast.Default;
 
         /// <summary>

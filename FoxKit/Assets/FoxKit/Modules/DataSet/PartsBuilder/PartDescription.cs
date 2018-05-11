@@ -25,19 +25,19 @@
         /// <summary>
         /// Other PartDescription Entities that this depends on.
         /// </summary>
-        [SerializeField, Category("Part Description")]
+        [SerializeField, Modules.DataSet.Property("Part Description")]
         private List<EntityLink> depends = new List<EntityLink>();
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField, Category("Part Description")]
+        [SerializeField, Modules.DataSet.Property("Part Description")]
         private string partName = string.Empty;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField, Category("Part Description")]
+        [SerializeField, Modules.DataSet.Property("Part Description")]
         private string buildType = string.Empty;
 
         /// <inheritdoc />

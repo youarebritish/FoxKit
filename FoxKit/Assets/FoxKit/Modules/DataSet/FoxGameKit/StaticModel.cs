@@ -47,67 +47,67 @@
         /// <summary>
         /// The model file.
         /// </summary>
-        [SerializeField, Category("Model")]
+        [SerializeField, Modules.DataSet.Property("Model")]
         private UnityEngine.Object modelFile;
 
         /// <summary>
         /// The collision file.
         /// </summary>
-        [SerializeField, Category("Geom")]
+        [SerializeField, Modules.DataSet.Property("Geom")]
         private UnityEngine.Object geomFile;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField, Category("Geom")]
+        [SerializeField, Modules.DataSet.Property("Geom")]
         private bool isVisibleGeom;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField, Category("Model")]
+        [SerializeField, Modules.DataSet.Property("Model")]
         private bool isIsolated = true;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField, Category("LOD")]
+        [SerializeField, Modules.DataSet.Property("LOD")]
         private float lodFarSize = -1;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField, Category("LOD")]
+        [SerializeField, Modules.DataSet.Property("LOD")]
         private float lodNearSize = -1;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField, Category("LOD")]
+        [SerializeField, Modules.DataSet.Property("LOD")]
         private float lodPolygonSize = -1;
 
         /// <summary>
         /// TODO: Figure this out.
         /// </summary>
-        [SerializeField, Category("Rendering")]
+        [SerializeField, Modules.DataSet.Property("Rendering")]
         private Color color = UnityEngine.Color.white;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField, Category("Rendering")]
+        [SerializeField, Modules.DataSet.Property("Rendering")]
         private DrawRejectionLevel drawRejectionLevel = DrawRejectionLevel.Default;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField, Category("Rendering")]
+        [SerializeField, Modules.DataSet.Property("Rendering")]
         private DrawMode drawMode = DrawMode.Normal;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField, Category("Rendering")]
+        [SerializeField, Modules.DataSet.Property("Rendering")]
         private RejectFarRangeShadowCast rejectFarRangeShadowCast = RejectFarRangeShadowCast.Default;
 
         /// <summary>

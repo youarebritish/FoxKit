@@ -23,13 +23,13 @@
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField, Category("UI")]
+        [SerializeField, Modules.DataSet.Property("UI")]
         private ObjectStringMap createWindowParams = new ObjectStringMap();
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField, Category("UI")]
+        [SerializeField, Modules.DataSet.Property("UI")]
         private string windowFactoryName = string.Empty;
 
         /// <summary>

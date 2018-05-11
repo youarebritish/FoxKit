@@ -21,7 +21,7 @@
         /// <summary>
         /// The GeoGsklFile file.
         /// </summary>
-        [SerializeField, Category("GeomSkeleton Description")]
+        [SerializeField, DataSet.Property("GeomSkeleton Description")]
         private UnityEngine.Object gsklFile;
 
         /// <summary>

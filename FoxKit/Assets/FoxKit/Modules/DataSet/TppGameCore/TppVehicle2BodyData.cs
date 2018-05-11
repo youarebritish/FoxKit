@@ -22,43 +22,43 @@
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField, Category("Vehicle Body")]
+        [SerializeField, Modules.DataSet.Property("Vehicle Body")]
         private byte vehicleTypeIndex;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField, Category("Vehicle Body")]
+        [SerializeField, Modules.DataSet.Property("Vehicle Body")]
         private byte proxyVehicleTypeIndex;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField, Category("Vehicle Body")]
+        [SerializeField, Modules.DataSet.Property("Vehicle Body")]
         private byte bodyImplTypeIndex;
 
         /// <summary>
         /// PartsFile defining the vehicle's model data.
         /// </summary>
-        [SerializeField, Category("Vehicle Body")]
+        [SerializeField, Modules.DataSet.Property("Vehicle Body")]
         private UnityEngine.Object partsFile;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField, Category("Vehicle Body")]
+        [SerializeField, Modules.DataSet.Property("Vehicle Body")]
         private byte bodyInstanceCount = 2;
 
         /// <summary>
         /// Weapon parameters.
         /// </summary>
-        [SerializeField, Category("Vehicle Body")]
+        [SerializeField, Modules.DataSet.Property("Vehicle Body")]
         private List<TppVehicle2WeaponParameter> weaponParams = new List<TppVehicle2WeaponParameter>();
 
         /// <summary>
         /// Form variation files.
         /// </summary>
-        [SerializeField, Category("Vehicle Body")]
+        [SerializeField, Modules.DataSet.Property("Vehicle Body")]
         private List<UnityEngine.Object> fovaFiles = new List<UnityEngine.Object>();
 
         /// <summary>

@@ -3,13 +3,13 @@
     using System;
 
     [AttributeUsage(AttributeTargets.Field)]
-    public class CategoryAttribute : Attribute
+    public class PropertyAttribute : Attribute
     {
         public string Category { get; }
 
         public NestedInspectorMode ShowNestedInspector { get; }
         
-        public CategoryAttribute(string category, NestedInspectorMode showNestedInspector = NestedInspectorMode.DontDraw)
+        public PropertyAttribute(string category = "", NestedInspectorMode showNestedInspector = NestedInspectorMode.DontDraw)
         {
             this.Category = category;
             this.ShowNestedInspector = showNestedInspector;

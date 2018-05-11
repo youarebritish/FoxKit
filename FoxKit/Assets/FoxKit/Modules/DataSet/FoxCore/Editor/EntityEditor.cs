@@ -10,6 +10,7 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
     using UnityEngine;
 
     using Editor = UnityEditor.Editor;
+    using PropertyAttribute = FoxKit.Modules.DataSet.PropertyAttribute;
 
     [CustomEditor(typeof(Entity), true)]
     public class EntityEditor : UnityEditor.Editor
@@ -45,23 +46,20 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
         
         private void DoCategorizedFields()
         {
-            if (this.unfoldedFields == null)
-            {
-                Debug.Log("nulled in " + target.GetType().ToString());
-                this.unfoldedFields = new List<string>();
-            }
-
             var fieldGroups = GetFieldsSortedByCategory(this.target);
             var newUnfoldedEntries = new List<string>();
 
             foreach (var fieldGroup in fieldGroups)
             {
-                var wasUnfolded = this.unfoldedFields.FirstOrDefault(entry => entry == fieldGroup.Key);
-                var unfolded = DataEditorUI.Foldout(fieldGroup.Key, !string.IsNullOrEmpty(wasUnfolded));
-                
-                if (!unfolded)
+                if (!string.IsNullOrEmpty(fieldGroup.Key))
                 {
-                    continue;
+                    var wasUnfolded = this.unfoldedFields.FirstOrDefault(entry => entry == fieldGroup.Key);
+                    var unfolded = DataEditorUI.Foldout(fieldGroup.Key, !string.IsNullOrEmpty(wasUnfolded));
+
+                    if (!unfolded)
+                    {
+                        continue;
+                    }
                 }
 
                 newUnfoldedEntries.Add(fieldGroup.Key);
@@ -71,7 +69,7 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
                     using (new EditorGUI.IndentLevelScope())
                     {
                         var serializedProperty = this.serializedObject.FindProperty(field.Name);
-                        if (field.GetCustomAttribute<CategoryAttribute>().ShowNestedInspector == CategoryAttribute.NestedInspectorMode.Draw)
+                        if (field.GetCustomAttribute<PropertyAttribute>().ShowNestedInspector == PropertyAttribute.NestedInspectorMode.Draw)
                         {
                             Editor nestedEditor;
                             var nestedEditorEntry = this.nestedEditors.FirstOrDefault(entry => entry.Name == field.Name);
@@ -101,14 +99,14 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
         private static IEnumerable<FieldInfo> GetCategorizedFields(object obj)
         {
             return from field in obj.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
-                   where field.IsDefined(typeof(CategoryAttribute), true)
+                   where field.IsDefined(typeof(PropertyAttribute), true)
                    select field;
         }
 
         private static IEnumerable<IGrouping<string, FieldInfo>> GetFieldsSortedByCategory(object obj)
         {
             return from field in GetCategorizedFields(obj)
-                   group field by field.GetCustomAttribute<CategoryAttribute>().Category
+                   group field by field.GetCustomAttribute<PropertyAttribute>().Category
                    into category
                    orderby category.Key
                    select category;
