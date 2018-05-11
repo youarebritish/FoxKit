@@ -128,6 +128,8 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
                             };
 
             var rect = GUILayoutUtility.GetRect(16f, 22f, style);
+            rect = EditorGUI.IndentedRect(rect);
+
             GUI.Box(rect, title, style);
 
             var e = Event.current;
