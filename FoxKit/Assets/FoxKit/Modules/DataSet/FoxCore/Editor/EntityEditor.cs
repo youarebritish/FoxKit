@@ -10,10 +10,10 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
     using UnityEngine;
 
     using Editor = UnityEditor.Editor;
-    using PropertyAttribute = FoxKit.Modules.DataSet.PropertyAttribute;
+    using PropertyAttribute = PropertyAttribute;
 
     [CustomEditor(typeof(Entity), true)]
-    public class EntityEditor : UnityEditor.Editor
+    public class EntityEditor : Editor
     {
         public override void OnInspectorGUI()
         {
@@ -26,7 +26,7 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
         }
         
         [SerializeField]
-        private List<string> unfoldedFields = new List<string>();
+        private static List<string> unfoldedFields = new List<string>();
 
         [SerializeField]
         private List<NestedEditorEntry> nestedEditors = new List<NestedEditorEntry>();
@@ -48,13 +48,14 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
         {
             var fieldGroups = GetFieldsSortedByCategory(this.target);
             var newUnfoldedEntries = new List<string>();
-
+            
             foreach (var fieldGroup in fieldGroups)
             {
                 if (!string.IsNullOrEmpty(fieldGroup.Key))
                 {
-                    var wasUnfolded = this.unfoldedFields.FirstOrDefault(entry => entry == fieldGroup.Key);
-                    var unfolded = DataEditorUI.Foldout(fieldGroup.Key, !string.IsNullOrEmpty(wasUnfolded));
+                    var wasUnfolded = unfoldedFields.FirstOrDefault(entry => entry == fieldGroup.Key);
+                    bool shouldDrawUnfolded = !string.IsNullOrEmpty(wasUnfolded);
+                    var unfolded = DataEditorUI.Foldout(fieldGroup.Key, shouldDrawUnfolded);
 
                     if (!unfolded)
                     {
@@ -93,7 +94,7 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
                 }
             }
 
-            this.unfoldedFields = newUnfoldedEntries;
+            unfoldedFields = newUnfoldedEntries;
         }
 
         private static IEnumerable<FieldInfo> GetCategorizedFields(object obj)
