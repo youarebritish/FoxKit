@@ -4,12 +4,12 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
 {
     using UnityEngine;
 
-    [CustomEditor(typeof(TransformData), true)]
+    [CustomEditor(typeof(TransformEntity), true)]
     public class TransformDataEditor : DataEditor
     {
         public override void OnInspectorGUI()
         {
-            var transform = ((TransformData)this.target).SceneProxyTransform;
+            var transform = ((TransformEntity)this.target).Owner.SceneProxyTransform;
             var transformEntity = new SerializedObject(transform);
             
             transformEntity.Update();
@@ -21,8 +21,6 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
             EditorGUILayout.PropertyField(transformEntity.FindProperty("m_LocalScale"), new GUIContent("Scale"), true);
 
             transformEntity.ApplyModifiedProperties();
-
-            base.OnInspectorGUI();
         }
     }
 }

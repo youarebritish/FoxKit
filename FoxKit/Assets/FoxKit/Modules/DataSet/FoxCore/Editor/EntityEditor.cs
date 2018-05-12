@@ -75,7 +75,7 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
                             var nestedEditorEntry = this.nestedEditors.FirstOrDefault(entry => entry.Name == field.Name);
                             if (nestedEditorEntry == null)
                             {
-                                nestedEditor = CreateEditor(serializedProperty.objectReferenceValue, typeof(EntityEditor));
+                                nestedEditor = CreateEditor(serializedProperty.objectReferenceValue);
                                 this.nestedEditors.Add(new NestedEditorEntry(field.Name, nestedEditor));
                             }
                             else
