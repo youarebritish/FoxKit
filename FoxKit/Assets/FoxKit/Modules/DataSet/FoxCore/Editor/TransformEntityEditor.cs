@@ -5,7 +5,7 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
     using UnityEngine;
 
     [CustomEditor(typeof(TransformEntity), true)]
-    public class TransformDataEditor : DataEditor
+    public class TransformEntityEditor : EntityEditor
     {
         public override void OnInspectorGUI()
         {
@@ -21,6 +21,7 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
             EditorGUILayout.PropertyField(transformEntity.FindProperty("m_LocalScale"), new GUIContent("Scale"), true);
 
             transformEntity.ApplyModifiedProperties();
+            this.Repaint();
         }
     }
 }
