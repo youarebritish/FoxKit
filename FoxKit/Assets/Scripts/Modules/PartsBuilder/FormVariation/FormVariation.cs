@@ -8,7 +8,7 @@
     /// <summary>
     /// A set of form variation options used by the FoxEngine. 
     /// </summary>
-    [CreateAssetMenu(fileName = "New Form Variation", menuName = "FoxKit/Part Builder/Form Variation")]
+    [CreateAssetMenu(fileName = "New Form Variation", menuName = "FoxKit/Parts Builder/Form Variation")]
     public class FormVariation : ScriptableObject
     {
         public List<HiddenMeshGroup> HiddenMeshGroups;
