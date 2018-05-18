@@ -51,7 +51,7 @@
             }
             else
             {
-                frdvFileName = new StrCode64StringPair(string.Empty);
+                frdvFileName = new StrCode64StringPair(string.Empty, IsStringOrHash.String);
             }
 
             if (simFileHash != null)
@@ -60,7 +60,7 @@
             }
             else
             {
-                simFileName = new StrCode64StringPair(string.Empty);
+                simFileName = new StrCode64StringPair(string.Empty, IsStringOrHash.String);
             }
 
             return new BoneAttachment(modelFileName, frdvFileName, simFileName);
@@ -82,8 +82,28 @@
             ulong? frdvFileHash = null;
             ulong? simFileHash = null;
 
-
-            modelFileHash = fileHashManager.GetHashFromStringPair(modelFileName);
+            if (modelFileName.IsUnhashed == IsStringOrHash.String)
+            {
+                if (modelFileName.String != string.Empty)
+                {
+                    modelFileHash = fileHashManager.GetHashFromStringPair(modelFileName);
+                }
+                else
+                {
+                    throw new System.Exception("Error: The Model File Name field must have a valid name!");
+                }
+            }
+            else
+            {
+                if (modelFileName.Hash != 0)
+                {
+                    modelFileHash = modelFileName.Hash;
+                }
+                else
+                {
+                    throw new System.Exception("Error: The Model File Name field must have a valid name!");
+                }
+            }
 
             if (frdvFileName.IsUnhashed == IsStringOrHash.String)
             {

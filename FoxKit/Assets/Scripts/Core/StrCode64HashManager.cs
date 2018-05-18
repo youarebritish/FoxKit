@@ -50,7 +50,7 @@
         /// <returns>The StringPair derived from the unhash attempt.</returns>
         public StrCode64StringPair GetStringPairFromUnhashAttempt(ulong hash)
         {
-            return this.TryUnhash(hash, hashValue => new StrCode64StringPair(hashValue), unhashedString => new StrCode64StringPair(unhashedString));
+            return this.TryUnhash(hash, (hashValue => new StrCode64StringPair(hashValue.ToString(), IsStringOrHash.Hash)), (unhashedString => new StrCode64StringPair(unhashedString, IsStringOrHash.String)));
         }
 
         /// <summary>

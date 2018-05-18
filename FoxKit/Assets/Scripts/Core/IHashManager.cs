@@ -62,8 +62,6 @@ namespace FoxKit.Core
 
         public class TryUnhashResult<THash> where THash : struct
         {
-            private THash hash;
-
             public bool WasNameUnhashed { get; }
             public string UnhashedString { get; }
             public THash Hash { get; }

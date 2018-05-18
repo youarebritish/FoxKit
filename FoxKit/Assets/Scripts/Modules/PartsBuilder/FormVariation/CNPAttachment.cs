@@ -60,7 +60,7 @@
             }
             else
             {
-                frdvFileName = new StrCode64StringPair(string.Empty);
+                frdvFileName = new StrCode64StringPair(string.Empty, IsStringOrHash.String);
             }
 
             if (simFileHash != null)
@@ -69,7 +69,7 @@
             }
             else
             {
-                simFileName = new StrCode64StringPair(string.Empty);
+                simFileName = new StrCode64StringPair(string.Empty, IsStringOrHash.String);
             }
 
             return new CNPAttachment(CNPName, modelFileName, frdvFileName, simFileName);
@@ -94,9 +94,32 @@
             ulong? frdvFileHash = null;
             ulong? simFileHash = null;
 
-            CNPHash = nameHashManager.GetHashFromStringPair(CNPName);
+            if (CNPName.IsUnhashed == IsStringOrHash.String && modelFileName.IsUnhashed == IsStringOrHash.String)
+            {
+                if (CNPName.String != string.Empty && modelFileName.String != string.Empty)
+                {
+                    CNPHash = nameHashManager.GetHashFromStringPair(CNPName);
 
-            modelFileHash = fileHashManager.GetHashFromStringPair(modelFileName);
+                    modelFileHash = fileHashManager.GetHashFromStringPair(modelFileName);
+                }
+                else
+                {
+                    throw new System.Exception("Error: Both the CNP Name and Model File Name fields must have valid names!");
+                }
+            }
+            else
+            {
+                if (CNPName.Hash != 0 && modelFileName.Hash != 0)
+                {
+                    CNPHash = CNPName.Hash;
+
+                    modelFileHash = modelFileName.Hash;
+                }
+                else
+                {
+                    throw new System.Exception("Error: Both the CNP Name and Model File Name fields must have valid names!");
+                }
+            }
 
             if (frdvFileName.IsUnhashed == IsStringOrHash.String)
             {
@@ -105,7 +128,7 @@
                     frdvFileHash = fileHashManager.GetHashFromStringPair(frdvFileName);
                 }
             }
-            else if (frdvFileName.IsUnhashed == IsStringOrHash.Hash)
+            else
             {
                 if (frdvFileName.Hash != 0)
                 {
@@ -120,7 +143,7 @@
                     simFileHash = fileHashManager.GetHashFromStringPair(simFileName);
                 }
             }
-            else if (simFileName.IsUnhashed == IsStringOrHash.Hash)
+            else
             {
                 if (simFileName.Hash != 0)
                 {
