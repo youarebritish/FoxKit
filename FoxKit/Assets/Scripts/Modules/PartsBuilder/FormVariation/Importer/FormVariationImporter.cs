@@ -37,7 +37,14 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Importer
                 Action<int> skipBytes = numberOfBytes => SkipBytes(reader, numberOfBytes);
                 Action<long> moveStream = bytePos => MoveStream(reader, bytePos);
                 var readFunctions = new FoxLib.FormVariation.ReadFunctions(reader.ReadUInt16, reader.ReadUInt32, reader.ReadUInt64, reader.ReadByte, skipBytes, moveStream);
-                formVariation = FoxLib.FormVariation.Read(readFunctions);
+                try
+                {
+                    formVariation = FoxLib.FormVariation.Read(readFunctions);
+                }
+                catch
+                {
+                    throw new Exception("Error: Unsupported .fv2 (it probably has to do with section 2)");
+                }
             }
 
             var formVariationSet = UnityEngine.ScriptableObject.CreateInstance<FormVariation>();
