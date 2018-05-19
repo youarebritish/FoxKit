@@ -8,8 +8,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48dd4de5b5c61421aa1c74975548df81, type: 3}
-  m_Name: FormVariationPreferences
+  m_Script: {fileID: 11500000, guid: 916e420711bc7f544898199949d5c107, type: 3}
+  m_Name: New FormVariationPreferences
   m_EditorClassIdentifier: 
-  NameDictionary: {fileID: 4900000, guid: e89489189847f4cb59292c5d7dd70eae, type: 3}
-  FileDictionary: {fileID: 4900000, guid: 2dd760812e187f24e841aead45351947, type: 3}
+  NameDictionary: {fileID: 0}
+  FileDictionary: {fileID: 0}

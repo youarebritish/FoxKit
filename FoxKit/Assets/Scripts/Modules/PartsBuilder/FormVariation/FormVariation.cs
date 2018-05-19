@@ -11,11 +11,11 @@
     [CreateAssetMenu(fileName = "New Form Variation", menuName = "FoxKit/Parts Builder/Form Variation")]
     public class FormVariation : ScriptableObject
     {
-        public List<HiddenMeshGroup> HiddenMeshGroups;
-        public List<ShownMeshGroup> ShownMeshGroups;
-        public List<TextureSwap> TextureSwaps;
-        public List<BoneAttachment> BoneAttachments;
-        public List<CNPAttachment> CNPAttachments;
+        public List<HiddenMeshGroup> HiddenMeshGroups = new List<HiddenMeshGroup>();
+        public List<ShownMeshGroup> ShownMeshGroups = new List<ShownMeshGroup>();
+        public List<TextureSwap> TextureSwaps = new List<TextureSwap>();
+        public List<BoneAttachment> BoneAttachments = new List<BoneAttachment>();
+        public List<CNPAttachment> CNPAttachments = new List<CNPAttachment>();
 
         /// <summary>
         /// Makes a FoxKit FormVariation from a FoxLib FormVariation.
