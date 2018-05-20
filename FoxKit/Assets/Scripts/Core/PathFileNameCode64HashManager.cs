@@ -7,7 +7,7 @@
     using UnityEngine;
     using UnityEngine.Assertions;
 
-    public class StrCode64HashManager : IHashManager<ulong>
+    public class PathFileNameCode64HashManager : IHashManager<ulong>
     {
         private readonly Dictionary<ulong, string> lookUpTable = new Dictionary<ulong, string>();
 
@@ -39,7 +39,7 @@
         {
             Assert.IsNotNull(input, "Hash input must not be null.");
 
-            var hash = Hashing.HashFileNameLegacy(input);
+            var hash = Hashing.HashFileNameWithExtension(input);
             return hash;
         }
 
@@ -48,9 +48,9 @@
         /// </summary>
         /// <param name="hash">The hash to attempt to unhash.</param>
         /// <returns>The StringPair derived from the unhash attempt.</returns>
-        public StrCode64StringPair GetStringPairFromUnhashAttempt(ulong hash)
+        public PathFileNameCode64StringPair GetStringPairFromUnhashAttempt(ulong hash)
         {
-            return this.TryUnhash(hash, (hashValue => new StrCode64StringPair(hashValue.ToString(), IsStringOrHash.Hash)), (unhashedString => new StrCode64StringPair(unhashedString, IsStringOrHash.String)));
+            return this.TryUnhash(hash, (hashValue => new PathFileNameCode64StringPair(hashValue.ToString(), IsStringOrHash.Hash)), (unhashedString => new PathFileNameCode64StringPair(unhashedString, IsStringOrHash.String)));
         }
 
         /// <summary>
@@ -58,7 +58,7 @@
         /// </summary>
         /// <param name="stringPair">String pair.</param>
         /// <returns>The hash from string pair.</returns>
-        public ulong GetHashFromStringPair(StrCode64StringPair stringPair)
+        public ulong GetHashFromStringPair(PathFileNameCode64StringPair stringPair)
         {
             return this.RetrieveHashFromStringPair(stringPair);
         }

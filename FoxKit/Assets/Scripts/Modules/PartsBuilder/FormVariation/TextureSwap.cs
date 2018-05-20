@@ -8,7 +8,7 @@
     {
         public StrCode32StringPair MaterialInstanceName;
         public StrCode32StringPair TextureTypeName;
-        public StrCode64StringPair TextureFileName;
+        public PathFileNameCode64StringPair TextureFileName;
 
         /// <summary>
         /// Initializes a new instance of the TextureSwap struct.
@@ -16,7 +16,7 @@
         /// <param name="materialInstanceName">Material instance name.</param>
         /// <param name="textureTypeName">Texture type name.</param>
         /// <param name="textureFileName">Texture file name.</param>
-        public TextureSwap(StrCode32StringPair materialInstanceName, StrCode32StringPair textureTypeName, StrCode64StringPair textureFileName)
+        public TextureSwap(StrCode32StringPair materialInstanceName, StrCode32StringPair textureTypeName, PathFileNameCode64StringPair textureFileName)
         {
             this.MaterialInstanceName = materialInstanceName;
 
@@ -31,13 +31,13 @@
         /// <param name="textureSwap">The FoxLib TextureSwap.</param>
         /// <param name="fileHashManager">The </param>
         /// <param name="nameHashManager">An StrCode32 hash manager used for hashing and unhashing names.</param>
-        /// <param name="fileHashManager">An StrCode64 hash manager used for hashing and unhashing file names.</param>
+        /// <param name="fileHashManager">An PathFileNameCode64 hash manager used for hashing and unhashing file names.</param>
         /// <returns>The FoxKit TextureSwap.</returns>
-        public static TextureSwap MakeFoxKitTextureSwap(FoxLib.FormVariation.TextureSwap textureSwap, StrCode32HashManager nameHashManager, StrCode64HashManager fileHashManager)
+        public static TextureSwap MakeFoxKitTextureSwap(FoxLib.FormVariation.TextureSwap textureSwap, StrCode32HashManager nameHashManager, PathFileNameCode64HashManager fileHashManager)
         {
             StrCode32StringPair newMaterialInstanceName = nameHashManager.GetStringPairFromUnhashAttempt(textureSwap.MaterialInstanceHash);
             StrCode32StringPair newTextureTypeName = nameHashManager.GetStringPairFromUnhashAttempt(textureSwap.TextureTypeHash);
-            StrCode64StringPair newTextureFileName = fileHashManager.GetStringPairFromUnhashAttempt(textureSwap.TextureFileHash);
+            PathFileNameCode64StringPair newTextureFileName = fileHashManager.GetStringPairFromUnhashAttempt(textureSwap.TextureFileHash);
 
             return new TextureSwap(newMaterialInstanceName, newTextureTypeName, newTextureFileName);
         }
@@ -47,9 +47,9 @@
         /// </summary>
         /// <param name="textureSwap">The FoxKit TextureSwap.</param>
         /// <param name="nameHashManager">An StrCode32 hash manager used for hashing and unhashing names.</param>
-        /// <param name="fileHashManager">An StrCode64 hash manager used for hashing and unhashing file names.</param>
+        /// <param name="fileHashManager">An PathFileNameCode64 hash manager used for hashing and unhashing file names.</param>
         /// <returns>The FoxLib TextureSwap.</returns>
-        public static FoxLib.FormVariation.TextureSwap MakeFoxLibTextureSwap(TextureSwap textureSwap, StrCode32HashManager nameHashManager, StrCode64HashManager fileHashManager)
+        public static FoxLib.FormVariation.TextureSwap MakeFoxLibTextureSwap(TextureSwap textureSwap, StrCode32HashManager nameHashManager, PathFileNameCode64HashManager fileHashManager)
         {
             uint materialInstanceHash = nameHashManager.GetHashFromStringPair(textureSwap.MaterialInstanceName);
 

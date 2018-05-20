@@ -20,7 +20,7 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Importer
         /// <summary>
         /// Hash manager for file names.
         /// </summary>
-        private StrCode64HashManager fileNameHashManager;
+        private PathFileNameCode64HashManager fileNameHashManager;
 
         /// <summary>
         /// Import a .fv2 file.
@@ -81,7 +81,7 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Importer
         private void InitializeDictionaries()
         {
             this.nameHashManager = new StrCode32HashManager();
-            this.fileNameHashManager = new StrCode64HashManager();
+            this.fileNameHashManager = new PathFileNameCode64HashManager();
 
             this.nameHashManager.LoadDictionary(FormVariationPreferences.Instance.NameDictionary);
             this.fileNameHashManager.LoadDictionary(FormVariationPreferences.Instance.FileDictionary);

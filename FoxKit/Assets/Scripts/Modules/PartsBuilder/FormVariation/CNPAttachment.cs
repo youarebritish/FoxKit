@@ -9,9 +9,9 @@
     public struct CNPAttachment
     {
         public StrCode32StringPair CNPName;
-        public StrCode64StringPair ModelFileName;
-        public StrCode64StringPair FrdvFileName;
-        public StrCode64StringPair SimFileName;
+        public PathFileNameCode64StringPair ModelFileName;
+        public PathFileNameCode64StringPair FrdvFileName;
+        public PathFileNameCode64StringPair SimFileName;
 
         /// <summary>
         /// Initializes a new instance of the CNPAttachment struct.
@@ -20,7 +20,7 @@
         /// <param name="modelFileName">Model file name.</param>
         /// <param name="frdvFileName">Frdv file name.</param>
         /// <param name="simFileName">Sim file name.</param>
-        public CNPAttachment(StrCode32StringPair CNPName, StrCode64StringPair modelFileName, StrCode64StringPair frdvFileName, StrCode64StringPair simFileName)
+        public CNPAttachment(StrCode32StringPair CNPName, PathFileNameCode64StringPair modelFileName, PathFileNameCode64StringPair frdvFileName, PathFileNameCode64StringPair simFileName)
         {
             this.CNPName = CNPName;
 
@@ -36,9 +36,9 @@
         /// </summary>
         /// <param name="CNPAttachment">The FoxLib CNPAttachment.</param>
         /// <param name="nameHashManager">An StrCode32 hash manager used for hashing and unhashing names.</param>
-        /// <param name="fileHashManager">An StrCode64 hash manager used for hashing and unhashing file names.</param>
+        /// <param name="fileHashManager">An PathFileNameCode64 hash manager used for hashing and unhashing file names.</param>
         /// <returns>The FoxKit CNPAttachment.</returns>
-        public static CNPAttachment MakeFoxKitCNPAttachment(FoxLib.FormVariation.CNPAttachment CNPAttachment, StrCode32HashManager nameHashManager, StrCode64HashManager fileHashManager)
+        public static CNPAttachment MakeFoxKitCNPAttachment(FoxLib.FormVariation.CNPAttachment CNPAttachment, StrCode32HashManager nameHashManager, PathFileNameCode64HashManager fileHashManager)
         {
             uint CNPHash = CNPAttachment.CNPHash;
             ulong modelFileHash = CNPAttachment.ModelFileHash;
@@ -46,9 +46,9 @@
             ulong? simFileHash = CNPAttachment.SimFileHash;
 
             StrCode32StringPair CNPName;
-            StrCode64StringPair modelFileName;
-            StrCode64StringPair frdvFileName;
-            StrCode64StringPair simFileName;
+            PathFileNameCode64StringPair modelFileName;
+            PathFileNameCode64StringPair frdvFileName;
+            PathFileNameCode64StringPair simFileName;
 
             CNPName = nameHashManager.GetStringPairFromUnhashAttempt(CNPHash);
 
@@ -60,7 +60,7 @@
             }
             else
             {
-                frdvFileName = new StrCode64StringPair(string.Empty, IsStringOrHash.String);
+                frdvFileName = new PathFileNameCode64StringPair(string.Empty, IsStringOrHash.String);
             }
 
             if (simFileHash != null)
@@ -69,7 +69,7 @@
             }
             else
             {
-                simFileName = new StrCode64StringPair(string.Empty, IsStringOrHash.String);
+                simFileName = new PathFileNameCode64StringPair(string.Empty, IsStringOrHash.String);
             }
 
             return new CNPAttachment(CNPName, modelFileName, frdvFileName, simFileName);
@@ -80,14 +80,14 @@
         /// </summary>
         /// <param name="CNPAttachment">The FoxKit CNPAttachment.</param>
         /// <param name="nameHashManager">An StrCode32 hash manager used for hashing and unhashing names.</param>
-        /// <param name="fileHashManager">An StrCode64 hash manager used for hashing and unhashing file names.</param>
+        /// <param name="fileHashManager">An PathFileNameCode64 hash manager used for hashing and unhashing file names.</param>
         /// <returns>The FoxLib CNPAttachment.</returns>
-        public static FoxLib.FormVariation.CNPAttachment MakeFoxLibCNPAttachment(CNPAttachment CNPAttachment, StrCode32HashManager nameHashManager, StrCode64HashManager fileHashManager)
+        public static FoxLib.FormVariation.CNPAttachment MakeFoxLibCNPAttachment(CNPAttachment CNPAttachment, StrCode32HashManager nameHashManager, PathFileNameCode64HashManager fileHashManager)
         {
             StrCode32StringPair CNPName = CNPAttachment.CNPName;
-            StrCode64StringPair modelFileName = CNPAttachment.ModelFileName;
-            StrCode64StringPair frdvFileName = CNPAttachment.FrdvFileName;
-            StrCode64StringPair simFileName = CNPAttachment.SimFileName;
+            PathFileNameCode64StringPair modelFileName = CNPAttachment.ModelFileName;
+            PathFileNameCode64StringPair frdvFileName = CNPAttachment.FrdvFileName;
+            PathFileNameCode64StringPair simFileName = CNPAttachment.SimFileName;
 
             uint CNPHash;
             ulong modelFileHash;

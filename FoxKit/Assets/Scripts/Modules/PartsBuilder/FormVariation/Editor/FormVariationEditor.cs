@@ -116,7 +116,7 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
 
             EditorGUILayout.BeginHorizontal();
 
-            shownMeshGroupFoldoutStatus = EditorGUILayout.Foldout(shownMeshGroupFoldoutStatus, "Hidden Mesh Groups");
+            shownMeshGroupFoldoutStatus = EditorGUILayout.Foldout(shownMeshGroupFoldoutStatus, "Shown Mesh Groups");
 
             {
                 var shownMeshGroups = myTarget.ShownMeshGroups;

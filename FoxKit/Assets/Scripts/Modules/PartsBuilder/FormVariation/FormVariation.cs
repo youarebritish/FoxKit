@@ -22,9 +22,9 @@
         /// </summary>
         /// <param name="formVariation">The FoxLib FormVariation to convert.</param>
         /// <param name="nameHashManager">An StrCode32 hash manager used for hashing and unhashing names.</param>
-        /// <param name="fileHashManager">An StrCode64 hash manager used for hashing and unhashing file names.</param>
+        /// <param name="fileHashManager">An PathFileNameCode64 hash manager used for hashing and unhashing file names.</param>
         /// <returns>The FoxKit FormVariation.</returns>
-        public static FormVariation MakeFoxKitFormVariation(FoxLib.FormVariation.FormVariation formVariation, StrCode32HashManager nameHashManager, StrCode64HashManager fileHashManager)
+        public static FormVariation MakeFoxKitFormVariation(FoxLib.FormVariation.FormVariation formVariation, StrCode32HashManager nameHashManager, PathFileNameCode64HashManager fileHashManager)
         {
             var hiddenMeshGroups = (from hiddenMeshGroup in formVariation.HiddenMeshGroups select HiddenMeshGroup.MakeFoxKitHiddenMeshGroup(hiddenMeshGroup, nameHashManager)).ToList();
 
@@ -52,9 +52,9 @@
         /// </summary>
         /// <param name="formVariation">The FoxKit FormVariation to convert.</param>
         /// <param name="nameHashManager">An StrCode32 hash manager used for hashing and unhashing names.</param>
-        /// <param name="fileHashManager">An StrCode64 hash manager used for hashing and unhashing file names.</param>
+        /// <param name="fileHashManager">An PathFileNameCode64 hash manager used for hashing and unhashing file names.</param>
         /// <returns>The FoxLib FormVariation.</returns>
-        public static FoxLib.FormVariation.FormVariation MakeFoxLibFormVariation(FormVariation formVariation, StrCode32HashManager nameHashManager, StrCode64HashManager fileHashManager)
+        public static FoxLib.FormVariation.FormVariation MakeFoxLibFormVariation(FormVariation formVariation, StrCode32HashManager nameHashManager, PathFileNameCode64HashManager fileHashManager)
         {
             var hiddenMeshGroups = (from hiddenMeshGroup in formVariation.HiddenMeshGroups select HiddenMeshGroup.MakeFoxLibHiddenMeshGroup(hiddenMeshGroup, nameHashManager)).ToArray();
 

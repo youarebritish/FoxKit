@@ -1,7 +1,7 @@
 namespace FoxKit.Core
 {
     [System.Serializable]
-    public class StrCode64StringPair : IStringHashPair<ulong>
+    public class PathFileNameCode64StringPair : IStringHashPair<ulong>
     {
         public string String => _string;
         public ulong Hash => System.Convert.ToUInt64(_hash);/*_hash;*/ //Unity is dumb and their PropertyFields don't support ulongs
@@ -14,7 +14,7 @@ namespace FoxKit.Core
         [UnityEngine.SerializeField, OneLine.Width(50)]
         private IsStringOrHash _isUnhashed;
 
-        public StrCode64StringPair(string /*@string*/name, IsStringOrHash hashState) //This should be avoidable
+        public PathFileNameCode64StringPair(string /*@string*/name, IsStringOrHash hashState) //This should be avoidable
         {
             if (hashState == IsStringOrHash.String)
             {
@@ -30,7 +30,7 @@ namespace FoxKit.Core
             this._isUnhashed = hashState;//IsStringOrHash.String;
         }
 
-        //public StrCode64StringPair(ulong hash)
+        //public PathFileNameCode64StringPair(ulong hash)
         //{
         //    this._string = null;
         //    this._hash = hash;

@@ -6,8 +6,8 @@ namespace FoxKit.Core
     using OneLine;
     using RectEx;
 
-    [CustomPropertyDrawer(typeof(StrCode64StringPair))]
-    public class StrCode64StringPairPropertyDrawer : OneLinePropertyDrawer
+    [CustomPropertyDrawer(typeof(PathFileNameCode64StringPair))]
+    public class PathFileNameCode64StringPairPropertyDrawer : OneLinePropertyDrawer
     {
         private ComplexFieldDrawer directoryDrawer;
         private RootDirectoryDrawer rootDirectoryDrawer;

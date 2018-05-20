@@ -8,9 +8,9 @@
     [System.Serializable]
     public struct BoneAttachment
     {
-        public StrCode64StringPair ModelFileName;
-        public StrCode64StringPair FrdvFileName;
-        public StrCode64StringPair SimFileName;
+        public PathFileNameCode64StringPair ModelFileName;
+        public PathFileNameCode64StringPair FrdvFileName;
+        public PathFileNameCode64StringPair SimFileName;
 
         /// <summary>
         /// Initializes a new instance of the BoneAttachment struct.
@@ -18,7 +18,7 @@
         /// <param name="modelFileName">Model file name.</param>
         /// <param name="frdvFileName">Frdv file name.</param>
         /// <param name="simFileName">Sim file name.</param>
-        public BoneAttachment(StrCode64StringPair modelFileName, StrCode64StringPair frdvFileName, StrCode64StringPair simFileName)
+        public BoneAttachment(PathFileNameCode64StringPair modelFileName, PathFileNameCode64StringPair frdvFileName, PathFileNameCode64StringPair simFileName)
         {
             this.ModelFileName = modelFileName;
 
@@ -31,17 +31,17 @@
         /// Creates a FoxKit BoneAttachment from a given FoxLib BoneAttachment.
         /// </summary>
         /// <param name="boneAttachment">The FoxLib BoneAttachment.</param>
-        /// <param name="fileHashManager">An StrCode64 hash manager used for hashing and unhashing file names.</param>
+        /// <param name="fileHashManager">An PathFileNameCode64 hash manager used for hashing and unhashing file names.</param>
         /// <returns>The FoxKit BoneAttachment.</returns>
-        public static BoneAttachment MakeFoxKitBoneAttachment(FoxLib.FormVariation.BoneAttachment boneAttachment, StrCode64HashManager fileHashManager)
+        public static BoneAttachment MakeFoxKitBoneAttachment(FoxLib.FormVariation.BoneAttachment boneAttachment, PathFileNameCode64HashManager fileHashManager)
         {
             ulong modelFileHash = boneAttachment.ModelFileHash;
             ulong? frdvFileHash = boneAttachment.FrdvFileHash;
             ulong? simFileHash = boneAttachment.SimFileHash;
 
-            StrCode64StringPair modelFileName;
-            StrCode64StringPair frdvFileName;
-            StrCode64StringPair simFileName;
+            PathFileNameCode64StringPair modelFileName;
+            PathFileNameCode64StringPair frdvFileName;
+            PathFileNameCode64StringPair simFileName;
 
             modelFileName = fileHashManager.GetStringPairFromUnhashAttempt(modelFileHash);
 
@@ -51,7 +51,7 @@
             }
             else
             {
-                frdvFileName = new StrCode64StringPair(string.Empty, IsStringOrHash.String);
+                frdvFileName = new PathFileNameCode64StringPair(string.Empty, IsStringOrHash.String);
             }
 
             if (simFileHash != null)
@@ -60,7 +60,7 @@
             }
             else
             {
-                simFileName = new StrCode64StringPair(string.Empty, IsStringOrHash.String);
+                simFileName = new PathFileNameCode64StringPair(string.Empty, IsStringOrHash.String);
             }
 
             return new BoneAttachment(modelFileName, frdvFileName, simFileName);
@@ -70,13 +70,13 @@
         /// Creates a FoxLib BoneAttachment from a given FoxKit BoneAttachment.
         /// </summary>
         /// <param name="boneAttachment">The FoxKit BoneAttachment.</param>
-        /// <param name="fileHashManager">An StrCode64 hash manager used for hashing and unhashing file names.</param>
+        /// <param name="fileHashManager">An PathFileNameCode64 hash manager used for hashing and unhashing file names.</param>
         /// <returns>The FoxLib BoneAttachment.</returns>
-        public static FoxLib.FormVariation.BoneAttachment MakeFoxLibBoneAttachment(BoneAttachment boneAttachment, StrCode64HashManager fileHashManager)
+        public static FoxLib.FormVariation.BoneAttachment MakeFoxLibBoneAttachment(BoneAttachment boneAttachment, PathFileNameCode64HashManager fileHashManager)
         {
-            StrCode64StringPair modelFileName = boneAttachment.ModelFileName;
-            StrCode64StringPair frdvFileName = boneAttachment.FrdvFileName;
-            StrCode64StringPair simFileName = boneAttachment.SimFileName;
+            PathFileNameCode64StringPair modelFileName = boneAttachment.ModelFileName;
+            PathFileNameCode64StringPair frdvFileName = boneAttachment.FrdvFileName;
+            PathFileNameCode64StringPair simFileName = boneAttachment.SimFileName;
 
             ulong modelFileHash;
             ulong? frdvFileHash = null;

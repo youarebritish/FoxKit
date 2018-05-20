@@ -19,7 +19,7 @@
 
             StrCode32HashManager nameHashManager = new StrCode32HashManager();
 
-            StrCode64HashManager fileHashManager = new StrCode64HashManager();
+            PathFileNameCode64HashManager fileHashManager = new PathFileNameCode64HashManager();
 
             FoxLib.FormVariation.FormVariation foxLibFormVariation = FormVariation.MakeFoxLibFormVariation(foxKitFormVariation, nameHashManager, fileHashManager);
 
