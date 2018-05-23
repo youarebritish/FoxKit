@@ -15,12 +15,12 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Importer
         /// <summary>
         /// Hash manager for names.
         /// </summary>
-        private StrCode32HashManager nameHashManager;
+        private static StrCode32HashManager nameHashManager;
 
         /// <summary>
         /// Hash manager for file names.
         /// </summary>
-        private PathFileNameCode64HashManager fileNameHashManager;
+        private static PathFileNameCode64HashManager fileNameHashManager;
 
         /// <summary>
         /// Import a .fv2 file.
@@ -28,7 +28,10 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Importer
         /// <param name="ctx"></param>
         public override void OnImportAsset(AssetImportContext ctx)
         {
-            InitializeDictionaries();
+            if (nameHashManager == null || fileNameHashManager == null)
+            {
+                InitializeDictionaries();
+            }
 
             FoxLib.FormVariation.FormVariation formVariation = null;
 
@@ -80,11 +83,11 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Importer
         /// </summary>
         private void InitializeDictionaries()
         {
-            this.nameHashManager = new StrCode32HashManager();
-            this.fileNameHashManager = new PathFileNameCode64HashManager();
+            nameHashManager = new StrCode32HashManager();
+            fileNameHashManager = new PathFileNameCode64HashManager();
 
-            this.nameHashManager.LoadDictionary(FormVariationPreferences.Instance.NameDictionary);
-            this.fileNameHashManager.LoadDictionary(FormVariationPreferences.Instance.FileDictionary);
+            nameHashManager.LoadDictionary(FormVariationPreferences.Instance.NameDictionary);
+            fileNameHashManager.LoadDictionary(FormVariationPreferences.Instance.FileDictionary);
         }
     }
 }
