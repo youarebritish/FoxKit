@@ -1,5 +1,6 @@
 namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
 {
+    using System;
     using System.Collections.Generic;
 
     using UnityEngine;
@@ -69,27 +70,7 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
 
             hiddenMeshGroupFoldoutStatus = EditorGUILayout.Foldout(hiddenMeshGroupFoldoutStatus, "Hidden Mesh Groups");
 
-            {
-                var hiddenMeshGroups = myTarget.HiddenMeshGroups;
-
-                if (myTarget.HiddenMeshGroups.Count < 255)
-                {
-                    if (GUILayout.Button("Add"))
-                    {
-                        hiddenMeshGroups.Add(new HiddenMeshGroup());
-                        this.Repaint();
-                    }
-                }
-
-                if (myTarget.HiddenMeshGroups.Count > 0)
-                {
-                    if (GUILayout.Button("Remove"))
-                    {
-                        hiddenMeshGroups.RemoveAt(hiddenMeshGroups.Count - 1);
-                        this.Repaint();
-                    }
-                }
-            }
+            drawTools(myTarget.HiddenMeshGroups, this);
 
             EditorGUILayout.EndHorizontal();
 
@@ -102,7 +83,7 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
 
                     if (hiddenMeshGroups.arraySize > 0)
                     {
-                        drawMeshGroups(hiddenMeshGroups, subHiddenMeshGroupFoldoutStatus);
+                        drawProperty(hiddenMeshGroups, myTarget.HiddenMeshGroups, drawMeshGroups, subHiddenMeshGroupFoldoutStatus);
                     }
                 }
 
@@ -118,27 +99,7 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
 
             shownMeshGroupFoldoutStatus = EditorGUILayout.Foldout(shownMeshGroupFoldoutStatus, "Shown Mesh Groups");
 
-            {
-                var shownMeshGroups = myTarget.ShownMeshGroups;
-
-                if (myTarget.ShownMeshGroups.Count < 255)
-                {
-                    if (GUILayout.Button("Add"))
-                    {
-                        shownMeshGroups.Add(new ShownMeshGroup());
-                        this.Repaint();
-                    }
-                }
-
-                if (myTarget.ShownMeshGroups.Count > 0)
-                {
-                    if (GUILayout.Button("Remove"))
-                    {
-                        shownMeshGroups.RemoveAt(shownMeshGroups.Count - 1);
-                        this.Repaint();
-                    }
-                }
-            }
+            drawTools(myTarget.ShownMeshGroups, this);
 
             EditorGUILayout.EndHorizontal();
 
@@ -151,7 +112,7 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
 
                     if (shownMeshGroups.arraySize > 0)
                     {
-                        drawMeshGroups(shownMeshGroups, subShownMeshGroupFoldoutStatus);
+                        drawProperty(shownMeshGroups, myTarget.ShownMeshGroups, drawMeshGroups, subShownMeshGroupFoldoutStatus);
                     }
                 }
 
@@ -167,27 +128,7 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
 
             textureSwapFoldoutStatus = EditorGUILayout.Foldout(textureSwapFoldoutStatus, "Texture Swaps");
 
-            {
-                var textureSwaps = myTarget.TextureSwaps;
-
-                if (myTarget.TextureSwaps.Count < 255)
-                {
-                    if (GUILayout.Button("Add"))
-                    {
-                        textureSwaps.Add(new TextureSwap());
-                        this.Repaint();
-                    }
-                }
-
-                if (myTarget.TextureSwaps.Count > 0)
-                {
-                    if (GUILayout.Button("Remove"))
-                    {
-                        textureSwaps.RemoveAt(textureSwaps.Count - 1);
-                        this.Repaint();
-                    }
-                }
-            }
+            drawTools(myTarget.TextureSwaps, this);
 
             EditorGUILayout.EndHorizontal();
 
@@ -200,7 +141,7 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
 
                     if (textureSwaps.arraySize > 0)
                     {
-                        drawTextureSwaps(textureSwaps);
+                        drawProperty(textureSwaps, myTarget.TextureSwaps, drawTextureSwaps, subTextureSwapFoldoutStatus);
                     }
                 }
 
@@ -218,27 +159,7 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
 
             boneAttachmentFoldoutStatus = EditorGUILayout.Foldout(boneAttachmentFoldoutStatus, "Bone Attachments");
 
-            {
-                var boneAttachments = myTarget.BoneAttachments;
-
-                if (myTarget.BoneAttachments.Count < 255)
-                {
-                    if (GUILayout.Button("Add"))
-                    {
-                        boneAttachments.Add(new BoneAttachment());
-                        this.Repaint();
-                    }
-                }
-
-                if (myTarget.BoneAttachments.Count > 0)
-                {
-                    if (GUILayout.Button("Remove"))
-                    {
-                        boneAttachments.RemoveAt(boneAttachments.Count - 1);
-                        this.Repaint();
-                    }
-                }
-            }
+            drawTools(myTarget.BoneAttachments, this);
 
             EditorGUILayout.EndHorizontal();
 
@@ -251,7 +172,7 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
 
                     if (boneAttachments.arraySize > 0)
                     {
-                        drawBoneAttachments(boneAttachments);
+                        drawProperty(boneAttachments, myTarget.BoneAttachments, drawBoneAttachments, subBoneAttachmentFoldoutStatus);
                     }
                 }
 
@@ -267,28 +188,7 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
 
             CNPAttachmentFoldoutStatus = EditorGUILayout.Foldout(CNPAttachmentFoldoutStatus, "CNP Attachments");
 
-            {
-
-                var CNPAttachments = myTarget.CNPAttachments;
-
-                if (myTarget.CNPAttachments.Count < 255)
-                {
-                    if (GUILayout.Button("Add"))
-                    {
-                        CNPAttachments.Add(new CNPAttachment());
-                        this.Repaint();
-                    }
-                }
-
-                if (myTarget.CNPAttachments.Count > 0)
-                {
-                    if (GUILayout.Button("Remove"))
-                    {
-                        CNPAttachments.RemoveAt(CNPAttachments.Count - 1);
-                        this.Repaint();
-                    }
-                }
-            }
+            drawTools(myTarget.CNPAttachments, this);
 
             EditorGUILayout.EndHorizontal();
 
@@ -301,7 +201,7 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
 
                     if (CNPAttachments.arraySize > 0)
                     {
-                        drawCNPAttachments(CNPAttachments);
+                        drawProperty(CNPAttachments, myTarget.CNPAttachments, drawCNPAttachments, subCNPAttachmentFoldoutStatus);
                     }
                 }
 
@@ -312,58 +212,84 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
             serializedObject.ApplyModifiedProperties();
         }
 
-        private static void drawMeshGroups(SerializedProperty serializedProperty, bool[] meshGroupsFoldoutStatus)
+        private static void drawTools<TProperty>(List<TProperty> property, FormVariationEditor editor) where TProperty : new()
         {
-            for (int i = 0; i < serializedProperty.arraySize; i++)
+            if (property.Count < 255)
             {
-                meshGroupsFoldoutStatus[i] = EditorGUILayout.Foldout(meshGroupsFoldoutStatus[i], "Element " + i);
-                if (meshGroupsFoldoutStatus[i])
+                if (GUILayout.Button("Add"))
                 {
-                    EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(i).FindPropertyRelative("MeshGroupName"), true);
+                    property.Add(new TProperty());
+                    editor.Repaint();
+                }
+            }
+
+            if (property.Count > 0)
+            {
+                if (GUILayout.Button("Remove"))
+                {
+                    property.RemoveAt(property.Count - 1);
+                    editor.Repaint();
                 }
             }
         }
 
-        private static void drawTextureSwaps(SerializedProperty serializedProperty)
+        private static void drawProperty<TProperty>(SerializedProperty serializedProperty, List<TProperty> property, Action<SerializedProperty, bool, int> drawFunc, bool[] status)
         {
             for (int i = 0; i < serializedProperty.arraySize; i++)
             {
-                subTextureSwapFoldoutStatus[i] = EditorGUILayout.Foldout(subTextureSwapFoldoutStatus[i], "Element " + i);
-                if (subTextureSwapFoldoutStatus[i])
+                EditorGUILayout.BeginHorizontal();
+
+                status[i] = EditorGUILayout.Foldout(status[i], "Element " + i);
+
+                if (GUILayout.Button("Remove"))
                 {
-                    EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(i).FindPropertyRelative("MaterialInstanceName"), true);
-                    EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(i).FindPropertyRelative("TextureTypeName"), true);
-                    EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(i).FindPropertyRelative("TextureFileName"), true);
+                    property.RemoveAt(i);
                 }
+
+                serializedProperty.serializedObject.ApplyModifiedProperties();
+
+                EditorGUILayout.EndHorizontal();
+
+                drawFunc(serializedProperty, status[i], i);
             }
         }
 
-        private static void drawBoneAttachments(SerializedProperty serializedProperty)
+        private static void drawMeshGroups(SerializedProperty serializedProperty, bool status, int index)
         {
-            for (int i = 0; i < serializedProperty.arraySize; i++)
+            if (status)
             {
-                subBoneAttachmentFoldoutStatus[i] = EditorGUILayout.Foldout(subBoneAttachmentFoldoutStatus[i], "Element " + i);
-                if (subBoneAttachmentFoldoutStatus[i])
-                {
-                    EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(i).FindPropertyRelative("ModelFileName"), true);
-                    EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(i).FindPropertyRelative("FrdvFileName"), true);
-                    EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(i).FindPropertyRelative("SimFileName"), true);
-                }
+                EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(index).FindPropertyRelative("MeshGroupName"), true);
             }
         }
 
-        private static void drawCNPAttachments(SerializedProperty serializedProperty)
+        private static void drawTextureSwaps(SerializedProperty serializedProperty, bool status, int index)
         {
-            for (int i = 0; i < serializedProperty.arraySize; i++)
+            if (status)
             {
-                subCNPAttachmentFoldoutStatus[i] = EditorGUILayout.Foldout(subCNPAttachmentFoldoutStatus[i], "Element " + i);
-                if (subCNPAttachmentFoldoutStatus[i])
-                {
-                    EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(i).FindPropertyRelative("CNPName"), true);
-                    EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(i).FindPropertyRelative("ModelFileName"), true);
-                    EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(i).FindPropertyRelative("FrdvFileName"), true);
-                    EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(i).FindPropertyRelative("SimFileName"), true);
-                }
+                EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(index).FindPropertyRelative("MaterialInstanceName"), true);
+                EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(index).FindPropertyRelative("TextureTypeName"), true);
+                EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(index).FindPropertyRelative("TextureFileName"), true);
+            }
+        }
+
+        private static void drawBoneAttachments(SerializedProperty serializedProperty, bool status, int index)
+        {
+            if (status)
+            {
+                EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(index).FindPropertyRelative("ModelFileName"), true);
+                EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(index).FindPropertyRelative("FrdvFileName"), true);
+                EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(index).FindPropertyRelative("SimFileName"), true);
+            }
+        }
+
+        private static void drawCNPAttachments(SerializedProperty serializedProperty, bool status, int index)
+        {
+            if (status)
+            {
+                EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(index).FindPropertyRelative("CNPName"), true);
+                EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(index).FindPropertyRelative("ModelFileName"), true);
+                EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(index).FindPropertyRelative("FrdvFileName"), true);
+                EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(index).FindPropertyRelative("SimFileName"), true);
             }
         }
     }
