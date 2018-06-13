@@ -4,8 +4,7 @@
 
     using FoxKit.Utils;
 
-    using FoxTool.Fox;
-    using FoxTool.Fox.Types.Values;
+    using FoxLib;
 
     using UnityEngine;
 
@@ -62,7 +61,7 @@
         protected override short ClassId => 88;
 
         /// <inheritdoc />
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
+        public override void OnAssetsImported(FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
             base.OnAssetsImported(tryGetAsset);
             tryGetAsset(this.defaultShellPartsFilePath, out this.defaultShellPartsFile);
@@ -70,26 +69,26 @@
         }
 
         /// <inheritdoc />
-        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
+        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
             switch (propertyData.Name)
             {
                 case "rotationLimitLeftRight":
-                    this.rotationLimitLeftRight = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+                    this.rotationLimitLeftRight = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);
                     break;
                 case "rotationLimitUp":
-                    this.rotationLimitUp = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+                    this.rotationLimitUp = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);
                     break;
                 case "rotationLimitDown":
-                    this.rotationLimitDown = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+                    this.rotationLimitDown = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);
                     break;
                 case "defaultShellPartsFile":
-                    this.defaultShellPartsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    this.defaultShellPartsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "flareShellPartsFile":
-                    this.flareShellPartsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    this.flareShellPartsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
             }
         }

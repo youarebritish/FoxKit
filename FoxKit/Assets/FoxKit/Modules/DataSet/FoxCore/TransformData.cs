@@ -6,8 +6,7 @@
 
     using FoxKit.Utils;
 
-    using FoxTool.Fox;
-    using FoxTool.Fox.Types.Values;
+    using FoxLib;
 
     using UnityEngine;
     using UnityEngine.Assertions;
@@ -151,7 +150,7 @@
         }
 
         /// <inheritdoc />
-        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
+        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
@@ -159,14 +158,14 @@
             {
                 case "parent":
                     {
-                        var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityHandle>(propertyData).Handle;
+                        var address = DataSetUtils.GetStaticArrayPropertyValue<ulong>(propertyData);
                         this.parent = initFunctions.GetEntityFromAddress(address) as TransformData;
                         break;
                     }
 
                 case "transform":
                     {
-                        var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
+                        var address = DataSetUtils.GetStaticArrayPropertyValue<ulong>(propertyData);
                         this.transform = initFunctions.GetEntityFromAddress(address) as TransformEntity;
 
                         if (this.transform != null)
@@ -179,7 +178,7 @@
 
                 case "shearTransform":
                     {
-                        var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
+                        var address = DataSetUtils.GetStaticArrayPropertyValue<ulong>(propertyData);
                         this.shearTransform = initFunctions.GetEntityFromAddress(address) as TransformEntity;
 
                         if (this.shearTransform != null)
@@ -192,7 +191,7 @@
 
                 case "pivotTransform":
                     {
-                        var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
+                        var address = DataSetUtils.GetStaticArrayPropertyValue<ulong>(propertyData);
                         this.pivotTransform = initFunctions.GetEntityFromAddress(address) as TransformEntity;
 
                         if (this.pivotTransform != null)
@@ -204,13 +203,13 @@
                     }
 
                 case "children":
-                    this.children = (from handle in DataSetUtils.GetListValues<FoxEntityHandle>(propertyData)
-                                     select initFunctions.GetEntityFromAddress(handle.Handle) as TransformData)
+                    this.children = (from handle in DataSetUtils.GetListValues<ulong>(propertyData)
+                                     select initFunctions.GetEntityFromAddress(handle) as TransformData)
                                      .ToList();
                     break;
 
                 case "flags":
-                    var flags = (Flags)DataSetUtils.GetStaticArrayPropertyValue<FoxUInt32>(propertyData).Value;
+                    var flags = (Flags)DataSetUtils.GetStaticArrayPropertyValue<uint>(propertyData);
                     this.inheritTransform = flags.HasFlag(Flags.EnableInheritTransform);
                     this.visibility = flags.HasFlag(Flags.EnableVisibility);
                     this.selection = flags.HasFlag(Flags.EnableVisibility);

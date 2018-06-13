@@ -8,8 +8,6 @@
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
-    using FoxTool.Fox;
-
     using UnityEditor.Experimental.AssetImporters;
 
     using UnityEngine;

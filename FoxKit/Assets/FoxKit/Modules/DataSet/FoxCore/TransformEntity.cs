@@ -4,10 +4,12 @@
 
     using FoxKit.Utils;
 
-    using FoxTool.Fox;
-    using FoxTool.Fox.Types.Structs;
+    using FoxLib;
 
     using UnityEngine;
+
+    using Quaternion = UnityEngine.Quaternion;
+    using Vector3 = UnityEngine.Vector3;
 
     /// <inheritdoc />
     /// <summary>
@@ -43,22 +45,22 @@
         protected override short ClassId => 80;
 
         /// <inheritdoc />
-        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
+        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
             switch (propertyData.Name)
             {
                 case "transform_translation":
-                    var foxTranslation = DataSetUtils.GetStaticArrayPropertyValue<FoxVector3>(propertyData);
+                    var foxTranslation = DataSetUtils.GetStaticArrayPropertyValue<Core.Vector3>(propertyData);
                     this.translation = DataSetUtils.FoxToolToUnity(foxTranslation);
                     break;
                 case "transform_rotation_quat":
-                    var foxRotation = DataSetUtils.GetStaticArrayPropertyValue<FoxQuat>(propertyData);
+                    var foxRotation = DataSetUtils.GetStaticArrayPropertyValue<Core.Quaternion>(propertyData);
                     this.rotation = DataSetUtils.FoxToolToUnity(foxRotation);
                     break;
                 case "transform_scale":
-                    var foxScale = DataSetUtils.GetStaticArrayPropertyValue<FoxVector3>(propertyData);
+                    var foxScale = DataSetUtils.GetStaticArrayPropertyValue<Core.Vector3>(propertyData);
                     this.scale = DataSetUtils.FoxToolToUnity(foxScale);
                     break;
             }

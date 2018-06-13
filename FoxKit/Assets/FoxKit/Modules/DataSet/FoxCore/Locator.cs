@@ -4,8 +4,7 @@
 
     using FoxKit.Utils;
 
-    using FoxTool.Fox;
-    using FoxTool.Fox.Types.Values;
+    using FoxLib;
 
     using UnityEditor;
 
@@ -31,13 +30,13 @@
         protected override short ClassId => 272;
 
         /// <inheritdoc />
-        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
+        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
             if (propertyData.Name == "size")
             {
-                this.size = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+                this.size = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);
             }
         }
     }

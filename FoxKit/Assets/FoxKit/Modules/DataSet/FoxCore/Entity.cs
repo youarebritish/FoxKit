@@ -3,13 +3,13 @@
     using System;
     using System.Collections.Generic;
 
-    using FoxTool.Fox;
+    using FoxLib;
 
     using UnityEditor;
 
     using UnityEngine;
     using UnityEngine.Assertions;
-
+    
     /// <inheritdoc />
     /// <summary>
     /// Base class for Fox Engine objects.
@@ -57,9 +57,9 @@
         /// <param name="initFunctions">
         /// Helper functions to aid in initialization.
         /// </param>
-        public void Initialize(DataSet dataSet, FoxEntity entityData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
+        public void Initialize(DataSet dataSet, FoxLib.Core.Entity entityData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
-            Assert.AreEqual(entityData.Unknown1, this.ClassId, $"Expected {this.ClassId} for class {entityData.ClassName}, but was {entityData.Unknown2}.");
+            Assert.AreEqual(entityData.ClassId, this.ClassId, $"Expected {this.ClassId} for class {entityData.ClassName}, but was {entityData.ClassId}.");
 
             this.DataSet = dataSet;
             
@@ -80,7 +80,7 @@
         /// <param name="tryGetAsset">
         /// Function to load a newly-imported or already existing asset.
         /// </param>
-        public virtual void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
+        public virtual void OnAssetsImported(FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
         }
 
@@ -115,7 +115,7 @@
         /// <param name="initFunctions">
         /// Initialization functions.
         /// </param>
-        protected virtual void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
+        protected virtual void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
         }
     }

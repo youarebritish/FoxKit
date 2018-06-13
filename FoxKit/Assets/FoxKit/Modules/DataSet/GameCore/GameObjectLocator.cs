@@ -5,8 +5,7 @@
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
-    using FoxTool.Fox;
-    using FoxTool.Fox.Types.Values;
+    using FoxLib;
 
     using UnityEngine;
     using UnityEngine.Assertions;
@@ -40,22 +39,22 @@
         protected override short ClassId => 272;
 
         /// <inheritdoc />
-        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
+        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
             switch (propertyData.Name)
             {
                 case "typeName":
-                    this.typeName = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                    this.typeName = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
                     break;
                 case "groupId":
-                    this.groupId = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt32>(propertyData).Value;
+                    this.groupId = DataSetUtils.GetStaticArrayPropertyValue<uint>(propertyData);
                     break;
                 case "parameters":
-                    var address = DataSetUtils.GetStaticArrayPropertyValue<FoxEntityPtr>(propertyData).EntityPtr;
+                    var address = DataSetUtils.GetStaticArrayPropertyValue<ulong>(propertyData);
                     this.parameters = initFunctions.GetEntityFromAddress(address) as GameObjectLocatorParameter;
-                    Assert.IsNotNull(this.parameters, $"Parameters for {name} was null.");
+                    Assert.IsNotNull(this.parameters, $"Parameters for {this.name} was null.");
 
                     this.parameters.Owner = this;
                     break;

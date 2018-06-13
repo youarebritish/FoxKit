@@ -1,15 +1,14 @@
-﻿using FoxKit.Modules.DataSet.FoxCore;
-using FoxTool.Fox;
-using FoxTool.Fox.Containers;
-using FoxTool.Fox.Types;
-using FoxTool.Fox.Types.Structs;
-using FoxTool.Fox.Types.Values;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine.Assertions;
-
-namespace FoxKit.Utils
+﻿namespace FoxKit.Utils
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using FoxKit.Modules.DataSet.FoxCore;
+
+    using FoxLib;
+
+    using UnityEngine.Assertions;
+
     /// <summary>
     /// Helper functions for working with DataSets.
     /// </summary>
@@ -21,44 +20,40 @@ namespace FoxKit.Utils
         /// <typeparam name="TValue">Type of the value to get.</typeparam>
         /// <param name="property">The property whose value to get.</param>
         /// <returns>The extracted value.</returns>
-        public static TValue GetStaticArrayPropertyValue<TValue>(FoxProperty property) where TValue : IFoxValue, new()
+        public static TValue GetStaticArrayPropertyValue<TValue>(Core.PropertyInfo property)
         {
-            CheckContainerType(property, FoxContainerType.StaticArray);
+            CheckContainerType(property, Core.ContainerType.StaticArray);
 
-            var container = (property.Container as FoxStaticArray<TValue>).ToList();
-            Assert.IsTrue(container.Count == 1,
-                $"Expected a StaticArray containing exactly one element, but found one with {container.Count} in property {property.Name}.");
+            var container = ((Core.Container<TValue>.StaticArray)property.Container).Item;
+            Assert.IsTrue(
+                container.Length == 1,
+                $"Expected a StaticArray containing exactly one element, but found one with {container.Length} in property {property.Name}.");
 
             return container[0];
         }
 
-        public static List<TValue> GetDynamicArrayValues<TValue>(FoxProperty property) where TValue : IFoxValue, new()
+        public static List<TValue> GetDynamicArrayValues<TValue>(Core.PropertyInfo property)
         {
-            CheckContainerType(property, FoxContainerType.DynamicArray);
-            return (property.Container as FoxDynamicArray<TValue>).ToList();
+            CheckContainerType(property, Core.ContainerType.DynamicArray);
+            return ((Core.Container<TValue>.DynamicArray)property.Container).Item.ToList();
         }
 
-        public static List<TValue> GetListValues<TValue>(FoxProperty property) where TValue : IFoxValue, new()
+        public static List<TValue> GetListValues<TValue>(Core.PropertyInfo property)
         {
-            CheckContainerType(property, FoxContainerType.List);
-            return (property.Container as FoxList<TValue>).ToList();
+            CheckContainerType(property, Core.ContainerType.List);
+            return ((Core.Container<TValue>.List)property.Container).Item.ToList();
         }
 
-        public static Dictionary<FoxStringLookupLiteral, TValue> GetStringMap<TValue>(FoxProperty property) where TValue : IFoxValue, new()
+        public static Dictionary<string, TValue> GetStringMap<TValue>(Core.PropertyInfo property)
         {
-            CheckContainerType(property, FoxContainerType.StringMap);
-            var container = property.Container as FoxStringMap<TValue>;
-            return container.ToDictionary();
+            CheckContainerType(property, Core.ContainerType.StringMap);
+            var container = (Core.Container<TValue>.StringMap)property.Container;
+            return container.Item.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
 
-        public static string ExtractFilePath(FoxFilePtr filePtr)
+        public static string ExtractFilePath(string filePtr)
         {
-            return FormatFilePath(filePtr.ToString());
-        }
-
-        public static string ExtractFilePath(FoxPath path)
-        {
-            return FormatFilePath(path.ToString());
+            return FormatFilePath(filePtr);
         }
         
         private static string FormatFilePath(string path)
@@ -71,21 +66,21 @@ namespace FoxKit.Utils
             return path.Substring(1);
         }
 
-        public static EntityLink MakeEntityLink(DataSet owningDataSet, FoxEntityLink foxEntityLink)
+        public static EntityLink MakeEntityLink(DataSet owningDataSet, Core.EntityLink foxEntityLink)
         {
             return new EntityLink(owningDataSet,
-                foxEntityLink.PackagePathLiteral.Literal,
-                foxEntityLink.ArchivePathLiteral.Literal,
-                foxEntityLink.NameInArchiveLiteral.Literal,
+                foxEntityLink.PackagePath,
+                foxEntityLink.ArchivePath,
+                foxEntityLink.NameInArchive,
                 foxEntityLink.EntityHandle);
         }
-
-        public static UnityEngine.Vector3 FoxToolToUnity(FoxVector3 foxVector)
+        
+        public static UnityEngine.Vector3 FoxToolToUnity(Core.Vector3 foxVector)
         {
             return new UnityEngine.Vector3(foxVector.Z, foxVector.Y, foxVector.X);
         }
 
-        public static UnityEngine.Quaternion FoxToolToUnity(FoxQuat foxQuat)
+        public static UnityEngine.Quaternion FoxToolToUnity(Core.Quaternion foxQuat)
         {
             return new UnityEngine.Quaternion(-foxQuat.Z, -foxQuat.Y, -foxQuat.X, foxQuat.W);
         }
@@ -95,9 +90,10 @@ namespace FoxKit.Utils
         /// </summary>
         /// <param name="property">The property whose type to check.</param>
         /// <param name="expectedContainerType">The expected container type.</param>
-        private static void CheckContainerType(FoxProperty property, FoxContainerType expectedContainerType)
+        private static void CheckContainerType(Core.PropertyInfo property, Core.ContainerType expectedContainerType)
         {
-            Assert.IsTrue(property.ContainerType == expectedContainerType,
+            Assert.IsTrue(
+                property.ContainerType == expectedContainerType,
                 $"Expected container type {expectedContainerType} but found {property.ContainerType} in property {property.Name}.");
         }
     }

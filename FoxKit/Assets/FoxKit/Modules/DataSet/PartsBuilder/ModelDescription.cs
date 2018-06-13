@@ -8,8 +8,7 @@
     using FoxKit.Modules.DataSet.Importer;
     using FoxKit.Utils;
 
-    using FoxTool.Fox;
-    using FoxTool.Fox.Types.Values;
+    using FoxLib;
 
     using UnityEngine;
 
@@ -225,48 +224,48 @@
         }
 
         /// <inheritdoc />
-        protected override void ReadProperty(FoxProperty propertyData, EntityFactory.EntityInitializeFunctions initFunctions)
+        protected override void ReadProperty(Core.PropertyInfo propertyData, EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
             switch (propertyData.Name)
             {
                 case "modelFile":
-                    this.modelFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    this.modelFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "connectPointFile":
-                    this.connectPointFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    this.connectPointFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "gameRigFile":
-                    this.gameRigFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    this.gameRigFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "helpBoneFile":
-                    this.helpBoneFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    this.helpBoneFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "lipAdjustBinaryFile":
-                    this.lipAdjustBinaryFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    this.lipAdjustBinaryFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "facialSettingFile":
-                    this.facialSettingFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    this.facialSettingFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "invisibleMeshNames":
-                    this.invisibleMeshNames = (from name in DataSetUtils.GetDynamicArrayValues<FoxString>(propertyData)
+                    this.invisibleMeshNames = (from name in DataSetUtils.GetDynamicArrayValues<string>(propertyData)
                                                select name.ToString()).ToList();
                     break;
                 case "lodFarPixelSize":
-                    this.lodFarPixelSize = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+                    this.lodFarPixelSize = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);
                     break;
                 case "lodNearPixelSize":
-                    this.lodNearPixelSize = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+                    this.lodNearPixelSize = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);
                     break;
                 case "lodPolygonSize":
-                    this.lodPolygonSize = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+                    this.lodPolygonSize = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);
                     break;
                 case "drawRejectionLevel":
-                    this.drawRejectionLevel = (DrawRejectionLevel)DataSetUtils.GetStaticArrayPropertyValue<FoxInt32>(propertyData).Value;
+                    this.drawRejectionLevel = (DrawRejectionLevel)DataSetUtils.GetStaticArrayPropertyValue<int>(propertyData);
                     break;
                 case "rejectFarRangeShadowCast":
-                    this.rejectFarRangeShadowCast = (RejectFarRangeShadowCast)DataSetUtils.GetStaticArrayPropertyValue<FoxInt32>(propertyData).Value;
+                    this.rejectFarRangeShadowCast = (RejectFarRangeShadowCast)DataSetUtils.GetStaticArrayPropertyValue<int>(propertyData);
                     break;
             }
         }

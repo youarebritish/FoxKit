@@ -5,8 +5,7 @@
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
-    using FoxTool.Fox;
-    using FoxTool.Fox.Types.Values;
+    using FoxLib;
 
     using UnityEngine;
 
@@ -111,7 +110,7 @@
         protected override short ClassId => 128;
 
         /// <inheritdoc />
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
+        public override void OnAssetsImported(FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
             base.OnAssetsImported(tryGetAsset);
             tryGetAsset(this.weaponFilePath, out this.weaponFile);
@@ -119,47 +118,47 @@
         }
 
         /// <inheritdoc />
-        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
+        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
             switch (propertyData.Name)
             {
                 case "attackId":
-                    this.attackId = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                    this.attackId = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
                     break;
                 case "equipId":
-                    this.equipId = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                    this.equipId = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
                     break;
                 case "bulletId":
-                    this.bulletId = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                    this.bulletId = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
                     break;
                 case "weaponImplTypeIndex":
-                    this.weaponImplTypeIndex = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
+                    this.weaponImplTypeIndex = DataSetUtils.GetStaticArrayPropertyValue<byte>(propertyData);
                     break;
                 case "fireInterval":
-                    this.fireInterval = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+                    this.fireInterval = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);
                     break;
                 case "weaponFile":
-                    this.weaponFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    this.weaponFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "ammoFile":
-                    this.ammoFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    this.ammoFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "weaponBoneName":
-                    this.weaponBoneName = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                    this.weaponBoneName = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
                     break;
                 case "turretBoneName":
-                    this.turretBoneName = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                    this.turretBoneName = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
                     break;
                 case "minPitch":
-                    this.minPitch = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+                    this.minPitch = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);
                     break;
                 case "maxPitch":
-                    this.maxPitch = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+                    this.maxPitch = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);
                     break;
                 case "rotSpeed":
-                    this.rotSpeed = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+                    this.rotSpeed = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);
                     break;
             }
         }

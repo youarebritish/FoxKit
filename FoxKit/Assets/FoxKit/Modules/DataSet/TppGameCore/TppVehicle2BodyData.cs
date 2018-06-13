@@ -6,8 +6,7 @@
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
-    using FoxTool.Fox;
-    using FoxTool.Fox.Types.Values;
+    using FoxLib;
 
     using UnityEngine;
     using UnityEngine.Assertions;
@@ -77,7 +76,7 @@
         protected override short ClassId => 128;
 
         /// <inheritdoc />
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
+        public override void OnAssetsImported(FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
             base.OnAssetsImported(tryGetAsset);
             tryGetAsset(this.partsFilePath, out this.partsFile);
@@ -91,34 +90,34 @@
         }
 
         /// <inheritdoc />
-        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
+        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
             switch (propertyData.Name)
             {
                 case "vehicleTypeIndex":
-                    this.vehicleTypeIndex = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
+                    this.vehicleTypeIndex = DataSetUtils.GetStaticArrayPropertyValue<byte>(propertyData);
                     break;
                 case "proxyVehicleTypeIndex":
-                    this.proxyVehicleTypeIndex = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
+                    this.proxyVehicleTypeIndex = DataSetUtils.GetStaticArrayPropertyValue<byte>(propertyData);
                     break;
                 case "bodyImplTypeIndex":
-                    this.bodyImplTypeIndex = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
+                    this.bodyImplTypeIndex = DataSetUtils.GetStaticArrayPropertyValue<byte>(propertyData);
                     break;
                 case "partsFile":
-                    this.partsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    this.partsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "bodyInstanceCount":
-                    this.bodyInstanceCount = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
+                    this.bodyInstanceCount = DataSetUtils.GetStaticArrayPropertyValue<byte>(propertyData);
                     break;
                 case "weaponParams":
-                    var addresses = DataSetUtils.GetDynamicArrayValues<FoxEntityPtr>(propertyData);
+                    var addresses = DataSetUtils.GetDynamicArrayValues<ulong>(propertyData);
                     this.weaponParams = new List<TppVehicle2WeaponParameter>(addresses.Count);
 
                     foreach (var address in addresses)
                     {
-                        var param = initFunctions.GetEntityFromAddress(address.EntityPtr) as TppVehicle2WeaponParameter;
+                        var param = initFunctions.GetEntityFromAddress(address) as TppVehicle2WeaponParameter;
                         Assert.IsNotNull(param, $"Parameter in {this.name} must not be null.");
 
                         this.weaponParams.Add(param);
@@ -127,7 +126,7 @@
 
                     break;
                 case "fovaFiles":
-                    var filePtrList = DataSetUtils.GetDynamicArrayValues<FoxFilePtr>(propertyData);
+                    var filePtrList = DataSetUtils.GetDynamicArrayValues<string>(propertyData);
                     this.fovaFiles = new List<UnityEngine.Object>(filePtrList.Count);
                     this.fovaFilesPaths = new List<string>(filePtrList.Count);
 

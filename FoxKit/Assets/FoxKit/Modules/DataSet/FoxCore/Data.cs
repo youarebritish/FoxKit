@@ -4,8 +4,7 @@
 
     using FoxKit.Utils;
 
-    using FoxTool.Fox;
-    using FoxTool.Fox.Types.Values;
+    using FoxLib;
 
     /// <inheritdoc />
     /// <summary>
@@ -31,13 +30,13 @@
         }
 
         /// <inheritdoc />
-        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
+        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
             if (propertyData.Name == "name")
             {
-                this.name = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                this.name = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
             }
         }
     }

@@ -6,8 +6,7 @@
     using FoxKit.Utils;
     using FoxKit.Utils.UI.StringMap;
 
-    using FoxTool.Fox;
-    using FoxTool.Fox.Types.Values;
+    using FoxLib;
 
     using UnityEditor;
 
@@ -45,7 +44,7 @@
         protected override short ClassId => 120;
 
         /// <inheritdoc />
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
+        public override void OnAssetsImported(FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
             base.OnAssetsImported(tryGetAsset);
 
@@ -58,7 +57,7 @@
         }
 
         /// <inheritdoc />
-        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
+        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
@@ -66,16 +65,16 @@
             {
                 case "files":
                     {
-                        foreach (var entry in DataSetUtils.GetStringMap<FoxFilePtr>(propertyData))
+                        foreach (var entry in DataSetUtils.GetStringMap<string>(propertyData))
                         {
-                            this.createWindowParamsPaths.Add(entry.Key.ToString(), DataSetUtils.ExtractFilePath(entry.Value));
+                            this.createWindowParamsPaths.Add(entry.Key, DataSetUtils.ExtractFilePath(entry.Value));
                         }
 
                         break;
                     }
                 case "windowFactoryName":
                     {
-                        this.windowFactoryName = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                        this.windowFactoryName = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
                         break;
                     }
             }

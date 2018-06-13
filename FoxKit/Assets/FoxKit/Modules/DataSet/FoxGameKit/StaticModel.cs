@@ -6,9 +6,7 @@
     using FoxKit.Modules.DataSet.PartsBuilder;
     using FoxKit.Utils;
 
-    using FoxTool.Fox;
-    using FoxTool.Fox.Types.Structs;
-    using FoxTool.Fox.Types.Values;
+    using FoxLib;
 
     using UnityEditor;
 
@@ -139,7 +137,7 @@
 
         /// <inheritdoc />
         protected override void ReadProperty(
-            FoxProperty propertyData,
+            Core.PropertyInfo propertyData,
             Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
@@ -148,39 +146,39 @@
             {
                 case "modelFile":
                     this.modelFilePath = DataSetUtils.ExtractFilePath(
-                        DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                        DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "geomFile":
                     this.modelFilePath = DataSetUtils.ExtractFilePath(
-                        DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                        DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "isVisibleGeom":
-                    this.isVisibleGeom = DataSetUtils.GetStaticArrayPropertyValue<FoxBool>(propertyData).Value;
+                    this.isVisibleGeom = DataSetUtils.GetStaticArrayPropertyValue<bool>(propertyData);
                     break;
                 case "isIsolated":
-                    this.isIsolated = DataSetUtils.GetStaticArrayPropertyValue<FoxBool>(propertyData).Value;
+                    this.isIsolated = DataSetUtils.GetStaticArrayPropertyValue<bool>(propertyData);
                     break;
                 case "lodFarSize":
-                    this.lodFarSize = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+                    this.lodFarSize = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);
                     break;
                 case "lodNearSize":
-                    this.lodFarSize = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+                    this.lodFarSize = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);
                     break;
                 case "lodPolygonSize":
-                    this.lodFarSize = DataSetUtils.GetStaticArrayPropertyValue<FoxFloat>(propertyData).Value;
+                    this.lodFarSize = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);
                     break;
                 case "color":
-                    var foxColor = DataSetUtils.GetStaticArrayPropertyValue<FoxColor>(propertyData);
+                    var foxColor = DataSetUtils.GetStaticArrayPropertyValue<Core.ColorRGBA>(propertyData);
                     this.color = new Color(foxColor.Red, foxColor.Green, foxColor.Blue, foxColor.Alpha);
                     break;
                 case "drawRejectionLevel":
-                    this.drawRejectionLevel = (DrawRejectionLevel)DataSetUtils.GetStaticArrayPropertyValue<FoxInt32>(propertyData).Value;
+                    this.drawRejectionLevel = (DrawRejectionLevel)DataSetUtils.GetStaticArrayPropertyValue<int>(propertyData);
                     break;
                 case "drawMode":
-                    this.drawMode = (DrawMode)DataSetUtils.GetStaticArrayPropertyValue<FoxInt32>(propertyData).Value;
+                    this.drawMode = (DrawMode)DataSetUtils.GetStaticArrayPropertyValue<int>(propertyData);
                     break;
                 case "rejectFarRangeShadowCast":
-                    this.rejectFarRangeShadowCast = (RejectFarRangeShadowCast)DataSetUtils.GetStaticArrayPropertyValue<FoxInt32>(propertyData).Value;
+                    this.rejectFarRangeShadowCast = (RejectFarRangeShadowCast)DataSetUtils.GetStaticArrayPropertyValue<int>(propertyData);
                     break;
             }
         }

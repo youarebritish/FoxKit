@@ -3,8 +3,7 @@
     using FoxKit.Modules.DataSet.GameCore;
     using FoxKit.Utils;
 
-    using FoxTool.Fox;
-    using FoxTool.Fox.Types.Values;
+    using FoxLib;
 
     using UnityEngine;
 
@@ -24,13 +23,13 @@
         protected override short ClassId => 32;
 
         /// <inheritdoc />
-        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
+        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
             if (propertyData.Name == "identifier")
             {
-                this.identifier = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                this.identifier = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
             }
         }
     }

@@ -6,8 +6,7 @@
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
-    using FoxTool.Fox;
-    using FoxTool.Fox.Types.Values;
+    using FoxLib;
 
     using UnityEngine;
     using UnityEngine.Assertions;
@@ -71,44 +70,44 @@
         protected override short ClassId => 120;
 
         /// <inheritdoc />
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
+        public override void OnAssetsImported(FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
             base.OnAssetsImported(tryGetAsset);
             tryGetAsset(this.attachmentFilePath, out this.attachmentFile);
         }
 
         /// <inheritdoc />
-        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
+        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
             switch (propertyData.Name)
             {
                 case "vehicleTypeCode":
-                    this.vehicleTypeCode = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
+                    this.vehicleTypeCode = DataSetUtils.GetStaticArrayPropertyValue<byte>(propertyData);
                     break;
                 case "attachmentImplTypeIndex":
-                    this.attachmentImplTypeIndex = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
+                    this.attachmentImplTypeIndex = DataSetUtils.GetStaticArrayPropertyValue<byte>(propertyData);
                     break;
                 case "attachmentFile":
-                    this.attachmentFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<FoxFilePtr>(propertyData));
+                    this.attachmentFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "attachmentInstanceCount":
-                    this.attachmentInstanceCount = DataSetUtils.GetStaticArrayPropertyValue<FoxUInt8>(propertyData).Value;
+                    this.attachmentInstanceCount = DataSetUtils.GetStaticArrayPropertyValue<byte>(propertyData);
                     break;
                 case "bodyCnpName":
-                    this.bodyCnpName = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                    this.bodyCnpName = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
                     break;
                 case "attachmentBoneName":
-                    this.attachmentBoneName = DataSetUtils.GetStaticArrayPropertyValue<FoxString>(propertyData).ToString();
+                    this.attachmentBoneName = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
                     break;
                 case "weaponParams":
-                    var list = DataSetUtils.GetDynamicArrayValues<FoxEntityPtr>(propertyData);
+                    var list = DataSetUtils.GetDynamicArrayValues<ulong>(propertyData);
                     this.weaponParams = new List<TppVehicle2WeaponParameter>(list.Count);
 
                     foreach (var param in list)
                     {
-                        var entity = initFunctions.GetEntityFromAddress(param.EntityPtr) as TppVehicle2WeaponParameter;
+                        var entity = initFunctions.GetEntityFromAddress(param) as TppVehicle2WeaponParameter;
                         Assert.IsNotNull(entity);
 
                         this.weaponParams.Add(entity);

@@ -6,8 +6,7 @@
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
-    using FoxTool.Fox;
-    using FoxTool.Fox.Types.Values;
+    using FoxLib;
 
     using UnityEditor;
 
@@ -52,7 +51,7 @@
         protected override short ClassId => 96;
 
         /// <inheritdoc />
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
+        public override void OnAssetsImported(FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
             base.OnAssetsImported(tryGetAsset);
 
@@ -72,7 +71,7 @@
         }
 
         /// <inheritdoc />
-        protected override void ReadProperty(FoxProperty propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
+        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
 
@@ -80,7 +79,7 @@
             {
                 case "files":
                     {
-                        var filePtrList = DataSetUtils.GetDynamicArrayValues<FoxFilePtr>(propertyData);
+                        var filePtrList = DataSetUtils.GetDynamicArrayValues<string>(propertyData);
                         this.files = new List<UnityEngine.Object>(filePtrList.Count);
                         this.filesPaths = new List<string>(filePtrList.Count);
 
@@ -93,7 +92,7 @@
                     }
                 case "rawFiles":
                     {
-                        var filePtrList = DataSetUtils.GetDynamicArrayValues<FoxFilePtr>(propertyData);
+                        var filePtrList = DataSetUtils.GetDynamicArrayValues<string>(propertyData);
                         this.rawFiles = new List<UnityEngine.Object>(filePtrList.Count);
                         this.rawFilesPaths = new List<string>(filePtrList.Count);
 
