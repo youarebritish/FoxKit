@@ -8,6 +8,8 @@
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
+    using FoxLib;
+
     using UnityEditor.Experimental.AssetImporters;
 
     using UnityEngine;
@@ -27,12 +29,7 @@
         /// TODO: Cache this somewhere.
         /// </summary>
         private static readonly Type[] EntityTypes = ReflectionUtils.GetAssignableConcreteClasses(typeof(Entity)).ToArray();
-
-        /// <summary>
-        /// FoxTool's hash/name dictionary.
-        /// </summary>
-        private static readonly Dictionary<ulong, string> GlobalHashNameDictionary = new Dictionary<ulong, string>();
-
+        
         /// <inheritdoc />
         public override void OnImportAsset(AssetImportContext ctx)
         {
@@ -40,21 +37,53 @@
             Assert.IsNotNull(ctx.assetPath);
 
             asset.name = Path.GetFileNameWithoutExtension(ctx.assetPath);
-
-            FoxFile foxFile;
+            
+            IEnumerable<Core.Entity> rawEntities;
             using (var input = new FileStream(ctx.assetPath, FileMode.Open))
             {
-                var lookupTable = new FoxLookupTable(GlobalHashNameDictionary);
-                foxFile = FoxFile.ReadFoxFile(input, lookupTable);
+                using (var reader = new BinaryReader(input))
+                {
+                    rawEntities = DataSetFile2.Read(MakeReadFunctions(reader));
+                }
             }
             
-            var entities = CreateEntityInstances(foxFile, MakeEntityCreateFunctions());
+            var entities = CreateEntityInstances(rawEntities, MakeEntityCreateFunctions());
             var dataSet = FindDataSet(entities);
 
             InitializeEntities(ctx, entities, dataSet, MakeEntityInitializeFunctions(entities));
 
             ctx.AddObjectToAsset("DataSet", dataSet);
             ctx.SetMainObject(dataSet);
+        }
+
+        private static DataSetFile2.ReadFunctions MakeReadFunctions(BinaryReader reader)
+        {
+            return new DataSetFile2.ReadFunctions(
+                reader.ReadSByte,
+                reader.ReadByte,
+                reader.ReadInt16,
+                reader.ReadUInt16,
+                reader.ReadInt32,
+                reader.ReadUInt32,
+                reader.ReadInt64,
+                reader.ReadUInt64,
+                reader.ReadSingle,
+                reader.ReadDouble,
+                reader.ReadBoolean,
+                length => new string(reader.ReadChars((int)length)),
+                () => reader.BaseStream.Position,
+                newPosition => reader.BaseStream.Position = newPosition,
+                delegate(int numBytes) { reader.ReadBytes(numBytes); },
+                    alignment => AlignRead(reader.BaseStream, alignment));
+        }
+
+        private static void AlignRead(Stream stream, long alignment)
+        {
+            var alignmentRequired = stream.Position % alignment;
+            if (alignmentRequired > 0)
+            {
+                stream.Position = stream.Position + alignment - alignmentRequired;
+            }
         }
 
         /// <summary>
@@ -69,9 +98,9 @@
         /// <returns>
         /// The created Entity instances.
         /// </returns>
-        private static Dictionary<Entity, FoxEntity> CreateEntityInstances(FoxFile foxFile, EntityCreateFunctions entityCreateFunctions)
+        private static Dictionary<Entity, Core.Entity> CreateEntityInstances(IEnumerable<Core.Entity> rawEntities, EntityCreateFunctions entityCreateFunctions)
         {
-            return (from entity in foxFile.Entities
+            return (from entity in rawEntities
                     select new { Data = entity, Instance = Create(entity, entityCreateFunctions) })
                 .Where(entry => entry.Instance != null)
                 .ToDictionary(entry => entry.Instance, entry => entry.Data);
@@ -86,7 +115,7 @@
         /// <returns>
         /// The <see cref="DataSet"/> entity instance.
         /// </returns>
-        private static DataSet FindDataSet(Dictionary<Entity, FoxEntity> entities)
+        private static DataSet FindDataSet(Dictionary<Entity, Core.Entity> entities)
         {
             return (from entity in entities.Keys
                     where entity.GetType() == typeof(DataSet)
@@ -111,7 +140,7 @@
         /// </param>
         private static void InitializeEntities(
             AssetImportContext ctx,
-            Dictionary<Entity, FoxEntity> entities,
+            Dictionary<Entity, Core.Entity> entities,
             DataSet dataSet,
             EntityInitializeFunctions entityInitializeFunctions)
         {
@@ -157,7 +186,7 @@
         /// <returns>
         /// The <see cref="EntityInitializeFunctions"/>.
         /// </returns>
-        private static EntityInitializeFunctions MakeEntityInitializeFunctions(Dictionary<Entity, FoxEntity> entities)
+        private static EntityInitializeFunctions MakeEntityInitializeFunctions(Dictionary<Entity, Core.Entity> entities)
         {
             return new EntityInitializeFunctions(address => entities.FirstOrDefault(e => e.Value.Address == address).Key);
         }

@@ -4,8 +4,8 @@
 
     using FoxKit.Modules.DataSet.FoxCore;
 
-    using FoxTool.Fox;
-
+    using FoxLib;
+    
     using UnityEngine;
 
     /// <summary>
@@ -25,7 +25,7 @@
         /// <returns>
         /// The <see cref="Entity"/>.
         /// </returns>
-        public static Entity Create(FoxEntity data, EntityCreateFunctions createFunctions)
+        public static Entity Create(Core.Entity data, EntityCreateFunctions createFunctions)
         {
             var type = createFunctions.GetEntityType(data.ClassName);
             if (type == null)
