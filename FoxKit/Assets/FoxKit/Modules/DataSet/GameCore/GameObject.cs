@@ -48,6 +48,9 @@
         public override short ClassId => 88;
 
         /// <inheritdoc />
+        public override ushort Version => 2;
+
+        /// <inheritdoc />
         protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);

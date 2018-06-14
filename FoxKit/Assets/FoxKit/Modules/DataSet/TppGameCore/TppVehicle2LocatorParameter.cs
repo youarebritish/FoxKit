@@ -13,5 +13,8 @@
     {
         /// <inheritdoc />
         public override short ClassId => 28;
+
+        /// <inheritdoc />
+        public override ushort Version => 2;
     }
 }

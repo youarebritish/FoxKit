@@ -76,6 +76,9 @@
         public override short ClassId => 128;
 
         /// <inheritdoc />
+        public override ushort Version => 3;
+
+        /// <inheritdoc />
         public override void OnAssetsImported(FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
             base.OnAssetsImported(tryGetAsset);

@@ -16,31 +16,44 @@
     /// </summary>
     public static class DataSetExporter
     {
+        private static Dictionary<Entity, Tuple<uint, uint>> entityAddressesAndIds = new Dictionary<Entity, Tuple<uint, uint>>();
+
         public static void ExportDataSet(List<Entity> entities, string exportPath)
         {
             Assert.IsNotNull(exportPath, "exportPath must not be null.");
 
             Func<Tuple<uint, uint>> generateAddressAndId = new ClassAddressAndIdGenerator().Next;
-            var entityAddressesAndIds = entities.ToDictionary(
+            /*var entityAddressesAndIds = entities.ToDictionary(
                 entity => entity,
-                entity => generateAddressAndId());
-            Func<Entity, Tuple<uint, uint>> getEntityAddressAndId = delegate(Entity entity)
-                {
-                    if (entity == null)
-                    {
-                        return Tuple.Create(0u, 0u);
-                    }
+                entity => generateAddressAndId());*/
 
-                    Tuple<uint, uint> record;
-                    return entityAddressesAndIds.TryGetValue(entity, out record) ? record : Tuple.Create(0u, 0u);
-                };
-
-            var convertedEntities = ConvertEntities(entities, getEntityAddressAndId).ToList();
+            entityAddressesAndIds = new Dictionary<Entity, Tuple<uint, uint>>();
+            foreach (var entity in entities)
+            {
+                entityAddressesAndIds.Add(entity, generateAddressAndId());
+            }
+            
+            var convertedEntities = ConvertEntities(entities, GetEntityAddressAndId).ToList();
 
             using (var writer = new BinaryWriter(new FileStream(exportPath, FileMode.Create)))
             {
                 DataSetFile2.Write(convertedEntities, CreateWriteFunctions(writer));
             }
+        }
+
+        private static Tuple<uint, uint> GetEntityAddressAndId(Entity entity)
+        {
+            if (entity == null)
+            {
+                return Tuple.Create(0u, 0u);
+            }
+
+            Tuple<uint, uint> record;
+            if (entityAddressesAndIds.TryGetValue(entity, out record))
+            {
+                return record;
+            }
+            return Tuple.Create(0u, 0u);
         }
 
         private static IEnumerable<Core.Entity> ConvertEntities(IEnumerable<Entity> entities, Func<Entity, Tuple<uint, uint>> getEntityAddressAndId)
