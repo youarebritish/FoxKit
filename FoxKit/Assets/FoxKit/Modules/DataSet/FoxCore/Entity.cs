@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
 
+    using FoxKit.Utils;
+
     using FoxLib;
 
     using UnityEditor;
@@ -46,9 +48,9 @@
         public virtual ushort Version => 0;
 
         /// <summary>
-        /// Gets the DataSet this Entity belongs to.
+        /// Gets or sets the DataSet this Entity belongs to.
         /// </summary>
-        protected DataSet DataSet { get; private set; }
+        protected DataSet DataSet { get; set; }
 
         /// <summary>
         /// Initializes the Entity with data loaded from a DataSet file.
@@ -66,9 +68,6 @@
         {
             Assert.AreEqual(entityData.ClassId, this.ClassId, $"Expected ID {this.ClassId} for class {entityData.ClassName}, but was {entityData.ClassId}.");
             Assert.AreEqual(entityData.Version, this.Version, $"Expected version {this.Version} for class {entityData.ClassName}, but was {entityData.Version}.");
-
-
-            this.DataSet = dataSet;
             
             foreach (var property in entityData.StaticProperties)
             {

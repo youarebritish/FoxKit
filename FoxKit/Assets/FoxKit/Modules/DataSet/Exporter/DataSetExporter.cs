@@ -16,6 +16,7 @@
     /// </summary>
     public static class DataSetExporter
     {
+        // TODO Refactor out
         private static Dictionary<Entity, Tuple<uint, uint>> entityAddressesAndIds = new Dictionary<Entity, Tuple<uint, uint>>();
 
         public static void ExportDataSet(List<Entity> entities, string exportPath)
@@ -23,9 +24,6 @@
             Assert.IsNotNull(exportPath, "exportPath must not be null.");
 
             Func<Tuple<uint, uint>> generateAddressAndId = new ClassAddressAndIdGenerator().Next;
-            /*var entityAddressesAndIds = entities.ToDictionary(
-                entity => entity,
-                entity => generateAddressAndId());*/
 
             entityAddressesAndIds = new Dictionary<Entity, Tuple<uint, uint>>();
             foreach (var entity in entities)
@@ -49,11 +47,7 @@
             }
 
             Tuple<uint, uint> record;
-            if (entityAddressesAndIds.TryGetValue(entity, out record))
-            {
-                return record;
-            }
-            return Tuple.Create(0u, 0u);
+            return entityAddressesAndIds.TryGetValue(entity, out record) ? record : Tuple.Create(0u, 0u);
         }
 
         private static IEnumerable<Core.Entity> ConvertEntities(IEnumerable<Entity> entities, Func<Entity, Tuple<uint, uint>> getEntityAddressAndId)

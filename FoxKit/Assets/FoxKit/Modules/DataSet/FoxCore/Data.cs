@@ -49,6 +49,11 @@
             {
                 this.name = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
             }
+            else if (propertyData.Name == "dataSet")
+            {
+                var address = DataSetUtils.GetStaticArrayPropertyValue<ulong>(propertyData);
+                this.DataSet = initFunctions.GetEntityFromAddress(address) as DataSet;
+            }
         }
     }
 }
