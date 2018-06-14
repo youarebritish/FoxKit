@@ -20,7 +20,7 @@
         private string identifier;
 
         /// <inheritdoc />
-        protected override short ClassId => 32;
+        public override short ClassId => 32;
 
         /// <inheritdoc />
         protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)

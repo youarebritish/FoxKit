@@ -41,7 +41,7 @@
         public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(Canvas)).image as Texture2D;
 
         /// <inheritdoc />
-        protected override short ClassId => 120;
+        public override short ClassId => 120;
 
         /// <inheritdoc />
         public override void OnAssetsImported(FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)

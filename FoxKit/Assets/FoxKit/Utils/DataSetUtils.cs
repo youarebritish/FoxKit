@@ -51,6 +51,17 @@
             return container.Item.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
 
+        public static string UnityPathToFoxPath(string filePtr)
+        {
+            if (string.IsNullOrEmpty(filePtr))
+            {
+                return string.Empty;
+            }
+
+            // Fox Engine paths need to open with a /.
+            return "/" + filePtr;
+        }
+
         public static string ExtractFilePath(string filePtr)
         {
             return FormatFilePath(filePtr);
@@ -58,12 +69,8 @@
         
         private static string FormatFilePath(string path)
         {
-            if (string.IsNullOrEmpty(path))
-            {
-                return path;
-            }
             // Fox Engine paths open with a /, which Unity doesn't like.
-            return path.Substring(1);
+            return string.IsNullOrEmpty(path) ? path : path.Substring(1);
         }
 
         public static EntityLink MakeEntityLink(DataSet owningDataSet, Core.EntityLink foxEntityLink)
@@ -75,12 +82,12 @@
                 foxEntityLink.EntityHandle);
         }
         
-        public static UnityEngine.Vector3 FoxToolToUnity(Core.Vector3 foxVector)
+        public static UnityEngine.Vector3 FoxToUnity(Core.Vector3 foxVector)
         {
             return new UnityEngine.Vector3(foxVector.Z, foxVector.Y, foxVector.X);
         }
 
-        public static UnityEngine.Quaternion FoxToolToUnity(Core.Quaternion foxQuat)
+        public static UnityEngine.Quaternion FoxToUnity(Core.Quaternion foxQuat)
         {
             return new UnityEngine.Quaternion(-foxQuat.Z, -foxQuat.Y, -foxQuat.X, foxQuat.W);
         }

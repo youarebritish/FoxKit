@@ -1,5 +1,9 @@
 ﻿namespace FoxKit.Modules.DataSet.Editor.DataListWindow
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Modules.DataSet.FoxCore;
 
     using UnityEditor;
@@ -23,7 +27,7 @@
             menu.AddSeparator(string.Empty);
 
             AddMenuItem(menu, "Save DataSet", OnSetActiveDataSet);
-            AddMenuItem(menu, "Save DataSet As", OnSetActiveDataSet);
+            AddMenuItem(menu, "Export DataSet", SaveDataSetAs, dataSet);
             AddMenuItem(menu, "Save All", OnSetActiveDataSet);
 
             menu.AddSeparator(string.Empty);
@@ -56,6 +60,23 @@
         private static void OnSetActiveDataSet()
         {
             // TODO
+        }
+
+        private static void SaveDataSetAs(object dataSet)
+        {
+            var path = EditorUtility.SaveFilePanel("Export DataSet", string.Empty, dataSet + ".fox2", "fox2");
+            if (path.Length == 0)
+            {
+                return;
+            }
+
+            // TODO: Get all Entities properly instead of this hack
+            // And also won't get any Entities not in the DataList.
+            var entities = new List<Entity> { dataSet as DataSet };
+            entities.AddRange(from kvp in ((DataSet)dataSet).GetDataList()
+                              select kvp.Value as Entity);
+
+            DataSetExporter.ExportDataSet(entities, path);
         }
     }
    

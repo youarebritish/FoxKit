@@ -67,7 +67,7 @@
         private string attachmentFilePath;
 
         /// <inheritdoc />
-        protected override short ClassId => 120;
+        public override short ClassId => 120;
 
         /// <inheritdoc />
         public override void OnAssetsImported(FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)

@@ -75,7 +75,7 @@
         private StringStringMap vfxFilePaths;
 
         /// <inheritdoc />
-        protected override short ClassId => 176;
+        public override short ClassId => 176;
 
         /// <inheritdoc />
         public override void OnAssetsImported(FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)

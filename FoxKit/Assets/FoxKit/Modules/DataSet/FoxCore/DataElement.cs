@@ -1,6 +1,11 @@
 ﻿namespace FoxKit.Modules.DataSet.FoxCore
 {
     using System;
+    using System.Collections.Generic;
+
+    using FoxKit.Modules.DataSet.Exporter;
+
+    using FoxLib;
 
     using UnityEngine;
 
@@ -36,5 +41,14 @@
                 this.owner = value;
             }
         }
-}
+
+        /// <inheritdoc />
+        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
+        {
+            return new List<Core.PropertyInfo>
+                       {
+                           PropertyInfoFactory.MakeStaticArrayProperty("owner", Core.PropertyInfoType.EntityHandle, getEntityAddress(this.owner)),
+                       };
+        }
+    }
 }

@@ -124,7 +124,7 @@
         public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(MeshRenderer)).image as Texture2D;
 
         /// <inheritdoc />
-        protected override short ClassId => 352;
+        public override short ClassId => 352;
 
         /// <inheritdoc />
         public override void OnAssetsImported(AssetPostprocessor.TryGetAssetDelegate tryGetAsset)

@@ -208,7 +208,7 @@
         private string facialSettingFilePath;
         
         /// <inheritdoc />
-        protected override short ClassId => 288;
+        public override short ClassId => 288;
 
         /// <inheritdoc />
         public override void OnAssetsImported(AssetPostprocessor.TryGetAssetDelegate tryGetAsset)

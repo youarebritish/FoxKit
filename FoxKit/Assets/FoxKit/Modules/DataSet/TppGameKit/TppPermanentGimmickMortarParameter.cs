@@ -58,7 +58,7 @@
         private string flareShellPartsFilePath;
 
         /// <inheritdoc />
-        protected override short ClassId => 88;
+        public override short ClassId => 88;
 
         /// <inheritdoc />
         public override void OnAssetsImported(FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)

@@ -12,6 +12,6 @@
     public class TppVehicle2LocatorParameter : GameObjectLocatorParameter
     {
         /// <inheritdoc />
-        protected override short ClassId => 28;
+        public override short ClassId => 28;
     }
 }

@@ -40,7 +40,7 @@
         public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(AudioClip)).image as Texture2D;
 
         /// <inheritdoc />
-        protected override short ClassId => 96;
+        public override short ClassId => 96;
 
         /// <inheritdoc />
         public override void OnAssetsImported(FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)

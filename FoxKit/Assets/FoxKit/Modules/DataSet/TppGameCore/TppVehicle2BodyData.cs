@@ -73,7 +73,7 @@
         private List<string> fovaFilesPaths;
 
         /// <inheritdoc />
-        protected override short ClassId => 128;
+        public override short ClassId => 128;
 
         /// <inheritdoc />
         public override void OnAssetsImported(FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)

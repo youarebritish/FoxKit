@@ -36,7 +36,7 @@
         private GameObjectLocatorParameter parameters;
 
         /// <inheritdoc />
-        protected override short ClassId => 272;
+        public override short ClassId => 272;
 
         /// <inheritdoc />
         protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)

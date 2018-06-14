@@ -20,11 +20,21 @@ namespace FoxKit.Utils
         /// <summary>
         /// Converts a Unity Vector3 to a Fox Engine Vector3.
         /// </summary>
-        /// <param name="foxVector">The Unity vector.</param>
+        /// <param name="unityVector">The Unity vector.</param>
         /// <returns>The Fox Engine vector.</returns>
         public static FoxLib.Core.Vector3 UnityToFox(Vector3 unityVector)
         {
             return new FoxLib.Core.Vector3(unityVector.z, unityVector.y, unityVector.x);
+        }
+
+        /// <summary>
+        /// Converts a Unity Quaternion to a Fox Engine Quaternion.
+        /// </summary>
+        /// <param name="unityQuaternion">The Unity Quaternion.</param>
+        /// <returns>The Fox Engine Quaternion.</returns>
+        public static FoxLib.Core.Quaternion UnityToFox(Quaternion unityQuaternion)
+        {
+            return new FoxLib.Core.Quaternion(-unityQuaternion.z, -unityQuaternion.y, -unityQuaternion.x, unityQuaternion.w);
         }
 
         /// <summary>

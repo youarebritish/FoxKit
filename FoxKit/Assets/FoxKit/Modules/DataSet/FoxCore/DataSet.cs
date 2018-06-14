@@ -36,7 +36,7 @@
         public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(BoxCollider)).image as Texture2D;
 
         /// <inheritdoc />
-        protected override short ClassId => 232;
+        public override short ClassId => 232;
 
         /// <summary>
         /// Gets an Entity by name.

@@ -1,7 +1,9 @@
 ﻿namespace FoxKit.Modules.DataSet.FoxCore
 {
     using System;
+    using System.Collections.Generic;
 
+    using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Utils;
 
     using FoxLib;
@@ -42,8 +44,19 @@
         public Vector3 Translation => this.translation;
 
         /// <inheritdoc />
-        protected override short ClassId => 80;
+        public override short ClassId => 80;
 
+        /// <inheritdoc />
+        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
+        {
+            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("transform_translation", Core.PropertyInfoType.Vector3, FoxUtils.UnityToFox(this.translation)));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("transform_rotation_quat", Core.PropertyInfoType.Quat, FoxUtils.UnityToFox(this.rotation)));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("transform_scale", Core.PropertyInfoType.Vector3, FoxUtils.UnityToFox(this.scale)));
+
+            return parentProperties;
+        }
+        
         /// <inheritdoc />
         protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
@@ -53,15 +66,15 @@
             {
                 case "transform_translation":
                     var foxTranslation = DataSetUtils.GetStaticArrayPropertyValue<Core.Vector3>(propertyData);
-                    this.translation = DataSetUtils.FoxToolToUnity(foxTranslation);
+                    this.translation = DataSetUtils.FoxToUnity(foxTranslation);
                     break;
                 case "transform_rotation_quat":
                     var foxRotation = DataSetUtils.GetStaticArrayPropertyValue<Core.Quaternion>(propertyData);
-                    this.rotation = DataSetUtils.FoxToolToUnity(foxRotation);
+                    this.rotation = DataSetUtils.FoxToUnity(foxRotation);
                     break;
                 case "transform_scale":
                     var foxScale = DataSetUtils.GetStaticArrayPropertyValue<Core.Vector3>(propertyData);
-                    this.scale = DataSetUtils.FoxToolToUnity(foxScale);
+                    this.scale = DataSetUtils.FoxToUnity(foxScale);
                     break;
             }
         }

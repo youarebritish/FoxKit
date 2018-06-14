@@ -36,14 +36,19 @@
         public virtual Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(GameObject)).image as Texture2D;
 
         /// <summary>
+        /// ID of the class.
+        /// </summary>
+        public virtual short ClassId => -1;
+
+        /// <summary>
+        /// Version of the class.
+        /// </summary>
+        public virtual ushort Version => 0;
+
+        /// <summary>
         /// Gets the DataSet this Entity belongs to.
         /// </summary>
         protected DataSet DataSet { get; private set; }
-
-        /// <summary>
-        /// ID of the class.
-        /// </summary>
-        protected virtual short ClassId => -1;
 
         /// <summary>
         /// Initializes the Entity with data loaded from a DataSet file.
@@ -57,9 +62,11 @@
         /// <param name="initFunctions">
         /// Helper functions to aid in initialization.
         /// </param>
-        public void Initialize(DataSet dataSet, FoxLib.Core.Entity entityData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
+        public void Initialize(DataSet dataSet, Core.Entity entityData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
-            Assert.AreEqual(entityData.ClassId, this.ClassId, $"Expected {this.ClassId} for class {entityData.ClassName}, but was {entityData.ClassId}.");
+            Assert.AreEqual(entityData.ClassId, this.ClassId, $"Expected ID {this.ClassId} for class {entityData.ClassName}, but was {entityData.ClassId}.");
+            Assert.AreEqual(entityData.Version, this.Version, $"Expected version {this.Version} for class {entityData.ClassName}, but was {entityData.Version}.");
+
 
             this.DataSet = dataSet;
             
@@ -104,6 +111,31 @@
         /// </summary>
         public virtual void OnUnloaded()
         {
+        }
+
+        /// <summary>
+        /// Creates writable list of Entity static properties.
+        /// </summary>
+        /// <param name="getEntityAddress">
+        /// Function to get an Entity's address.
+        /// </param>
+        /// <returns>
+        /// Writable static properties.
+        /// </returns>
+        public abstract List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress);
+
+        /// <summary>
+        /// Creates writable list of Entity dynamic properties.
+        /// </summary>
+        /// <param name="getEntityAddress">
+        /// Function to get an Entity's address.
+        /// </param>
+        /// <returns>
+        /// Writable dynamic properties.
+        /// </returns>
+        public virtual List<Core.PropertyInfo> MakeWritableDynamicProperties(Func<Entity, ulong> getEntityAddress)
+        {
+            return new List<Core.PropertyInfo>();
         }
 
         /// <summary>

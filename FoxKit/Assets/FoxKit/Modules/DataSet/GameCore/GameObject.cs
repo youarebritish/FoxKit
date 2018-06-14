@@ -45,7 +45,7 @@
         private GameObjectParameter parameters;
 
         /// <inheritdoc />
-        protected override short ClassId => 88;
+        public override short ClassId => 88;
 
         /// <inheritdoc />
         protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)

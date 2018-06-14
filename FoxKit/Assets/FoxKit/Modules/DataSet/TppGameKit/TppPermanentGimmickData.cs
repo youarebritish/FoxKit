@@ -60,7 +60,7 @@
         private string locatorFilePath = string.Empty;
 
         /// <inheritdoc />
-        protected override short ClassId => 144;
+        public override short ClassId => 144;
 
         /// <inheritdoc />
         public override void OnAssetsImported(FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)

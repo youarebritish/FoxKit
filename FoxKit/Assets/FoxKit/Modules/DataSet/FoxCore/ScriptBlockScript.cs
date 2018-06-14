@@ -1,7 +1,9 @@
 ﻿namespace FoxKit.Modules.DataSet.FoxCore
 {
     using System;
+    using System.Collections.Generic;
 
+    using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Utils;
 
     using FoxLib;
@@ -33,7 +35,20 @@
         public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(MonoScript)).image as Texture2D;
 
         /// <inheritdoc />
-        protected override short ClassId => 88;
+        public override short ClassId => 88;
+
+        /// <inheritdoc />
+        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
+        {
+            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
+            parentProperties.Add(
+                PropertyInfoFactory.MakeStaticArrayProperty(
+                    "script",
+                    Core.PropertyInfoType.FilePtr,
+                    DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.script))));
+
+            return parentProperties;
+        }
 
         /// <inheritdoc />
         public override void OnAssetsImported(FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)

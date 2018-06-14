@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Utils;
 
     using FoxLib;
@@ -147,6 +148,21 @@
         {
             GameObject.DestroyImmediate(this.sceneProxyGameObject);
             this.sceneProxyGameObject = null;
+        }
+
+        /// <inheritdoc />
+        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
+        {
+            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("parent", Core.PropertyInfoType.EntityHandle, getEntityAddress(this.parent)));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("transform", Core.PropertyInfoType.EntityPtr, getEntityAddress(this.transform)));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("shearTransform", Core.PropertyInfoType.EntityPtr, getEntityAddress(this.transform)));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("pivotTransform", Core.PropertyInfoType.EntityPtr, getEntityAddress(this.transform)));
+            //parentProperties.Add(PropertyInfoFactory.MakeListProperty("children", Core.PropertyInfoType.EntityPtr, this.children.ToArray()));
+            var packedFlags = (uint)((this.visibility ? Flags.EnableVisibility : 0) | (this.selection ? Flags.EnableSelection : 0) | (this.inheritTransform ? Flags.EnableInheritTransform : 0));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("flags", Core.PropertyInfoType.UInt32, packedFlags));
+
+            return parentProperties;
         }
 
         /// <inheritdoc />
