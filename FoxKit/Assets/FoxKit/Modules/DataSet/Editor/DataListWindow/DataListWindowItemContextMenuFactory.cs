@@ -69,12 +69,9 @@
             {
                 return;
             }
-
-            // TODO: Get all Entities properly instead of this hack
-            // And also won't get any Entities not in the DataList.
+            
             var entities = new List<Entity> { dataSet as DataSet };
-            entities.AddRange(from kvp in ((DataSet)dataSet).GetDataList()
-                              select kvp.Value as Entity);
+            entities.AddRange(((DataSet)dataSet).GetAllEntities());
 
             DataSetExporter.ExportDataSet(entities, path);
         }

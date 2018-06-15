@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using FoxKit.Utils;
     using FoxKit.Utils.UI.StringMap;
@@ -22,7 +23,7 @@
         /// </summary>
         [SerializeField, HideInInspector]
         private DataStringMap dataList = new DataStringMap();
-
+        
         /// <summary>
         /// The address map.
         /// </summary>
@@ -117,6 +118,20 @@
         }
 
         /// <summary>
+        /// Registers a DataElement to the DataSet.
+        /// </summary>
+        /// <param name="address">
+        /// The memory address of the DataElement. Only needed when loading from a DataSet file.
+        /// </param>
+        /// <param name="dataElement">
+        /// The DataElement to add.
+        /// </param>
+        public void AddDataElement(ulong address, Entity dataElement)
+        {
+            this.addressMap.Add(address, dataElement);
+        }
+
+        /// <summary>
         /// Get an entry by name.
         /// </summary>
         /// <param name="key">
@@ -139,6 +154,11 @@
         public DataStringMap GetDataList()
         {
             return this.dataList;
+        }
+
+        public IEnumerable<Entity> GetAllEntities()
+        {
+            return this.addressMap.Values;
         }
     }
 }
