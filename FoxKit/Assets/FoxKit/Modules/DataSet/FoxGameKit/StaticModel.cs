@@ -1,7 +1,9 @@
 ﻿namespace FoxKit.Modules.DataSet.Sdx
 {
     using System;
+    using System.Collections.Generic;
 
+    using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Modules.DataSet.PartsBuilder;
     using FoxKit.Utils;
@@ -127,12 +129,34 @@
         public override short ClassId => 352;
 
         /// <inheritdoc />
+        public override ushort Version => 9;
+
+        /// <inheritdoc />
         public override void OnAssetsImported(AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
             base.OnAssetsImported(tryGetAsset);
 
             tryGetAsset(this.modelFilePath, out this.modelFile);
             tryGetAsset(this.geomFilePath, out this.geomFile);
+        }
+
+        /// <inheritdoc />
+        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
+        {
+            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("modelFile", Core.PropertyInfoType.FilePtr, DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.modelFile))));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("geomFile", Core.PropertyInfoType.FilePtr, DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.geomFile))));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("isVisibleGeom", Core.PropertyInfoType.Bool, this.isVisibleGeom));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("isIsolated", Core.PropertyInfoType.Bool, this.isIsolated));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("lodFarSize", Core.PropertyInfoType.Float, this.lodFarSize));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("lodNearSize", Core.PropertyInfoType.Float, this.lodNearSize));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("lodPolygonSize", Core.PropertyInfoType.Float, this.lodPolygonSize));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("color", Core.PropertyInfoType.Color, FoxUtils.UnityColorToFoxColorRGBA(this.color)));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("drawRejectionLevel", Core.PropertyInfoType.Int32, this.drawRejectionLevel));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("drawMode", Core.PropertyInfoType.Int32, this.drawMode));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("rejectFarRangeShadowCast", Core.PropertyInfoType.Int32, this.rejectFarRangeShadowCast));
+
+            return parentProperties;
         }
 
         /// <inheritdoc />

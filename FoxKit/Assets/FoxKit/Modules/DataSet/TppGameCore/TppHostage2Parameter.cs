@@ -1,10 +1,17 @@
 ﻿namespace FoxKit.Modules.DataSet.TppGameCore
 {
+    using System;
+    using System.Collections.Generic;
+
+    using FoxKit.Modules.DataSet.Exporter;
+    using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Modules.DataSet.GameCore;
     using FoxKit.Utils;
     using FoxKit.Utils.UI.StringMap;
 
     using FoxLib;
+
+    using UnityEditor;
 
     using UnityEngine;
 
@@ -97,6 +104,35 @@
                 tryGetAsset(entry.Value, out asset);
                 this.vfxFiles.Add(entry.Key, asset);
             }
+        }
+
+        /// <inheritdoc />
+        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
+        {
+            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
+            parentProperties.Add(
+                PropertyInfoFactory.MakeStaticArrayProperty(
+                    "partsFile",
+                    Core.PropertyInfoType.FilePtr,
+                    DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.partsFile))));
+            parentProperties.Add(
+                PropertyInfoFactory.MakeStaticArrayProperty(
+                    "motionGraphFile",
+                    Core.PropertyInfoType.FilePtr,
+                    DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.motionGraphFile))));
+            parentProperties.Add(
+                PropertyInfoFactory.MakeStaticArrayProperty(
+                    "mtarFile",
+                    Core.PropertyInfoType.FilePtr,
+                    DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.mtarFile))));
+            parentProperties.Add(
+                PropertyInfoFactory.MakeStaticArrayProperty(
+                    "extensionMtarFile",
+                    Core.PropertyInfoType.FilePtr,
+                    DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.extensionMtarFile))));
+            // TODO StringMap
+
+            return parentProperties;
         }
 
         /// <inheritdoc />

@@ -2,11 +2,15 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
+    using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
     using FoxLib;
+
+    using UnityEditor;
 
     using UnityEngine;
     using UnityEngine.Assertions;
@@ -90,6 +94,33 @@
                 tryGetAsset(fovaFilePath, out file);
                 this.fovaFiles.Add(file);
             }
+        }
+
+        /// <inheritdoc />
+        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
+        {
+            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("vehicleTypeIndex", Core.PropertyInfoType.UInt8, this.vehicleTypeIndex));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("proxyVehicleTypeIndex", Core.PropertyInfoType.UInt8, this.proxyVehicleTypeIndex));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("bodyImplTypeIndex", Core.PropertyInfoType.UInt8, this.bodyImplTypeIndex));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("partsFile", Core.PropertyInfoType.FilePtr, DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.partsFile))));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("bodyInstanceCount", Core.PropertyInfoType.UInt8, this.bodyInstanceCount));
+            parentProperties.Add(
+                PropertyInfoFactory.MakeDynamicArrayProperty(
+                    "weaponParams",
+                    Core.PropertyInfoType.EntityPtr,
+                    (from weaponParam in this.weaponParams
+                     select getEntityAddress(weaponParam) as object)
+                    .ToArray()));
+            parentProperties.Add(
+                PropertyInfoFactory.MakeDynamicArrayProperty(
+                    "fovaFiles",
+                    Core.PropertyInfoType.FilePtr,
+                    (from fovaFile in this.fovaFiles
+                     select DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(fovaFile)) as object)
+                    .ToArray()));
+
+            return parentProperties;
         }
 
         /// <inheritdoc />

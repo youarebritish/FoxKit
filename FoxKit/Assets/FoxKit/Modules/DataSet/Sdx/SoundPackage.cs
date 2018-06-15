@@ -1,7 +1,9 @@
 ﻿namespace FoxKit.Modules.DataSet.Sdx
 {
     using System;
+    using System.Collections.Generic;
 
+    using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
@@ -50,6 +52,16 @@
         {
             base.OnAssetsImported(tryGetAsset);
             tryGetAsset(this.soundDataFilePath, out this.soundDataFile);
+        }
+
+        /// <inheritdoc />
+        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
+        {
+            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("soundDataFile", Core.PropertyInfoType.EntityHandle, DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.soundDataFile))));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("syncLoad", Core.PropertyInfoType.Bool, this.syncLoad));
+
+            return parentProperties;
         }
 
         /// <inheritdoc />

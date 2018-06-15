@@ -1,7 +1,9 @@
 ﻿namespace FoxKit.Modules.DataSet.GameCore
 {
     using System;
+    using System.Collections.Generic;
 
+    using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
@@ -40,6 +42,17 @@
 
         /// <inheritdoc />
         public override ushort Version => 2;
+
+        /// <inheritdoc />
+        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
+        {
+            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("typeName", Core.PropertyInfoType.String, this.typeName));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("groupId", Core.PropertyInfoType.UInt32, this.groupId));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("parameters", Core.PropertyInfoType.EntityPtr, getEntityAddress(this.parameters)));
+
+            return parentProperties;
+        }
 
         /// <inheritdoc />
         protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)

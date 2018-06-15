@@ -1,11 +1,15 @@
 ﻿namespace FoxKit.Modules.DataSet.TppGameCore
 {
     using System;
+    using System.Collections.Generic;
 
+    using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
     using FoxLib;
+
+    using UnityEditor;
 
     using UnityEngine;
 
@@ -80,6 +84,12 @@
         /// TODO: Figure out.
         /// </summary>
         [SerializeField]
+        private string barrelBoneName = string.Empty;
+
+        /// <summary>
+        /// TODO: Figure out.
+        /// </summary>
+        [SerializeField]
         private float minPitch;
 
         /// <summary>
@@ -121,6 +131,28 @@
         }
 
         /// <inheritdoc />
+        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
+        {
+            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("attackId", Core.PropertyInfoType.String, this.attackId));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("equipId", Core.PropertyInfoType.String, this.equipId));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("bulletId", Core.PropertyInfoType.String, this.bulletId));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("weaponImplTypeIndex", Core.PropertyInfoType.UInt8, this.weaponImplTypeIndex));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("fireInterval", Core.PropertyInfoType.Float, this.fireInterval));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("weaponFile", Core.PropertyInfoType.FilePtr, DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.weaponFile))));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("ammoFile", Core.PropertyInfoType.FilePtr, DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.ammoFile))));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("ownerCnpName", Core.PropertyInfoType.String, this.ownerCnpName));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("weaponBoneName", Core.PropertyInfoType.String, this.weaponBoneName));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("turretBoneName", Core.PropertyInfoType.String, this.turretBoneName));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("barrelBoneName", Core.PropertyInfoType.String, this.barrelBoneName));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("minPitch", Core.PropertyInfoType.Float, this.minPitch));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("maxPitch", Core.PropertyInfoType.Float, this.maxPitch));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("rotSpeed", Core.PropertyInfoType.Float, this.rotSpeed));
+
+            return parentProperties;
+        }
+
+        /// <inheritdoc />
         protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
@@ -153,6 +185,9 @@
                     break;
                 case "turretBoneName":
                     this.turretBoneName = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
+                    break;
+                case "barrelBoneName":
+                    this.barrelBoneName = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
                     break;
                 case "minPitch":
                     this.minPitch = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);

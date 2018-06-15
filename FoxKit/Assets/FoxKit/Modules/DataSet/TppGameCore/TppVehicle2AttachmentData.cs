@@ -2,11 +2,15 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
+    using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
     using FoxLib;
+
+    using UnityEditor;
 
     using UnityEngine;
     using UnityEngine.Assertions;
@@ -77,6 +81,27 @@
         {
             base.OnAssetsImported(tryGetAsset);
             tryGetAsset(this.attachmentFilePath, out this.attachmentFile);
+        }
+
+        /// <inheritdoc />
+        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
+        {
+            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("vehicleTypeCode", Core.PropertyInfoType.UInt8, this.vehicleTypeCode));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("attachmentImplTypeIndex", Core.PropertyInfoType.UInt8, this.attachmentImplTypeIndex));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("attachmentFile", Core.PropertyInfoType.FilePtr, DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.attachmentFile))));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("attachmentInstanceCount", Core.PropertyInfoType.UInt8, this.attachmentInstanceCount));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("bodyCnpName", Core.PropertyInfoType.String, this.bodyCnpName));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("attachmentBoneName", Core.PropertyInfoType.String, this.attachmentBoneName));
+            parentProperties.Add(
+                PropertyInfoFactory.MakeDynamicArrayProperty(
+                    "weaponParams",
+                    Core.PropertyInfoType.EntityPtr,
+                    (from weaponParam in this.weaponParams
+                     select getEntityAddress(weaponParam) as object)
+                    .ToArray()));
+
+            return parentProperties;
         }
 
         /// <inheritdoc />

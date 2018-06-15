@@ -177,7 +177,7 @@
             parentProperties.Add(
                 PropertyInfoFactory.MakeListProperty(
                     "children",
-                    Core.PropertyInfoType.EntityPtr,
+                    Core.PropertyInfoType.EntityHandle,
                     (from child in this.children select getEntityAddress(child) as object).ToArray()));
             var packedFlags = (uint)((this.visibility ? Flags.EnableVisibility : 0)
                                      | (this.selection ? Flags.EnableSelection : 0)
