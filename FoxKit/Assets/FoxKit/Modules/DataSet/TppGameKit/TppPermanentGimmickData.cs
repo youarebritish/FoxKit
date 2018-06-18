@@ -1,11 +1,15 @@
 ﻿namespace FoxKit.Modules.DataSet.TppGameKit
 {
     using System;
+    using System.Collections.Generic;
 
+    using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
     using FoxLib;
+
+    using UnityEditor;
 
     using UnityEngine;
     using UnityEngine.Assertions;
@@ -68,6 +72,31 @@
             base.OnAssetsImported(tryGetAsset);
             tryGetAsset(this.partsFilePath, out this.partsFile);
             tryGetAsset(this.locatorFilePath, out this.locatorFile);
+        }
+
+        /// <inheritdoc />
+        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
+        {
+            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty(
+                "partsFile",
+                Core.PropertyInfoType.FilePtr,
+                DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.partsFile))));
+            parentProperties.Add(
+                PropertyInfoFactory.MakeStaticArrayProperty(
+                    "locaterFile",
+                    Core.PropertyInfoType.FilePtr,
+                    DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.locatorFile))));
+            parentProperties.Add(
+                PropertyInfoFactory.MakeStaticArrayProperty(
+                    "parameters",
+                    Core.PropertyInfoType.EntityPtr,
+                    getEntityAddress(this.parameters)));
+            parentProperties.Add(
+                PropertyInfoFactory.MakeStaticArrayProperty("flags1", Core.PropertyInfoType.UInt32, this.flags1));
+            parentProperties.Add(
+                PropertyInfoFactory.MakeStaticArrayProperty("flags2", Core.PropertyInfoType.UInt32, this.flags2));
+            return parentProperties;
         }
 
         /// <inheritdoc />

@@ -1,7 +1,10 @@
 ﻿namespace FoxKit.Modules.DataSet.Ui
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
+    using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
     using FoxKit.Utils.UI.StringMap;
@@ -57,6 +60,25 @@
                 tryGetAsset(path.Value, out file);
                 this.createWindowParams.Add(path.Key, file);
             }
+        }
+
+        /// <inheritdoc />
+        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
+        {
+            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
+            parentProperties.Add(
+                PropertyInfoFactory.MakeStringMapProperty(
+                    "createWindowParams",
+                    Core.PropertyInfoType.FilePtr,
+                    this.createWindowParams.ToDictionary(
+                        entry => entry.Key,
+                        entry => DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(entry.Value)) as object)));
+            parentProperties.Add(
+                PropertyInfoFactory.MakeStaticArrayProperty(
+                    "windowFactoryName",
+                    Core.PropertyInfoType.String,
+                    this.windowFactoryName));
+            return parentProperties;
         }
 
         /// <inheritdoc />

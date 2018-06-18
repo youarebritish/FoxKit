@@ -2,7 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
+    using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
@@ -71,6 +73,23 @@
                 tryGetAsset(path, out file);
                 this.rawFiles.Add(file);
             }
+        }
+
+        /// <inheritdoc />
+        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
+        {
+            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
+            parentProperties.Add(PropertyInfoFactory.MakeDynamicArrayProperty(
+                "files",
+                Core.PropertyInfoType.FilePtr,
+                (from file in this.files
+                 select DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(file)) as object).ToArray()));
+            parentProperties.Add(PropertyInfoFactory.MakeDynamicArrayProperty(
+                "rawFiles",
+                Core.PropertyInfoType.FilePtr,
+                (from file in this.rawFiles
+                 select DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(file)) as object).ToArray()));
+            return parentProperties;
         }
 
         /// <inheritdoc />

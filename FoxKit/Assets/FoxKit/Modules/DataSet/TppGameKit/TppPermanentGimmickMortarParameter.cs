@@ -1,10 +1,15 @@
 ﻿namespace FoxKit.Modules.DataSet.TppGameKit
 {
     using System;
+    using System.Collections.Generic;
 
+    using FoxKit.Modules.DataSet.Exporter;
+    using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
     using FoxLib;
+
+    using UnityEditor;
 
     using UnityEngine;
 
@@ -69,6 +74,30 @@
             base.OnAssetsImported(tryGetAsset);
             tryGetAsset(this.defaultShellPartsFilePath, out this.defaultShellPartsFile);
             tryGetAsset(this.flareShellPartsFilePath, out this.flareShellPartsFile);
+        }
+
+        /// <inheritdoc />
+        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
+        {
+            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
+            parentProperties.Add(
+                PropertyInfoFactory.MakeStaticArrayProperty("rotationLimitLeftRight", Core.PropertyInfoType.Float, this.rotationLimitLeftRight));
+            parentProperties.Add(
+                PropertyInfoFactory.MakeStaticArrayProperty("rotationLimitUp", Core.PropertyInfoType.Float, this.rotationLimitUp));
+            parentProperties.Add(
+                PropertyInfoFactory.MakeStaticArrayProperty("rotationLimitDown", Core.PropertyInfoType.Float, this.rotationLimitDown));
+            parentProperties.Add(
+                PropertyInfoFactory.MakeStaticArrayProperty(
+                    "defaultShellPartsFile",
+                    Core.PropertyInfoType.FilePtr,
+                    DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.defaultShellPartsFile))));
+            parentProperties.Add(
+                PropertyInfoFactory.MakeStaticArrayProperty(
+                    "flareShellPartsFile",
+                    Core.PropertyInfoType.FilePtr,
+                    DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.defaultShellPartsFile))));
+
+            return parentProperties;
         }
 
         /// <inheritdoc />

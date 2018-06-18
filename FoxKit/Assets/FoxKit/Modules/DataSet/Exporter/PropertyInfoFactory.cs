@@ -1,5 +1,7 @@
 ﻿namespace FoxKit.Modules.DataSet.Exporter
 {
+    using System.Collections.Generic;
+
     using FoxLib;
 
     using UnityEngine.Assertions;
@@ -31,6 +33,14 @@
 
             var container = Core.Container<object>.NewList(values);
             return new Core.PropertyInfo(name, propertyType, Core.ContainerType.List, container);
+        }
+
+        public static Core.PropertyInfo MakeStringMapProperty(string name, Core.PropertyInfoType propertyType, IDictionary<string, object> values)
+        {
+            Assert.IsNotNull(values);
+
+            var container = Core.Container<object>.NewStringMap(values);
+            return new Core.PropertyInfo(name, propertyType, Core.ContainerType.StringMap, container);
         }
     }
 }

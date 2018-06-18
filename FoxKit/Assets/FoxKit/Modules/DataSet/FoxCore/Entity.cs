@@ -20,9 +20,15 @@
     public abstract class Entity : ScriptableObject
     {
         /// <summary>
+        /// Gets or sets the DataSet this Entity belongs to.
+        /// </summary>
+        [SerializeField]
+        private DataSet dataSet;
+
+        /// <summary>
         /// Gets the parent of this Entity, if any.
         /// </summary>
-        public virtual Entity Parent => this.DataSet;
+        public virtual Entity Parent => this.dataSet;
 
         /// <summary>
         /// Gets the children of this Entity, if any.
@@ -48,9 +54,15 @@
         public virtual ushort Version => 0;
 
         /// <summary>
-        /// Gets or sets the DataSet this Entity belongs to.
+        /// Gets the DataSet that owns this Entity.
         /// </summary>
-        protected DataSet DataSet { get; set; }
+        /// <returns>
+        /// The <see cref="DataSet"/> that owns this Entity.
+        /// </returns>
+        public DataSet GetDataSet()
+        {
+            return this.dataSet;
+        }
 
         /// <summary>
         /// Initializes the Entity with data loaded from a DataSet file.
@@ -64,11 +76,13 @@
         /// <param name="initFunctions">
         /// Helper functions to aid in initialization.
         /// </param>
-        public void Initialize(DataSet dataSet, Core.Entity entityData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
+        public void Initialize(DataSet loadingDataSet, Core.Entity entityData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             Assert.AreEqual(entityData.ClassId, this.ClassId, $"Expected ID {this.ClassId} for class {entityData.ClassName}, but was {entityData.ClassId}.");
             Assert.AreEqual(entityData.Version, this.Version, $"Expected version {this.Version} for class {entityData.ClassName}, but was {entityData.Version}.");
-            
+
+            this.dataSet = loadingDataSet;
+
             foreach (var property in entityData.StaticProperties)
             {
                 this.ReadProperty(property, initFunctions);

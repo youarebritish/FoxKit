@@ -18,24 +18,13 @@
         /// <summary>
         /// Just use the ScriptableObject's name for now.
         /// </summary>
-        public string Name => this.name;
+        public virtual string Name => this.name;
         
-        /// <summary>
-        /// Gets the DataSet that owns this Entity.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="DataSet"/> that owns this Entity.
-        /// </returns>
-        public DataSet GetDataSet()
-        {
-            return this.DataSet;
-        }
-
         /// <inheritdoc />
         public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
         {
             var nameProperty = PropertyInfoFactory.MakeStaticArrayProperty("name", Core.PropertyInfoType.String, this.Name);
-            var dataSetProperty = PropertyInfoFactory.MakeStaticArrayProperty("dataSet", Core.PropertyInfoType.EntityHandle, getEntityAddress(this.DataSet));
+            var dataSetProperty = PropertyInfoFactory.MakeStaticArrayProperty("dataSet", Core.PropertyInfoType.EntityHandle, getEntityAddress(this.GetDataSet()));
             var properties = new List<Core.PropertyInfo> { nameProperty, dataSetProperty };
             return properties;
         }
@@ -48,11 +37,6 @@
             if (propertyData.Name == "name")
             {
                 this.name = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
-            }
-            else if (propertyData.Name == "dataSet")
-            {
-                var address = DataSetUtils.GetStaticArrayPropertyValue<ulong>(propertyData);
-                this.DataSet = initFunctions.GetEntityFromAddress(address) as DataSet;
             }
         }
     }

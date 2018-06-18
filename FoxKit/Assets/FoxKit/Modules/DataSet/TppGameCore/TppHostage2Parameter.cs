@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Modules.DataSet.FoxCore;
@@ -130,7 +131,13 @@
                     "extensionMtarFile",
                     Core.PropertyInfoType.FilePtr,
                     DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.extensionMtarFile))));
-            // TODO StringMap
+            parentProperties.Add(
+                PropertyInfoFactory.MakeStringMapProperty(
+                    "vfxFiles",
+                    Core.PropertyInfoType.FilePtr,
+                    this.vfxFiles.ToDictionary(
+                        entry => entry.Key,
+                        entry => DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(entry.Value)) as object)));
 
             return parentProperties;
         }

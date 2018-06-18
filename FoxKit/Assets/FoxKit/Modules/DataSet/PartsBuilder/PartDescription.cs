@@ -59,7 +59,7 @@
             {
                 case "depends":
                     this.depends = (from link in DataSetUtils.GetDynamicArrayValues<Core.EntityLink>(propertyData)
-                                    select DataSetUtils.MakeEntityLink(this.DataSet, link))
+                                    select DataSetUtils.MakeEntityLink(this.GetDataSet(), link))
                                     .ToList();
                     break;
                 case "partName":

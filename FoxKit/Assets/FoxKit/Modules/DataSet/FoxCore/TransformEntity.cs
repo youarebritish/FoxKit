@@ -50,9 +50,9 @@
         public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
         {
             var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("transform_translation", Core.PropertyInfoType.Vector3, FoxUtils.UnityToFox(this.translation)));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("transform_rotation_quat", Core.PropertyInfoType.Quat, FoxUtils.UnityToFox(this.rotation)));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("transform_scale", Core.PropertyInfoType.Vector3, FoxUtils.UnityToFox(this.scale)));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("transform_rotation_quat", Core.PropertyInfoType.Quat, FoxUtils.UnityToFox(this.rotation)));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("transform_translation", Core.PropertyInfoType.Vector3, FoxUtils.UnityToFox(this.translation)));
 
             return parentProperties;
         }

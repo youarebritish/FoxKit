@@ -100,7 +100,7 @@
         public override IEnumerable<Entity> Children => this.children;
 
         /// <inheritdoc />
-        public override Entity Parent => this.parent ?? (Entity)this.DataSet;
+        public override Entity Parent => this.parent ?? base.Parent;
 
         /// <inheritdoc />
         public override void OnLoaded()

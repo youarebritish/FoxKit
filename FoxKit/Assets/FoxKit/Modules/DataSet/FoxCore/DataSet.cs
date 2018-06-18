@@ -4,8 +4,11 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Utils;
     using FoxKit.Utils.UI.StringMap;
+
+    using FoxLib;
 
     using UnityEditor;
 
@@ -38,6 +41,9 @@
 
         /// <inheritdoc />
         public override short ClassId => 232;
+
+        /// <inheritdoc />
+        public override string Name => string.Empty;
 
         /// <summary>
         /// Gets an Entity by name.
@@ -89,7 +95,18 @@
         }
 
         /// <inheritdoc />
-        public override void OnAssetsImported(Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
+        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
+        {
+            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
+            parentProperties.Add(PropertyInfoFactory.MakeStringMapProperty(
+                "dataList",
+                Core.PropertyInfoType.EntityPtr,
+                this.dataList.ToDictionary(entry => entry.Key, entry => getEntityAddress(entry.Value) as object)));
+            return parentProperties;
+        }
+
+        /// <inheritdoc />
+        public override void OnAssetsImported(FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
             base.OnAssetsImported(tryGetAsset);
 
