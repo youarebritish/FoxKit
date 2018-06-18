@@ -168,12 +168,12 @@
                 PropertyInfoFactory.MakeStaticArrayProperty(
                     "shearTransform",
                     Core.PropertyInfoType.EntityPtr,
-                    getEntityAddress(this.transform)));
+                    getEntityAddress(this.shearTransform)));
             parentProperties.Add(
                 PropertyInfoFactory.MakeStaticArrayProperty(
                     "pivotTransform",
                     Core.PropertyInfoType.EntityPtr,
-                    getEntityAddress(this.transform)));
+                    getEntityAddress(this.pivotTransform)));
             parentProperties.Add(
                 PropertyInfoFactory.MakeListProperty(
                     "children",
