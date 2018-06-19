@@ -54,9 +54,13 @@
             AddStaticPropertyFields(stringBuilder, staticProperties.ToArray(), entity.ClassName);
 
             AddProperties(entity.ClassId, entity.Version, stringBuilder);
+            stringBuilder.AppendLine(string.Empty);
 
             // TODO MakeWritableStaticProperties
             // TODO ReadProperty
+            AddReadPropertyFunction(stringBuilder, staticProperties);
+            stringBuilder.AppendLine(string.Empty);
+
             // TODO OnAssetsImported (if there are files referenced)
 
             // Close class block.
@@ -68,8 +72,151 @@
             return stringBuilder.ToString();
         }
 
+        private static void AddReadPropertyFunction(StringBuilder stringBuilder, IEnumerable<Core.PropertyInfo> staticProperties)
+        {
+            stringBuilder.AppendLine("        /// <inheritdoc />");
+            stringBuilder.AppendLine(
+                "        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)");
+
+            // Open function block.
+            stringBuilder.AppendLine("        {");
+
+            stringBuilder.AppendLine("            base.ReadProperty(propertyData, initFunctions);");
+            stringBuilder.AppendLine(string.Empty);
+
+            stringBuilder.AppendLine("            switch (propertyData.Name)");
+
+            // Open switch statement block.
+            stringBuilder.AppendLine("            {");
+
+            foreach (var property in staticProperties)
+            {
+                AddReadPropertyBlock(stringBuilder, property);
+            }
+
+            // Close switch statement block.
+            stringBuilder.AppendLine("            }");
+
+            // Close function block.
+            stringBuilder.AppendLine("        }");
+        }
+
+        private static void AddReadPropertyBlock(StringBuilder stringBuilder, Core.PropertyInfo property)
+        {
+            // TODO handle stringmaps
+            // TODO handle fileptrs (ex: this.facialSettingFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData)); )
+            // TODO assign owner of DataElements
+
+            stringBuilder.AppendLine($"                case \"{property.Name}\":");
+
+            var isEntityReference = property.Type == Core.PropertyInfoType.EntityHandle
+                                    || property.Type == Core.PropertyInfoType.EntityPtr;
+            var isFileReference = property.Type == Core.PropertyInfoType.FilePtr
+                                  || property.Type == Core.PropertyInfoType.Path;
+            var isEntityLink = property.Type == Core.PropertyInfoType.EntityLink;
+            var typeString = "ulong";
+            var assignmentString = $"this.{property.Name}";
+            var isListProperty = false;
+
+            if (isEntityReference)
+            {
+                assignmentString = $"var {property.Name}Address";
+            }
+            else if (isFileReference)
+            {
+                assignmentString = $"var {property.Name}RawPath";
+                typeString = "string";
+            }
+            else if (isEntityLink)
+            {
+                assignmentString = $"var {property.Name}RawEntityLink";
+                typeString = "Core.EntityLink";
+            }
+            else
+            {
+                typeString = GetTypeString(property.Type);
+            }
+            
+            if (property.ContainerType == Core.ContainerType.StaticArray && property.Container.ArraySize == 1)
+            {
+                stringBuilder.AppendLine(
+                    $"                    {assignmentString} = DataSetUtils.GetStaticArrayPropertyValue<{typeString}>(propertyData);");
+            }
+            else if (property.ContainerType == Core.ContainerType.StaticArray)
+            {
+                isListProperty = true;
+                stringBuilder.AppendLine(
+                    $"                    {assignmentString} = DataSetUtils.GetStaticArrayValues<{typeString}>(propertyData);");
+            }
+            else if (property.ContainerType == Core.ContainerType.DynamicArray)
+            {
+                isListProperty = true;
+                stringBuilder.AppendLine(
+                    $"                    {assignmentString} = DataSetUtils.GetDynamicArrayValues<{typeString}>(propertyData);");
+            }
+            else if (property.ContainerType == Core.ContainerType.List)
+            {
+                isListProperty = true;
+                stringBuilder.AppendLine(
+                    $"                    {assignmentString} = DataSetUtils.GetListValues<{typeString}>(propertyData);");
+            }
+            else if (property.ContainerType == Core.ContainerType.StringMap)
+            {
+                throw new NotImplementedException();
+            }
+
+            // Grab entity reference.
+            if (isEntityReference)
+            {
+                if (isListProperty)
+                {
+                    stringBuilder.AppendLine(
+                        $"                    this.{property.Name} = (from address in {property.Name}Address select initFunctions.GetEntityFromAddress(address)).ToList();");
+                }
+                else
+                {
+                    stringBuilder.AppendLine(
+                        $"                    this.{property.Name} = initFunctions.GetEntityFromAddress({property.Name}Address);");
+                    stringBuilder.AppendLine($"                    Assert.IsNotNull(this.{property.Name});");
+                }
+            }
+
+            // Extract path.
+            else if (isFileReference)
+            {
+                if (isListProperty)
+                {
+                    stringBuilder.AppendLine(
+                        $"                    this.{property.Name}Path = (from path in {property.Name}RawPath select DataSetUtils.ExtractFilePath({property.Name}RawPath)).ToList();");
+                }
+                else
+                {
+                    stringBuilder.AppendLine(
+                        $"                    this.{property.Name}Path = DataSetUtils.ExtractFilePath({property.Name}RawPath);");
+                }
+            }
+
+            // MakeEntityLink(DataSet owningDataSet, Core.EntityLink foxEntityLink)
+            else if (isEntityLink)
+            {
+                if (isListProperty)
+                {
+                    stringBuilder.AppendLine(
+                        $"                    this.{property.Name} = (from link in {property.Name}RawEntityLink select DataSetUtils.MakeEntityLink(this.GetDataSet(), link)).ToList();");
+                }
+                else
+                {
+                    stringBuilder.AppendLine(
+                        $"                    this.{property.Name} = DataSetUtils.MakeEntityLink(this.GetDataSet(), {property.Name}RawEntityLink);");
+                }
+            }
+
+            stringBuilder.AppendLine("                    break;");
+
+        }
+        
         private static IEnumerable<Core.PropertyInfo> GetPrunedStaticPropertyFields(
-            Core.PropertyInfo[] staticProperties,
+            IEnumerable<Core.PropertyInfo> staticProperties,
             Type parentClass)
         {
             var propertiesToPrune = new List<string>();
@@ -116,9 +263,17 @@
         private static void AddStaticPropertyField(StringBuilder stringBuilder, Core.PropertyInfo property, string className)
         {
             // TODO Initialize string to string.Empty
-            // TODO Handle entity ptrs
             stringBuilder.AppendLine($"        [SerializeField, Modules.DataSet.Property(\"{className}\")]");
             stringBuilder.AppendLine($"        private {GetPropertyFieldTypeString(property.ContainerType, property.Type, property.Container)} {property.Name};");
+
+            if (property.Type != Core.PropertyInfoType.FilePtr && property.Type != Core.PropertyInfoType.Path)
+            {
+                return;
+            }
+
+            stringBuilder.AppendLine(string.Empty);
+            stringBuilder.AppendLine("        [SerializeField, HideInInspector]");
+            stringBuilder.AppendLine($"        private string {property.Name}Path;");
         }
 
         private static string GetPropertyFieldTypeString(
@@ -208,6 +363,7 @@
         private static void AddUsingStatements(StringBuilder stringBuilder)
         {
             stringBuilder.AppendLine(MakeUsingStatement("System"));
+            stringBuilder.AppendLine(MakeUsingStatement("System.Linq"));
             stringBuilder.AppendLine(MakeUsingStatement("System.Collections.Generic"));
             stringBuilder.AppendLine(string.Empty);
             stringBuilder.AppendLine(MakeUsingStatement("FoxKit.Modules.DataSet.Exporter"));
@@ -215,6 +371,8 @@
             stringBuilder.AppendLine(MakeUsingStatement("FoxKit.Utils"));
             stringBuilder.AppendLine(string.Empty);
             stringBuilder.AppendLine(MakeUsingStatement("FoxLib"));
+            stringBuilder.AppendLine(string.Empty);
+            stringBuilder.AppendLine(MakeUsingStatement("NUnit.Framework"));
             stringBuilder.AppendLine(string.Empty);
             stringBuilder.AppendLine(MakeUsingStatement("UnityEditor"));
             stringBuilder.AppendLine(string.Empty);

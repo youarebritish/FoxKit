@@ -32,6 +32,12 @@
             return container[0];
         }
 
+        public static List<TValue> GetStaticArrayValues<TValue>(Core.PropertyInfo property)
+        {
+            CheckContainerType(property, Core.ContainerType.StaticArray);
+            return ((Core.Container<TValue>.StaticArray)property.Container).Item.ToList();
+        }
+
         public static List<TValue> GetDynamicArrayValues<TValue>(Core.PropertyInfo property)
         {
             CheckContainerType(property, Core.ContainerType.DynamicArray);

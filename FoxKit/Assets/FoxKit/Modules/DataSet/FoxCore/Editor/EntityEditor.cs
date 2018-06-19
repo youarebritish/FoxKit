@@ -83,8 +83,11 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
                             {
                                 nestedEditor = nestedEditorEntry.Editor;
                             }
-                            
-                            nestedEditor.OnInspectorGUI();
+
+                            if (nestedEditor != null)
+                            {
+                                nestedEditor.OnInspectorGUI();
+                            }
                         }
                         else
                         {

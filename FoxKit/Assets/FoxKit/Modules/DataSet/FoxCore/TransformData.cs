@@ -140,12 +140,20 @@
 
         protected virtual void CreateSceneProxy()
         {
+            if (this.transform == null)
+            {
+                return;
+            }
             this.sceneProxyGameObject = new GameObject { name = this.Name };
             this.sceneProxyGameObject.transform.position = this.transform.Translation;
         }
 
         protected virtual void DestroySceneProxy()
         {
+            if (this.sceneProxyGameObject == null)
+            {
+                return;
+            }
             GameObject.DestroyImmediate(this.sceneProxyGameObject);
             this.sceneProxyGameObject = null;
         }
