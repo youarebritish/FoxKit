@@ -25,41 +25,24 @@
         private static string GenerateClassSourceCode(Core.Entity entity)
         {
             var stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine("namespace FoxKit.Modules.DataSet");
+            stringBuilder.AppendLine(MakeNamespaceStatement());
 
             // Open namespace block.
             stringBuilder.AppendLine("{");
-
-            // Add using statements.
-            stringBuilder.AppendLine("    using System;");
-            stringBuilder.AppendLine("    using System.Collections.Generic;");
-            stringBuilder.AppendLine(string.Empty);
-            stringBuilder.AppendLine("    using FoxKit.Modules.DataSet.Exporter;");
-            stringBuilder.AppendLine("    using FoxKit.Modules.DataSet.FoxCore;");
-            stringBuilder.AppendLine("    using FoxKit.Utils;");
-            stringBuilder.AppendLine(string.Empty);
-            stringBuilder.AppendLine("    using FoxLib;");
-            stringBuilder.AppendLine(string.Empty);
-            stringBuilder.AppendLine("    using UnityEditor;");
-            stringBuilder.AppendLine(string.Empty);
-            stringBuilder.AppendLine("    using UnityEngine;");
-            stringBuilder.AppendLine(string.Empty);
+            
+            AddUsingStatements(stringBuilder);
 
             stringBuilder.AppendLine("    /// <inheritdoc />");
             stringBuilder.AppendLine("    [Serializable]");
 
             // TODO Determine superclass
-            stringBuilder.AppendLine($"    public class {entity.ClassName} : Data");
+            stringBuilder.AppendLine(MakeClassStatement(entity.ClassName, "Data"));
 
             // Open class block.
             stringBuilder.AppendLine("    {");
 
             // TODO fields
-            stringBuilder.AppendLine("        /// <inheritdoc />");
-            stringBuilder.AppendLine($"        public override short ClassId => {entity.ClassId};");
-            stringBuilder.AppendLine(string.Empty);
-            stringBuilder.AppendLine("        /// <inheritdoc />");
-            stringBuilder.AppendLine($"        public override ushort Version => {entity.Version};");
+            AddProperties(entity.ClassId, entity.Version, stringBuilder);
 
             // TODO MakeWritableStaticProperties
             // TODO ReadProperty
@@ -72,6 +55,58 @@
             stringBuilder.AppendLine("}");
 
             return stringBuilder.ToString();
+        }
+
+        private static void AddProperties(short classId, ushort version, StringBuilder stringBuilder)
+        {
+            stringBuilder.AppendLine("        /// <inheritdoc />");
+            stringBuilder.AppendLine(MakeClassIdDeclaration(classId));
+            stringBuilder.AppendLine(string.Empty);
+            stringBuilder.AppendLine("        /// <inheritdoc />");
+            stringBuilder.AppendLine(MakeVersionDeclaration(version));
+        }
+
+        private static void AddUsingStatements(StringBuilder stringBuilder)
+        {
+            stringBuilder.AppendLine(MakeUsingStatement("System"));
+            stringBuilder.AppendLine(MakeUsingStatement("System.Collections.Generic"));
+            stringBuilder.AppendLine(string.Empty);
+            stringBuilder.AppendLine(MakeUsingStatement("FoxKit.Modules.DataSet.Exporter"));
+            stringBuilder.AppendLine(MakeUsingStatement("FoxKit.Modules.DataSet.FoxCore"));
+            stringBuilder.AppendLine(MakeUsingStatement("FoxKit.Utils"));
+            stringBuilder.AppendLine(string.Empty);
+            stringBuilder.AppendLine(MakeUsingStatement("FoxLib"));
+            stringBuilder.AppendLine(string.Empty);
+            stringBuilder.AppendLine(MakeUsingStatement("UnityEditor"));
+            stringBuilder.AppendLine(string.Empty);
+            stringBuilder.AppendLine(MakeUsingStatement("UnityEngine"));
+            stringBuilder.AppendLine(string.Empty);
+        }
+
+        private static string MakeNamespaceStatement()
+        {
+            // TODO: Generate correct namespace
+            return "namespace FoxKit.Modules.DataSet";
+        }
+
+        private static string MakeUsingStatement(string @namespace)
+        {
+            return $"    using {@namespace};";
+        }
+
+        private static string MakeClassStatement(string className, string parentClassName)
+        {
+            return $"    public class {className} : {parentClassName}";
+        }
+
+        private static string MakeClassIdDeclaration(short classId)
+        {
+            return $"        public override short ClassId => {classId};";
+        }
+
+        private static string MakeVersionDeclaration(ushort version)
+        {
+            return $"        public override ushort Version => {version};";
         }
     }
 }
