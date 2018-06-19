@@ -18,7 +18,7 @@
     /// A DataElement attached to TransformData Entities representing a transform matrix.
     /// </summary>
     [Serializable]
-    public class TransformEntity : DataElement<TransformData>
+    public class TransformEntity : DataElement//<TransformData>
     {
         /// <summary>
         /// The translation.

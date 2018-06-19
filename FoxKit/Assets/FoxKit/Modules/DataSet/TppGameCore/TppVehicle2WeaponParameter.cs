@@ -18,7 +18,7 @@
     /// Parameters for a <see cref="TppVehicle2AttachmentData"/> Entity.
     /// </summary>
     [Serializable]
-    public class TppVehicle2WeaponParameter : DataElement<Data>
+    public class TppVehicle2WeaponParameter : DataElement//<Data>
     {
         /// <summary>
         /// TODO: Figure out.

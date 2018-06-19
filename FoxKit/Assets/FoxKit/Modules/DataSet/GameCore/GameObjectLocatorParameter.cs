@@ -9,7 +9,7 @@
     /// Base class for GameObjectLocator parameters.
     /// </summary>
     [Serializable]
-    public abstract class GameObjectLocatorParameter : DataElement<GameObjectLocator>
+    public abstract class GameObjectLocatorParameter : DataElement//<GameObjectLocator>
     {
     }
 }

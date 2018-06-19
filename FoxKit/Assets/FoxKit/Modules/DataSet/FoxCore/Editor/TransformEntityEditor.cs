@@ -9,7 +9,7 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
     {
         public override void OnInspectorGUI()
         {
-            var transform = ((TransformEntity)this.target).Owner.SceneProxyTransform;
+            var transform = ((TransformData)((TransformEntity)this.target).Owner).SceneProxyTransform;
             var transformEntity = new SerializedObject(transform);
             
             transformEntity.Update();

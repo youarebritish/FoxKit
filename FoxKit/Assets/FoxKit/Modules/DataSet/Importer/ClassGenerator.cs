@@ -1,8 +1,13 @@
 ﻿namespace FoxKit.Modules.DataSet.Importer
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Text;
+
+    using FoxKit.Modules.DataSet.FoxCore;
+    using FoxKit.Modules.DataSet.PartsBuilder;
 
     using FoxLib;
 
@@ -37,13 +42,16 @@
             stringBuilder.AppendLine("    /// <inheritdoc />");
             stringBuilder.AppendLine("    [Serializable]");
 
-            // TODO Determine superclass
-            stringBuilder.AppendLine(MakeClassStatement(entity.ClassName, "Data"));
+            var parentClass =
+                DetermineBaseClass((from property in entity.StaticProperties
+                                    select property.Name).ToList());
+            stringBuilder.AppendLine(MakeClassStatement(entity.ClassName, parentClass.Name));
 
             // Open class block.
             stringBuilder.AppendLine("    {");
 
-            AddStaticPropertyFields(stringBuilder, entity.StaticProperties, entity.ClassName);
+            var staticProperties = GetPrunedStaticPropertyFields(entity.StaticProperties, parentClass);
+            AddStaticPropertyFields(stringBuilder, staticProperties.ToArray(), entity.ClassName);
 
             AddProperties(entity.ClassId, entity.Version, stringBuilder);
 
@@ -58,6 +66,33 @@
             stringBuilder.AppendLine("}");
 
             return stringBuilder.ToString();
+        }
+
+        private static IEnumerable<Core.PropertyInfo> GetPrunedStaticPropertyFields(
+            Core.PropertyInfo[] staticProperties,
+            Type parentClass)
+        {
+            var propertiesToPrune = new List<string>();
+            if (parentClass == typeof(DataElement))
+            {
+                propertiesToPrune.AddRange(DataElementPropertyNames);
+            }
+            else if (parentClass == typeof(Data))
+            {
+                propertiesToPrune.AddRange(DataPropertyNames);
+            }
+            else if (parentClass == typeof(TransformData))
+            {
+                propertiesToPrune.AddRange(DataPropertyNames);
+                propertiesToPrune.AddRange(TransformDataPropertyNames);
+            }
+            else if (parentClass == typeof(PartDescription))
+            {
+                propertiesToPrune.AddRange(DataPropertyNames);
+                propertiesToPrune.AddRange(PartDescriptionPropertyNames);
+            }
+
+            return from property in staticProperties where !propertiesToPrune.Contains(property.Name) select property;
         }
 
         private static void AddProperties(short classId, ushort version, StringBuilder stringBuilder)
@@ -82,9 +117,29 @@
         {
             // TODO Initialize string to string.Empty
             // TODO Handle entity ptrs
-            // TODO Containers
             stringBuilder.AppendLine($"        [SerializeField, Modules.DataSet.Property(\"{className}\")]");
-            stringBuilder.AppendLine($"        private {GetTypeString(property.Type)} {property.Name};");
+            stringBuilder.AppendLine($"        private {GetPropertyFieldTypeString(property.ContainerType, property.Type, property.Container)} {property.Name};");
+        }
+
+        private static string GetPropertyFieldTypeString(
+            Core.ContainerType containerType,
+            Core.PropertyInfoType propertyType,
+            Core.IContainer container)
+        {
+            var innerTypeString = GetTypeString(propertyType);
+
+            if (containerType == Core.ContainerType.StaticArray && container.ArraySize == 1)
+            {
+                return innerTypeString;
+            }
+
+            if (containerType != Core.ContainerType.StringMap)
+            {
+                return $"List<{innerTypeString}>";
+            }
+
+            // TODO this is terrible and wrong
+            return "ObjectStringMap";
         }
 
         private static string GetTypeString(Core.PropertyInfoType type)
@@ -118,7 +173,7 @@
                 case Core.PropertyInfoType.Path:
                     return "string";
                 case Core.PropertyInfoType.EntityPtr:
-                    return "object";    // TODO
+                    return "Entity";    // TODO
                 case Core.PropertyInfoType.Vector3:
                     return "Vector3";
                 case Core.PropertyInfoType.Vector4:
@@ -134,7 +189,7 @@
                 case Core.PropertyInfoType.FilePtr:
                     return "UnityEngine.Object";
                 case Core.PropertyInfoType.EntityHandle:
-                    return "object";    // TODO
+                    return "Entity";    // TODO
                 case Core.PropertyInfoType.EntityLink:
                     return "EntityLink";
                 case Core.PropertyInfoType.PropertyInfo:
@@ -191,6 +246,33 @@
         private static string MakeVersionDeclaration(ushort version)
         {
             return $"        public override ushort Version => {version};";
+        }
+
+        private static readonly List<string> DataElementPropertyNames = new List<string>{"owner"};
+        private static readonly List<string> DataPropertyNames = new List<string> { "name", "dataSet" };
+        private static readonly List<string> TransformDataPropertyNames = new List<string> { "parent", "transform", "shearTransform", "pivotTransform", "children", "flags" };
+        private static readonly List<string> PartDescriptionPropertyNames = new List<string> { "depends", "partName", "buildType" };
+
+        private static Type DetermineBaseClass(ICollection<string> staticPropertyNames)
+        {
+            // DataElement
+            if (DataElementPropertyNames.All(staticPropertyNames.Contains))
+            {
+                return typeof(DataElement);
+            }
+
+            // Data
+            if (!DataPropertyNames.All(staticPropertyNames.Contains))
+            {
+                return typeof(Entity);
+            }
+
+            if (TransformDataPropertyNames.All(staticPropertyNames.Contains))
+            {
+                return typeof(TransformData);
+            }
+
+            return PartDescriptionPropertyNames.All(staticPropertyNames.Contains) ? typeof(PartDescription) : typeof(Data);
         }
     }
 }

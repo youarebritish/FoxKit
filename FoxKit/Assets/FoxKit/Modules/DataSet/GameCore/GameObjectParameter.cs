@@ -6,7 +6,7 @@
     /// <summary>
     /// Base class for GameObject parameters.
     /// </summary>
-    public abstract class GameObjectParameter : DataElement<GameObject>
+    public abstract class GameObjectParameter : DataElement//<GameObject>
     {
     }
 }

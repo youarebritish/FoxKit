@@ -9,7 +9,7 @@
     /// Base class for parameters for <see cref="TppPermanentGimmickData"/>.
     /// </summary>
     [Serializable]
-    public abstract class TppPermanentGimmickParameter : DataElement<TppPermanentGimmickData>
+    public abstract class TppPermanentGimmickParameter : DataElement//<TppPermanentGimmickData>
     {
     }
 }

@@ -17,19 +17,19 @@
     /// Type of Entity to which this DataElement can be attached.
     /// </typeparam>
     [Serializable]
-    public abstract class DataElement<TOwner> : Entity
-        where TOwner : Entity
+    public abstract class DataElement : Entity//<TOwner> : Entity
+        //where TOwner : Entity
     {
         /// <summary>
         /// The owner.
         /// </summary>
         [SerializeField]
-        private TOwner owner;
+        private Entity owner;
 
         /// <summary>
         /// Gets or sets the owner.
         /// </summary>
-        public TOwner Owner
+        public Entity Owner
         {
             get
             {
