@@ -30,6 +30,7 @@
             var type = createFunctions.GetEntityType(data.ClassName);
             if (type == null)
             {
+                // TODO: Only once for each type
                 ClassGenerator.GenerateClassFromEntity(data);
                 return null;
             }
