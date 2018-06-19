@@ -30,6 +30,7 @@
             var type = createFunctions.GetEntityType(data.ClassName);
             if (type == null)
             {
+                ClassGenerator.GenerateClassFromEntity(data);
                 return null;
             }
 
