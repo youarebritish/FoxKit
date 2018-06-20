@@ -66,15 +66,15 @@
             {
                 case "transform_translation":
                     var foxTranslation = DataSetUtils.GetStaticArrayPropertyValue<Core.Vector3>(propertyData);
-                    this.translation = DataSetUtils.FoxToUnity(foxTranslation);
+                    this.translation = FoxUtils.FoxToUnity(foxTranslation);
                     break;
                 case "transform_rotation_quat":
                     var foxRotation = DataSetUtils.GetStaticArrayPropertyValue<Core.Quaternion>(propertyData);
-                    this.rotation = DataSetUtils.FoxToUnity(foxRotation);
+                    this.rotation = FoxUtils.FoxToUnity(foxRotation);
                     break;
                 case "transform_scale":
                     var foxScale = DataSetUtils.GetStaticArrayPropertyValue<Core.Vector3>(propertyData);
-                    this.scale = DataSetUtils.FoxToUnity(foxScale);
+                    this.scale = FoxUtils.FoxToUnity(foxScale);
                     break;
             }
         }

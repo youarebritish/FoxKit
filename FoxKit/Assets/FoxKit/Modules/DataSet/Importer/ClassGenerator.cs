@@ -116,6 +116,7 @@
             var isEntityLink = property.Type == Core.PropertyInfoType.EntityLink;
             var typeString = "ulong";
             var assignmentString = $"this.{property.Name}";
+            var typeConversionString = string.Empty;
             var isListProperty = false;
 
             if (isEntityReference)
@@ -135,35 +136,78 @@
             else
             {
                 typeString = GetTypeString(property.Type);
+
+                // Disambiguate Unity vs Fox types.
+                if (property.Type == Core.PropertyInfoType.Vector3 || property.Type == Core.PropertyInfoType.Vector4
+                    || property.Type == Core.PropertyInfoType.Quat)
+                {
+                    typeString = "FoxLib.Core." + typeString;
+
+                    switch (property.Type)
+                    {
+                        case Core.PropertyInfoType.Vector3:
+                            typeConversionString = "FoxUtils.FoxToUnity";
+                            break;
+                        case Core.PropertyInfoType.Vector4:
+                            typeConversionString = "FoxUtils.FoxToUnity";
+                            break;
+                        case Core.PropertyInfoType.Quat:
+                            typeConversionString = "FoxUtils.FoxToUnity";
+                            break;
+                        case Core.PropertyInfoType.Color:
+                            typeConversionString = "FoxUtils.UnityColorToFoxColorRGB";
+                            break;
+                        case Core.PropertyInfoType.Matrix3:
+                            // TODO
+                            break;
+                        case Core.PropertyInfoType.Matrix4:
+                            // TODO
+                            break;
+                    }
+                }
             }
             
+            // TODO: Convert Fox Vector3, Vector4, Quat, Color, and Matrices
+
+            var extractValueString = string.Empty;
             if (property.ContainerType == Core.ContainerType.StaticArray && property.Container.ArraySize == 1)
             {
-                stringBuilder.AppendLine(
-                    $"                    {assignmentString} = DataSetUtils.GetStaticArrayPropertyValue<{typeString}>(propertyData);");
+                extractValueString = $"DataSetUtils.GetStaticArrayPropertyValue<{typeString}>(propertyData)";
             }
             else if (property.ContainerType == Core.ContainerType.StaticArray)
             {
                 isListProperty = true;
-                stringBuilder.AppendLine(
-                    $"                    {assignmentString} = DataSetUtils.GetStaticArrayValues<{typeString}>(propertyData);");
+                extractValueString = $"DataSetUtils.GetStaticArrayValues<{typeString}>(propertyData)";
             }
             else if (property.ContainerType == Core.ContainerType.DynamicArray)
             {
                 isListProperty = true;
-                stringBuilder.AppendLine(
-                    $"                    {assignmentString} = DataSetUtils.GetDynamicArrayValues<{typeString}>(propertyData);");
+                extractValueString = $"DataSetUtils.GetDynamicArrayValues<{typeString}>(propertyData)";
             }
             else if (property.ContainerType == Core.ContainerType.List)
             {
                 isListProperty = true;
-                stringBuilder.AppendLine(
-                    $"                    {assignmentString} = DataSetUtils.GetListValues<{typeString}>(propertyData);");
+                extractValueString = $"DataSetUtils.GetListValues<{typeString}>(propertyData)";
             }
             else if (property.ContainerType == Core.ContainerType.StringMap)
             {
                 throw new NotImplementedException();
             }
+
+            // Add type conversion, if necessary.
+            if (!string.IsNullOrEmpty(typeConversionString))
+            {
+                if (isListProperty)
+                {
+                    extractValueString = $"(from val in {extractValueString} select {typeConversionString}(val)).ToList()";
+                }
+                else
+                {
+                    extractValueString = $"{typeConversionString}({extractValueString})";
+                }
+            }
+
+            stringBuilder.AppendLine($"                    {assignmentString} = {extractValueString};");
 
             // Grab entity reference.
             if (isEntityReference)
@@ -195,8 +239,7 @@
                         $"                    this.{property.Name}Path = DataSetUtils.ExtractFilePath({property.Name}RawPath);");
                 }
             }
-
-            // MakeEntityLink(DataSet owningDataSet, Core.EntityLink foxEntityLink)
+            
             else if (isEntityLink)
             {
                 if (isListProperty)
@@ -282,6 +325,13 @@
             Core.IContainer container)
         {
             var innerTypeString = GetTypeString(propertyType);
+
+            // Disambiguate Unity vs Fox types.
+            if (propertyType == Core.PropertyInfoType.Vector3 || propertyType == Core.PropertyInfoType.Vector4
+                || propertyType == Core.PropertyInfoType.Quat)
+            {
+                innerTypeString = "UnityEngine." + innerTypeString;
+            }
 
             if (containerType == Core.ContainerType.StaticArray && container.ArraySize == 1)
             {

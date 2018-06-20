@@ -2,6 +2,11 @@
 
 namespace FoxKit.Utils
 {
+    using FoxLib;
+
+    using Quaternion = UnityEngine.Quaternion;
+    using Vector3 = UnityEngine.Vector3;
+
     /// <summary>
     /// Helper functions for working with Fox Engine-formatted data.
     /// </summary>
@@ -18,13 +23,33 @@ namespace FoxKit.Utils
         }
 
         /// <summary>
-        /// Converts a Unity Vector3 to a Fox Engine Vector3.
+        /// Converts a Fox Engine Vector4 to a Unity Vector4.
+        /// </summary>
+        /// <param name="foxVector">The Fox Engine vector.</param>
+        /// <returns>The Unity vector.</returns>
+        public static UnityEngine.Vector4 FoxToUnity(FoxLib.Core.Vector4 foxVector)
+        {
+            return new UnityEngine.Vector4(foxVector.Z, foxVector.Y, foxVector.X, foxVector.Z);
+        }
+
+        /// <summary>
+        /// Converts a Unity Vector4 to a Fox Engine Vector4.
         /// </summary>
         /// <param name="unityVector">The Unity vector.</param>
         /// <returns>The Fox Engine vector.</returns>
         public static FoxLib.Core.Vector3 UnityToFox(Vector3 unityVector)
         {
             return new FoxLib.Core.Vector3(unityVector.z, unityVector.y, unityVector.x);
+        }
+
+        /// <summary>
+        /// Converts a Unity Vector4 to a Fox Engine Vector4.
+        /// </summary>
+        /// <param name="unityVector">The Unity vector.</param>
+        /// <returns>The Fox Engine vector.</returns>
+        public static FoxLib.Core.Vector4 UnityToFox(UnityEngine.Vector4 unityVector)
+        {
+            return new FoxLib.Core.Vector4(unityVector.z, unityVector.y, unityVector.x, unityVector.w);
         }
 
         /// <summary>
@@ -35,6 +60,11 @@ namespace FoxKit.Utils
         public static FoxLib.Core.Quaternion UnityToFox(Quaternion unityQuaternion)
         {
             return new FoxLib.Core.Quaternion(-unityQuaternion.z, -unityQuaternion.y, -unityQuaternion.x, unityQuaternion.w);
+        }
+
+        public static UnityEngine.Quaternion FoxToUnity(Core.Quaternion foxQuat)
+        {
+            return new UnityEngine.Quaternion(-foxQuat.Z, -foxQuat.Y, -foxQuat.X, foxQuat.W);
         }
 
         /// <summary>

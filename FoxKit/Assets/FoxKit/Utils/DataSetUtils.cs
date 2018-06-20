@@ -81,23 +81,14 @@
 
         public static EntityLink MakeEntityLink(DataSet owningDataSet, Core.EntityLink foxEntityLink)
         {
-            return new EntityLink(owningDataSet,
+            return new EntityLink(
+                owningDataSet,
                 foxEntityLink.PackagePath,
                 foxEntityLink.ArchivePath,
                 foxEntityLink.NameInArchive,
                 foxEntityLink.EntityHandle);
         }
         
-        public static UnityEngine.Vector3 FoxToUnity(Core.Vector3 foxVector)
-        {
-            return new UnityEngine.Vector3(foxVector.Z, foxVector.Y, foxVector.X);
-        }
-
-        public static UnityEngine.Quaternion FoxToUnity(Core.Quaternion foxQuat)
-        {
-            return new UnityEngine.Quaternion(-foxQuat.Z, -foxQuat.Y, -foxQuat.X, foxQuat.W);
-        }
-
         /// <summary>
         /// Asserts that a property has a container of a given type.
         /// </summary>

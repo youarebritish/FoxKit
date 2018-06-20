@@ -122,6 +122,7 @@
             ActiveEditorTracker.sharedTracker.isLocked = true;
             
             // Replace any selection of TransformDatas with their scene proxies.
+            // TODO: Handle null transforms
             Selection.objects =
                 (from obj in Selection.objects
                  select (obj as TransformData)?.SceneProxyTransform.gameObject ?? obj)
