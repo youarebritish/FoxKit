@@ -25,7 +25,7 @@
         /// The data list.
         /// </summary>
         [SerializeField, HideInInspector]
-        private DataStringMap dataList = new DataStringMap();
+        private OrderedDictionary_string_Data orderedDictionaryStringDataList = new OrderedDictionary_string_Data();
         
         /// <summary>
         /// The address map.
@@ -54,7 +54,7 @@
         /// <returns>
         /// The <see cref="Entity"/> with the given name.
         /// </returns>
-        public Data this[string key] => this.dataList[key];
+        public Data this[string key] => this.orderedDictionaryStringDataList[key];
 
         /// <summary>
         /// Gets an Entity by address. Only valid for Entities loaded from DataSet files.
@@ -72,12 +72,12 @@
         /// </summary>
         public void LoadAllEntities()
         {
-            foreach (var data in this.dataList.Values)
+            foreach (var data in this.orderedDictionaryStringDataList.Values)
             {
                 data.OnLoaded();
             }
 
-            foreach (var data in this.dataList.Values)
+            foreach (var data in this.orderedDictionaryStringDataList.Values)
             {
                 data.PostOnLoaded();
             }
@@ -88,7 +88,7 @@
         /// </summary>
         public void UnloadAllEntities()
         {
-            foreach (var data in this.dataList.Values)
+            foreach (var data in this.orderedDictionaryStringDataList.Values)
             {
                 data.OnUnloaded();
             }
@@ -99,9 +99,9 @@
         {
             var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
             parentProperties.Add(PropertyInfoFactory.MakeStringMapProperty(
-                "dataList",
+                "orderedDictionaryStringDataList",
                 Core.PropertyInfoType.EntityPtr,
-                this.dataList.ToDictionary(entry => entry.Key, entry => getEntityAddress(entry.Value) as object)));
+                this.orderedDictionaryStringDataList.ToDictionary(entry => entry.Key, entry => getEntityAddress(entry.Value) as object)));
             return parentProperties;
         }
 
@@ -110,7 +110,7 @@
         {
             base.OnAssetsImported(tryGetAsset);
 
-            foreach (var data in this.dataList.Values)
+            foreach (var data in this.orderedDictionaryStringDataList.Values)
             {
                 data.OnAssetsImported(tryGetAsset);
             }
@@ -130,7 +130,7 @@
         /// </param>
         public void AddData(string key, ulong address, Data entity)
         {
-            this.dataList.Add(key, entity);
+            this.orderedDictionaryStringDataList.Add(key, entity);
             this.addressMap.Add(address, entity);
         }
 
@@ -168,9 +168,9 @@
         /// <returns>
         /// All registered <see cref="Data"/> entries with their keys.
         /// </returns>
-        public DataStringMap GetDataList()
+        public OrderedDictionary_string_Data GetDataList()
         {
-            return this.dataList;
+            return this.orderedDictionaryStringDataList;
         }
 
         public IEnumerable<Entity> GetAllEntities()

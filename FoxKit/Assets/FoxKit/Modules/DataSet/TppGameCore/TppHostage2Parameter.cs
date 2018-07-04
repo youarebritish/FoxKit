@@ -50,7 +50,7 @@
         /// TODO Figure out.
         /// </summary>
         [SerializeField]
-        private ObjectStringMap vfxFiles;
+        private OrderedDictionary_string_Object vfxFiles;
 
         /// <summary>
         /// TODO Figure out.
@@ -80,7 +80,7 @@
         /// Paths to <see cref="vfxFiles"/>.
         /// </summary>
         [SerializeField]
-        private StringStringMap vfxFilePaths;
+        private OrderedDictionary_string_string vfxFilePaths;
 
         /// <inheritdoc />
         public override short ClassId => 176;
@@ -98,7 +98,7 @@
             tryGetAsset(this.mtarFilePath, out this.mtarFile);
             tryGetAsset(this.extensionMtarFilePath, out this.extensionMtarFile);
 
-            this.vfxFiles = new ObjectStringMap();
+            this.vfxFiles = new OrderedDictionary_string_Object();
             foreach (var entry in this.vfxFilePaths)
             {
                 UnityEngine.Object asset;
@@ -164,7 +164,7 @@
                 case "vfxFiles":
                     var dictionary = DataSetUtils.GetStringMap<string>(propertyData);
 
-                    this.vfxFilePaths = new StringStringMap();
+                    this.vfxFilePaths = new OrderedDictionary_string_string();
                     foreach (var entry in dictionary)
                     {
                         var path = this.extensionMtarFilePath = DataSetUtils.ExtractFilePath(entry.Value);

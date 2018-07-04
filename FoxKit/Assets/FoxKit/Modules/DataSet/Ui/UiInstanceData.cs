@@ -26,7 +26,7 @@
         /// TODO: Figure out.
         /// </summary>
         [SerializeField, Modules.DataSet.Property("UI")]
-        private ObjectStringMap createWindowParams = new ObjectStringMap();
+        private OrderedDictionary_string_Object createWindowParams = new OrderedDictionary_string_Object();
 
         /// <summary>
         /// TODO: Figure out.
@@ -38,7 +38,7 @@
         /// TODO: Figure out.
         /// </summary>
         [SerializeField, HideInInspector]
-        private StringStringMap createWindowParamsPaths = new StringStringMap();
+        private OrderedDictionary_string_string createWindowParamsPaths = new OrderedDictionary_string_string();
 
         /// <inheritdoc />
         public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(Canvas)).image as Texture2D;
@@ -94,6 +94,8 @@
                         {
                             this.createWindowParamsPaths.Add(entry.Key, DataSetUtils.ExtractFilePath(entry.Value));
                         }
+                        
+                        //this.createWindowParamsPaths.AddRange(DataSetUtils.GetStringMap<string>(propertyData));
 
                         break;
                     }

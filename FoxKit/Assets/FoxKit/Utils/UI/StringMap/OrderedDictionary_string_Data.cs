@@ -4,12 +4,12 @@
     using Rotorz.Games.Collections;
     using System;
 
-    public sealed class DataStringMapEditable : EditableEntry<DataStringMap>
+    public sealed class DataStringMapEditable : EditableEntry<OrderedDictionary_string_Data>
     {
     }
 
     [Serializable, EditableEntry(typeof(DataStringMapEditable))]
-    public sealed class DataStringMap : OrderedDictionary<string, Data>
+    public sealed class OrderedDictionary_string_Data : OrderedDictionary<string, Data>
     {
     }
 }

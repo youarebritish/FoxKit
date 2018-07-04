@@ -283,6 +283,14 @@ namespace Rotorz.Games.Collections
             }
         }
 
+        public void AddRange(IEnumerable<KeyValuePair<TKey, TValue>> kvps)
+        {
+            foreach (var value in kvps)
+            {
+                this.Add(value.Key, value.Value);
+            }
+        }
+
 
         /// <inheritdoc/>
         public override IEnumerable<object> KeysWithDuplicateValues {

@@ -167,8 +167,6 @@
                 }
             }
             
-            // TODO: Convert Fox Vector3, Vector4, Quat, Color, and Matrices
-
             var extractValueString = string.Empty;
             if (property.ContainerType == Core.ContainerType.StaticArray && property.Container.ArraySize == 1)
             {
@@ -191,6 +189,7 @@
             }
             else if (property.ContainerType == Core.ContainerType.StringMap)
             {
+                //extractValueString = $"DataSetUtils.GetStringMap<{typeString}>(propertyData)";
                 throw new NotImplementedException();
             }
 
@@ -199,6 +198,7 @@
             {
                 if (isListProperty)
                 {
+                    // TODO How to handle StringMaps?
                     extractValueString = $"(from val in {extractValueString} select {typeConversionString}(val)).ToList()";
                 }
                 else
@@ -252,6 +252,11 @@
                     stringBuilder.AppendLine(
                         $"                    this.{property.Name} = DataSetUtils.MakeEntityLink(this.GetDataSet(), {property.Name}RawEntityLink);");
                 }
+            }
+
+            if (property.ContainerType == Core.ContainerType.StringMap)
+            {
+                stringBuilder.AppendLine("}");
             }
 
             stringBuilder.AppendLine("                    break;");
@@ -344,7 +349,7 @@
             }
 
             // TODO this is terrible and wrong
-            return "ObjectStringMap";
+            return "OrderedDictionary_string_Object";
         }
 
         private static string GetTypeString(Core.PropertyInfoType type)
