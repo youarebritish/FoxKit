@@ -25,7 +25,11 @@
         public static void GenerateClassFromEntity(Core.Entity entity)
         {
             var sourceCode = GenerateClassSourceCode(entity);
-            File.WriteAllText(OutputDirectory + $"{entity.ClassName}.cs", sourceCode);
+
+            using (var writer = new StreamWriter(new FileStream(OutputDirectory + $"{entity.ClassName}.cs", FileMode.OpenOrCreate)))
+            {
+                writer.Write(sourceCode);
+            }
             
             // TODO Don't do this each time
             AssetDatabase.Refresh();
@@ -114,20 +118,20 @@
             stringBuilder.AppendLine($"                case \"{property.Name}\":");
 
             var rawTypeString = GetRawTypeString(property.Type);
-            var convertedTypeString = GetConvertedTypeString(property.Type);
+            var convertedTypeString = GetConvertedTypeString(property.Type, false);
 
             var conversionFunctionString = GetConversionFunctionString(property.Type);
 
             if (property.ContainerType == Core.ContainerType.StringMap)
             {
-                stringBuilder.AppendLine($"                    var dictionary = DataSetUtils.GetStringMap<{rawTypeString}>(propertyData);");
-                stringBuilder.AppendLine($"                    var finalValues = new OrderedDictionary_string_{convertedTypeString}();");
-                stringBuilder.AppendLine("                    foreach(var entry in dictionary)");
+                stringBuilder.AppendLine($"                    var {property.Name}Dictionary = DataSetUtils.GetStringMap<{rawTypeString}>(propertyData);");
+                stringBuilder.AppendLine($"                    var {property.Name}FinalValues = new OrderedDictionary_string_{convertedTypeString}();");
+                stringBuilder.AppendLine($"                    foreach(var entry in {property.Name}Dictionary)");
                 stringBuilder.AppendLine("                    {");
-                stringBuilder.AppendLine($"                        this.finalValues.Add(entry.Key, {conversionFunctionString}(entry.Value));");
+                stringBuilder.AppendLine($"                        {property.Name}FinalValues.Add(entry.Key, {conversionFunctionString}(entry.Value));");
                 stringBuilder.AppendLine("                    }");
                 stringBuilder.AppendLine("                    ");
-                stringBuilder.AppendLine($"                    this.{backingPropertyName} = finalValues;");
+                stringBuilder.AppendLine($"                    this.{backingPropertyName} = {property.Name}FinalValues;");
             }
             else if (property.ContainerType == Core.ContainerType.StaticArray && property.Container.ArraySize == 1)
             {
@@ -271,10 +275,10 @@
                 return $"List<{innerTypeString}>";
             }
             
-            return $"OrderedDictionary_string_{GetConvertedTypeString(propertyType)}";
+            return $"OrderedDictionary_string_{GetConvertedTypeString(propertyType, false)}";
         }
 
-        private static string GetConvertedTypeString(Core.PropertyInfoType type)
+        private static string GetConvertedTypeString(Core.PropertyInfoType type, bool addPrefix = true)
         {
             switch (type)
             {
@@ -307,23 +311,23 @@
                 case Core.PropertyInfoType.EntityPtr:
                     return "Entity";    // TODO
                 case Core.PropertyInfoType.Vector3:
-                    return "UnityEngine.Vector3";
+                    return addPrefix ? "UnityEngine.Vector3" : "Vector3";
                 case Core.PropertyInfoType.Vector4:
-                    return "UnityEngine.Vector4";
+                    return addPrefix ? "UnityEngine.Vector4" : "Vector4";
                 case Core.PropertyInfoType.Quat:
-                    return "UnityEngine.Quaternion";
+                    return addPrefix ? "UnityEngine.Quaternion" : "Quaternion";
                 case Core.PropertyInfoType.Matrix3:
-                    return "UnityEngine.Matrix3x3";
+                    return addPrefix ? "UnityEngine.Matrix3x3" : "Matrix3x3";
                 case Core.PropertyInfoType.Matrix4:
-                    return "UnityEngine.Matrix4x4";
+                    return addPrefix ? "UnityEngine.Matrix4x4" : "Matrix4x4";
                 case Core.PropertyInfoType.Color:
-                    return "UnityEngine.Color";
+                    return addPrefix ? "UnityEngine.Color" : "Color";
                 case Core.PropertyInfoType.FilePtr:
-                    return "UnityEngine.Object";
+                    return addPrefix ? "UnityEngine.Object" : "Object";
                 case Core.PropertyInfoType.EntityHandle:
                     return "Entity";    // TODO
                 case Core.PropertyInfoType.EntityLink:
-                    return "FoxCore.EntityLink";
+                    return addPrefix ? "FoxCore.EntityLink" : "EntityLink";
                 case Core.PropertyInfoType.PropertyInfo:
                     Assert.IsTrue(false, "Unsupported property type: PropertyInfo.");
                     break;
@@ -368,7 +372,7 @@
                 case Core.PropertyInfoType.Path:
                     return "string";
                 case Core.PropertyInfoType.EntityPtr:
-                    return "Entity";    // TODO
+                    return "ulong";
                 case Core.PropertyInfoType.Vector3:
                     return "Core.Vector3";
                 case Core.PropertyInfoType.Vector4:
@@ -376,15 +380,15 @@
                 case Core.PropertyInfoType.Quat:
                     return "Core.Quaternion";
                 case Core.PropertyInfoType.Matrix3:
-                    return "Core.Matrix3x3";
+                    return "Core.Matrix3";
                 case Core.PropertyInfoType.Matrix4:
-                    return "Core.Matrix4x4";
+                    return "Core.Matrix4";
                 case Core.PropertyInfoType.Color:
-                    return "Core.Color";
+                    return "Core.ColorRGBA";
                 case Core.PropertyInfoType.FilePtr:
-                    return "Core.Object";
+                    return "string";
                 case Core.PropertyInfoType.EntityHandle:
-                    return "Entity";    // TODO
+                    return "ulong";
                 case Core.PropertyInfoType.EntityLink:
                     return "Core.EntityLink";
                 case Core.PropertyInfoType.PropertyInfo:
@@ -409,6 +413,7 @@
             stringBuilder.AppendLine(MakeUsingStatement("FoxKit.Modules.DataSet.Exporter"));
             stringBuilder.AppendLine(MakeUsingStatement("FoxKit.Modules.DataSet.FoxCore"));
             stringBuilder.AppendLine(MakeUsingStatement("FoxKit.Utils"));
+            stringBuilder.AppendLine(MakeUsingStatement("FoxKit.Utils.UI.StringMap"));
             stringBuilder.AppendLine(string.Empty);
             stringBuilder.AppendLine(MakeUsingStatement("FoxLib"));
             stringBuilder.AppendLine(string.Empty);
