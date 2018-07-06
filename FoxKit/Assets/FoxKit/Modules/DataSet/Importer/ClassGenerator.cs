@@ -11,6 +11,8 @@
 
     using FoxLib;
 
+    using Microsoft.FSharp.Core;
+
     using UnityEditor;
 
     using UnityEngine;
@@ -91,7 +93,13 @@
 
             foreach (var property in staticProperties)
             {
-                AddReadPropertyBlock(stringBuilder, property);
+                string propertyName = property.Name;
+                if (property.Type == Core.PropertyInfoType.FilePtr || property.Type == Core.PropertyInfoType.Path)
+                {
+                    propertyName += "Path";
+                }
+
+                AddReadPropertyBlock(stringBuilder, property, propertyName);
             }
 
             // Close switch statement block.
@@ -101,168 +109,90 @@
             stringBuilder.AppendLine("        }");
         }
 
-        private static void AddReadPropertyBlock(StringBuilder stringBuilder, Core.PropertyInfo property)
+        private static void AddReadPropertyBlock(StringBuilder stringBuilder, Core.PropertyInfo property, string backingPropertyName)
         {
-            // TODO handle stringmaps
-            // TODO handle fileptrs (ex: this.facialSettingFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData)); )
-            // TODO assign owner of DataElements
-
             stringBuilder.AppendLine($"                case \"{property.Name}\":");
 
-            var isEntityReference = property.Type == Core.PropertyInfoType.EntityHandle
-                                    || property.Type == Core.PropertyInfoType.EntityPtr;
-            var isFileReference = property.Type == Core.PropertyInfoType.FilePtr
-                                  || property.Type == Core.PropertyInfoType.Path;
-            var isEntityLink = property.Type == Core.PropertyInfoType.EntityLink;
-            var typeString = "ulong";
-            var assignmentString = $"this.{property.Name}";
-            var typeConversionString = string.Empty;
-            var isListProperty = false;
+            var rawTypeString = GetRawTypeString(property.Type);
+            var convertedTypeString = GetConvertedTypeString(property.Type);
 
-            if (isEntityReference)
-            {
-                assignmentString = $"var {property.Name}Address";
-            }
-            else if (isFileReference)
-            {
-                assignmentString = $"var {property.Name}RawPath";
-                typeString = "string";
-            }
-            else if (isEntityLink)
-            {
-                assignmentString = $"var {property.Name}RawEntityLink";
-                typeString = "Core.EntityLink";
-            }
-            else
-            {
-                typeString = GetTypeString(property.Type);
-
-                // Disambiguate Unity vs Fox types.
-                if (property.Type == Core.PropertyInfoType.Vector3 || property.Type == Core.PropertyInfoType.Vector4
-                    || property.Type == Core.PropertyInfoType.Quat)
-                {
-                    typeString = "FoxLib.Core." + typeString;
-
-                    switch (property.Type)
-                    {
-                        case Core.PropertyInfoType.Vector3:
-                            typeConversionString = "FoxUtils.FoxToUnity";
-                            break;
-                        case Core.PropertyInfoType.Vector4:
-                            typeConversionString = "FoxUtils.FoxToUnity";
-                            break;
-                        case Core.PropertyInfoType.Quat:
-                            typeConversionString = "FoxUtils.FoxToUnity";
-                            break;
-                        case Core.PropertyInfoType.Color:
-                            typeConversionString = "FoxUtils.UnityColorToFoxColorRGB";
-                            break;
-                        case Core.PropertyInfoType.Matrix3:
-                            // TODO
-                            break;
-                        case Core.PropertyInfoType.Matrix4:
-                            // TODO
-                            break;
-                    }
-                }
-            }
-            
-            var extractValueString = string.Empty;
-            if (property.ContainerType == Core.ContainerType.StaticArray && property.Container.ArraySize == 1)
-            {
-                extractValueString = $"DataSetUtils.GetStaticArrayPropertyValue<{typeString}>(propertyData)";
-            }
-            else if (property.ContainerType == Core.ContainerType.StaticArray)
-            {
-                isListProperty = true;
-                extractValueString = $"DataSetUtils.GetStaticArrayValues<{typeString}>(propertyData)";
-            }
-            else if (property.ContainerType == Core.ContainerType.DynamicArray)
-            {
-                isListProperty = true;
-                extractValueString = $"DataSetUtils.GetDynamicArrayValues<{typeString}>(propertyData)";
-            }
-            else if (property.ContainerType == Core.ContainerType.List)
-            {
-                isListProperty = true;
-                extractValueString = $"DataSetUtils.GetListValues<{typeString}>(propertyData)";
-            }
-            else if (property.ContainerType == Core.ContainerType.StringMap)
-            {
-                //extractValueString = $"DataSetUtils.GetStringMap<{typeString}>(propertyData)";
-                throw new NotImplementedException();
-            }
-
-            // Add type conversion, if necessary.
-            if (!string.IsNullOrEmpty(typeConversionString))
-            {
-                if (isListProperty)
-                {
-                    // TODO How to handle StringMaps?
-                    extractValueString = $"(from val in {extractValueString} select {typeConversionString}(val)).ToList()";
-                }
-                else
-                {
-                    extractValueString = $"{typeConversionString}({extractValueString})";
-                }
-            }
-
-            stringBuilder.AppendLine($"                    {assignmentString} = {extractValueString};");
-
-            // Grab entity reference.
-            if (isEntityReference)
-            {
-                if (isListProperty)
-                {
-                    stringBuilder.AppendLine(
-                        $"                    this.{property.Name} = (from address in {property.Name}Address select initFunctions.GetEntityFromAddress(address)).ToList();");
-                }
-                else
-                {
-                    stringBuilder.AppendLine(
-                        $"                    this.{property.Name} = initFunctions.GetEntityFromAddress({property.Name}Address);");
-                    stringBuilder.AppendLine($"                    Assert.IsNotNull(this.{property.Name});");
-                }
-            }
-
-            // Extract path.
-            else if (isFileReference)
-            {
-                if (isListProperty)
-                {
-                    stringBuilder.AppendLine(
-                        $"                    this.{property.Name}Path = (from path in {property.Name}RawPath select DataSetUtils.ExtractFilePath({property.Name}RawPath)).ToList();");
-                }
-                else
-                {
-                    stringBuilder.AppendLine(
-                        $"                    this.{property.Name}Path = DataSetUtils.ExtractFilePath({property.Name}RawPath);");
-                }
-            }
-            
-            else if (isEntityLink)
-            {
-                if (isListProperty)
-                {
-                    stringBuilder.AppendLine(
-                        $"                    this.{property.Name} = (from link in {property.Name}RawEntityLink select DataSetUtils.MakeEntityLink(this.GetDataSet(), link)).ToList();");
-                }
-                else
-                {
-                    stringBuilder.AppendLine(
-                        $"                    this.{property.Name} = DataSetUtils.MakeEntityLink(this.GetDataSet(), {property.Name}RawEntityLink);");
-                }
-            }
+            var conversionFunctionString = GetConversionFunctionString(property.Type);
 
             if (property.ContainerType == Core.ContainerType.StringMap)
             {
-                stringBuilder.AppendLine("}");
+                stringBuilder.AppendLine($"                    var dictionary = DataSetUtils.GetStringMap<{rawTypeString}>(propertyData);");
+                stringBuilder.AppendLine($"                    var finalValues = new OrderedDictionary_string_{convertedTypeString}();");
+                stringBuilder.AppendLine("                    foreach(var entry in dictionary)");
+                stringBuilder.AppendLine("                    {");
+                stringBuilder.AppendLine($"                        this.finalValues.Add(entry.Key, {conversionFunctionString}(entry.Value));");
+                stringBuilder.AppendLine("                    }");
+                stringBuilder.AppendLine("                    ");
+                stringBuilder.AppendLine($"                    this.{backingPropertyName} = finalValues;");
+            }
+            else if (property.ContainerType == Core.ContainerType.StaticArray && property.Container.ArraySize == 1)
+            {
+                stringBuilder.AppendLine($"                    this.{backingPropertyName} = {conversionFunctionString}(DataSetUtils.GetStaticArrayPropertyValue<{rawTypeString}>(propertyData));");
+            }
+            else
+            {
+                var extractValuesFunctionString = "DataSetUtils.GetStaticArrayValues";
+                if (property.ContainerType == Core.ContainerType.DynamicArray)
+                {
+                    extractValuesFunctionString = "DataSetUtils.GetDynamicArrayValues";
+                }
+                else if (property.ContainerType == Core.ContainerType.List)
+                {
+                    extractValuesFunctionString = "DataSetUtils.GetListValues";
+                }
+
+                stringBuilder.AppendLine($"                    this.{backingPropertyName} = (from rawValue in {extractValuesFunctionString}<{rawTypeString}>(propertyData) select {conversionFunctionString}(rawValue)).ToList();");
             }
 
             stringBuilder.AppendLine("                    break;");
-
         }
-        
+
+        private static string GetConversionFunctionString(Core.PropertyInfoType propertyType)
+        {
+            // TODO: EntityLink
+            var conversionFunctionString = string.Empty;
+            switch (propertyType)
+            {
+                case Core.PropertyInfoType.Color:
+                    conversionFunctionString = "FoxUtils.FoxColorRGBAToUnityColor";
+                    break;
+                case Core.PropertyInfoType.EntityHandle:
+                    conversionFunctionString = "initFunctions.GetEntityFromAddress";
+                    break;
+                case Core.PropertyInfoType.EntityPtr:
+                    conversionFunctionString = "initFunctions.GetEntityFromAddress";
+                    break;
+                case Core.PropertyInfoType.FilePtr:
+                    // TODO: Should this be in FoxUtils?
+                    conversionFunctionString = "DataSetUtils.ExtractFilePath";
+                    break;
+                case Core.PropertyInfoType.Matrix3:
+                    conversionFunctionString = "FoxUtils.FoxToUnity";
+                    break;
+                case Core.PropertyInfoType.Matrix4:
+                    conversionFunctionString = "FoxUtils.FoxToUnity";
+                    break;
+                case Core.PropertyInfoType.Path:
+                    conversionFunctionString = "DataSetUtils.ExtractFilePath";
+                    break;
+                case Core.PropertyInfoType.Quat:
+                    conversionFunctionString = "FoxUtils.FoxToUnity";
+                    break;
+                case Core.PropertyInfoType.Vector3:
+                    conversionFunctionString = "FoxUtils.FoxToUnity";
+                    break;
+                case Core.PropertyInfoType.Vector4:
+                    conversionFunctionString = "FoxUtils.FoxToUnity";
+                    break;
+            }
+
+            return conversionFunctionString;
+        }
+
         private static IEnumerable<Core.PropertyInfo> GetPrunedStaticPropertyFields(
             IEnumerable<Core.PropertyInfo> staticProperties,
             Type parentClass)
@@ -323,21 +253,14 @@
             stringBuilder.AppendLine("        [SerializeField, HideInInspector]");
             stringBuilder.AppendLine($"        private string {property.Name}Path;");
         }
-
+        
         private static string GetPropertyFieldTypeString(
             Core.ContainerType containerType,
             Core.PropertyInfoType propertyType,
             Core.IContainer container)
         {
-            var innerTypeString = GetTypeString(propertyType);
-
-            // Disambiguate Unity vs Fox types.
-            if (propertyType == Core.PropertyInfoType.Vector3 || propertyType == Core.PropertyInfoType.Vector4
-                || propertyType == Core.PropertyInfoType.Quat)
-            {
-                innerTypeString = "UnityEngine." + innerTypeString;
-            }
-
+            var innerTypeString = GetConvertedTypeString(propertyType);
+            
             if (containerType == Core.ContainerType.StaticArray && container.ArraySize == 1)
             {
                 return innerTypeString;
@@ -347,12 +270,11 @@
             {
                 return $"List<{innerTypeString}>";
             }
-
-            // TODO this is terrible and wrong
-            return "OrderedDictionary_string_Object";
+            
+            return $"OrderedDictionary_string_{GetConvertedTypeString(propertyType)}";
         }
 
-        private static string GetTypeString(Core.PropertyInfoType type)
+        private static string GetConvertedTypeString(Core.PropertyInfoType type)
         {
             switch (type)
             {
@@ -385,23 +307,86 @@
                 case Core.PropertyInfoType.EntityPtr:
                     return "Entity";    // TODO
                 case Core.PropertyInfoType.Vector3:
-                    return "Vector3";
+                    return "UnityEngine.Vector3";
                 case Core.PropertyInfoType.Vector4:
-                    return "Vector4";
+                    return "UnityEngine.Vector4";
                 case Core.PropertyInfoType.Quat:
-                    return "Quaternion";
+                    return "UnityEngine.Quaternion";
                 case Core.PropertyInfoType.Matrix3:
-                    return "Matrix3x3";
+                    return "UnityEngine.Matrix3x3";
                 case Core.PropertyInfoType.Matrix4:
-                    return "Matrix4x4";
+                    return "UnityEngine.Matrix4x4";
                 case Core.PropertyInfoType.Color:
-                    return "Color";
+                    return "UnityEngine.Color";
                 case Core.PropertyInfoType.FilePtr:
                     return "UnityEngine.Object";
                 case Core.PropertyInfoType.EntityHandle:
                     return "Entity";    // TODO
                 case Core.PropertyInfoType.EntityLink:
-                    return "EntityLink";
+                    return "FoxCore.EntityLink";
+                case Core.PropertyInfoType.PropertyInfo:
+                    Assert.IsTrue(false, "Unsupported property type: PropertyInfo.");
+                    break;
+                case Core.PropertyInfoType.WideVector3:
+                    Assert.IsTrue(false, "Unsupported property type: WideVector3.");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
+
+            return "ERROR";
+        }
+
+        private static string GetRawTypeString(Core.PropertyInfoType type)
+        {
+            switch (type)
+            {
+                case Core.PropertyInfoType.Int8:
+                    return "sbyte";
+                case Core.PropertyInfoType.UInt8:
+                    return "byte";
+                case Core.PropertyInfoType.Int16:
+                    return "short";
+                case Core.PropertyInfoType.UInt16:
+                    return "ushort";
+                case Core.PropertyInfoType.Int32:
+                    return "int";
+                case Core.PropertyInfoType.UInt32:
+                    return "uint";
+                case Core.PropertyInfoType.Int64:
+                    return "long";
+                case Core.PropertyInfoType.UInt64:
+                    return "ulong";
+                case Core.PropertyInfoType.Float:
+                    return "float";
+                case Core.PropertyInfoType.Double:
+                    return "double";
+                case Core.PropertyInfoType.Bool:
+                    return "bool";
+                case Core.PropertyInfoType.String:
+                    return "string";
+                case Core.PropertyInfoType.Path:
+                    return "string";
+                case Core.PropertyInfoType.EntityPtr:
+                    return "Entity";    // TODO
+                case Core.PropertyInfoType.Vector3:
+                    return "Core.Vector3";
+                case Core.PropertyInfoType.Vector4:
+                    return "Core.Vector4";
+                case Core.PropertyInfoType.Quat:
+                    return "Core.Quaternion";
+                case Core.PropertyInfoType.Matrix3:
+                    return "Core.Matrix3x3";
+                case Core.PropertyInfoType.Matrix4:
+                    return "Core.Matrix4x4";
+                case Core.PropertyInfoType.Color:
+                    return "Core.Color";
+                case Core.PropertyInfoType.FilePtr:
+                    return "Core.Object";
+                case Core.PropertyInfoType.EntityHandle:
+                    return "Entity";    // TODO
+                case Core.PropertyInfoType.EntityLink:
+                    return "Core.EntityLink";
                 case Core.PropertyInfoType.PropertyInfo:
                     Assert.IsTrue(false, "Unsupported property type: PropertyInfo.");
                     break;

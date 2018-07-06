@@ -2,6 +2,8 @@
 
 namespace FoxKit.Utils
 {
+    using FoxKit.Utils.Structs;
+
     using FoxLib;
 
     using Quaternion = UnityEngine.Quaternion;
@@ -62,9 +64,90 @@ namespace FoxKit.Utils
             return new FoxLib.Core.Quaternion(-unityQuaternion.z, -unityQuaternion.y, -unityQuaternion.x, unityQuaternion.w);
         }
 
+        /// <summary>
+        /// Converts a Fox Engine Quaternion to a Unity Quaternion.
+        /// </summary>
+        /// <param name="foxQuat">The Fox Engine Quaternion.</param>
+        /// <returns>The Unity Quaternion.</returns>
         public static UnityEngine.Quaternion FoxToUnity(Core.Quaternion foxQuat)
         {
             return new UnityEngine.Quaternion(-foxQuat.Z, -foxQuat.Y, -foxQuat.X, foxQuat.W);
+        }
+
+        /// <summary>
+        /// Converts a Unity Matrix3x3 to a Fox Engine Matrix3.
+        /// </summary>
+        /// <param name="unityMatrix">The Unity Matrix3x3.</param>
+        /// <returns>The Fox Engine Matrix3.</returns>
+        public static Core.Matrix3 UnityToFox(Matrix3x3 unityMatrix)
+        {
+            return Core.Matrix3.Create(
+                unityMatrix.m02,
+                unityMatrix.m01,
+                unityMatrix.m00,
+                unityMatrix.m12,
+                unityMatrix.m11,
+                unityMatrix.m10,
+                unityMatrix.m22,
+                unityMatrix.m21,
+                unityMatrix.m20);
+        }
+
+        /// <summary>
+        /// Converts a Fox Engine Matrix3 to a Unity Matrix3x3.
+        /// </summary>
+        /// <param name="foxMatrix">The Fox Engine Matrix3.</param>
+        /// <returns>The Unity Matrix3x3.</returns>
+        public static Matrix3x3 FoxToUnity(Core.Matrix3 foxMatrix)
+        {
+            // TODO: Are thees conversions correct?
+            var result = new Matrix3x3();
+            result.SetColumn(0, new Vector3(foxMatrix.Col0[2], foxMatrix.Col0[1], foxMatrix.Col0[0]));
+            result.SetColumn(1, new Vector3(foxMatrix.Col1[2], foxMatrix.Col1[1], foxMatrix.Col1[0]));
+            result.SetColumn(2, new Vector3(foxMatrix.Col2[2], foxMatrix.Col2[1], foxMatrix.Col2[0]));
+            return result;
+        }
+
+        /// <summary>
+        /// Converts a Unity Matrix4x4 to a Fox Engine Matrix4.
+        /// </summary>
+        /// <param name="unityMatrix">The Unity Matrix4x4.</param>
+        /// <returns>The Fox Engine Matrix4.</returns>
+        public static Core.Matrix4 UnityToFox(Matrix4x4 unityMatrix)
+        {
+            return Core.Matrix4.Create(
+                unityMatrix.m02,
+                unityMatrix.m01,
+                unityMatrix.m00,
+                unityMatrix.m03,
+                unityMatrix.m12,
+                unityMatrix.m11,
+                unityMatrix.m10,
+                unityMatrix.m13,
+                unityMatrix.m22,
+                unityMatrix.m21,
+                unityMatrix.m20,
+                unityMatrix.m23,
+                unityMatrix.m32,
+                unityMatrix.m31,
+                unityMatrix.m30,
+                unityMatrix.m33);
+        }
+
+        /// <summary>
+        /// Converts a Fox Engine Matrix4 to a Unity Matrix4x4.
+        /// </summary>
+        /// <param name="foxMatrix">The Fox Engine Matrix4.</param>
+        /// <returns>The Unity Matrix4x4.</returns>
+        public static Matrix4x4 FoxToUnity(Core.Matrix4 foxMatrix)
+        {
+            // TODO: Are thees conversions correct?
+            var result = new Matrix4x4();
+            result.SetColumn(0, new UnityEngine.Vector4(foxMatrix.Col0[2], foxMatrix.Col0[1], foxMatrix.Col0[0], foxMatrix.Col0[3]));
+            result.SetColumn(1, new UnityEngine.Vector4(foxMatrix.Col1[2], foxMatrix.Col1[1], foxMatrix.Col1[0], foxMatrix.Col1[3]));
+            result.SetColumn(2, new UnityEngine.Vector4(foxMatrix.Col2[2], foxMatrix.Col2[1], foxMatrix.Col2[0], foxMatrix.Col2[3]));
+            result.SetColumn(3, new UnityEngine.Vector4(foxMatrix.Col2[2], foxMatrix.Col2[1], foxMatrix.Col2[0], foxMatrix.Col3[3]));
+            return result;
         }
 
         /// <summary>
