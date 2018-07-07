@@ -116,8 +116,11 @@
                     var address = DataSetUtils.GetStaticArrayPropertyValue<ulong>(propertyData);
                     this.parameters = initFunctions.GetEntityFromAddress(address) as TppPermanentGimmickParameter;
 
-                    Assert.IsNotNull(this.parameters);
-                    this.parameters.Owner = this;
+                    //Assert.IsNotNull(this.parameters); This is sometimes null, why
+                    if (this.parameters != null)
+                    {
+                        this.parameters.Owner = this;
+                    }
                     break;
                 case "flags1":
                     this.flags1 = DataSetUtils.GetStaticArrayPropertyValue<uint>(propertyData);

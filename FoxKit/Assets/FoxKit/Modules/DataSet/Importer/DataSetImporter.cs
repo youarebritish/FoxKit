@@ -50,7 +50,7 @@
             var entities = CreateEntityInstances(rawEntities, MakeEntityCreateFunctions());
             var dataSet = FindDataSet(entities);
 
-            InitializeEntities(ctx, entities, dataSet, MakeEntityInitializeFunctions(entities));
+            InitializeEntities(ctx, entities, dataSet, MakeEntityInitializeFunctions(dataSet, entities));
 
             ctx.AddObjectToAsset("DataSet", dataSet);
             ctx.SetMainObject(dataSet);
@@ -188,9 +188,11 @@
         /// <returns>
         /// The <see cref="EntityInitializeFunctions"/>.
         /// </returns>
-        private static EntityInitializeFunctions MakeEntityInitializeFunctions(Dictionary<Entity, Core.Entity> entities)
+        private static EntityInitializeFunctions MakeEntityInitializeFunctions(DataSet dataSet, Dictionary<Entity, Core.Entity> entities)
         {
-            return new EntityInitializeFunctions(address => entities.FirstOrDefault(e => e.Value.Address == address).Key);
+            return new EntityInitializeFunctions(
+                address => entities.FirstOrDefault(e => e.Value.Address == address).Key,
+                entityLink => DataSetUtils.MakeEntityLink(dataSet, entityLink));
         }
 
         /// <summary>

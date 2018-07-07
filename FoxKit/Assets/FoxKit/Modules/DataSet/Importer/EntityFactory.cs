@@ -84,9 +84,12 @@
             /// <param name="getEntityFromAddress">
             /// Function to get an Entity from its address.
             /// </param>
-            public EntityInitializeFunctions(GetEntityFromAddressDelegate getEntityFromAddress)
+            /// <param name="makeEntityLink">
+            /// Function to make an EntityLink.</param>
+            public EntityInitializeFunctions(GetEntityFromAddressDelegate getEntityFromAddress, MakeEntityLinkDelegate makeEntityLink)
             {
                 this.GetEntityFromAddress = getEntityFromAddress;
+                this.MakeEntityLink = makeEntityLink;
             }
 
             /// <summary>
@@ -104,6 +107,22 @@
             /// Gets the function to get an Entity from its address.
             /// </summary>
             public GetEntityFromAddressDelegate GetEntityFromAddress { get; }
+
+            /// <summary>
+            /// Delegate to make an EntityLink from raw EntityLink data.
+            /// </summary>
+            /// <param name="rawEntityLink">
+            /// The raw EntityLink.
+            /// </param>
+            /// <returns>
+            /// The converted EntityLink.
+            /// </returns>
+            public delegate EntityLink MakeEntityLinkDelegate(Core.EntityLink rawEntityLink);
+
+            /// <summary>
+            /// Gets the function to get an Entity from its address.
+            /// </summary>
+            public MakeEntityLinkDelegate MakeEntityLink { get; }
         }
     }
 }
