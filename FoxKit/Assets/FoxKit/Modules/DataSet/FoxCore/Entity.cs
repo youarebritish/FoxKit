@@ -130,12 +130,13 @@
         /// Creates writable list of Entity static properties.
         /// </summary>
         /// <param name="getEntityAddress">
-        /// Function to get an Entity's address.
+        ///     Function to get an Entity's address.
         /// </param>
+        /// <param name="convertEntityLink"></param>
         /// <returns>
         /// Writable static properties.
         /// </returns>
-        public abstract List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress);
+        public abstract List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink);
 
         /// <summary>
         /// Creates writable list of Entity dynamic properties.

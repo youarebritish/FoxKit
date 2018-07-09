@@ -47,7 +47,7 @@
                 }
             }
             
-            var entities = CreateEntityInstances(rawEntities, MakeEntityCreateFunctions());
+            var entities = CreateEntityInstances(rawEntities, Path.GetFileName(ctx.assetPath), MakeEntityCreateFunctions());
             var dataSet = FindDataSet(entities);
 
             InitializeEntities(ctx, entities, dataSet, MakeEntityInitializeFunctions(dataSet, entities));
@@ -98,10 +98,10 @@
         /// <returns>
         /// The created Entity instances.
         /// </returns>
-        private static Dictionary<Entity, Core.Entity> CreateEntityInstances(IEnumerable<Core.Entity> rawEntities, EntityCreateFunctions entityCreateFunctions)
+        private static Dictionary<Entity, Core.Entity> CreateEntityInstances(IEnumerable<Core.Entity> rawEntities, string filename, EntityCreateFunctions entityCreateFunctions)
         {
             return (from entity in rawEntities
-                    select new { Data = entity, Instance = Create(entity, entityCreateFunctions) })
+                    select new { Data = entity, Instance = Create(entity, filename, entityCreateFunctions) })
                 .Where(entry => entry.Instance != null)
                 .ToDictionary(entry => entry.Instance, entry => entry.Data);
         }

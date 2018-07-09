@@ -19,6 +19,14 @@
             return new Core.PropertyInfo(name, propertyType, Core.ContainerType.StaticArray, container);
         }
 
+        public static Core.PropertyInfo MakeStaticArrayProperty(string name, Core.PropertyInfoType propertyType, object[] values)
+        {
+            Assert.IsNotNull(values);
+
+            var container = Core.Container<object>.NewStaticArray(values);
+            return new Core.PropertyInfo(name, propertyType, Core.ContainerType.StaticArray, container);
+        }
+
         public static Core.PropertyInfo MakeDynamicArrayProperty(string name, Core.PropertyInfoType propertyType, object[] values)
         {
             Assert.IsNotNull(values);

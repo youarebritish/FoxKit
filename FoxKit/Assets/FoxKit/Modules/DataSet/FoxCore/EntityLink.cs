@@ -12,7 +12,15 @@
     [Serializable]
     public class EntityLink
     {
-        /// <summary>
+        public string PackagePath => this.packagePath;
+
+        public string ArchivePath => this.archivePath;
+        
+        public string NameInArchive => this.nameInArchive;
+
+        public ulong Address => this.address;
+
+            /// <summary>
         /// The package the referenced Entity belongs to. If empty, it belongs to the same package as the owning Entity.
         /// It may also have the value "DATA_IDENTIFIER", indicating that instead of looking for a file, it should look for a DataIdentifier.
         /// </summary>

@@ -55,9 +55,9 @@
         }
 
         /// <inheritdoc />
-        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
+        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
         {
-            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
+            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("soundDataFile", Core.PropertyInfoType.FilePtr, DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.soundDataFile))));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("syncLoad", Core.PropertyInfoType.Bool, this.syncLoad));
 

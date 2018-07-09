@@ -131,9 +131,9 @@
         }
 
         /// <inheritdoc />
-        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
+        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
         {
-            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
+            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("attackId", Core.PropertyInfoType.String, this.attackId));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("equipId", Core.PropertyInfoType.String, this.equipId));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("bulletId", Core.PropertyInfoType.String, this.bulletId));

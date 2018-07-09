@@ -41,7 +41,7 @@
     /// Base class for Entities with a physical location in the world.
     /// </summary>
     [Serializable]
-    public abstract class TransformData : Data
+    public class TransformData : Data
     {
         /// <summary>
         /// The transform matrix.
@@ -159,9 +159,9 @@
         }
 
         /// <inheritdoc />
-        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
+        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
         {
-            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
+            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
             parentProperties.Add(
                 PropertyInfoFactory.MakeStaticArrayProperty(
                     "parent",

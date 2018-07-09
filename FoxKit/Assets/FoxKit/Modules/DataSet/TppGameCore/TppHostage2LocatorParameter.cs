@@ -30,9 +30,9 @@
         public override short ClassId => 32;
 
         /// <inheritdoc />
-        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
+        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
         {
-            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
+            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("identifier", Core.PropertyInfoType.String, this.identifier));
             return parentProperties;
         }

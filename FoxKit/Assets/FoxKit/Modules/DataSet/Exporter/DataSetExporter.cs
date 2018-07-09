@@ -6,6 +6,7 @@
     using System.Linq;
 
     using FoxKit.Modules.DataSet.FoxCore;
+    using FoxKit.Utils;
 
     using FoxLib;
 
@@ -64,7 +65,7 @@
                 id,
                 entity.ClassId,
                 entity.Version,
-                entity.MakeWritableStaticProperties(getEntityAddress).ToArray(),
+                entity.MakeWritableStaticProperties(getEntityAddress, DataSetUtils.MakeEntityLink).ToArray(),
                 entity.MakeWritableDynamicProperties(getEntityAddress).ToArray());
         }
 

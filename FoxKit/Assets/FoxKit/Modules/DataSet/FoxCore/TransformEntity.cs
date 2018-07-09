@@ -47,9 +47,9 @@
         public override short ClassId => 80;
 
         /// <inheritdoc />
-        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
+        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
         {
-            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
+            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("transform_scale", Core.PropertyInfoType.Vector3, FoxUtils.UnityToFox(this.scale)));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("transform_rotation_quat", Core.PropertyInfoType.Quat, FoxUtils.UnityToFox(this.rotation)));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("transform_translation", Core.PropertyInfoType.Vector3, FoxUtils.UnityToFox(this.translation)));

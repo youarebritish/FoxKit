@@ -7,6 +7,8 @@
 
     using FoxLib;
 
+    using UnityEditor;
+
     using UnityEngine.Assertions;
 
     /// <summary>
@@ -68,6 +70,12 @@
             return "/" + filePtr;
         }
 
+        public static string AssetToFoxPath(UnityEngine.Object asset)
+        {
+            var unityPath = AssetDatabase.GetAssetPath(asset);
+            return UnityPathToFoxPath(unityPath);
+        }
+
         public static string ExtractFilePath(string filePtr)
         {
             return FormatFilePath(filePtr);
@@ -88,7 +96,16 @@
                 foxEntityLink.NameInArchive,
                 foxEntityLink.EntityHandle);
         }
-        
+
+        public static Core.EntityLink MakeEntityLink(EntityLink unityEntityLink)
+        {
+            return new Core.EntityLink(
+                unityEntityLink.PackagePath,
+                unityEntityLink.ArchivePath,
+                unityEntityLink.NameInArchive,
+                unityEntityLink.Address);
+        }
+
         /// <summary>
         /// Asserts that a property has a container of a given type.
         /// </summary>

@@ -22,9 +22,9 @@
     {
         private static readonly string OutputDirectory = Application.dataPath + @"/FoxKit/Modules/DataSet/Generated/";
 
-        public static void GenerateClassFromEntity(Core.Entity entity)
+        public static void GenerateClassFromEntity(Core.Entity entity, string filename)
         {
-            var sourceCode = GenerateClassSourceCode(entity);
+            var sourceCode = GenerateClassSourceCode(entity, filename);
 
             using (var writer = new StreamWriter(new FileStream(OutputDirectory + $"{entity.ClassName}.cs", FileMode.OpenOrCreate)))
             {
@@ -35,7 +35,7 @@
             AssetDatabase.Refresh();
         }
 
-        private static string GenerateClassSourceCode(Core.Entity entity)
+        private static string GenerateClassSourceCode(Core.Entity entity, string filename)
         {
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendLine(MakeNamespaceStatement());
@@ -45,9 +45,10 @@
             
             AddUsingStatements(stringBuilder);
 
+            stringBuilder.AppendLine($"    // Automatically generated from file {filename}");
             stringBuilder.AppendLine("    /// <inheritdoc />");
             stringBuilder.AppendLine("    [Serializable]");
-
+            
             var parentClass =
                 DetermineBaseClass((from property in entity.StaticProperties
                                     select property.Name).ToList());
@@ -56,21 +57,19 @@
             // Open class block.
             stringBuilder.AppendLine("    {");
 
-            var staticProperties = GetPrunedStaticPropertyFields(entity.StaticProperties, parentClass);
-            AddStaticPropertyFields(stringBuilder, staticProperties.ToArray(), entity.ClassName);
+            var staticProperties = GetPrunedStaticPropertyFields(entity.StaticProperties, parentClass).ToArray();
+            AddStaticPropertyFields(stringBuilder, staticProperties, entity.ClassName);
 
             AddProperties(entity.ClassId, entity.Version, stringBuilder);
             stringBuilder.AppendLine(string.Empty);
 
-            AddOnAssetsImportedFunction(stringBuilder, entity);
+            AddOnAssetsImportedFunction(stringBuilder, staticProperties);
 
-            // TODO MakeWritableStaticProperties
-            // TODO ReadProperty
-            AddReadPropertyFunction(stringBuilder, staticProperties);
+            AddMakeWritableStaticPropertiesFunction(stringBuilder, staticProperties);
             stringBuilder.AppendLine(string.Empty);
 
-            // TODO OnAssetsImported (if there are files referenced)
-
+            AddReadPropertyFunction(stringBuilder, staticProperties);
+            
             // Close class block.
             stringBuilder.AppendLine("    }");
 
@@ -99,10 +98,10 @@
 
             foreach (var property in staticProperties)
             {
-                string propertyName = property.Name;
+                var propertyName = "_" + property.Name;
                 if (property.Type == Core.PropertyInfoType.FilePtr || property.Type == Core.PropertyInfoType.Path)
                 {
-                    propertyName += "Path";
+                    propertyName = property.Name + "Path";
                 }
 
                 AddReadPropertyBlock(stringBuilder, property, propertyName);
@@ -128,7 +127,7 @@
                 convertedTypeString = "string";
             }
 
-            var conversionFunctionString = GetConversionFunctionString(property.Type);
+            var conversionFunctionString = GetFoxToUnityConversionFunctionString(property.Type);
 
             if (property.ContainerType == Core.ContainerType.StringMap)
             {
@@ -164,10 +163,10 @@
             stringBuilder.AppendLine("                    break;");
         }
 
-        private static void AddOnAssetsImportedFunction(StringBuilder stringBuilder, Core.Entity entity)
+        private static void AddOnAssetsImportedFunction(StringBuilder stringBuilder, Core.PropertyInfo[] properties)
         {
-            var filePtrProperties = (from property in entity.StaticProperties
-                                    where property.Type == Core.PropertyInfoType.FilePtr
+            var filePtrProperties = (from property in properties
+                                     where property.Type == Core.PropertyInfoType.FilePtr
                                     select property).ToList();
 
             if (filePtrProperties.Count == 0)
@@ -198,22 +197,75 @@
                 stringBuilder.AppendLine("            {");
                 stringBuilder.AppendLine("               UnityEngine.Object file = null;");
                 stringBuilder.AppendLine("               tryGetAsset(path.Value, out file);");
-                stringBuilder.AppendLine($"               this.{property.Name}.Add(path.Key, file);");
+                stringBuilder.AppendLine($"               this._{property.Name}.Add(path.Key, file);");
                 stringBuilder.AppendLine("            }");
             }
             else if (property.ContainerType == Core.ContainerType.StaticArray && property.Container.ArraySize == 1)
             {
-                stringBuilder.AppendLine($"            tryGetAsset(this.{property.Name}Path, out this.{property.Name});");
+                stringBuilder.AppendLine($"            tryGetAsset(this.{property.Name}Path, out this._{property.Name});");
             }
             else
             {
-                stringBuilder.AppendLine($"            this.{property.Name} = (from path in this.{property.Name}Path select tryGetAsset(path)).ToList();");
+                //stringBuilder.AppendLine($"            this._{property.Name} = (from path in this.{property.Name}Path select tryGetAsset(path)).ToList();");
+                stringBuilder.AppendLine($"            this._{property.Name} = new List<UnityEngine.Object>();");
+                stringBuilder.AppendLine($"            foreach (var path in this.{property.Name}Path)");
+                stringBuilder.AppendLine("            {");
+                stringBuilder.AppendLine("               UnityEngine.Object file = null;");
+                stringBuilder.AppendLine("               tryGetAsset(path, out file);");
+                stringBuilder.AppendLine($"               this._{property.Name}.Add(file);");
+                stringBuilder.AppendLine("            }");
             }
         }
 
-        private static string GetConversionFunctionString(Core.PropertyInfoType propertyType)
+        private static void AddMakeWritableStaticPropertiesFunction(StringBuilder stringBuilder, Core.PropertyInfo[] staticProperties)
         {
-            // TODO: EntityLink
+            stringBuilder.AppendLine("        /// <inheritdoc />");
+            stringBuilder.AppendLine("        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)");
+            stringBuilder.AppendLine("        {");
+            stringBuilder.AppendLine("            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);");
+
+            foreach (var property in staticProperties)
+            {
+                MakeMakeWritableStaticPropertiesBlock(stringBuilder, property);
+            }
+
+            stringBuilder.AppendLine("            return parentProperties;");
+            stringBuilder.AppendLine("        }");
+        }
+
+        private static void MakeMakeWritableStaticPropertiesBlock(
+            StringBuilder stringBuilder,
+            Core.PropertyInfo property)
+        {
+            var propertyTypeString = "Core.PropertyInfoType." + property.Type;
+            var conversionFunctionString = GetUnityToFoxConversionFunctionString(property.Type);
+
+            if (property.ContainerType == Core.ContainerType.StringMap)
+            {
+                stringBuilder.AppendLine($"            parentProperties.Add(PropertyInfoFactory.MakeStringMapProperty(\"_{property.Name}\", {propertyTypeString}, this._{property.Name}.ToDictionary(entry => entry.Key, entry => {conversionFunctionString}(entry.Value) as object)));");
+            }
+            else if (property.ContainerType == Core.ContainerType.StaticArray && property.Container.ArraySize == 1)
+            {
+                stringBuilder.AppendLine($"            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty(\"_{property.Name}\", {propertyTypeString}, {conversionFunctionString}(this._{property.Name})));");
+            }
+            else
+            {
+                var containerTypeString = "StaticArray";
+                if (property.ContainerType == Core.ContainerType.DynamicArray)
+                {
+                    containerTypeString = "DynamicArray";
+                }
+                else if (property.ContainerType == Core.ContainerType.DynamicArray)
+                {
+                    containerTypeString = "List";
+                }
+
+                stringBuilder.AppendLine($"            parentProperties.Add(PropertyInfoFactory.Make{containerTypeString}Property(\"_{property.Name}\", {propertyTypeString}, (from propertyEntry in this._{property.Name} select {conversionFunctionString}(propertyEntry) as object).ToArray()));");
+            }
+        }
+
+        private static string GetFoxToUnityConversionFunctionString(Core.PropertyInfoType propertyType)
+        {
             var conversionFunctionString = string.Empty;
             switch (propertyType)
             {
@@ -250,6 +302,50 @@
                     break;
                 case Core.PropertyInfoType.EntityLink:
                     conversionFunctionString = "initFunctions.MakeEntityLink";
+                    break;
+            }
+
+            return conversionFunctionString;
+        }
+
+        private static string GetUnityToFoxConversionFunctionString(Core.PropertyInfoType propertyType)
+        {
+            var conversionFunctionString = string.Empty;
+            switch (propertyType)
+            {
+                case Core.PropertyInfoType.Color:
+                    conversionFunctionString = "FoxUtils.UnityColorToFoxColorRGBA";
+                    break;
+                case Core.PropertyInfoType.EntityHandle:
+                    conversionFunctionString = "getEntityAddress";
+                    break;
+                case Core.PropertyInfoType.EntityPtr:
+                    conversionFunctionString = "getEntityAddress";
+                    break;
+                case Core.PropertyInfoType.FilePtr:
+                    // TODO: Should this be in FoxUtils?
+                    conversionFunctionString = "DataSetUtils.AssetToFoxPath";
+                    break;
+                case Core.PropertyInfoType.Matrix3:
+                    conversionFunctionString = "FoxUtils.UnityToFox";
+                    break;
+                case Core.PropertyInfoType.Matrix4:
+                    conversionFunctionString = "FoxUtils.UnityToFox";
+                    break;
+                case Core.PropertyInfoType.Path:
+                    conversionFunctionString = "DataSetUtils.ExtractFilePath";
+                    break;
+                case Core.PropertyInfoType.Quat:
+                    conversionFunctionString = "FoxUtils.UnityToFox";
+                    break;
+                case Core.PropertyInfoType.Vector3:
+                    conversionFunctionString = "FoxUtils.UnityToFox";
+                    break;
+                case Core.PropertyInfoType.Vector4:
+                    conversionFunctionString = "FoxUtils.UnityToFox";
+                    break;
+                case Core.PropertyInfoType.EntityLink:
+                    conversionFunctionString = "convertEntityLink";
                     break;
             }
 
@@ -305,7 +401,7 @@
         {
             // TODO Initialize string to string.Empty
             stringBuilder.AppendLine($"        [SerializeField, Modules.DataSet.Property(\"{className}\")]");
-            stringBuilder.AppendLine($"        private {GetPropertyFieldTypeString(property.ContainerType, property.Type, property.Container)} {property.Name};");
+            stringBuilder.AppendLine($"        private {GetPropertyFieldTypeString(property.ContainerType, property.Type, property.Container)} _{property.Name};");
 
             if (property.Type != Core.PropertyInfoType.FilePtr && property.Type != Core.PropertyInfoType.Path)
             {

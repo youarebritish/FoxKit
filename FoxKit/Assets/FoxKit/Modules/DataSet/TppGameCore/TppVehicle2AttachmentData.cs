@@ -84,9 +84,9 @@
         }
 
         /// <inheritdoc />
-        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
+        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
         {
-            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
+            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("vehicleTypeCode", Core.PropertyInfoType.UInt8, this.vehicleTypeCode));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("attachmentImplTypeIndex", Core.PropertyInfoType.UInt8, this.attachmentImplTypeIndex));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("attachmentFile", Core.PropertyInfoType.FilePtr, DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.attachmentFile))));

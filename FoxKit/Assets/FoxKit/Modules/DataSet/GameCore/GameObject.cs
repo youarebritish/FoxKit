@@ -55,9 +55,9 @@
         public override ushort Version => 2;
 
         /// <inheritdoc />
-        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress)
+        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
         {
-            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress);
+            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("typeName", Core.PropertyInfoType.String, this.typeName));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("groupId", Core.PropertyInfoType.UInt32, this.groupId));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("totalCount", Core.PropertyInfoType.UInt32, this.totalCount));

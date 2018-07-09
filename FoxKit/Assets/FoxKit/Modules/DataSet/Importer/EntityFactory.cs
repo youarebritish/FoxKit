@@ -25,13 +25,13 @@
         /// <returns>
         /// The <see cref="Entity"/>.
         /// </returns>
-        public static Entity Create(Core.Entity data, EntityCreateFunctions createFunctions)
+        public static Entity Create(Core.Entity data, string filename, EntityCreateFunctions createFunctions)
         {
             var type = createFunctions.GetEntityType(data.ClassName);
             if (type == null)
             {
                 // TODO: Only once for each type
-                ClassGenerator.GenerateClassFromEntity(data);
+                ClassGenerator.GenerateClassFromEntity(data, filename);
                 return null;
             }
 
