@@ -53,6 +53,7 @@
         {
             var instance = ScriptableObject.CreateInstance(entityType);
             instance.name = GenerateNameForType(entityType, this.activeDataSet);
+            (instance as Entity).AssignDataSet(this.activeDataSet);
 
             this.ActiveDataSet.AddData(instance.name, instance as Data);
             

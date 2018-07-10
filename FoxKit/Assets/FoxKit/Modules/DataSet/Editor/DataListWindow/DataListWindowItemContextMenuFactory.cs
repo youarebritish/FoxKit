@@ -70,13 +70,14 @@
 
         private static void SaveDataSetAs(object dataSet)
         {
-            var path = EditorUtility.SaveFilePanel("Export DataSet", string.Empty, dataSet + ".fox2", "fox2");
+            var castDataSet = dataSet as DataSet;
+            var path = EditorUtility.SaveFilePanel("Export DataSet", string.Empty, castDataSet.name + ".fox2", "fox2");
             if (path.Length == 0)
             {
                 return;
             }
             
-            var entities = new List<Entity> { dataSet as DataSet };
+            var entities = new List<Entity> { castDataSet };
             entities.AddRange(((DataSet)dataSet).GetAllEntities());
 
             DataSetExporter.ExportDataSet(entities, path);

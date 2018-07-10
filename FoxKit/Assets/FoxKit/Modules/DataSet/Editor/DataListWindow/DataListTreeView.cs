@@ -97,6 +97,37 @@
             }
         }
 
+        protected override bool CanRename(TreeViewItem item)
+        {
+            return true;
+        }
+
+        protected override void RenameEnded(RenameEndedArgs args)
+        {
+            base.RenameEnded(args);
+
+            if (!args.acceptedRename)
+            {
+                return;
+            }
+
+            var entity = this.idToDataMap[args.itemID];
+
+            AssetDatabase.RenameAsset(AssetDatabase.GetAssetPath(entity), args.newName);
+            entity.name = args.newName;
+            
+            if (entity is DataSet)
+            {
+                return;
+            }
+            
+            // If we've renamed an Entity, change its key.
+            entity.GetDataSet().RemoveData(args.originalName);
+            entity.GetDataSet().AddData(args.newName, entity);
+
+            this.Reload();
+        }
+
         protected override void DoubleClickedItem(int id)
         {
             base.DoubleClickedItem(id);

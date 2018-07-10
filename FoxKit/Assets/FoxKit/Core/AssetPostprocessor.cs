@@ -9,16 +9,26 @@ namespace FoxKit.Core
     public class AssetPostprocessor : UnityEditor.AssetPostprocessor
     {
         public delegate bool TryGetAssetDelegate(string filename, out Object asset);
+        public delegate DataSet GetDataSetDelegate(string filename);
 
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
             // TODO: Handle existing assets
-            var assets = new Dictionary<string, Object>();
+            var assets = new Dictionary<string, UnityEngine.Object>();
+            var dataSets = new Dictionary<string, DataSet>();
+
             var tryGetAsset = MakeTryGetAssetDelegate(assets);
+            var getDataSet = MakeGetDataSetDelegate(dataSets);
+
             foreach (var asset in importedAssets)
             {
                 var loadedAsset = AssetDatabase.LoadAssetAtPath<Object>(asset);
                 assets.Add(asset, loadedAsset);
+
+                if (loadedAsset is DataSet)
+                {
+                    dataSets.Add(Path.GetFileNameWithoutExtension(asset), loadedAsset as DataSet);
+                }
             }
 
             foreach (var asset in assets.Values)
@@ -27,8 +37,9 @@ namespace FoxKit.Core
                 if (entity == null)
                 {
                     continue;
-                }                
-                entity.OnAssetsImported(tryGetAsset);
+                }
+                
+                entity.OnAssetsImported(getDataSet, tryGetAsset);
             }
         }
 
@@ -37,7 +48,7 @@ namespace FoxKit.Core
             return (string path, out Object asset) => TryGetAsset(assets, path, out asset);
         }
 
-        private static bool TryGetAsset(Dictionary<string, Object> newlyImportedAssets, string path, out Object asset)
+        private static bool TryGetAsset(IReadOnlyDictionary<string, Object> newlyImportedAssets, string path, out Object asset)
         {
             if (string.IsNullOrEmpty(path))
             {
@@ -60,6 +71,24 @@ namespace FoxKit.Core
 
             Debug.LogError($"Referenced asset {path} not found.");
             return false;
+        }
+
+        private static GetDataSetDelegate MakeGetDataSetDelegate(IReadOnlyDictionary<string, DataSet> dataSets)
+        {
+            return (string name) => GetDataSet(dataSets, name);
+        }
+
+        private static DataSet GetDataSet(IReadOnlyDictionary<string, DataSet> dataSets, string name)
+        {
+            DataSet result = null;
+            
+            if (dataSets.TryGetValue(name, out result))
+            {
+                return result;
+            }
+            
+            Debug.LogError($"Referenced DataSet {name} not found.");
+            return null;
         }
     }
 }

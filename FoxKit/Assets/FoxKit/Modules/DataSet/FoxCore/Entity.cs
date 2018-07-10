@@ -11,7 +11,9 @@
 
     using UnityEngine;
     using UnityEngine.Assertions;
-    
+
+    using AssetPostprocessor = FoxKit.Core.AssetPostprocessor;
+
     /// <inheritdoc />
     /// <summary>
     /// Base class for Fox Engine objects.
@@ -64,6 +66,9 @@
             return this.dataSet;
         }
 
+        [SerializeField, HideInInspector]
+        private string dataSetName;
+
         /// <summary>
         /// Initializes the Entity with data loaded from a DataSet file.
         /// </summary>
@@ -76,12 +81,13 @@
         /// <param name="initFunctions">
         /// Helper functions to aid in initialization.
         /// </param>
-        public void Initialize(DataSet loadingDataSet, Core.Entity entityData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
+        public void Initialize(string dataSetName, Core.Entity entityData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             //Assert.AreEqual(entityData.ClassId, this.ClassId, $"Expected ID {this.ClassId} for class {entityData.ClassName}, but was {entityData.ClassId}.");
             //Assert.AreEqual(entityData.Version, this.Version, $"Expected version {this.Version} for class {entityData.ClassName}, but was {entityData.Version}.");
 
-            this.dataSet = loadingDataSet;
+            //this.dataSet = loadingDataSet;
+            this.dataSetName = dataSetName;
 
             foreach (var property in entityData.StaticProperties)
             {
@@ -94,6 +100,11 @@
             }
         }
 
+        public void AssignDataSet(DataSet dataSet)
+        {
+            this.dataSet = dataSet;
+        }
+
         /// <summary>
         /// This is called after importing of any number of assets is complete (when the Assets progress bar has reached the end).
         /// </summary>
@@ -102,6 +113,14 @@
         /// </param>
         public virtual void OnAssetsImported(FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
+        }
+
+        public void OnAssetsImported(
+            AssetPostprocessor.GetDataSetDelegate getDataSet,
+            FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
+        {
+            this.dataSet = getDataSet(this.dataSetName);
+            this.OnAssetsImported(tryGetAsset);
         }
 
         /// <summary>
