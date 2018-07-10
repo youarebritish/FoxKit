@@ -90,6 +90,11 @@
         {
             foreach (var data in this.orderedDictionaryStringDataList.Values)
             {
+                if (data == null)
+                {
+                    continue;
+                }
+
                 data.OnUnloaded();
             }
         }
@@ -132,6 +137,52 @@
         {
             this.orderedDictionaryStringDataList.Add(key, entity);
             this.addressMap.Add(address, entity);
+        }
+
+        /// <summary>
+        /// Adds an Entity to the DataSet without assigning it an address.
+        /// </summary>
+        /// <param name="key">
+        /// The string key (name) of the Entity.
+        /// </param>
+        /// <param name="entity">
+        /// The entity to add.
+        /// </param>
+        public void AddData(string key, Data entity)
+        {
+            this.orderedDictionaryStringDataList.Add(key, entity);
+
+            var highestAddress = this.addressMap.Keys.Max(address => address);
+            this.addressMap.Add(highestAddress + 1, entity);
+        }
+
+        /// <summary>
+        /// Removes an Entity with the given key.
+        /// </summary>
+        /// <param name="key">The key to remove.</param>
+        public void RemoveData(string key)
+        {
+            var entity = this.orderedDictionaryStringDataList[key];
+            this.orderedDictionaryStringDataList.Remove(key);
+
+            ulong address = 0;
+            var foundAddress = false;
+            foreach (var entry in this.addressMap)
+            {
+                if (entry.Value != entity)
+                {
+                    continue;
+                }
+
+                foundAddress = true;
+                address = entry.Key;
+                break;
+            }
+
+            if (foundAddress)
+            {
+                this.addressMap.Remove(address);
+            }
         }
 
         /// <summary>

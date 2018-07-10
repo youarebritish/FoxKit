@@ -56,13 +56,45 @@
             this.activeDataSet = dataSet;
         }
 
-        public void SelectLastItem(Data item)
+        public void SelectItem(Data item)
         {
+            // TODO Scroll to this item
             var id = this.idToDataMap.IndexOf(item);
-            //this.FrameItem(id);
             this.SetSelection(new[]{id}, TreeViewSelectionOptions.FireSelectionChanged | TreeViewSelectionOptions.RevealAndFrame);
-            //this.SelectionClick(last, false);
-            //Selection.objects = new[] { this.idToDataMap[this.idToDataMap.Count - 1] };
+        }
+
+        public void HandleDelete()
+        {
+            var selected = this.GetSelection();
+
+            // Only remove a DataSet if all selected are DataSets. Otherwise, delete the selected Entities.
+            if (selected.Any(item => !(this.idToDataMap[item] is DataSet)))
+            {
+                foreach (var item in selected)
+                {
+                    var data = this.idToDataMap[item];
+                    this.activeDataSet.RemoveData(data.Name);
+                    UnityEngine.Object.DestroyImmediate(data, true);
+                }
+
+                AssetDatabase.Refresh();
+                this.Reload();
+            }
+            else
+            {
+                foreach (var item in selected)
+                {
+                    var dataSet = this.idToDataMap[item] as DataSet;
+                    if (dataSet == null)
+                    {
+                        continue;
+                    }
+
+                    this.RemoveDataSet(dataSet);
+                }
+
+                this.Reload();
+            }
         }
 
         protected override void DoubleClickedItem(int id)

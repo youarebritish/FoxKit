@@ -49,13 +49,21 @@
 
             foreach (var type in DataSetImporter.EntityTypes)
             {
-                if (type.Name.IndexOf(this.searchString, 0, StringComparison.CurrentCultureIgnoreCase) != -1)
+                if (type.IsSubclassOf(typeof(DataElement)))
                 {
-                    var buttonRect = EditorGUILayout.GetControlRect(true, 20f, _styles.componentButton);
-                    if (GUI.Button(buttonRect, type.Name, _styles.componentButton))
-                    {
-                        DataListWindow.GetInstance().AddEntity(type);
-                    }
+                    continue;
+                }
+
+                // Filter out results that don't contain search string.
+                if (type.Name.IndexOf(this.searchString, 0, StringComparison.CurrentCultureIgnoreCase) == -1)
+                {
+                    continue;
+                }
+
+                var buttonRect = EditorGUILayout.GetControlRect(true, 20f, _styles.componentButton);
+                if (GUI.Button(buttonRect, type.Name, _styles.componentButton))
+                {
+                    DataListWindow.GetInstance().AddEntity(type);
                 }
             }
 

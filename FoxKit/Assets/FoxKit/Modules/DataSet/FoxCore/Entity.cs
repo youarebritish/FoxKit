@@ -78,8 +78,8 @@
         /// </param>
         public void Initialize(DataSet loadingDataSet, Core.Entity entityData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
-            Assert.AreEqual(entityData.ClassId, this.ClassId, $"Expected ID {this.ClassId} for class {entityData.ClassName}, but was {entityData.ClassId}.");
-            Assert.AreEqual(entityData.Version, this.Version, $"Expected version {this.Version} for class {entityData.ClassName}, but was {entityData.Version}.");
+            //Assert.AreEqual(entityData.ClassId, this.ClassId, $"Expected ID {this.ClassId} for class {entityData.ClassName}, but was {entityData.ClassId}.");
+            //Assert.AreEqual(entityData.Version, this.Version, $"Expected version {this.Version} for class {entityData.ClassName}, but was {entityData.Version}.");
 
             this.dataSet = loadingDataSet;
 

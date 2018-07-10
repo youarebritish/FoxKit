@@ -57,7 +57,7 @@
             this.ActiveDataSet.AddData(instance.name, instance as Data);
             
             this.treeView.Reload();
-            this.treeView.SelectLastItem(instance as Data);
+            this.treeView.SelectItem(instance as Data);
         }
 
         /// <summary>
@@ -238,10 +238,13 @@
         /// </summary>
         private void OnGUI()
         {
+            this.ProcessKeyboardShortcuts();
+
             EditorGUILayout.BeginHorizontal("Toolbar", GUILayout.ExpandWidth(true));
-            if (GUILayout.Button("Load", "ToolbarButton", GUILayout.Width(45f)))
+
+            if (GUILayout.Button("+", "ToolbarButton", GUILayout.Width(45f)))
             {
-                EditorGUIUtility.ShowObjectPicker<DataSet>(null, false, string.Empty, 0);
+                AddEntityWindow.Create();
             }
 
             GUILayout.Space(5f);
@@ -249,6 +252,21 @@
             EditorGUILayout.EndHorizontal();
 
             this.treeView.OnGUI(new Rect(0, 17, this.position.width, this.position.height - 17));
+        }
+
+        private void ProcessKeyboardShortcuts()
+        {
+            var current = Event.current;
+            if (current.type != EventType.ValidateCommand)
+            {
+                return;
+            }
+            
+            if (current.commandName == "SoftDelete")
+            {
+                this.treeView.HandleDelete();
+                current.Use();
+            }
         }
     }
 }
