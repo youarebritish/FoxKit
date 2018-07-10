@@ -56,6 +56,15 @@
             this.activeDataSet = dataSet;
         }
 
+        public void SelectLastItem(Data item)
+        {
+            var id = this.idToDataMap.IndexOf(item);
+            //this.FrameItem(id);
+            this.SetSelection(new[]{id}, TreeViewSelectionOptions.FireSelectionChanged | TreeViewSelectionOptions.RevealAndFrame);
+            //this.SelectionClick(last, false);
+            //Selection.objects = new[] { this.idToDataMap[this.idToDataMap.Count - 1] };
+        }
+
         protected override void DoubleClickedItem(int id)
         {
             base.DoubleClickedItem(id);
@@ -71,7 +80,6 @@
                 var sceneProxyPosition = ((TransformData)this.idToDataMap[id]).SceneProxyTransform.position;
                 SceneView.lastActiveSceneView.LookAt(sceneProxyPosition);
             }
-
         }
 
         protected override void RowGUI(RowGUIArgs args)

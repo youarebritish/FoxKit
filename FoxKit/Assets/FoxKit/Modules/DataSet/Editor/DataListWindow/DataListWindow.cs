@@ -1,5 +1,6 @@
 ﻿namespace FoxKit.Modules.DataSet.Editor.DataListWindow
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.CompilerServices;
@@ -36,10 +37,46 @@
         /// Tree view widget.
         /// </summary>
         private DataListTreeView treeView;
+        
+        public DataSet ActiveDataSet => this.activeDataSet;
 
         public DataListWindowItemContextMenuFactory.ShowItemContextMenuDelegate MakeShowItemContextMenuDelegate()
         {
             return DataListWindowItemContextMenuFactory.Create(this.SetActiveDataSet, this.RemoveDataSet);
+        }
+
+        /// <summary>
+        /// Create a new Entity of a given type in the active DataSet.
+        /// </summary>
+        /// <param name="entityType">Type of the Entity to add.</param>
+        public void AddEntity(Type entityType)
+        {
+            var instance = ScriptableObject.CreateInstance(entityType);
+            instance.name = GenerateNameForType(entityType, this.activeDataSet);
+
+            this.ActiveDataSet.AddData(instance.name, instance as Data);
+            
+            this.treeView.Reload();
+            this.treeView.SelectLastItem(instance as Data);
+        }
+
+        /// <summary>
+        /// Generates a name for a new Entity which is unique and valid for the given DataSet.
+        /// </summary>
+        /// <param name="type">The type of Entity whose name to generate.</param>
+        /// <param name="dataSet">The DataSet to create a unique name for.</param>
+        /// <returns>The generated name.</returns>
+        private static string GenerateNameForType(Type type, DataSet dataSet)
+        {
+            var index = 0;
+            var instanceName = type.Name + index.ToString("D4");
+            while (dataSet.GetDataList().ContainsKey(instanceName))
+            {
+                index++;
+                instanceName = type.Name + index.ToString("D4");
+            }
+
+            return instanceName;
         }
 
         /// <summary>
@@ -157,6 +194,7 @@
             {
                 return;
             }
+
             // TODO: Only unlock if it was forced to lock by the Data List window.
             ActiveEditorTracker.sharedTracker.isLocked = false;
         }

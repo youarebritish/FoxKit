@@ -54,7 +54,7 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
                 if (!string.IsNullOrEmpty(fieldGroup.Key))
                 {
                     var wasUnfolded = unfoldedFields.FirstOrDefault(entry => entry == fieldGroup.Key);
-                    bool shouldDrawUnfolded = !string.IsNullOrEmpty(wasUnfolded);
+                    var shouldDrawUnfolded = !string.IsNullOrEmpty(wasUnfolded);
                     var unfolded = DataEditorUI.Foldout(fieldGroup.Key, shouldDrawUnfolded);
 
                     if (!unfolded)

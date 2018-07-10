@@ -42,7 +42,7 @@
             menu.AddSeparator(string.Empty);
 
             AddMenuItem(menu, "Select DataSet Asset", OnSetActiveDataSet);
-            AddMenuItem(menu, "Add Entity", OnSetActiveDataSet);
+            AddMenuItem(menu, "Add Entity", OnAddEntity);
 
             menu.ShowAsContext();
         }
@@ -60,6 +60,12 @@
         private static void OnSetActiveDataSet()
         {
             // TODO
+        }
+
+        private static void OnAddEntity()
+        {
+            // TODO maybe send the DataSet to add to?
+            AddEntityWindow.Create();
         }
 
         private static void SaveDataSetAs(object dataSet)
