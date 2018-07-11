@@ -243,16 +243,30 @@
 
             EditorGUILayout.BeginHorizontal("Toolbar", GUILayout.ExpandWidth(true));
 
-            if (GUILayout.Button("+", "ToolbarButton", GUILayout.Width(45f)))
+            GUI.enabled = this.activeDataSet != null;
+            if (GUILayout.Button("Create", EditorStyles.toolbarDropDown))
             {
-                AddEntityWindow.Create();
+                var menu = new GenericMenu();
+                menu.AddItem(new GUIContent("DataSet"), false, this.CreateDataSet);
+                menu.AddItem(new GUIContent("Entity"), false, () => AddEntityWindow.Create());
+                menu.ShowAsContext();
             }
+
+            GUI.enabled = true;
 
             GUILayout.Space(5f);
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
 
             this.treeView.OnGUI(new Rect(0, 17, this.position.width, this.position.height - 17));
+        }
+
+        private void CreateDataSet()
+        {
+            var dataSet = CreateInstance<DataSet>() as DataSet;
+            dataSet.name = "DataSet0000";
+
+            this.OpenDataSet(dataSet);
         }
 
         private void ProcessKeyboardShortcuts()

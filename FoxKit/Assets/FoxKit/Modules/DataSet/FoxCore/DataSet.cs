@@ -152,7 +152,12 @@
         {
             this.orderedDictionaryStringDataList.Add(key, entity);
 
-            var highestAddress = this.addressMap.Keys.Max(address => address);
+            ulong highestAddress = 0;
+            if (this.addressMap.Count > 0)
+            {
+                highestAddress = this.addressMap.Keys.Max(address => address);
+            }
+
             this.addressMap.Add(highestAddress + 1, entity);
         }
 

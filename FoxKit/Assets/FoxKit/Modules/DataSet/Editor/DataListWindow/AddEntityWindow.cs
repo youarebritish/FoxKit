@@ -19,37 +19,52 @@
         
         private class Styles
         {
-            public GUIStyle componentButton = new GUIStyle((GUIStyle)"PR Label");
+            public GUIStyle componentButton = new GUIStyle("PR Label");
 
-            /*public Styles()
+            public Styles()
             {
                 this.componentButton.alignment = TextAnchor.MiddleLeft;
                 this.componentButton.padding.left -= 5;
                 this.componentButton.fixedHeight = 20f;
-            }*/
+            }
         }
 
         public static SearchableEditorWindow Create()
         {
-            var window = GetWindow<AddEntityWindow>();//true);
-            window.titleContent = new GUIContent("Add Entity");
+            var window = GetWindow<AddEntityWindow>();
+            window.titleContent = new GUIContent("New Entity");
             
             window.minSize = new Vector2(230, 320);
             window.Show();
             return window;
         }
 
-        static Styles _styles = new Styles();
+        static Styles _styles;
 
         void OnGUI()
         {
-            this.searchString = EditorGUILayout.TextField(this.searchString);
+            if (_styles == null)
+            {
+                _styles = new Styles();
+            }
+            
+            // Search bar.
+            EditorGUILayout.BeginHorizontal(GUI.skin.FindStyle("Toolbar"));
+            this.searchString = EditorGUILayout.TextField(this.searchString, GUI.skin.FindStyle("ToolbarSeachTextField"));
+            if (GUILayout.Button(string.Empty, GUI.skin.FindStyle("ToolbarSeachCancelButton")))
+            {
+                // Remove focus if cleared
+                this.searchString = string.Empty;
+                GUI.FocusControl(null);
+            }
 
-            this.scrollPos = EditorGUILayout.BeginScrollView(this.scrollPos, GUILayout.Width(this.position.width), GUILayout.Height(this.position.height + 10));
+            EditorGUILayout.EndHorizontal();
 
+            this.scrollPos = EditorGUILayout.BeginScrollView(this.scrollPos, GUILayout.Width(this.position.width), GUILayout.Height(this.position.height));
+            
             foreach (var type in DataSetImporter.EntityTypes)
             {
-                if (type.IsSubclassOf(typeof(DataElement)))
+                if (type.IsSubclassOf(typeof(DataElement)) || type == typeof(DataSet))
                 {
                     continue;
                 }
@@ -61,12 +76,20 @@
                 }
 
                 var buttonRect = EditorGUILayout.GetControlRect(true, 20f, _styles.componentButton);
-                if (GUI.Button(buttonRect, type.Name, _styles.componentButton))
+                if (!GUI.Button(buttonRect, type.Name, _styles.componentButton))
                 {
-                    DataListWindow.GetInstance().AddEntity(type);
+                    continue;
                 }
+                if (DataListWindow.GetInstance().ActiveDataSet == null)
+                {
+                    Debug.LogError("Can't create an Entity without an active DataSet.");
+                    return;
+                }
+
+                DataListWindow.GetInstance().AddEntity(type);
             }
 
+            GUI.enabled = true;
             EditorGUILayout.EndScrollView();
         }
     }

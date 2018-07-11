@@ -139,6 +139,12 @@
             }
             else if (this.idToDataMap[id] is TransformData)
             {
+                if (SceneView.lastActiveSceneView == null)
+                {
+                    Debug.LogWarning("SceneView.lastActiveSceneView is null. Click in the Scene view to fix this.");
+                    return;
+                }
+
                 // If the user double clicked a TransformData, navigate to its scene proxy.
                 var sceneProxyPosition = ((TransformData)this.idToDataMap[id]).SceneProxyTransform.position;
                 SceneView.lastActiveSceneView.LookAt(sceneProxyPosition);
