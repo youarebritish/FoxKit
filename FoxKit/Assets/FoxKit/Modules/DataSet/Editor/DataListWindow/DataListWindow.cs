@@ -2,10 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Runtime.CompilerServices;
 
     using FoxKit.Modules.DataSet.FoxCore;
+    using FoxKit.Utils;
 
     using UnityEditor;
     using UnityEditor.Callbacks;
@@ -78,6 +80,18 @@
             }
 
             return instanceName;
+        }
+
+        public void CloseAllDataSets()
+        {
+            var dataSetsToClose = new List<DataSet>(this.openDataSets);
+            foreach (var dataSet in dataSetsToClose)
+            {
+                this.RemoveDataSet(dataSet);
+            }
+
+            this.activeDataSet = null;
+            this.treeView.Reload();
         }
 
         /// <summary>
@@ -212,7 +226,10 @@
         private void RemoveDataSet(object userData)
         {
             var dataSet = userData as DataSet;
-            Assert.IsNotNull(dataSet);
+            if (dataSet == null)
+            {
+                return;
+            }
 
             dataSet.UnloadAllEntities();
 
@@ -242,17 +259,19 @@
             this.ProcessKeyboardShortcuts();
 
             EditorGUILayout.BeginHorizontal("Toolbar", GUILayout.ExpandWidth(true));
-
-            GUI.enabled = this.activeDataSet != null;
+            
             if (GUILayout.Button("Create", EditorStyles.toolbarDropDown))
             {
                 var menu = new GenericMenu();
                 menu.AddItem(new GUIContent("DataSet"), false, this.CreateDataSet);
-                menu.AddItem(new GUIContent("Entity"), false, () => AddEntityWindow.Create());
+
+                if (this.activeDataSet != null)
+                {
+                    menu.AddItem(new GUIContent("Entity"), false, () => AddEntityWindow.Create());
+                }
+
                 menu.ShowAsContext();
             }
-
-            GUI.enabled = true;
 
             GUILayout.Space(5f);
             GUILayout.FlexibleSpace();
@@ -263,8 +282,10 @@
 
         private void CreateDataSet()
         {
-            var dataSet = CreateInstance<DataSet>() as DataSet;
-            dataSet.name = "DataSet0000";
+            var dataSet = CreateInstance<DataSet>();
+
+            var path = UnityFileUtils.GetUniqueAssetPathNameOrFallback("DataSet0000.asset");
+            AssetDatabase.CreateAsset(dataSet, path);
 
             this.OpenDataSet(dataSet);
         }

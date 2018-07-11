@@ -85,11 +85,6 @@
                 foreach (var item in selected)
                 {
                     var dataSet = this.idToDataMap[item] as DataSet;
-                    if (dataSet == null)
-                    {
-                        continue;
-                    }
-
                     this.RemoveDataSet(dataSet);
                 }
 

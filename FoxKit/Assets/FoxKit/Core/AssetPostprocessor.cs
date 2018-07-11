@@ -6,11 +6,15 @@ using UnityEngine;
 
 namespace FoxKit.Core
 {
+    using System;
+
+    using Object = UnityEngine.Object;
+
     public class AssetPostprocessor : UnityEditor.AssetPostprocessor
     {
         public delegate bool TryGetAssetDelegate(string filename, out Object asset);
         public delegate DataSet GetDataSetDelegate(string filename);
-
+        
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
             // TODO: Handle existing assets
@@ -81,6 +85,12 @@ namespace FoxKit.Core
         private static DataSet GetDataSet(IReadOnlyDictionary<string, DataSet> dataSets, string name)
         {
             DataSet result = null;
+
+            // FIXME: Why does this happen?
+            if (name == null)
+            {
+                return null;
+            }
             
             if (dataSets.TryGetValue(name, out result))
             {
