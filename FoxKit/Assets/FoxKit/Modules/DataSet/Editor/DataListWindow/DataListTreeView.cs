@@ -27,7 +27,7 @@
         /// The currently open DataSets.
         /// </summary>
         [SerializeField]
-        private List<DataSet> openDataSets;
+        private List<string> openDataSetPaths;
 
         /// <summary>
         /// The index of this list is the tree item ID of a given Data.
@@ -43,11 +43,11 @@
         
         private DataSet activeDataSet;
 
-        public DataListTreeView(TreeViewState treeViewState, List<DataSet> openDataSets, DataSet activeDataSet)
+        public DataListTreeView(TreeViewState treeViewState, List<string> openDataSetPaths, DataSet activeDataSet)
             : base(treeViewState)
         {
             this.showAlternatingRowBackgrounds = true;
-            this.openDataSets = openDataSets;
+            this.openDataSetPaths = openDataSetPaths;
             this.activeDataSet = activeDataSet;
         }
 
@@ -162,14 +162,20 @@
             // ID 0 is the root, not an actual Data reference.
             this.idToDataMap.Add(null);
 
-            if (this.openDataSets.Count == 0)
+            if (this.openDataSetPaths.Count == 0)
             {
                 root.children = new List<TreeViewItem>();
                 return root;
             }
             
-            foreach (var dataSet in this.openDataSets)
+            foreach (var dataSetPath in this.openDataSetPaths)
             {
+                var dataSet = AssetDatabase.LoadAssetAtPath<DataSet>(dataSetPath);
+                if (dataSet == null)
+                {
+                    continue;
+                }
+
                 var dataSetNode = new TreeViewItem { id = index, displayName = dataSet.name, icon = dataSet.Icon };
 
                 this.idToDataMap.Add(dataSet);
@@ -214,10 +220,13 @@
             DataListWindow.GetInstance().MakeShowItemContextMenuDelegate()(dataSet);
         }
 
-        public void RemoveDataSet(DataSet dataSet)
+        public void RemoveDataSet()
         {
+            this.Reload();
+            // TODO: Does any of this actually do anything?
+            /*
             var id = this.idToDataMap.IndexOf(dataSet);
-            this.RemoveDataSet(id);
+            this.RemoveDataSet(id);*/
         }
 
         public void SelectDataSet(DataSet dataSet)
@@ -250,9 +259,10 @@
 
         private void RemoveDataSet(object id)
         {
-            var dataSetId = (int)id;
+            // TODO: Does this actually do anything?
+            /*var dataSetId = (int)id;
             var dataSet = this.idToDataMap[dataSetId] as DataSet;
-            Assert.IsNotNull(dataSet);
+            Assert.IsNotNull(dataSet);*/
             
             this.Reload();
         }

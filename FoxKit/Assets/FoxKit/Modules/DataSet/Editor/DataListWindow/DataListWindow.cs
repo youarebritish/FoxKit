@@ -2,9 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
-    using System.Runtime.CompilerServices;
 
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
@@ -24,8 +22,9 @@
         /// DataSets currently open in the window.
         /// </summary>
         [SerializeField]
-        private List<DataSet> openDataSets;
-
+        //private List<DataSet> openDataSets;
+        private List<string> openDataSetPaths;
+        
         /// <summary>
         /// Serializable state of the TreeView.
         /// </summary>
@@ -34,6 +33,9 @@
 
         [SerializeField]
         private DataSet activeDataSet;
+
+        [SerializeField]
+        private string activeDataSetPath;
 
         /// <summary>
         /// Tree view widget.
@@ -82,15 +84,21 @@
             return instanceName;
         }
 
-        public void CloseAllDataSets()
+        public void OnPostprocessDataSets(IEnumerable<string> importedFiles, IEnumerable<string> deletedFiles)
         {
-            var dataSetsToClose = new List<DataSet>(this.openDataSets);
-            foreach (var dataSet in dataSetsToClose)
+            // Remove deleted DataSets.
+            foreach (var deletedFilePath in deletedFiles.Intersect(this.openDataSetPaths))
             {
-                this.RemoveDataSet(dataSet);
+                this.RemoveDataSet(deletedFilePath);
+            }
+            
+            // Link reimported DataSets with their open (now-invalidated) counterparts.
+            foreach (var importedDataSet in importedFiles.Intersect(this.openDataSetPaths))
+            {
+                this.RemoveDataSet(importedDataSet);
+                this.OpenDataSet(importedDataSet);
             }
 
-            this.activeDataSet = null;
             this.treeView.Reload();
         }
 
@@ -118,24 +126,20 @@
             }
             
             var window = GetInstance();
-            window.OpenDataSet(asset);
+            window.OpenDataSet(AssetDatabase.GetAssetPath(asset));
             window.Focus();
             return true;
         }
 
-        private static void SaveOpenDataSets(IEnumerable<DataSet> openDataSets)
+        private static void SaveOpenDataSets(IEnumerable<string> openDataSets)
         {
-            var openDataSetsPaths = from dataSet in openDataSets
-                                    select AssetDatabase.GetAssetPath(dataSet);
-            PlayerPrefsX.SetStringArray(PreferenceKeyOpenDataSets, openDataSetsPaths.ToArray());
+            PlayerPrefsX.SetStringArray(PreferenceKeyOpenDataSets, openDataSets.ToArray());
         }
 
-        private static IEnumerable<DataSet> GetLastOpenDataSets()
+        private static IEnumerable<string> GetLastOpenDataSets()
         {
             var lastOpenDataSetsPaths = PlayerPrefsX.GetStringArray(PreferenceKeyOpenDataSets);
-            return from path in lastOpenDataSetsPaths
-                   where !string.IsNullOrEmpty(path)
-                   select AssetDatabase.LoadAssetAtPath<DataSet>(path);
+            return from path in lastOpenDataSetsPaths where !string.IsNullOrEmpty(path) select path;
         }
         
         /// <summary>
@@ -163,21 +167,24 @@
                 this.treeViewState = new TreeViewState();
             }
 
-            if (this.openDataSets == null)
+            if (this.openDataSetPaths == null)
             {
-                this.openDataSets = new List<DataSet>();
+                this.openDataSetPaths = new List<string>();
             }
 
             Selection.selectionChanged += this.OnUnitySelectionChange;
 
-            this.openDataSets = GetLastOpenDataSets().ToList();
-            this.treeView = new DataListTreeView(this.treeViewState, this.openDataSets, this.activeDataSet);
+            this.openDataSetPaths = GetLastOpenDataSets().ToList();
+            this.treeView = new DataListTreeView(
+                this.treeViewState,
+                this.openDataSetPaths,
+                this.activeDataSet);
             this.treeView.Reload();
         }
 
         private void OnDisable()
         {
-            SaveOpenDataSets(this.openDataSets);
+            SaveOpenDataSets(this.openDataSetPaths);
             Selection.selectionChanged -= this.OnUnitySelectionChange;
         }
 
@@ -187,19 +194,22 @@
         /// <param name="dataSet">
         /// The DataSet to open.
         /// </param>
-        private void OpenDataSet(DataSet dataSet)
+        private void OpenDataSet(string dataSetPath)
         {
+            var dataSet = AssetDatabase.LoadAssetAtPath<FoxCore.DataSet>(dataSetPath);
+
             this.activeDataSet = dataSet;
+            this.activeDataSetPath = dataSetPath;
             this.treeView.SetActiveDataSet(dataSet);
             this.treeView.SelectDataSet(dataSet);
-
-            if (this.openDataSets.Contains(dataSet))
+            
+            if (this.openDataSetPaths.Contains(dataSetPath))
             {
                 return;
             }
 
             dataSet.LoadAllEntities();
-            this.openDataSets.Add(dataSet);
+            this.openDataSetPaths.Add(dataSetPath);
             this.treeView.Reload();
         }
         
@@ -219,25 +229,29 @@
             var dataSet = userData as DataSet;
             Assert.IsNotNull(dataSet);
 
+            var path = AssetDatabase.GetAssetPath(dataSet);
+
             this.activeDataSet = dataSet;
+            this.activeDataSetPath = path;
             this.treeView.SetActiveDataSet(dataSet);
         }
 
         private void RemoveDataSet(object userData)
         {
-            var dataSet = userData as DataSet;
-            if (dataSet == null)
+            var dataSetPath = userData as string;
+            if (dataSetPath == null)
             {
                 return;
             }
 
-            dataSet.UnloadAllEntities();
+            // TODO: How to handle if the dataSet is null?
+            //dataSet.UnloadAllEntities();
 
-            if (this.activeDataSet == dataSet)
+            if (this.activeDataSetPath == dataSetPath)
             {
-                if (this.openDataSets.Count > 1)
+                if (this.openDataSetPaths.Count > 1)
                 {
-                    this.activeDataSet = this.openDataSets[0];
+                    this.activeDataSet = AssetDatabase.LoadAssetAtPath<FoxCore.DataSet>(this.openDataSetPaths[0]);
                     this.treeView.SetActiveDataSet(this.activeDataSet);
                 }
                 else
@@ -245,9 +259,9 @@
                     this.activeDataSet = null;
                 }
             }
-
-            this.openDataSets.Remove(dataSet);
-            this.treeView.RemoveDataSet(dataSet);
+            
+            this.openDataSetPaths.Remove(dataSetPath);
+            this.treeView.RemoveDataSet();
             this.treeView.Reload();
         }
 
@@ -287,7 +301,7 @@
             var path = UnityFileUtils.GetUniqueAssetPathNameOrFallback("DataSet0000.asset");
             AssetDatabase.CreateAsset(dataSet, path);
 
-            this.OpenDataSet(dataSet);
+            this.OpenDataSet(path);
         }
 
         private void ProcessKeyboardShortcuts()
@@ -297,12 +311,14 @@
             {
                 return;
             }
-            
-            if (current.commandName == "SoftDelete")
+
+            if (current.commandName != "SoftDelete")
             {
-                this.treeView.HandleDelete();
-                current.Use();
+                return;
             }
+
+            this.treeView.HandleDelete();
+            current.Use();
         }
     }
 }
