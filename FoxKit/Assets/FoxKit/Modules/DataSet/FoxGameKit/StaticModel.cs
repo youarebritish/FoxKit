@@ -132,6 +132,22 @@
         public override ushort Version => 9;
 
         /// <inheritdoc />
+        public override void PostOnLoaded()
+        {
+            base.PostOnLoaded();
+
+            if (this.modelFile != null)
+            {
+                // TODO make better
+                var instance = UnityEngine.Object.Instantiate(this.modelFile) as GameObject;
+                instance.transform.position = this.SceneProxyTransform.position;
+                instance.transform.rotation = this.SceneProxyTransform.rotation;
+                instance.transform.localScale = this.SceneProxyTransform.localScale;
+                instance.transform.SetParent(this.SceneProxyTransform, true);
+            }
+        }
+
+        /// <inheritdoc />
         public override void OnAssetsImported(AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
             base.OnAssetsImported(tryGetAsset);

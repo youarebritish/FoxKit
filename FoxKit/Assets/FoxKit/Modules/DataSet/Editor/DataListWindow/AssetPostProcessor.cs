@@ -16,18 +16,9 @@
             string[] movedAssets,
             string[] movedFromAssetPaths)
         {
-            var importedDataSets = from importedAsset in importedAssets select importedAsset;//GetAssets(importedAssets);
+            var importedDataSets = from importedAsset in importedAssets select importedAsset;
             var deletedDataSets = from deletedAsset in deletedAssets select deletedAsset;
-
-            // Wait. Won't deletedDataSets always be nulls??
             DataListWindow.GetInstance().OnPostprocessDataSets(importedDataSets, deletedDataSets);
-        }
-
-        private static IEnumerable<DataSet> GetAssets(IEnumerable<string> importedAssets)
-        {
-            return importedAssets
-                .Select(AssetDatabase.LoadAssetAtPath<DataSet>)
-                .Where(dataSet => dataSet != null).ToList();
         }
     }
 }

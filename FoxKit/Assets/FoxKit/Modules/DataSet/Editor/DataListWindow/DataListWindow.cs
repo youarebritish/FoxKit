@@ -243,9 +243,8 @@
             {
                 return;
             }
-
-            // TODO: How to handle if the dataSet is null?
-            //dataSet.UnloadAllEntities();
+            
+           // TODO dataSet.UnloadAllEntities();
 
             if (this.activeDataSetPath == dataSetPath)
             {

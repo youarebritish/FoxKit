@@ -10,9 +10,7 @@
     using FoxKit.Modules.DataSet.PartsBuilder;
 
     using FoxLib;
-
-    using Microsoft.FSharp.Core;
-
+    
     using UnityEditor;
 
     using UnityEngine;
@@ -242,11 +240,11 @@
 
             if (property.ContainerType == Core.ContainerType.StringMap)
             {
-                stringBuilder.AppendLine($"            parentProperties.Add(PropertyInfoFactory.MakeStringMapProperty(\"_{property.Name}\", {propertyTypeString}, this._{property.Name}.ToDictionary(entry => entry.Key, entry => {conversionFunctionString}(entry.Value) as object)));");
+                stringBuilder.AppendLine($"            parentProperties.Add(PropertyInfoFactory.MakeStringMapProperty(\"{property.Name}\", {propertyTypeString}, this._{property.Name}.ToDictionary(entry => entry.Key, entry => {conversionFunctionString}(entry.Value) as object)));");
             }
             else if (property.ContainerType == Core.ContainerType.StaticArray && property.Container.ArraySize == 1)
             {
-                stringBuilder.AppendLine($"            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty(\"_{property.Name}\", {propertyTypeString}, {conversionFunctionString}(this._{property.Name})));");
+                stringBuilder.AppendLine($"            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty(\"{property.Name}\", {propertyTypeString}, {conversionFunctionString}(this._{property.Name})));");
             }
             else
             {
@@ -260,7 +258,7 @@
                     containerTypeString = "List";
                 }
 
-                stringBuilder.AppendLine($"            parentProperties.Add(PropertyInfoFactory.Make{containerTypeString}Property(\"_{property.Name}\", {propertyTypeString}, (from propertyEntry in this._{property.Name} select {conversionFunctionString}(propertyEntry) as object).ToArray()));");
+                stringBuilder.AppendLine($"            parentProperties.Add(PropertyInfoFactory.Make{containerTypeString}Property(\"{property.Name}\", {propertyTypeString}, (from propertyEntry in this._{property.Name} select {conversionFunctionString}(propertyEntry) as object).ToArray()));");
             }
         }
 
@@ -399,10 +397,19 @@
 
         private static void AddStaticPropertyField(StringBuilder stringBuilder, Core.PropertyInfo property, string className)
         {
-            // TODO Initialize string to string.Empty
-            stringBuilder.AppendLine($"        [SerializeField, Modules.DataSet.Property(\"{className}\")]");
-            stringBuilder.AppendLine($"        private {GetPropertyFieldTypeString(property.ContainerType, property.Type, property.Container)} _{property.Name};");
+            // Initialize non-collection string properties to string.Empty; otherwise they default to null.
+            var endOfLine = ";";
+            if (property.ContainerType == Core.ContainerType.StaticArray && property.Container.ArraySize == 1)
+            {
+                if (property.Type == Core.PropertyInfoType.Path || property.Type == Core.PropertyInfoType.String)
+                {
+                    endOfLine = " = string.Empty;";
+                }
+            }
 
+            stringBuilder.AppendLine($"        [SerializeField, Modules.DataSet.Property(\"{className}\")]");
+            stringBuilder.AppendLine($"        private {GetPropertyFieldTypeString(property.ContainerType, property.Type, property.Container)} _{property.Name}{endOfLine}");
+            
             if (property.Type != Core.PropertyInfoType.FilePtr && property.Type != Core.PropertyInfoType.Path)
             {
                 return;

@@ -28,7 +28,7 @@
         /// All subclasses of Entity.
         /// TODO: Cache this somewhere.
         /// </summary>
-        private static readonly Type[] EntityTypes = ReflectionUtils.GetAssignableConcreteClasses(typeof(Entity)).ToArray();
+        public static readonly Type[] EntityTypes = ReflectionUtils.GetAssignableConcreteClasses(typeof(Entity)).ToArray();
         
         /// <inheritdoc />
         public override void OnImportAsset(AssetImportContext ctx)
@@ -49,8 +49,9 @@
             
             var entities = CreateEntityInstances(rawEntities, Path.GetFileName(ctx.assetPath), MakeEntityCreateFunctions());
             var dataSet = FindDataSet(entities);
+            var dataSetName = Path.GetFileNameWithoutExtension(ctx.assetPath);
 
-            InitializeEntities(ctx, entities, dataSet, MakeEntityInitializeFunctions(dataSet, entities));
+            InitializeEntities(ctx, entities, dataSet, dataSetName, MakeEntityInitializeFunctions(dataSet, entities));
 
             ctx.AddObjectToAsset("DataSet", dataSet);
             ctx.SetMainObject(dataSet);
@@ -142,11 +143,12 @@
             AssetImportContext ctx,
             Dictionary<Entity, Core.Entity> entities,
             DataSet dataSet,
+            string dataSetName,
             EntityInitializeFunctions entityInitializeFunctions)
         {
             foreach (var entity in entities)
             {
-                entity.Key.Initialize(dataSet, entity.Value, entityInitializeFunctions);
+                entity.Key.Initialize(dataSetName, entity.Value, entityInitializeFunctions);
 
                 // We don't need to add the DataSet to itself, and it gets added to the asset later.
                 if (entity.Key.GetType() == typeof(DataSet))
