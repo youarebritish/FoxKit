@@ -85,7 +85,7 @@
 
             GUILayout.Box(s_ExposureLow, s_PreLabel, GUILayout.MaxWidth(20));
             GUI.changed = false;
-            this.previewExposure = GUILayout.HorizontalSlider(this.previewExposure, 0.0001f, 1f, GUILayout.MaxWidth(100));
+            this.previewExposure = GUILayout.HorizontalSlider(this.previewExposure, 0f, 1f, GUILayout.MaxWidth(100));
             this.previewCoefficientSetIndex = Mathf.RoundToInt(GUILayout.HorizontalSlider(this.previewCoefficientSetIndex, 0, this.previewObject.Coefficients.Count - 1, GUILayout.MaxWidth(100)));
         }
 

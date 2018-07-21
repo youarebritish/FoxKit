@@ -35,10 +35,10 @@
             ctx.AddObjectToAsset(asset.name, asset);
             ctx.SetMainObject(asset);
 
-            using (var reader = new BinaryReader(new FileStream(ctx.assetPath, FileMode.Open)))
+            using (var reader = new BinaryReader(new FileStream(ctx.assetPath, FileMode.Open), Encoding.ASCII))
             {
                 var version = reader.ReadUInt32();
-                Assert.IsTrue(version == 4);
+                Assert.IsTrue(version == 4, "Unsupported lpsh file format.");
 
                 var unknown1 = reader.ReadUInt32();
                 var fileSize = reader.ReadUInt32();
@@ -106,12 +106,12 @@
                             SetMatrixValue(ref sh.SkyOcclusion, 15 - coefficientIndex, skyOcclusion);
                         }
 
+                        lightProbe.Coefficients.Add(sh);
+
                         if (reader.BaseStream.Position + 32L > fileSize)
                         {
                             break;
                         }
-
-                        lightProbe.Coefficients.Add(sh);
                     }
 
                     lightProbe.transform.SetParent(asset.transform);
