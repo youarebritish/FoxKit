@@ -579,8 +579,6 @@
             stringBuilder.AppendLine(string.Empty);
             stringBuilder.AppendLine(MakeUsingStatement("FoxLib"));
             stringBuilder.AppendLine(string.Empty);
-            stringBuilder.AppendLine(MakeUsingStatement("NUnit.Framework"));
-            stringBuilder.AppendLine(string.Empty);
             stringBuilder.AppendLine(MakeUsingStatement("UnityEditor"));
             stringBuilder.AppendLine(string.Empty);
             stringBuilder.AppendLine(MakeUsingStatement("UnityEngine"));
