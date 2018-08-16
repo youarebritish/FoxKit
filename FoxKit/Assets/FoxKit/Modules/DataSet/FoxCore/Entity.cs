@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
 
+    using FoxKit.Modules.Lua;
     using FoxKit.Utils;
 
     using FoxLib;
@@ -14,11 +15,14 @@
 
     using AssetPostprocessor = FoxKit.Core.AssetPostprocessor;
 
+    using static KopiLua.Lua;
+
     /// <inheritdoc />
     /// <summary>
     /// Base class for Fox Engine objects.
     /// </summary>
     [Serializable]
+    [ExposeClassToLua]
     public abstract class Entity : ScriptableObject
     {
         /// <summary>
@@ -53,7 +57,7 @@
         /// <summary>
         /// Version of the class.
         /// </summary>
-        public virtual ushort Version => 0;
+        public virtual ushort Version => 2;
 
         /// <summary>
         /// Gets the DataSet that owns this Entity.
@@ -122,7 +126,7 @@
             this.dataSet = getDataSet(this.dataSetName);
             this.OnAssetsImported(tryGetAsset);
         }
-
+        
         /// <summary>
         /// Invoked when the containing DataSet is loaded.
         /// </summary>
@@ -182,6 +186,13 @@
         /// </param>
         protected virtual void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
+        }
+
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        public int GetClassName(lua_State L)
+        {
+            lua_pushstring(L, this.GetType().Name);
+            return 1;
         }
     }
 }
