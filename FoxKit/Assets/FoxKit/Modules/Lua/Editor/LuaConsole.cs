@@ -1,7 +1,13 @@
 ﻿namespace FoxKit.Modules.Lua.Editor
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
+
+    using FoxKit.Modules.DataSet.FoxCore;
+
+    using FoxLib;
 
     using UnityEditor;
 
@@ -38,7 +44,7 @@
             ExposeNativeTypes(this.L);
         }
 
-        private static void ExposeNativeTypes(lua_State L)
+        private void ExposeNativeTypes(lua_State L)
         {
             var typesToExpose =
                 from a in AppDomain.CurrentDomain.GetAssemblies()
@@ -50,34 +56,89 @@
                                Type = t, FunctionsToExpose = from m in t.GetMethods()
                                                              let mAttributes = m.GetCustomAttributes(typeof(ExposeMethodToLuaAttribute), true)
                                                              where mAttributes != null && mAttributes.Length > 0
-                                                             select mAttributes
+                                                             select m
                            };
 
             foreach (var typeToExpose in typesToExpose)
             {
-                var className = typeToExpose.Type.Name;
-
-                // Create a new global table for the type.
-                // TODO get if exists
-                lua_pushliteral(L, className);
-                lua_type(L, -1);
-                lua_settop(L, -2);
-                lua_createtable(L, 0, 0);
-                lua_pushliteral(L, className);
-                lua_pushvalue(L, -2);
-                lua_rawset(L, LUA_GLOBALSINDEX);
-
-                // Define metamethods.
-                // _className
-                lua_pushliteral(L, className);
-                lua_setfield(L, -2, "_className");
-
-                // Assign metatable.
-                lua_pushvalue(L, -1);
-                lua_setmetatable(L, -2);
-
-                // TODO handle __index, __newindex
+                CreateMetatableForType(L, typeToExpose.Type);
+                this.constructors.Add(typeToExpose.Type, CreateConstructor(typeToExpose.Type, typeToExpose.FunctionsToExpose));
             }
+        }
+
+        private static Action<lua_State> CreateConstructor(Type type, IEnumerable<MethodInfo> methods)
+        {
+            return L =>
+                {
+                    var newEntity = lua_newuserdata(L, typeof(Entity)) as Entity;
+                    lua_getglobal(L, "Entity");
+                    lua_setmetatable(L, -2);
+
+                    foreach (var method in methods)
+                    {
+                        // TODO Check for instance vs static, for now assume all are instance
+                        ExposeInstanceMethod(L, method.Name, method);
+                    }
+                };
+        }
+
+        private Dictionary<Type, Action<lua_State>> constructors = new Dictionary<Type, Action<lua_State>>();
+
+        private static void CreateMetatableForType(lua_State L, Type type)
+        {
+            var className = type.Name;
+
+            // Create a new global table for the type.
+            // TODO get if exists
+            lua_pushliteral(L, className);
+            lua_type(L, -1);
+            lua_settop(L, -2);
+            lua_createtable(L, 0, 0);
+            lua_pushliteral(L, className);
+            lua_pushvalue(L, -2);
+            lua_rawset(L, LUA_GLOBALSINDEX);
+
+            // Define metamethods.
+            // _className
+            lua_pushliteral(L, className);
+            lua_setfield(L, -2, "_className");
+
+            // Assign metatable.
+            lua_pushvalue(L, -1);
+            lua_setmetatable(L, -2);
+
+            // TODO handle __index, __newindex
+            // TODO This leaves the Entity table on the stack
+        }
+        
+        private class MethodContext
+        {
+            public MethodInfo Method { get; set; }
+            public ulong Flag { get; set; }
+        }
+
+        private static void ExposeInstanceMethod(lua_State L, string name, MethodInfo method, ulong flag = 0)
+        {
+            var methodContext = lua_newuserdata(L, typeof(MethodContext)) as MethodContext;
+            methodContext.Method = method;
+            methodContext.Flag = flag;
+            lua_pushcclosure(L, ExecuteMethod, 1);
+            lua_setfield(L, -2, name);
+        }
+
+        private static int ExecuteMethod(lua_State L)
+        {
+            var methodContext = lua_touserdata(L, lua_upvalueindex(1)) as MethodContext;
+            var entity = lua_touserdata(L, 1) as Core.Entity; // TODO This is wrong and bad
+
+            if (entity == null)
+            {
+                return luaL_error(L, "entity is null");
+            }
+
+            // TODO Check if Entity is derived from Entity
+            // TODO Is there a way to do this in a thread-safe way?
+            return (int)methodContext.Method.Invoke(entity, new object[] { L });
         }
 
         private void OnDisable()

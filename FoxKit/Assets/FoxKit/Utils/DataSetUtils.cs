@@ -1,5 +1,6 @@
 ﻿namespace FoxKit.Utils
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -59,38 +60,15 @@
             return container.Item.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
 
-        public static string UnityPathToFoxPath(string filePtr)
-        {
-            if (string.IsNullOrEmpty(filePtr))
-            {
-                return string.Empty;
-            }
-
-            // Fox Engine paths need to open with a /.
-            return "/" + filePtr;
-        }
-
         public static string AssetToFoxPath(UnityEngine.Object asset)
         {
             var unityPath = AssetDatabase.GetAssetPath(asset);
-            return UnityPathToFoxPath(unityPath);
-        }
-
-        public static string ExtractFilePath(string filePtr)
-        {
-            return FormatFilePath(filePtr);
-        }
-        
-        private static string FormatFilePath(string path)
-        {
-            // Fox Engine paths open with a /, which Unity doesn't like.
-            return string.IsNullOrEmpty(path) ? path : path.Substring(1);
+            return FoxUtils.UnityPathToFoxPath(unityPath);
         }
 
         public static EntityLink MakeEntityLink(DataSet owningDataSet, Core.EntityLink foxEntityLink)
         {
             return new EntityLink(
-                owningDataSet,
                 foxEntityLink.PackagePath,
                 foxEntityLink.ArchivePath,
                 foxEntityLink.NameInArchive,
@@ -104,6 +82,64 @@
                 unityEntityLink.ArchivePath,
                 unityEntityLink.NameInArchive,
                 unityEntityLink.Address);
+        }
+
+        /// <summary>
+        /// Does the given type require conversion to a Unity type?
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool DoesTypeRequireConversion(Core.PropertyInfoType type)
+        {
+            switch(type)
+            {
+                case Core.PropertyInfoType.Path:
+                    return true;
+                case Core.PropertyInfoType.EntityPtr:
+                    return true;
+                case Core.PropertyInfoType.Vector3:
+                    return true;
+                case Core.PropertyInfoType.Vector4:
+                    return true;
+                case Core.PropertyInfoType.Quat:
+                    return true;
+                case Core.PropertyInfoType.Matrix3:
+                    return true;
+                case Core.PropertyInfoType.Matrix4:
+                    return true;
+                case Core.PropertyInfoType.Color:
+                    return true;
+                case Core.PropertyInfoType.FilePtr:
+                    return true;
+                case Core.PropertyInfoType.EntityHandle:
+                    return true;
+                case Core.PropertyInfoType.EntityLink:
+                    return true;
+                case Core.PropertyInfoType.WideVector3:
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Is the given type a reference type?
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool IsTypeReference(Core.PropertyInfoType type)
+        {
+            switch (type)
+            {
+                case Core.PropertyInfoType.FilePtr:
+                    return true;
+                case Core.PropertyInfoType.EntityHandle:
+                    return true;
+                case Core.PropertyInfoType.EntityLink:
+                    return true;
+                case Core.PropertyInfoType.EntityPtr:
+                    return true;
+            }
+            return false;
         }
 
         /// <summary>

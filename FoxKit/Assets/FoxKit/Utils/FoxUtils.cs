@@ -2,12 +2,15 @@
 
 namespace FoxKit.Utils
 {
+    using System;
+
     using FoxKit.Utils.Structs;
 
     using FoxLib;
 
     using Quaternion = UnityEngine.Quaternion;
     using Vector3 = UnityEngine.Vector3;
+    using Vector4 = UnityEngine.Vector4;
 
     /// <summary>
     /// Helper functions for working with Fox Engine-formatted data.
@@ -19,7 +22,7 @@ namespace FoxKit.Utils
         /// </summary>
         /// <param name="foxVector">The Fox Engine vector.</param>
         /// <returns>The Unity vector.</returns>
-        public static Vector3 FoxToUnity(FoxLib.Core.Vector3 foxVector)
+        public static Vector3 FoxToUnity(Core.Vector3 foxVector)
         {
             return new Vector3(foxVector.Z, foxVector.Y, foxVector.X);
         }
@@ -29,9 +32,9 @@ namespace FoxKit.Utils
         /// </summary>
         /// <param name="foxVector">The Fox Engine vector.</param>
         /// <returns>The Unity vector.</returns>
-        public static UnityEngine.Vector4 FoxToUnity(FoxLib.Core.Vector4 foxVector)
+        public static Vector4 FoxToUnity(Core.Vector4 foxVector)
         {
-            return new UnityEngine.Vector4(foxVector.Z, foxVector.Y, foxVector.X, foxVector.Z);
+            return new Vector4(foxVector.Z, foxVector.Y, foxVector.X, foxVector.Z);
         }
 
         /// <summary>
@@ -39,9 +42,9 @@ namespace FoxKit.Utils
         /// </summary>
         /// <param name="unityVector">The Unity vector.</param>
         /// <returns>The Fox Engine vector.</returns>
-        public static FoxLib.Core.Vector3 UnityToFox(Vector3 unityVector)
+        public static Core.Vector3 UnityToFox(Vector3 unityVector)
         {
-            return new FoxLib.Core.Vector3(unityVector.z, unityVector.y, unityVector.x);
+            return new Core.Vector3(unityVector.z, unityVector.y, unityVector.x);
         }
 
         /// <summary>
@@ -49,9 +52,9 @@ namespace FoxKit.Utils
         /// </summary>
         /// <param name="unityVector">The Unity vector.</param>
         /// <returns>The Fox Engine vector.</returns>
-        public static FoxLib.Core.Vector4 UnityToFox(UnityEngine.Vector4 unityVector)
+        public static Core.Vector4 UnityToFox(Vector4 unityVector)
         {
-            return new FoxLib.Core.Vector4(unityVector.z, unityVector.y, unityVector.x, unityVector.w);
+            return new Core.Vector4(unityVector.z, unityVector.y, unityVector.x, unityVector.w);
         }
 
         /// <summary>
@@ -59,9 +62,9 @@ namespace FoxKit.Utils
         /// </summary>
         /// <param name="unityQuaternion">The Unity Quaternion.</param>
         /// <returns>The Fox Engine Quaternion.</returns>
-        public static FoxLib.Core.Quaternion UnityToFox(Quaternion unityQuaternion)
+        public static Core.Quaternion UnityToFox(Quaternion unityQuaternion)
         {
-            return new FoxLib.Core.Quaternion(-unityQuaternion.z, -unityQuaternion.y, -unityQuaternion.x, unityQuaternion.w);
+            return new Core.Quaternion(-unityQuaternion.z, -unityQuaternion.y, -unityQuaternion.x, unityQuaternion.w);
         }
 
         /// <summary>
@@ -69,9 +72,9 @@ namespace FoxKit.Utils
         /// </summary>
         /// <param name="foxQuat">The Fox Engine Quaternion.</param>
         /// <returns>The Unity Quaternion.</returns>
-        public static UnityEngine.Quaternion FoxToUnity(Core.Quaternion foxQuat)
+        public static Quaternion FoxToUnity(Core.Quaternion foxQuat)
         {
-            return new UnityEngine.Quaternion(-foxQuat.Z, -foxQuat.Y, -foxQuat.X, foxQuat.W);
+            return new Quaternion(-foxQuat.Z, -foxQuat.Y, -foxQuat.X, foxQuat.W);
         }
 
         /// <summary>
@@ -143,10 +146,10 @@ namespace FoxKit.Utils
         {
             // TODO: Are thees conversions correct?
             var result = new Matrix4x4();
-            result.SetColumn(0, new UnityEngine.Vector4(foxMatrix.Col0[2], foxMatrix.Col0[1], foxMatrix.Col0[0], foxMatrix.Col0[3]));
-            result.SetColumn(1, new UnityEngine.Vector4(foxMatrix.Col1[2], foxMatrix.Col1[1], foxMatrix.Col1[0], foxMatrix.Col1[3]));
-            result.SetColumn(2, new UnityEngine.Vector4(foxMatrix.Col2[2], foxMatrix.Col2[1], foxMatrix.Col2[0], foxMatrix.Col2[3]));
-            result.SetColumn(3, new UnityEngine.Vector4(foxMatrix.Col2[2], foxMatrix.Col2[1], foxMatrix.Col2[0], foxMatrix.Col3[3]));
+            result.SetColumn(0, new Vector4(foxMatrix.Col0[2], foxMatrix.Col0[1], foxMatrix.Col0[0], foxMatrix.Col0[3]));
+            result.SetColumn(1, new Vector4(foxMatrix.Col1[2], foxMatrix.Col1[1], foxMatrix.Col1[0], foxMatrix.Col1[3]));
+            result.SetColumn(2, new Vector4(foxMatrix.Col2[2], foxMatrix.Col2[1], foxMatrix.Col2[0], foxMatrix.Col2[3]));
+            result.SetColumn(3, new Vector4(foxMatrix.Col2[2], foxMatrix.Col2[1], foxMatrix.Col2[0], foxMatrix.Col3[3]));
             return result;
         }
 
@@ -155,7 +158,7 @@ namespace FoxKit.Utils
         /// </summary>
         /// <param name="foxColor">The Fox Engine ColorRGB.</param>
         /// <returns>The Unity color.</returns>
-        public static Color FoxColorRGBToUnityColor(FoxLib.Core.ColorRGB foxColor)
+        public static Color FoxColorRGBToUnityColor(Core.ColorRGB foxColor)
         {
             return new Color(foxColor.Red, foxColor.Green, foxColor.Blue);
         }
@@ -165,9 +168,9 @@ namespace FoxKit.Utils
         /// </summary>
         /// <param name="unityColor">The Unity color.</param>
         /// <returns>The Fox Engine color.</returns>
-        public static FoxLib.Core.ColorRGB UnityColorToFoxColorRGB(Color unityColor)
+        public static Core.ColorRGB UnityColorToFoxColorRGB(Color unityColor)
         {
-            return new FoxLib.Core.ColorRGB(unityColor.r, unityColor.g, unityColor.b);
+            return new Core.ColorRGB(unityColor.r, unityColor.g, unityColor.b);
         }
 
         /// <summary>
@@ -175,7 +178,7 @@ namespace FoxKit.Utils
         /// </summary>
         /// <param name="unityColor">The Fox Engine ColorRGBA.</param>
         /// <returns>The Unity color.</returns>
-        public static Color FoxColorRGBAToUnityColor(FoxLib.Core.ColorRGBA foxColor)
+        public static Color FoxColorRGBAToUnityColor(Core.ColorRGBA foxColor)
         {
             return new Color(foxColor.Red, foxColor.Green, foxColor.Blue, foxColor.Alpha);
         }
@@ -185,9 +188,31 @@ namespace FoxKit.Utils
         /// </summary>
         /// <param name="unityColor">The Unity color.</param>
         /// <returns>The Fox Engine color.</returns>
-        public static FoxLib.Core.ColorRGBA UnityColorToFoxColorRGBA(Color unityColor)
+        public static Core.ColorRGBA UnityColorToFoxColorRGBA(Color unityColor)
         {
-            return new FoxLib.Core.ColorRGBA(unityColor.r, unityColor.g, unityColor.b, unityColor.a);
+            return new Core.ColorRGBA(unityColor.r, unityColor.g, unityColor.b, unityColor.a);
+        }
+
+        public static string UnityPathToFoxPath(string filePtr)
+        {
+            if (string.IsNullOrEmpty(filePtr))
+            {
+                return string.Empty;
+            }
+
+            // Fox Engine paths need to open with a /.
+            return "/" + filePtr;
+        }
+
+        public static string FoxPathToUnityPath(string filePtr)
+        {
+            return FormatFilePath(filePtr);
+        }
+
+        private static string FormatFilePath(string path)
+        {
+            // Fox Engine paths open with a /, which Unity doesn't like.
+            return string.IsNullOrEmpty(path) ? path : path.Substring(1);
         }
     }
 }
