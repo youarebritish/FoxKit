@@ -77,9 +77,8 @@
         /// <param name="address">
         /// The address of the referenced Entity.
         /// </param>
-        public EntityLink(DataSet owningDataSet, string packagePath, string archivePath, string nameInArchive, ulong address)
+        public EntityLink(string packagePath, string archivePath, string nameInArchive, ulong address)
         {
-            this.owningDataSet = owningDataSet;
             this.packagePath = packagePath;
             this.archivePath = archivePath;
             this.nameInArchive = nameInArchive;
@@ -102,6 +101,9 @@
         /// </returns>
         public bool ResolveReference(AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
+            // TODO 
+            return false;
+            /*
             // If all fields are empty, not really much we can do. It's not really looking for an Entity.
             if (string.IsNullOrEmpty(this.packagePath)
                 && string.IsNullOrEmpty(this.archivePath)
@@ -119,7 +121,7 @@
             }
 
             // If ArchivePath is empty, get the DataSet it belongs to.
-            UnityEngine.Object referencedDataSet = null;
+            DataSet referencedDataSet = null;
             if (string.IsNullOrEmpty(this.archivePath))
             {
                 referencedDataSet = this.owningDataSet;
@@ -138,14 +140,14 @@
 
             if (string.IsNullOrEmpty(this.nameInArchive))
             {
-                this.referencedEntity = dataSet[this.address];
+                this.referencedEntity = null; // TODO dataSet[this.address];
             }
             else
             {
-                this.referencedEntity = dataSet[this.nameInArchive];
+                this.referencedEntity = dataSet.GetData(this.nameInArchive);
             }
 
-            return this.referencedEntity != null;
+            return this.referencedEntity != null;*/
         }
     }
 }

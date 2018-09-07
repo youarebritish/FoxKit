@@ -74,7 +74,6 @@
                 {
                     var data = this.idToDataMap[item];
                     this.activeDataSet.RemoveData(data.Name);
-                    UnityEngine.Object.DestroyImmediate(data, true);
                 }
 
                 AssetDatabase.Refresh();
@@ -107,16 +106,15 @@
             }
 
             var entity = this.idToDataMap[args.itemID];
-
-            AssetDatabase.RenameAsset(AssetDatabase.GetAssetPath(entity), args.newName);
-            entity.name = args.newName;
+            
+            entity.Name = args.newName;
             
             if (entity is DataSet)
             {
                 return;
             }
             
-            // If we've renamed an Entity, change its key.
+            // If we've renamed a Data, change its key.
             entity.GetDataSet().RemoveData(args.originalName);
             entity.GetDataSet().AddData(args.newName, entity);
 
@@ -170,21 +168,16 @@
             
             foreach (var dataSetPath in this.openDataSetPaths)
             {
-                var dataSet = AssetDatabase.LoadAssetAtPath<DataSet>(dataSetPath);
-                if (dataSet == null)
-                {
-                    continue;
-                }
+                var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(dataSetPath);
+                var dataSetNode = new TreeViewItem { id = index, displayName = dataSet.name, icon = dataSet.DataSet.Icon };
 
-                var dataSetNode = new TreeViewItem { id = index, displayName = dataSet.name, icon = dataSet.Icon };
-
-                this.idToDataMap.Add(dataSet);
+                this.idToDataMap.Add(dataSet.DataSet);
                 this.dataSetTreeIds.Add(index);
                 root.AddChild(dataSetNode);
                 index++;
-
-                index = dataSet.Children
-                    .Aggregate(index, (current, data) => this.AddEntity(data as Data, dataSetNode, current));
+                
+                index = dataSet.DataSet.GetDataList().Values
+                    .Aggregate(index, (current, data) => this.AddData(data, dataSetNode, current));
             }
 
             TreeView.SetupDepthsFromParentsAndChildren(root);
@@ -192,19 +185,50 @@
             return root;
         }
 
+        private int AddData(Data data, TreeViewItem parent, int id)
+        {
+            // If we're adding a TransformData entity that has a valid parent, only add it to the tree under its parent.
+            // TODO: Consider moving this out and checking for this case before calling AddData().
+            var transformData = data as TransformData;
+            if (transformData?.Parent != null && transformData.Parent != this.idToDataMap[parent.id])
+            {
+                return id;
+            }
+
+            if (this.idToDataMap.Contains(data))
+            {
+                Assert.IsTrue(false, $"Attempted to add duplicate {data.Name} to DataListTreeView.");
+            }
+
+            var node = new TreeViewItem { id = id, displayName = data.Name, icon = data.Icon };
+
+            this.idToDataMap.Add(data);
+            parent.AddChild(node);
+            id++;
+            
+            if (transformData == null)
+            {
+                return id;
+            }
+
+            return transformData.GetChildren()
+                .Aggregate(id, (current, child) => this.AddData(child, node, current));
+        }
+
         protected override void SelectionChanged(IList<int> selectedIds)
         {
+            // TODO 
             // Lock the inspector to the selected entities so that we can edit the scene proxies without changing the Inspector.
-            ActiveEditorTracker.sharedTracker.isLocked = false;
+            /*ActiveEditorTracker.sharedTracker.isLocked = false;
             Selection.objects = (from id in selectedIds select this.idToDataMap[id]).ToArray();
-            ActiveEditorTracker.sharedTracker.isLocked = true;
+            ActiveEditorTracker.sharedTracker.isLocked = true;*/
             
             // Replace any selection of TransformDatas with their scene proxies.
             // TODO: Handle null transforms
-            Selection.objects =
+            /*Selection.objects =
                 (from obj in Selection.objects
                  select (obj as TransformData)?.SceneProxyTransform.gameObject ?? obj)
-                 .ToArray();
+                 .ToArray();*/
         }
 
         protected override void ContextClickedItem(int id)
@@ -234,29 +258,7 @@
             var id = this.idToDataMap.IndexOf(dataSet);
             this.SetSelection(new List<int> { id });
         }
-
-        private int AddEntity(Data entity, TreeViewItem parent, int id)
-        {
-            if (entity == null || this.idToDataMap.Contains(entity))
-            {
-                return id;
-            }
-            
-            if (entity.Parent != this.idToDataMap[parent.id] && entity.Parent != null)
-            {
-                return id;
-            }
-            
-            var node = new TreeViewItem { id = id, displayName = entity.Name, icon = entity.Icon };
-
-            this.idToDataMap.Add(entity);
-            parent.AddChild(node);
-            id++;
-
-            return entity.Children
-                .Aggregate(id, (current, child) => this.AddEntity(child as Data, node, current));
-        }
-
+        
         private void RemoveDataSet(object id)
         {
             // TODO: Does this actually do anything?

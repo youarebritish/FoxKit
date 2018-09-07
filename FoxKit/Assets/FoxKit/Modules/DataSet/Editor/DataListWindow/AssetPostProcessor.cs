@@ -1,9 +1,6 @@
 ﻿namespace FoxKit.Modules.DataSet.Editor.DataListWindow
 {
-    using System.Collections.Generic;
     using System.Linq;
-
-    using FoxKit.Modules.DataSet.FoxCore;
 
     using UnityEditor;
 
@@ -18,7 +15,13 @@
         {
             var importedDataSets = from importedAsset in importedAssets select importedAsset;
             var deletedDataSets = from deletedAsset in deletedAssets select deletedAsset;
-            DataListWindow.GetInstance().OnPostprocessDataSets(importedDataSets, deletedDataSets);
+
+            // TODO This should update it even if it's not open
+            // But calling GetInstance() shows it which is annoying.
+            if (DataListWindow.IsOpen)
+            {
+                EditorWindow.GetWindow<DataListWindow>().OnPostprocessDataSets(importedDataSets, deletedDataSets);
+            }
         }
     }
 }

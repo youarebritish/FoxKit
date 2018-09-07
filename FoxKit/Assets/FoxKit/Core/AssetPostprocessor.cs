@@ -29,21 +29,24 @@ namespace FoxKit.Core
                 var loadedAsset = AssetDatabase.LoadAssetAtPath<Object>(asset);
                 assets.Add(asset, loadedAsset);
 
-                if (loadedAsset is DataSet)
+                if (loadedAsset is DataSetAsset)
                 {
-                    dataSets.Add(Path.GetFileNameWithoutExtension(asset), loadedAsset as DataSet);
+                    dataSets.Add(Path.GetFileNameWithoutExtension(asset), (loadedAsset as DataSetAsset).DataSet);
                 }
             }
 
             foreach (var asset in assets.Values)
             {
-                var entity = asset as Entity;
-                if (entity == null)
+                var dataSetAsset = asset as DataSetAsset;
+                if (dataSetAsset == null)
                 {
                     continue;
                 }
-                
-                entity.OnAssetsImported(getDataSet, tryGetAsset);
+
+                foreach (var entity in dataSetAsset.DataSet.GetDataList().Values)
+                {
+                    entity.OnAssetsImported(getDataSet, tryGetAsset);
+                }
             }
         }
 

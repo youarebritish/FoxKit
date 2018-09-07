@@ -7,19 +7,37 @@
     using FoxKit.Utils;
 
     using FoxLib;
+    
+    using Sirenix.Serialization;
+
+    using UnityEngine;
 
     /// <inheritdoc />
     /// <summary>
     /// Base class for Fox Engine entities with explicit names.
     /// </summary>
     [Serializable]
-    public abstract class Data : Entity
+    public class Data : Entity
     {
-        /// <summary>
-        /// Just use the ScriptableObject's name for now.
-        /// </summary>
-        public virtual string Name => this.name;
+        [OdinSerialize, PropertyInfo(Core.PropertyInfoType.String, 72)]
+        private string name;
+
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.EntityHandle, 80, readable: PropertyExport.Never, writable: PropertyExport.Never)]
+        private DataSet dataSet;
         
+        /// <inheritdoc />
+        public string Name
+        {
+            get
+            {
+                return this.name;
+            }
+            set
+            {
+                this.name = value;
+            }
+        }
+
         /// <inheritdoc />
         public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
         {
@@ -38,6 +56,16 @@
             {
                 this.name = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
             }
+        }
+
+        public DataSet GetDataSet()
+        {
+            return this.dataSet;
+        }
+
+        public override string ToString()
+        {
+            return $"{this.GetType().Name}: {this.Name}";
         }
     }
 }

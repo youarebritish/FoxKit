@@ -14,9 +14,9 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
             EditorGUILayout.BeginVertical(GUI.skin.FindStyle("In BigTitle"));
 
             EditorGUILayout.BeginHorizontal();
-            GUI.DrawTexture(
+            /*GUI.DrawTexture(
                 GUILayoutUtility.GetRect(iconSize, iconSize, GUILayout.ExpandWidth(false)),
-                (this.target as Data).Icon);
+                (this.target as Data).Icon);*/
             var style = new GUIStyle(GUI.skin.label)
                             {
                                 alignment = TextAnchor.MiddleLeft,

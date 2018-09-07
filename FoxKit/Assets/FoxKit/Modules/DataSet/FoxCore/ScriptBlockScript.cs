@@ -22,13 +22,14 @@
         /// <summary>
         /// The Lua script to execute when the ScriptBlock activates.
         /// </summary>
-        [SerializeField, Modules.DataSet.Property("ScriptBlockScript")]
+        //[SerializeField, Modules.DataSet.Property("ScriptBlockScript")]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.FilePtr, 24)]
         private UnityEngine.Object script;
 
         /// <summary>
         /// The script path.
         /// </summary>
-        [SerializeField, HideInInspector]
+        [SerializeField]
         private string scriptPath;
 
         /// <inheritdoc />
@@ -45,7 +46,7 @@
                 PropertyInfoFactory.MakeStaticArrayProperty(
                     "script",
                     Core.PropertyInfoType.FilePtr,
-                    DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.script))));
+                    FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.script))));
 
             return parentProperties;
         }
@@ -64,7 +65,7 @@
 
             if (propertyData.Name == "script")
             {
-                this.scriptPath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                this.scriptPath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
             }
         }
     }

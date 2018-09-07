@@ -9,6 +9,9 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
     {
         public override void OnInspectorGUI()
         {
+            base.OnInspectorGUI();
+            // TODO
+            /*
             var transform = ((TransformData)((TransformEntity)this.target).Owner).SceneProxyTransform;
             var transformEntity = new SerializedObject(transform);
             
@@ -21,7 +24,7 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
             EditorGUILayout.PropertyField(transformEntity.FindProperty("m_LocalScale"), new GUIContent("Scale"), true);
 
             transformEntity.ApplyModifiedProperties();
-            this.Repaint();
+            this.Repaint();*/
         }
     }
 }

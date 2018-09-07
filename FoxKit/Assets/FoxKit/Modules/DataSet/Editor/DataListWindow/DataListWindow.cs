@@ -17,12 +17,13 @@
     public class DataListWindow : EditorWindow
     {
         private const string PreferenceKeyOpenDataSets = "FoxKit.DataListWindow.OpenDataSets";
+        
+        public static bool IsOpen { get; private set; }
 
         /// <summary>
         /// DataSets currently open in the window.
         /// </summary>
         [SerializeField]
-        //private List<DataSet> openDataSets;
         private List<string> openDataSetPaths;
         
         /// <summary>
@@ -55,14 +56,16 @@
         /// <param name="entityType">Type of the Entity to add.</param>
         public void AddEntity(Type entityType)
         {
+            // TODO
+            /*
             var instance = ScriptableObject.CreateInstance(entityType);
             instance.name = GenerateNameForType(entityType, this.activeDataSet);
-            (instance as Entity).AssignDataSet(this.activeDataSet);
+            // TODO (instance as Entity).AssignDataSet(this.activeDataSet);
 
             this.ActiveDataSet.AddData(instance.name, instance as Data);
             
             this.treeView.Reload();
-            this.treeView.SelectItem(instance as Data);
+            this.treeView.SelectItem(instance as Data);*/
         }
 
         /// <summary>
@@ -118,7 +121,7 @@
         [OnOpenAsset]
         private static bool OnOpenedAsset(int instanceId, int line = -1)
         {
-            var asset = EditorUtility.InstanceIDToObject(instanceId) as DataSet;
+            var asset = EditorUtility.InstanceIDToObject(instanceId) as DataSetAsset;
 
             if (asset == null)
             {
@@ -162,6 +165,8 @@
         /// </summary>
         private void OnEnable()
         {
+            IsOpen = true;
+
             if (this.treeViewState == null)
             {
                 this.treeViewState = new TreeViewState();
@@ -184,6 +189,7 @@
 
         private void OnDisable()
         {
+            IsOpen = false;
             SaveOpenDataSets(this.openDataSetPaths);
             Selection.selectionChanged -= this.OnUnitySelectionChange;
         }
@@ -196,7 +202,7 @@
         /// </param>
         private void OpenDataSet(string dataSetPath)
         {
-            var dataSet = AssetDatabase.LoadAssetAtPath<FoxCore.DataSet>(dataSetPath);
+            var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(dataSetPath).DataSet;
 
             this.activeDataSet = dataSet;
             this.activeDataSetPath = dataSetPath;
@@ -226,18 +232,21 @@
 
         public void SetActiveDataSet(object userData)
         {
-            var dataSet = userData as DataSet;
+            // TODO: This is getting DataSet objects, not DataSetAssets.
+            var dataSet = userData as DataSetAsset;
             Assert.IsNotNull(dataSet);
 
             var path = AssetDatabase.GetAssetPath(dataSet);
 
-            this.activeDataSet = dataSet;
+            this.activeDataSet = dataSet.DataSet;
             this.activeDataSetPath = path;
-            this.treeView.SetActiveDataSet(dataSet);
+            this.treeView.SetActiveDataSet(dataSet.DataSet);
         }
 
         private void RemoveDataSet(object userData)
         {
+            // TODO
+            /*
             var dataSetPath = userData as string;
             if (dataSetPath == null)
             {
@@ -261,7 +270,7 @@
             
             this.openDataSetPaths.Remove(dataSetPath);
             this.treeView.RemoveDataSet();
-            this.treeView.Reload();
+            this.treeView.Reload();*/
         }
 
         /// <summary>
@@ -295,12 +304,14 @@
 
         private void CreateDataSet()
         {
+            // TODO 
+            /*
             var dataSet = CreateInstance<DataSet>();
 
             var path = UnityFileUtils.GetUniqueAssetPathNameOrFallback("DataSet0000.asset");
             AssetDatabase.CreateAsset(dataSet, path);
 
-            this.OpenDataSet(path);
+            this.OpenDataSet(path);*/
         }
 
         private void ProcessKeyboardShortcuts()

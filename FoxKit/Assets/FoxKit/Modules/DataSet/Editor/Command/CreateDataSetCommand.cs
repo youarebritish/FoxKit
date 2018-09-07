@@ -16,7 +16,7 @@ namespace FoxKit.Modules.DataSet.Editor.Command
         
         public void Execute()
         {
-            var dataSet = ScriptableObject.CreateInstance<FoxCore.DataSet>();
+            var dataSet = ScriptableObject.CreateInstance<DataSetAsset>();
             var path = UnityFileUtils.GetUniqueAssetPathNameOrFallback("DataSet0000.asset");
             AssetDatabase.CreateAsset(dataSet, path);
             AssetDatabase.SaveAssets();
