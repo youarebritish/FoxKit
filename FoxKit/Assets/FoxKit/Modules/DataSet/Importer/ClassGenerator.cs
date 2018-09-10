@@ -278,7 +278,7 @@
                     break;
                 case Core.PropertyInfoType.FilePtr:
                     // TODO: Should this be in FoxUtils?
-                    conversionFunctionString = "DataSetUtils.ExtractFilePath";
+                    conversionFunctionString = "DataSetUtils.FoxPathToUnityPath";
                     break;
                 case Core.PropertyInfoType.Matrix3:
                     conversionFunctionString = "FoxUtils.FoxToUnity";
@@ -287,7 +287,7 @@
                     conversionFunctionString = "FoxUtils.FoxToUnity";
                     break;
                 case Core.PropertyInfoType.Path:
-                    conversionFunctionString = "DataSetUtils.ExtractFilePath";
+                    conversionFunctionString = "DataSetUtils.FoxPathToUnityPath";
                     break;
                 case Core.PropertyInfoType.Quat:
                     conversionFunctionString = "FoxUtils.FoxToUnity";
@@ -331,7 +331,7 @@
                     conversionFunctionString = "FoxUtils.UnityToFox";
                     break;
                 case Core.PropertyInfoType.Path:
-                    conversionFunctionString = "DataSetUtils.ExtractFilePath";
+                    conversionFunctionString = "DataSetUtils.FoxPathToUnityPath";
                     break;
                 case Core.PropertyInfoType.Quat:
                     conversionFunctionString = "FoxUtils.UnityToFox";

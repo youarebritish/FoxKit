@@ -83,12 +83,12 @@
                 "files",
                 Core.PropertyInfoType.FilePtr,
                 (from file in this.files
-                 select DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(file)) as object).ToArray()));
+                 select FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(file)) as object).ToArray()));
             parentProperties.Add(PropertyInfoFactory.MakeDynamicArrayProperty(
                 "rawFiles",
                 Core.PropertyInfoType.FilePtr,
                 (from file in this.rawFiles
-                 select DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(file)) as object).ToArray()));
+                 select FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(file)) as object).ToArray()));
             return parentProperties;
         }
 
@@ -107,7 +107,7 @@
 
                         foreach (var filePtr in filePtrList)
                         {
-                            var path = DataSetUtils.ExtractFilePath(filePtr);
+                            var path = FoxUtils.FoxPathToUnityPath(filePtr);
                             this.filesPaths.Add(path);
                         }
                         break;
@@ -120,7 +120,7 @@
 
                         foreach (var filePtr in filePtrList)
                         {
-                            var path = DataSetUtils.ExtractFilePath(filePtr);
+                            var path = FoxUtils.FoxPathToUnityPath(filePtr);
                             this.rawFilesPaths.Add(path);
                         }
                         break;

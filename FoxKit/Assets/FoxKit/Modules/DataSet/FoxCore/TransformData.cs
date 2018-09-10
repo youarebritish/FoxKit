@@ -94,13 +94,14 @@
         [SerializeField, HideInInspector]
         private GameObject sceneProxyGameObject;
 
+        public TransformData Parent => this.parent;
+
         public Transform SceneProxyTransform => this.sceneProxyGameObject.transform;
 
-        /// <inheritdoc />
-        public override IEnumerable<Entity> Children => this.children;
-
-        /// <inheritdoc />
-        public override Entity Parent => this.parent ?? base.Parent;
+        public IEnumerable<TransformData> GetChildren()
+        {
+            return this.children;
+        }
 
         /// <inheritdoc />
         public override void OnLoaded()

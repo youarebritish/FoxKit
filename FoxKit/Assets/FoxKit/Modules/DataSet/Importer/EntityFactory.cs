@@ -31,11 +31,11 @@
             if (type == null)
             {
                 // TODO: Only once for each type
-                ClassGenerator.GenerateClassFromEntity(data, filename);
+                //ClassGenerator.GenerateClassFromEntity(data, filename);
                 return null;
             }
 
-            var instance = ScriptableObject.CreateInstance(type) as Entity;
+            var instance = Activator.CreateInstance(type) as Entity;//ScriptableObject.CreateInstance(type) as Entity;
             return instance;
         }
 

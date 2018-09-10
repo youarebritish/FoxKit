@@ -33,7 +33,7 @@
         /// <inheritdoc />
         public override void OnImportAsset(AssetImportContext ctx)
         {
-            var asset = ScriptableObject.CreateInstance<DataSet>();
+            var asset = ScriptableObject.CreateInstance<DataSetAsset>();
             Assert.IsNotNull(ctx.assetPath);
 
             asset.name = Path.GetFileNameWithoutExtension(ctx.assetPath);
@@ -53,8 +53,10 @@
 
             InitializeEntities(ctx, entities, dataSet, dataSetName, MakeEntityInitializeFunctions(dataSet, entities));
 
-            ctx.AddObjectToAsset("DataSet", dataSet);
-            ctx.SetMainObject(dataSet);
+            asset.DataSet = dataSet;
+
+            ctx.AddObjectToAsset("DataSet", asset);
+            ctx.SetMainObject(asset);
         }
 
         private static DataSetFile2.ReadFunctions MakeReadFunctions(BinaryReader reader)
@@ -148,25 +150,15 @@
         {
             foreach (var entity in entities)
             {
-                entity.Key.Initialize(dataSetName, entity.Value, entityInitializeFunctions);
+                entity.Key.Initialize(entity.Value, entityInitializeFunctions);
 
                 // We don't need to add the DataSet to itself, and it gets added to the asset later.
-                if (entity.Key.GetType() == typeof(DataSet))
+                if (entity.Key.GetType() == typeof(DataSet) || (entity.Key as Data) == null)
                 {
                     continue;
                 }
                 
-                if (string.IsNullOrEmpty(entity.Key.name))
-                {
-                    entity.Key.name = $"{entity.Value.ClassName}<{entity.Value.Address:X}>";
-                    ctx.AddObjectToAsset(entity.Key.name, entity.Key);
-                    dataSet.AddDataElement(entity.Value.Address, entity.Key);
-                    continue;
-                }
-
-                ctx.AddObjectToAsset(entity.Key.name, entity.Key);
-
-                dataSet.AddData(entity.Key.name, entity.Value.Address, entity.Key as Data);
+                dataSet.AddData(((Data)entity.Key).Name, (Data)entity.Key);
             }
         }
 

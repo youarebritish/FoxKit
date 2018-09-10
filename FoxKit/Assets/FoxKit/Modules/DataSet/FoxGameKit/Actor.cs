@@ -9,10 +9,7 @@
 
     public class Actor : Entity
     {
-        /// <summary>
-        /// Just use the ScriptableObject's name for now.
-        /// </summary>
-        public virtual string Name => this.name;
+        private string name;
 
         [SerializeField, Modules.DataSet.Property("Actor")]
         private float actorLevelName;

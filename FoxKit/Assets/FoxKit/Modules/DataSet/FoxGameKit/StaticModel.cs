@@ -160,8 +160,8 @@
         public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
         {
             var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("modelFile", Core.PropertyInfoType.FilePtr, DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.modelFile))));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("geomFile", Core.PropertyInfoType.FilePtr, DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.geomFile))));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("modelFile", Core.PropertyInfoType.FilePtr, FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.modelFile))));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("geomFile", Core.PropertyInfoType.FilePtr, FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.geomFile))));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("isVisibleGeom", Core.PropertyInfoType.Bool, this.isVisibleGeom));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("isIsolated", Core.PropertyInfoType.Bool, this.isIsolated));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("lodFarSize", Core.PropertyInfoType.Float, this.lodFarSize));
@@ -185,11 +185,11 @@
             switch (propertyData.Name)
             {
                 case "modelFile":
-                    this.modelFilePath = DataSetUtils.ExtractFilePath(
+                    this.modelFilePath = FoxUtils.FoxPathToUnityPath(
                         DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "geomFile":
-                    this.modelFilePath = DataSetUtils.ExtractFilePath(
+                    this.modelFilePath = FoxUtils.FoxPathToUnityPath(
                         DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "isVisibleGeom":

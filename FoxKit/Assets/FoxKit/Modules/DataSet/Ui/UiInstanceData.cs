@@ -72,7 +72,7 @@
                     Core.PropertyInfoType.FilePtr,
                     this.createWindowParams.ToDictionary(
                         entry => entry.Key,
-                        entry => DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(entry.Value)) as object)));
+                        entry => FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(entry.Value)) as object)));
             parentProperties.Add(
                 PropertyInfoFactory.MakeStaticArrayProperty(
                     "windowFactoryName",
@@ -92,7 +92,7 @@
                     {
                         foreach (var entry in DataSetUtils.GetStringMap<string>(propertyData))
                         {
-                            this.createWindowParamsPaths.Add(entry.Key, DataSetUtils.ExtractFilePath(entry.Value));
+                            this.createWindowParamsPaths.Add(entry.Key, FoxUtils.FoxPathToUnityPath(entry.Value));
                         }
                         
                         //this.createWindowParamsPaths.AddRange(DataSetUtils.GetStringMap<string>(propertyData));
