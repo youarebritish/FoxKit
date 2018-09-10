@@ -19,7 +19,7 @@
     [Serializable]
     public class Data : Entity
     {
-        [OdinSerialize, PropertyInfo(Core.PropertyInfoType.String, 72)]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.String, 72)]
         private string name;
 
         [SerializeField, PropertyInfo(Core.PropertyInfoType.EntityHandle, 80, readable: PropertyExport.Never, writable: PropertyExport.Never)]

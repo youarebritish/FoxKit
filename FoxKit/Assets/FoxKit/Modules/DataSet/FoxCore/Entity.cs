@@ -7,6 +7,7 @@
     using System.Reflection;
     using System.Runtime.CompilerServices;
 
+    using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Modules.DataSet.Importer;
     using FoxKit.Modules.Lua;
     using FoxKit.Utils;
@@ -518,7 +519,113 @@
             Func<Entity, ulong> getEntityAddress,
             Func<EntityLink, Core.EntityLink> convertEntityLink)
         {
-            return new List<Core.PropertyInfo>();
+            //return new List<Core.PropertyInfo>();
+
+            var baseTypes = ReflectionUtils.GetParentTypes(this.GetType());
+            baseTypes.Add(this.GetType());
+
+            return (from type in baseTypes
+                    from field in type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
+                    let attribute = field.GetCustomAttribute<PropertyInfoAttribute>()
+                    where attribute != null
+                    select this.MakeWritableStaticProperty(field, attribute, getEntityAddress, convertEntityLink)).ToList();
+        }
+
+        private Core.PropertyInfo MakeWritableStaticProperty(FieldInfo field, PropertyInfoAttribute attribute, Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
+        {
+            if (attribute.Container == Core.ContainerType.StaticArray && attribute.ArraySize == 1)
+            {
+                return PropertyInfoFactory.MakeStaticArrayProperty(field.Name, attribute.Type, ConvertValueToFox(attribute.Type, getEntityAddress, convertEntityLink, field.GetValue(this)));
+            }
+            if (attribute.Container == Core.ContainerType.StaticArray)
+            {
+                var values = from value in field.GetValue(this) as object[]
+                             select ConvertValueToFox(attribute.Type, getEntityAddress, convertEntityLink, value);
+                return PropertyInfoFactory.MakeStaticArrayProperty(field.Name, attribute.Type, values.ToArray());
+            }
+            if (attribute.Container == Core.ContainerType.DynamicArray)
+            {
+                var values = from value in field.GetValue(this) as object[]
+                             select ConvertValueToFox(attribute.Type, getEntityAddress, convertEntityLink, value);
+                return PropertyInfoFactory.MakeDynamicArrayProperty(field.Name, attribute.Type, values.ToArray());
+            }
+            if (attribute.Container == Core.ContainerType.List)
+            {
+                var values = from value in field.GetValue(this) as object[]
+                             select ConvertValueToFox(attribute.Type, getEntityAddress, convertEntityLink, value);
+                return PropertyInfoFactory.MakeListProperty(field.Name, attribute.Type, values.ToArray());
+            }
+            if (attribute.Container == Core.ContainerType.StringMap)
+            {
+                var dict = (field.GetValue(this) as IDictionary<string, object>).ToDictionary(
+                    entry => entry.Key,
+                    entry => ConvertValueToFox(attribute.Type, getEntityAddress, convertEntityLink, entry.Value));
+                return PropertyInfoFactory.MakeStringMapProperty(field.Name, attribute.Type, dict);
+            }
+            Assert.IsTrue(false, "Invalid container.");
+            return null;
+        }
+
+        private static object ConvertValueToFox(Core.PropertyInfoType type, Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink, object value)
+        {
+            switch (type)
+            {
+                case Core.PropertyInfoType.Int8:
+                    return value;
+                case Core.PropertyInfoType.UInt8:
+                    return value;
+                case Core.PropertyInfoType.Int16:
+                    return value;
+                case Core.PropertyInfoType.UInt16:
+                    return value;
+                case Core.PropertyInfoType.Int32:
+                    return value;
+                case Core.PropertyInfoType.UInt32:
+                    return value;
+                case Core.PropertyInfoType.Int64:
+                    return value;
+                case Core.PropertyInfoType.UInt64:
+                    return value;
+                case Core.PropertyInfoType.Float:
+                    return value;
+                case Core.PropertyInfoType.Double:
+                    return value;
+                case Core.PropertyInfoType.Bool:
+                    return value;
+                case Core.PropertyInfoType.String:
+                    return value;
+                case Core.PropertyInfoType.Path:
+                    return FoxUtils.UnityPathToFoxPath(value as string);
+                case Core.PropertyInfoType.EntityPtr:
+                    return getEntityAddress(value as Entity);
+                case Core.PropertyInfoType.Vector3:
+                    return FoxUtils.UnityToFox((UnityEngine.Vector3)value);
+                case Core.PropertyInfoType.Vector4:
+                    return FoxUtils.UnityToFox((UnityEngine.Vector4)value);
+                case Core.PropertyInfoType.Quat:
+                    return FoxUtils.UnityToFox((UnityEngine.Quaternion)value);
+                case Core.PropertyInfoType.Matrix3:
+                    return FoxUtils.UnityToFox((Matrix3x3)value);
+                case Core.PropertyInfoType.Matrix4:
+                    return FoxUtils.UnityToFox((Matrix4x4)value);
+                case Core.PropertyInfoType.Color:
+                    return FoxUtils.UnityToFox((Color)value);
+                case Core.PropertyInfoType.FilePtr:
+                    return FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(value as UnityEngine.Object));
+                case Core.PropertyInfoType.EntityHandle:
+                    return getEntityAddress(value as Entity);
+                case Core.PropertyInfoType.EntityLink:
+                    return convertEntityLink(value as EntityLink);
+                case Core.PropertyInfoType.PropertyInfo:
+                    Assert.IsTrue(false, "Attempting to convert value of type PropertyInfo. This should never happen.");
+                    break;
+                case Core.PropertyInfoType.WideVector3:
+                    Assert.IsTrue(false, "Attempting to convert value of type WideVector3. This should never happen.");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
+            return null;
         }
 
         /// <summary>
