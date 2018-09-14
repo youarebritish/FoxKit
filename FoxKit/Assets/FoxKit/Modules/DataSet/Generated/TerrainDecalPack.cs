@@ -62,7 +62,7 @@ namespace FoxKit.Modules.DataSet
             switch (propertyData.Name)
             {
                 case "terrainDecalPackFile":
-                    this.terrainDecalPackFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.terrainDecalPackFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "materialLinks":
                     this._materialLinks = (from rawValue in DataSetUtils.GetDynamicArrayValues<Core.EntityLink>(propertyData) select initFunctions.MakeEntityLink(rawValue)).ToList();

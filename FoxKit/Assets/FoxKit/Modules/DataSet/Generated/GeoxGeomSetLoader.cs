@@ -58,7 +58,7 @@ namespace FoxKit.Modules.DataSet
             switch (propertyData.Name)
             {
                 case "geomSetFile":
-                    this.geomSetFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.geomSetFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
             }
         }

@@ -48,7 +48,7 @@ namespace FoxKit.Modules.DataSet
         {
             var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
             parentProperties.Add(PropertyInfoFactory.MakeDynamicArrayProperty("planeMatrices", Core.PropertyInfoType.Matrix4, (from propertyEntry in this._planeMatrices select FoxUtils.UnityToFox(propertyEntry) as object).ToArray()));
-            parentProperties.Add(PropertyInfoFactory.MakeDynamicArrayProperty("maskTextures", Core.PropertyInfoType.Path, (from propertyEntry in this._maskTextures select DataSetUtils.ExtractFilePath(propertyEntry) as object).ToArray()));
+            parentProperties.Add(PropertyInfoFactory.MakeDynamicArrayProperty("maskTextures", Core.PropertyInfoType.Path, (from propertyEntry in this._maskTextures select FoxUtils.FoxPathToUnityPath(propertyEntry) as object).ToArray()));
             parentProperties.Add(PropertyInfoFactory.MakeDynamicArrayProperty("interruptFlags", Core.PropertyInfoType.UInt32, (from propertyEntry in this._interruptFlags select (propertyEntry) as object).ToArray()));
             parentProperties.Add(PropertyInfoFactory.MakeDynamicArrayProperty("levels", Core.PropertyInfoType.UInt32, (from propertyEntry in this._levels select (propertyEntry) as object).ToArray()));
             return parentProperties;
@@ -65,7 +65,7 @@ namespace FoxKit.Modules.DataSet
                     this._planeMatrices = (from rawValue in DataSetUtils.GetDynamicArrayValues<Core.Matrix4>(propertyData) select FoxUtils.FoxToUnity(rawValue)).ToList();
                     break;
                 case "maskTextures":
-                    this.maskTexturesPath = (from rawValue in DataSetUtils.GetDynamicArrayValues<string>(propertyData) select DataSetUtils.ExtractFilePath(rawValue)).ToList();
+                    this.maskTexturesPath = (from rawValue in DataSetUtils.GetDynamicArrayValues<string>(propertyData) select FoxUtils.FoxPathToUnityPath(rawValue)).ToList();
                     break;
                 case "interruptFlags":
                     this._interruptFlags = (from rawValue in DataSetUtils.GetDynamicArrayValues<uint>(propertyData) select (rawValue)).ToList();

@@ -23,19 +23,19 @@
         /// <summary>
         /// The translation.
         /// </summary>
-        [SerializeField, Modules.DataSet.Property]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.Vector3, 0)]
         private Vector3 translation;
 
         /// <summary>
         /// The rotation.
         /// </summary>
-        [SerializeField, Modules.DataSet.Property]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.Quat, 0)]
         private Quaternion rotation;
 
         /// <summary>
         /// The scale.
         /// </summary>
-        [SerializeField, Modules.DataSet.Property]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.Vector3, 0)]
         private Vector3 scale;
 
         /// <summary>

@@ -58,7 +58,7 @@
         public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
         {
             var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("soundDataFile", Core.PropertyInfoType.FilePtr, DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.soundDataFile))));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("soundDataFile", Core.PropertyInfoType.FilePtr, FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.soundDataFile))));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("syncLoad", Core.PropertyInfoType.Bool, this.syncLoad));
 
             return parentProperties;
@@ -72,7 +72,7 @@
             switch (propertyData.Name)
             {
                 case "soundDataFile":
-                    this.soundDataFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.soundDataFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "syncLoad":
                     this.syncLoad = DataSetUtils.GetStaticArrayPropertyValue<bool>(propertyData);

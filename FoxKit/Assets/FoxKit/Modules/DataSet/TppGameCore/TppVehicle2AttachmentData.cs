@@ -89,7 +89,7 @@
             var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("vehicleTypeCode", Core.PropertyInfoType.UInt8, this.vehicleTypeCode));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("attachmentImplTypeIndex", Core.PropertyInfoType.UInt8, this.attachmentImplTypeIndex));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("attachmentFile", Core.PropertyInfoType.FilePtr, DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.attachmentFile))));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("attachmentFile", Core.PropertyInfoType.FilePtr, FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.attachmentFile))));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("attachmentInstanceCount", Core.PropertyInfoType.UInt8, this.attachmentInstanceCount));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("bodyCnpName", Core.PropertyInfoType.String, this.bodyCnpName));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("attachmentBoneName", Core.PropertyInfoType.String, this.attachmentBoneName));
@@ -118,7 +118,7 @@
                     this.attachmentImplTypeIndex = DataSetUtils.GetStaticArrayPropertyValue<byte>(propertyData);
                     break;
                 case "attachmentFile":
-                    this.attachmentFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.attachmentFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "attachmentInstanceCount":
                     this.attachmentInstanceCount = DataSetUtils.GetStaticArrayPropertyValue<byte>(propertyData);

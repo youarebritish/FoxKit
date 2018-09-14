@@ -90,12 +90,12 @@
                 PropertyInfoFactory.MakeStaticArrayProperty(
                     "defaultShellPartsFile",
                     Core.PropertyInfoType.FilePtr,
-                    DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.defaultShellPartsFile))));
+                    FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.defaultShellPartsFile))));
             parentProperties.Add(
                 PropertyInfoFactory.MakeStaticArrayProperty(
                     "flareShellPartsFile",
                     Core.PropertyInfoType.FilePtr,
-                    DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.defaultShellPartsFile))));
+                    FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.defaultShellPartsFile))));
 
             return parentProperties;
         }
@@ -117,10 +117,10 @@
                     this.rotationLimitDown = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);
                     break;
                 case "defaultShellPartsFile":
-                    this.defaultShellPartsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.defaultShellPartsFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "flareShellPartsFile":
-                    this.flareShellPartsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.flareShellPartsFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
             }
         }

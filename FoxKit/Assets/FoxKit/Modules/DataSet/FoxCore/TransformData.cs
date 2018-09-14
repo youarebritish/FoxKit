@@ -44,34 +44,34 @@
     public class TransformData : Data
     {
         /// <summary>
-        /// The transform matrix.
-        /// </summary>
-        [SerializeField, Modules.DataSet.Property("Transform", PropertyAttribute.NestedInspectorMode.Draw)]
-        protected TransformEntity transform;
-
-        /// <summary>
         /// The TransformData, if any, to which this one belongs.
         /// </summary>
-        [SerializeField, HideInInspector]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.EntityHandle, 120, writable: PropertyExport.EditorOnly)]
         private TransformData parent;
+
+        /// <summary>
+        /// The transform matrix.
+        /// </summary>
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.EntityPtr, 128, ptrType: typeof(TransformEntity))]
+        private TransformEntity transform;
 
         /// <summary>
         /// The shear transform matrix.
         /// </summary>
-        [SerializeField, HideInInspector]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.EntityPtr, 136, ptrType: typeof(ShearTransformEntity))]
         private TransformEntity shearTransform;
 
         /// <summary>
         /// The pivot transform matrix.
         /// </summary>
-        [SerializeField, HideInInspector]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.EntityPtr, 144, ptrType: typeof(TransformEntity))]
         private TransformEntity pivotTransform;
 
         /// <summary>
         /// The TransformData Entities, if any, which belong to this one.
         /// </summary>
-        [SerializeField, HideInInspector]
-        private List<TransformData> children = new List<TransformData>();
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.EntityHandle, 152, container: Core.ContainerType.List)]
+        private List<Entity> children = new List<Entity>();
 
         /// <summary>
         /// Unknown. Believed to be a flag for whether or not this TransformData should inherit its owner's transform.
@@ -100,7 +100,8 @@
 
         public IEnumerable<TransformData> GetChildren()
         {
-            return this.children;
+            return from child in this.children
+                   select child as TransformData;
         }
 
         /// <inheritdoc />
@@ -115,14 +116,9 @@
         {
             base.PostOnLoaded();
             
-            foreach (var child in this.children)
+            foreach (var child in this.GetChildren())
             {
-                if (child == null)
-                {
-                    continue;
-                }
-
-                child.SetSceneProxyParent(this.sceneProxyGameObject.transform);
+                child?.SetSceneProxyParent(this.sceneProxyGameObject.transform);
             }
         }
 
@@ -252,7 +248,7 @@
 
                 case "children":
                     this.children = (from handle in DataSetUtils.GetListValues<ulong>(propertyData)
-                                     select initFunctions.GetEntityFromAddress(handle) as TransformData)
+                                     select initFunctions.GetEntityFromAddress(handle))
                                      .ToList();
                     break;
 

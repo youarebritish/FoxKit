@@ -49,7 +49,7 @@
 
             if (propertyData.Name == "gsklFile")
             {
-                this.gsklFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                this.gsklFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
             }
         }
     }

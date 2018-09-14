@@ -25,13 +25,13 @@
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField, Modules.DataSet.Property("UI")]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.FilePtr, 120, container: Core.ContainerType.DynamicArray)]
         private List<UnityEngine.Object> files = new List<UnityEngine.Object>();
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField, Modules.DataSet.Property("UI")]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.FilePtr, 136, container: Core.ContainerType.DynamicArray)]
         private List<UnityEngine.Object> rawFiles = new List<UnityEngine.Object>();
 
         /// <summary>

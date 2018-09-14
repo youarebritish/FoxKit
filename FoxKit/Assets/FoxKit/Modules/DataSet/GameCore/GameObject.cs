@@ -89,7 +89,7 @@
                 case "parameters":
                     var address = DataSetUtils.GetStaticArrayPropertyValue<ulong>(propertyData);
                     this.parameters = initFunctions.GetEntityFromAddress(address) as GameObjectParameter;
-                    Assert.IsNotNull(this.parameters, $"Parameters for {this.name} was null.");
+                    Assert.IsNotNull(this.parameters, $"Parameters for {this.Name} was null.");
 
                     this.parameters.Owner = this;
                     break;

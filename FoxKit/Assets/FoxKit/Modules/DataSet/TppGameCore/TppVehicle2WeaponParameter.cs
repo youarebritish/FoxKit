@@ -139,8 +139,8 @@
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("bulletId", Core.PropertyInfoType.String, this.bulletId));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("weaponImplTypeIndex", Core.PropertyInfoType.UInt8, this.weaponImplTypeIndex));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("fireInterval", Core.PropertyInfoType.Float, this.fireInterval));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("weaponFile", Core.PropertyInfoType.FilePtr, DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.weaponFile))));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("ammoFile", Core.PropertyInfoType.FilePtr, DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.ammoFile))));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("weaponFile", Core.PropertyInfoType.FilePtr, FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.weaponFile))));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("ammoFile", Core.PropertyInfoType.FilePtr, FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.ammoFile))));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("ownerCnpName", Core.PropertyInfoType.String, this.ownerCnpName));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("weaponBoneName", Core.PropertyInfoType.String, this.weaponBoneName));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("turretBoneName", Core.PropertyInfoType.String, this.turretBoneName));
@@ -175,10 +175,10 @@
                     this.fireInterval = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);
                     break;
                 case "weaponFile":
-                    this.weaponFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.weaponFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "ammoFile":
-                    this.ammoFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.ammoFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "weaponBoneName":
                     this.weaponBoneName = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);

@@ -103,7 +103,7 @@
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("vehicleTypeIndex", Core.PropertyInfoType.UInt8, this.vehicleTypeIndex));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("proxyVehicleTypeIndex", Core.PropertyInfoType.UInt8, this.proxyVehicleTypeIndex));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("bodyImplTypeIndex", Core.PropertyInfoType.UInt8, this.bodyImplTypeIndex));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("partsFile", Core.PropertyInfoType.FilePtr, DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.partsFile))));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("partsFile", Core.PropertyInfoType.FilePtr, FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.partsFile))));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("bodyInstanceCount", Core.PropertyInfoType.UInt8, this.bodyInstanceCount));
             parentProperties.Add(
                 PropertyInfoFactory.MakeDynamicArrayProperty(
@@ -117,7 +117,7 @@
                     "fovaFiles",
                     Core.PropertyInfoType.FilePtr,
                     (from fovaFile in this.fovaFiles
-                     select DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(fovaFile)) as object)
+                     select FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(fovaFile)) as object)
                     .ToArray()));
 
             return parentProperties;
@@ -140,7 +140,7 @@
                     this.bodyImplTypeIndex = DataSetUtils.GetStaticArrayPropertyValue<byte>(propertyData);
                     break;
                 case "partsFile":
-                    this.partsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.partsFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "bodyInstanceCount":
                     this.bodyInstanceCount = DataSetUtils.GetStaticArrayPropertyValue<byte>(propertyData);
@@ -152,7 +152,7 @@
                     foreach (var address in addresses)
                     {
                         var param = initFunctions.GetEntityFromAddress(address) as TppVehicle2WeaponParameter;
-                        Assert.IsNotNull(param, $"Parameter in {this.name} must not be null.");
+                        Assert.IsNotNull(param, $"Parameter in {this.Name} must not be null.");
 
                         this.weaponParams.Add(param);
                         param.Owner = this;
@@ -166,7 +166,7 @@
 
                     foreach (var filePtr in filePtrList)
                     {
-                        var path = DataSetUtils.ExtractFilePath(filePtr);
+                        var path = FoxUtils.FoxPathToUnityPath(filePtr);
                         this.fovaFilesPaths.Add(path);
                     }
 

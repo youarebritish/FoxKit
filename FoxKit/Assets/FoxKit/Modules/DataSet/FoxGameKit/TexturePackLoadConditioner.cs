@@ -8,6 +8,8 @@
     using FoxKit.Utils;
 
     using FoxLib;
+    
+    using Sirenix.Serialization;
 
     using UnityEditor;
 
@@ -23,8 +25,8 @@
         /// <summary>
         /// The texture pack path.
         /// </summary>
-        [SerializeField, Modules.DataSet.Property("Path")]
-        private string texturePackPath = string.Empty;
+        [OdinSerialize, Modules.DataSet.Property("Path")]
+        public string texturePackPath = string.Empty;
 
         /// <inheritdoc />
         public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(Texture)).image as Texture2D;

@@ -84,15 +84,15 @@ namespace FoxKit.Modules.DataSet
         {
             var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("materialName", Core.PropertyInfoType.String, (this._materialName)));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("shader", Core.PropertyInfoType.Path, DataSetUtils.ExtractFilePath(this._shader)));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("diffuseTexture", Core.PropertyInfoType.Path, DataSetUtils.ExtractFilePath(this._diffuseTexture)));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("srmTexture", Core.PropertyInfoType.Path, DataSetUtils.ExtractFilePath(this._srmTexture)));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("normalTexture", Core.PropertyInfoType.Path, DataSetUtils.ExtractFilePath(this._normalTexture)));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("materialMapTexture", Core.PropertyInfoType.Path, DataSetUtils.ExtractFilePath(this._materialMapTexture)));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("shader", Core.PropertyInfoType.Path, FoxUtils.FoxPathToUnityPath(this._shader)));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("diffuseTexture", Core.PropertyInfoType.Path, FoxUtils.FoxPathToUnityPath(this._diffuseTexture)));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("srmTexture", Core.PropertyInfoType.Path, FoxUtils.FoxPathToUnityPath(this._srmTexture)));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("normalTexture", Core.PropertyInfoType.Path, FoxUtils.FoxPathToUnityPath(this._normalTexture)));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("materialMapTexture", Core.PropertyInfoType.Path, FoxUtils.FoxPathToUnityPath(this._materialMapTexture)));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("materialIndex", Core.PropertyInfoType.UInt8, (this._materialIndex)));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("diffuseColor", Core.PropertyInfoType.Color, FoxUtils.UnityColorToFoxColorRGBA(this._diffuseColor)));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("specularColor", Core.PropertyInfoType.Color, FoxUtils.UnityColorToFoxColorRGBA(this._specularColor)));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("fmtrPath", Core.PropertyInfoType.Path, DataSetUtils.ExtractFilePath(this._fmtrPath)));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("fmtrPath", Core.PropertyInfoType.Path, FoxUtils.FoxPathToUnityPath(this._fmtrPath)));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("residentFlag", Core.PropertyInfoType.Bool, (this._residentFlag)));
             return parentProperties;
         }
@@ -108,19 +108,19 @@ namespace FoxKit.Modules.DataSet
                     this._materialName = (DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "shader":
-                    this.shaderPath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.shaderPath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "diffuseTexture":
-                    this.diffuseTexturePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.diffuseTexturePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "srmTexture":
-                    this.srmTexturePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.srmTexturePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "normalTexture":
-                    this.normalTexturePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.normalTexturePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "materialMapTexture":
-                    this.materialMapTexturePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.materialMapTexturePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "materialIndex":
                     this._materialIndex = (DataSetUtils.GetStaticArrayPropertyValue<byte>(propertyData));
@@ -132,7 +132,7 @@ namespace FoxKit.Modules.DataSet
                     this._specularColor = FoxUtils.FoxColorRGBAToUnityColor(DataSetUtils.GetStaticArrayPropertyValue<Core.ColorRGBA>(propertyData));
                     break;
                 case "fmtrPath":
-                    this.fmtrPathPath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.fmtrPathPath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "residentFlag":
                     this._residentFlag = (DataSetUtils.GetStaticArrayPropertyValue<bool>(propertyData));

@@ -234,6 +234,12 @@
             foreach (var field in fields)
             {
                 var loadedProperty = properties.FirstOrDefault(property => property.Name == field.Field.Name);
+
+                if (loadedProperty == null)
+                {
+                    Debug.LogError("Property " + field.Field.Name + " is null.");
+                    continue;
+                }
                 Assert.IsNotNull(loadedProperty);
 
                 var propertyInfo = field.PropertyInfo;

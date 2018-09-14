@@ -115,29 +115,29 @@
                 PropertyInfoFactory.MakeStaticArrayProperty(
                     "partsFile",
                     Core.PropertyInfoType.FilePtr,
-                    DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.partsFile))));
+                    FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.partsFile))));
             parentProperties.Add(
                 PropertyInfoFactory.MakeStaticArrayProperty(
                     "motionGraphFile",
                     Core.PropertyInfoType.FilePtr,
-                    DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.motionGraphFile))));
+                    FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.motionGraphFile))));
             parentProperties.Add(
                 PropertyInfoFactory.MakeStaticArrayProperty(
                     "mtarFile",
                     Core.PropertyInfoType.FilePtr,
-                    DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.mtarFile))));
+                    FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.mtarFile))));
             parentProperties.Add(
                 PropertyInfoFactory.MakeStaticArrayProperty(
                     "extensionMtarFile",
                     Core.PropertyInfoType.FilePtr,
-                    DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.extensionMtarFile))));
+                    FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.extensionMtarFile))));
             parentProperties.Add(
                 PropertyInfoFactory.MakeStringMapProperty(
                     "vfxFiles",
                     Core.PropertyInfoType.FilePtr,
                     this.vfxFiles.ToDictionary(
                         entry => entry.Key,
-                        entry => DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(entry.Value)) as object)));
+                        entry => FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(entry.Value)) as object)));
 
             return parentProperties;
         }
@@ -150,16 +150,16 @@
             switch (propertyData.Name)
             {
                 case "partsFile":
-                    this.partsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.partsFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "motionGraphFile":
-                    this.motionGraphFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.motionGraphFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "mtarFile":
-                    this.mtarFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.mtarFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "extensionMtarFile":
-                    this.extensionMtarFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.extensionMtarFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "vfxFiles":
                     var dictionary = DataSetUtils.GetStringMap<string>(propertyData);
@@ -167,7 +167,7 @@
                     this.vfxFilePaths = new OrderedDictionary_string_string();
                     foreach (var entry in dictionary)
                     {
-                        var path = this.extensionMtarFilePath = DataSetUtils.ExtractFilePath(entry.Value);
+                        var path = this.extensionMtarFilePath = FoxUtils.FoxPathToUnityPath(entry.Value);
                         this.vfxFilePaths.Add(entry.Key, path);
                     }
 

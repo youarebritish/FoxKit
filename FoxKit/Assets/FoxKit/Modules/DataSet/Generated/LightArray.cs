@@ -58,7 +58,7 @@ namespace FoxKit.Modules.DataSet
             switch (propertyData.Name)
             {
                 case "lightArrayFile":
-                    this.lightArrayFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.lightArrayFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
             }
         }

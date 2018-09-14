@@ -23,7 +23,7 @@
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.String, 56)]
         private string identifier;
 
         /// <inheritdoc />

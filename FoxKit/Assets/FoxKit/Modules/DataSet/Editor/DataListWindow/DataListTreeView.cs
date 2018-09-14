@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using FoxKit.Core;
     using FoxKit.Modules.DataSet.FoxCore;
 
     using UnityEditor;
@@ -217,12 +218,23 @@
 
         protected override void SelectionChanged(IList<int> selectedIds)
         {
+            // TODO handle multiple selections
+            var selected = (from id in selectedIds select this.idToDataMap[id]).ToArray();
+            if (selected.Length == 0)
+            {
+                FoxKitEditor.InspectedEntity = null;
+            }
+
+            FoxKitEditor.InspectedEntity = selected[0];
+
+            // TODO refresh inspector somehow
+
             // TODO 
             // Lock the inspector to the selected entities so that we can edit the scene proxies without changing the Inspector.
             /*ActiveEditorTracker.sharedTracker.isLocked = false;
             Selection.objects = (from id in selectedIds select this.idToDataMap[id]).ToArray();
             ActiveEditorTracker.sharedTracker.isLocked = true;*/
-            
+
             // Replace any selection of TransformDatas with their scene proxies.
             // TODO: Handle null transforms
             /*Selection.objects =

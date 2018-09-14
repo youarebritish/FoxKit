@@ -22,19 +22,19 @@
         /// <summary>
         /// Name of the GameObject type. This indicates the type of GameObject to spawn.
         /// </summary>
-        [SerializeField, Modules.DataSet.Property("GameObjectLocator")]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.String, 304)]
         private string typeName;
 
         /// <summary>
         /// No idea what this is.
         /// </summary>
-        [SerializeField, Modules.DataSet.Property("GameObjectLocator")]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.UInt32, 304)]
         private uint groupId;
 
         /// <summary>
         /// Type-specific parameters.
         /// </summary>
-        [SerializeField, Modules.DataSet.Property("GameObjectLocator")]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.EntityPtr, 304)]
         private GameObjectLocatorParameter parameters;
 
         /// <inheritdoc />
@@ -70,7 +70,7 @@
                 case "parameters":
                     var address = DataSetUtils.GetStaticArrayPropertyValue<ulong>(propertyData);
                     this.parameters = initFunctions.GetEntityFromAddress(address) as GameObjectLocatorParameter;
-                    Assert.IsNotNull(this.parameters, $"Parameters for {this.name} was null.");
+                    Assert.IsNotNull(this.parameters, $"Parameters for {this.Name} was null.");
 
                     //this.parameters.Owner = this;
                     break;

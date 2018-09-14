@@ -52,7 +52,7 @@ namespace FoxKit.Modules.DataSet
         public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
         {
             var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("filePath", Core.PropertyInfoType.Path, DataSetUtils.ExtractFilePath(this._filePath)));
+            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("filePath", Core.PropertyInfoType.Path, FoxUtils.FoxPathToUnityPath(this._filePath)));
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("lpshFile", Core.PropertyInfoType.FilePtr, DataSetUtils.AssetToFoxPath(this._lpshFile)));
             return parentProperties;
         }
@@ -65,10 +65,10 @@ namespace FoxKit.Modules.DataSet
             switch (propertyData.Name)
             {
                 case "filePath":
-                    this.filePathPath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.filePathPath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "lpshFile":
-                    this.lpshFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.lpshFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
             }
         }

@@ -69,7 +69,7 @@ namespace FoxKit.Modules.DataSet
                     this._funcName = (DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "scriptFile":
-                    this.scriptFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.scriptFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "didAddParam":
                     this._didAddParam = (DataSetUtils.GetStaticArrayPropertyValue<bool>(propertyData));

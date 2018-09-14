@@ -58,7 +58,7 @@ namespace FoxKit.Modules.DataSet
             switch (propertyData.Name)
             {
                 case "pathFixedPackFile":
-                    this.pathFixedPackFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.pathFixedPackFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
             }
         }

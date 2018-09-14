@@ -81,12 +81,12 @@
             parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty(
                 "partsFile",
                 Core.PropertyInfoType.FilePtr,
-                DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.partsFile))));
+                FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.partsFile))));
             parentProperties.Add(
                 PropertyInfoFactory.MakeStaticArrayProperty(
                     "locaterFile",
                     Core.PropertyInfoType.FilePtr,
-                    DataSetUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.locatorFile))));
+                    FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.locatorFile))));
             parentProperties.Add(
                 PropertyInfoFactory.MakeStaticArrayProperty(
                     "parameters",
@@ -107,10 +107,10 @@
             switch (propertyData.Name)
             {
                 case "partsFile":
-                    this.partsFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.partsFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "locaterFile":
-                    this.locatorFilePath = DataSetUtils.ExtractFilePath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
+                    this.locatorFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
                     break;
                 case "parameters":
                     var address = DataSetUtils.GetStaticArrayPropertyValue<ulong>(propertyData);

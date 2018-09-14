@@ -24,7 +24,10 @@
 
         [SerializeField, PropertyInfo(Core.PropertyInfoType.EntityHandle, 80, readable: PropertyExport.Never, writable: PropertyExport.Never)]
         private DataSet dataSet;
-        
+
+        /*[SerializeField, PropertyInfo(Core.PropertyInfoType.String, 0, writable: PropertyExport.Never)]
+        private string referencePath = "blah blah blah";*/
+
         /// <inheritdoc />
         public string Name
         {
