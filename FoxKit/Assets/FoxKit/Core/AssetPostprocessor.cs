@@ -31,7 +31,7 @@ namespace FoxKit.Core
 
                 if (loadedAsset is DataSetAsset)
                 {
-                    dataSets.Add(Path.GetFileNameWithoutExtension(asset), (loadedAsset as DataSetAsset).DataSet);
+                    dataSets.Add(Path.GetFileNameWithoutExtension(asset), (loadedAsset as DataSetAsset).GetDataSet());
                 }
             }
 
@@ -43,7 +43,7 @@ namespace FoxKit.Core
                     continue;
                 }
 
-                foreach (var entity in dataSetAsset.DataSet.GetDataList().Values)
+                foreach (var entity in dataSetAsset.GetDataSet().GetDataList().Values)
                 {
                     entity.OnAssetsImported(getDataSet, tryGetAsset);
                 }

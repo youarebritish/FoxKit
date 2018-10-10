@@ -24,7 +24,7 @@
         /// <summary>
         /// The data list.
         /// </summary>
-        [OdinSerialize, NonSerialized]
+        [OdinSerialize]
         public Dictionary<string, Data> dataList = new Dictionary<string, Data>();
         
         /// <inheritdoc />

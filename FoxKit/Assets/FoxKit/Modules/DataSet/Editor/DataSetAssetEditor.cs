@@ -17,23 +17,50 @@
     using UnityEditor;
 
     using UnityEngine;
+    using UnityEngine.Assertions;
 
     [CustomEditor(typeof(DataSetAsset))]
     public class DataSetAssetEditor : Editor
     {
         public override void OnInspectorGUI()
         {
-            this.serializedObject.Update();
+            var asset = this.target as DataSetAsset;
 
-            var entity = FoxKitEditor.InspectedEntity ?? ((DataSetAsset)this.serializedObject.targetObject).DataSet;
+            if (asset.IsReadOnly)
+            {
+                GUI.enabled = true;
+                EditorGUILayout.HelpBox("Unity marks imported assets as read-only. To make changes to this asset, create an editable copy.", MessageType.Warning);
+                if (GUILayout.Button("Create Editable Copy", GUILayout.Width(200)))
+                {
+                    var duplicate = Instantiate(this.target) as DataSetAsset;
+                    duplicate.IsReadOnly = false;
+
+                    var path = EditorUtility.SaveFilePanelInProject(
+                        "Create editable copy",
+                        this.target.name,
+                        "asset",
+                        "Create editable copy");
+
+                    if (!string.IsNullOrEmpty(path))
+                    {
+                        AssetDatabase.CreateAsset(duplicate, path);
+                    }
+                }
+
+                EditorGUILayout.Separator();
+                GUI.enabled = false;
+            }
+            
+            var entity = FoxKitEditor.InspectedEntity ?? ((DataSetAsset)this.serializedObject.targetObject).GetDataSet();
+            
             var fields = GetPropertyFields(entity);
-
-            DrawStaticProperties(fields, entity);
-
-            this.serializedObject.ApplyModifiedProperties();
+            DrawStaticProperties(fields, entity, asset.IsReadOnly);
+            this.Repaint();
+            
+            EditorUtility.SetDirty(this.target);
         }
 
-        private static void DrawStaticProperties(IEnumerable<Tuple<FieldInfo, PropertyInfoAttribute>> fields, Entity entity)
+        private static void DrawStaticProperties(IEnumerable<Tuple<FieldInfo, PropertyInfoAttribute>> fields, Entity entity, bool isReadOnly)
         {
             foreach (var field in fields)
             {
@@ -42,7 +69,7 @@
                     continue;
                 }
 
-                DrawStaticProperty(entity, field);
+                DrawStaticProperty(entity, field, isReadOnly);
 
                 // Draw nested fields.
                 // TODO: Handle array conditions.
@@ -57,13 +84,13 @@
                     continue;
                 }
 
-                DrawStaticProperties(GetPropertyFields(pointedEntity), pointedEntity);
+                DrawStaticProperties(GetPropertyFields(pointedEntity), pointedEntity, isReadOnly);
             }
         }
 
-        private static void DrawStaticProperty(Entity entity, Tuple<FieldInfo, PropertyInfoAttribute> field)
+        private static void DrawStaticProperty(Entity entity, Tuple<FieldInfo, PropertyInfoAttribute> field, bool isReadOnly)
         {
-            GUI.enabled = field.Item2.Writable != PropertyExport.Never;
+            GUI.enabled = !isReadOnly && field.Item2.Writable != PropertyExport.Never;
 
             var currentValue = field.Item1.GetValue(entity);
             
@@ -86,7 +113,14 @@
                         newValue = FoxKitUiUtils.UShortField(field.Item1.Name, (ushort)currentValue);
                         break;
                     case Core.PropertyInfoType.Int32:
-                        newValue = EditorGUILayout.IntField(field.Item1.Name, (int)currentValue);
+                        if (field.Item2.Enum != null)
+                        {
+                            newValue = EditorGUILayout.EnumPopup(field.Item1.Name, (Enum)currentValue);
+                        }
+                        else
+                        {
+                            newValue = EditorGUILayout.IntField(field.Item1.Name, (int)currentValue);
+                        }
                         break;
                     case Core.PropertyInfoType.UInt32:
                         newValue = FoxKitUiUtils.UIntField(field.Item1.Name, (uint)currentValue);
@@ -110,12 +144,10 @@
                         newValue = EditorGUILayout.TextField(field.Item1.Name, field.Item1.GetValue(entity) as string);
                         break;
                     case Core.PropertyInfoType.Path:
-                        // TODO
-                        newValue = EditorGUILayout.TextField(field.Item1.Name, field.Item1.GetValue(entity) as string);
+                        newValue = EditorGUILayout.ObjectField(field.Item1.Name, field.Item1.GetValue(entity) as UnityEngine.Object, typeof(UnityEngine.Object), false);
                         break;
                     case Core.PropertyInfoType.EntityPtr:
                         newValue = FoxKitUiUtils.EntityPtrField(field.Item1.Name, currentValue, field.Item2.PtrType);
-                        // TODO: Show nested fields
                         break;
                     case Core.PropertyInfoType.Vector3:
                         newValue = EditorGUILayout.Vector3Field(field.Item1.Name, (UnityEngine.Vector3)field.Item1.GetValue(entity));
@@ -127,7 +159,7 @@
                         newValue = FoxKitUiUtils.QuaternionField(field.Item1.Name, (UnityEngine.Quaternion)currentValue);
                         break;
                     case Core.PropertyInfoType.Matrix3:
-                        // TODO? There are no properties of this type, I think.
+                        Assert.IsTrue(false, "There shouldn't be any Matrix3 properties. Report this.");
                         break;
                     case Core.PropertyInfoType.Matrix4:
                         // TODO

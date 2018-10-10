@@ -1,12 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using FoxKit.Modules.DataSet.FoxCore;
 
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 
+using UnityEngine;
+
+[CreateAssetMenu(menuName = "Create DataSet Asset")]
 public class DataSetAsset : SerializedScriptableObject
 {
     [OdinSerialize, NonSerialized]
-    public DataSet DataSet = new DataSet();
+    private DataSet DataSet = new DataSet();
+    
+    public bool IsReadOnly;
+
+    public DataSet GetDataSet()
+    {
+        return this.DataSet;
+    }
+
+    public void SetDataSet(DataSet dataSet)
+    {
+        this.DataSet = dataSet;
+    }
 }

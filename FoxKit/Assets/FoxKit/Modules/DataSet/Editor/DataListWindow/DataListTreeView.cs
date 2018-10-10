@@ -170,14 +170,20 @@
             foreach (var dataSetPath in this.openDataSetPaths)
             {
                 var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(dataSetPath);
-                var dataSetNode = new TreeViewItem { id = index, displayName = dataSet.name, icon = dataSet.DataSet.Icon };
+                if (dataSet == null)
+                {
+                    Debug.LogWarning($"DataSet {dataSetPath} could not be loaded or does not exist.");
+                    continue;
+                }
 
-                this.idToDataMap.Add(dataSet.DataSet);
+                var dataSetNode = new TreeViewItem { id = index, displayName = dataSet.name, icon = dataSet.GetDataSet().Icon };
+
+                this.idToDataMap.Add(dataSet.GetDataSet());
                 this.dataSetTreeIds.Add(index);
                 root.AddChild(dataSetNode);
                 index++;
                 
-                index = dataSet.DataSet.GetDataList().Values
+                index = dataSet.GetDataSet().GetDataList().Values
                     .Aggregate(index, (current, data) => this.AddData(data, dataSetNode, current));
             }
 

@@ -22,9 +22,12 @@
         [SerializeField, PropertyInfo(Core.PropertyInfoType.String, 72)]
         private string name;
 
-        [SerializeField, PropertyInfo(Core.PropertyInfoType.EntityHandle, 80, readable: PropertyExport.Never, writable: PropertyExport.Never)]
-        private DataSet dataSet;
+        public string Test2 = "test";
 
+        // Temporarily commented out. Can't have recursive references.
+        //[SerializeField, PropertyInfo(Core.PropertyInfoType.EntityHandle, 80, readable: PropertyExport.Never, writable: PropertyExport.Never)]
+        //private DataSet dataSet;
+        
         /*[SerializeField, PropertyInfo(Core.PropertyInfoType.String, 0, writable: PropertyExport.Never)]
         private string referencePath = "blah blah blah";*/
 
@@ -63,7 +66,9 @@
 
         public DataSet GetDataSet()
         {
-            return this.dataSet;
+            // TODO Fix
+            return null;
+            //return this.dataSet;
         }
 
         public override string ToString()

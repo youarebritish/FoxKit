@@ -202,7 +202,7 @@
         /// </param>
         private void OpenDataSet(string dataSetPath)
         {
-            var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(dataSetPath).DataSet;
+            var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(dataSetPath).GetDataSet();
 
             this.activeDataSet = dataSet;
             this.activeDataSetPath = dataSetPath;
@@ -238,9 +238,9 @@
 
             var path = AssetDatabase.GetAssetPath(dataSet);
 
-            this.activeDataSet = dataSet.DataSet;
+            this.activeDataSet = dataSet.GetDataSet();
             this.activeDataSetPath = path;
-            this.treeView.SetActiveDataSet(dataSet.DataSet);
+            this.treeView.SetActiveDataSet(dataSet.GetDataSet());
         }
 
         private void RemoveDataSet(object userData)

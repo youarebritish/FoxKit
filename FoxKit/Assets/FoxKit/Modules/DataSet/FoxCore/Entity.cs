@@ -115,7 +115,7 @@
 
                 var convertedValue = conversionFunc(rawValue);
 
-                if (property.Type == Core.PropertyInfoType.FilePtr)
+                if (property.Type == Core.PropertyInfoType.FilePtr || property.Type == Core.PropertyInfoType.Path)
                 {
                     this.desiredFiles.Add(convertedValue as string, new FilePtrEntry(property.Name, null));
                 }
@@ -134,7 +134,7 @@
                 var convertedValues = (from rawValue in rawValues
                                       select conversionFunc(rawValue)).ToList();
 
-                if (property.Type != Core.PropertyInfoType.FilePtr)
+                if (property.Type != Core.PropertyInfoType.FilePtr || property.Type == Core.PropertyInfoType.Path)
                 {
                     return convertedValues;
                 }
@@ -158,7 +158,7 @@
                 var convertedValues = (from rawValue in rawValues
                                        select conversionFunc(rawValue)).ToList();
 
-                if (property.Type != Core.PropertyInfoType.FilePtr)
+                if (property.Type != Core.PropertyInfoType.FilePtr || property.Type == Core.PropertyInfoType.Path)
                 {
                     return convertedValues;
                 }
@@ -182,7 +182,7 @@
                 var convertedValues = (from rawValue in rawValues
                                        select conversionFunc(rawValue)).ToList();
 
-                if (property.Type != Core.PropertyInfoType.FilePtr)
+                if (property.Type != Core.PropertyInfoType.FilePtr || property.Type == Core.PropertyInfoType.Path)
                 {
                     return convertedValues;
                 }
@@ -205,7 +205,7 @@
 
                 var convertedValues = rawValues.ToDictionary(item => item.Key, item => conversionFunc(item.Value));
 
-                if (property.Type != Core.PropertyInfoType.FilePtr)
+                if (property.Type != Core.PropertyInfoType.FilePtr || property.Type == Core.PropertyInfoType.Path)
                 {
                     return convertedValues;
                 }
@@ -416,8 +416,8 @@
                         break;
                 }
 
-                // FilePtr properties are unique in that we don't actually get the value at this stage.
-                if (field.PropertyInfo.Type != Core.PropertyInfoType.FilePtr)
+                // FilePtr and Path properties are unique in that we don't actually get the value at this stage.
+                if (field.PropertyInfo.Type != Core.PropertyInfoType.FilePtr && field.PropertyInfo.Type != Core.PropertyInfoType.Path)
                 {
                     field.Field.SetValue(this, value);
                 }
@@ -601,7 +601,7 @@
                 case Core.PropertyInfoType.String:
                     return value;
                 case Core.PropertyInfoType.Path:
-                    return FoxUtils.UnityPathToFoxPath(value as string);
+                    return FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(value as UnityEngine.Object));
                 case Core.PropertyInfoType.EntityPtr:
                     return getEntityAddress(value as Entity);
                 case Core.PropertyInfoType.Vector3:
