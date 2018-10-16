@@ -3,7 +3,10 @@
 namespace FoxKit.Utils
 {
     using System;
-    
+
+    using FoxKit.Core;
+    using FoxKit.Modules.DataSet.FoxCore;
+
     using UnityEditor;
 
     /// <summary>
@@ -38,9 +41,23 @@ namespace FoxKit.Utils
             return (sbyte)newValue;
         }
 
+        public static sbyte SbyteField(Rect position, sbyte value)
+        {
+            var newValue = EditorGUI.IntField(position, value);
+            newValue = MathUtils.Clamp(newValue, sbyte.MinValue, sbyte.MaxValue);
+            return (sbyte)newValue;
+        }
+
         public static byte ByteField(string label, byte value)
         {
             var newValue = EditorGUILayout.IntField(label, value);
+            newValue = MathUtils.Clamp(newValue, byte.MinValue, byte.MaxValue);
+            return (byte)newValue;
+        }
+
+        public static byte ByteField(Rect position, byte value)
+        {
+            var newValue = EditorGUI.IntField(position, value);
             newValue = MathUtils.Clamp(newValue, byte.MinValue, byte.MaxValue);
             return (byte)newValue;
         }
@@ -52,9 +69,23 @@ namespace FoxKit.Utils
             return (short)newValue;
         }
 
+        public static short ShortField(Rect position, short value)
+        {
+            var newValue = EditorGUI.IntField(position, value);
+            newValue = MathUtils.Clamp(newValue, short.MinValue, short.MaxValue);
+            return (short)newValue;
+        }
+
         public static ushort UShortField(string label, ushort value)
         {
             var newValue = EditorGUILayout.IntField(label, value);
+            newValue = MathUtils.Clamp(newValue, ushort.MinValue, ushort.MaxValue);
+            return (ushort)newValue;
+        }
+
+        public static ushort UShortField(Rect position, ushort value)
+        {
+            var newValue = EditorGUI.IntField(position, value);
             newValue = MathUtils.Clamp(newValue, ushort.MinValue, ushort.MaxValue);
             return (ushort)newValue;
         }
@@ -66,9 +97,23 @@ namespace FoxKit.Utils
             return Convert.ToUInt32(newValue);
         }
 
+        public static uint UIntField(Rect position, uint value)
+        {
+            var newValue = EditorGUI.LongField(position, value);
+            newValue = MathUtils.Clamp(newValue, uint.MinValue, uint.MaxValue);
+            return Convert.ToUInt32(newValue);
+        }
+
         public static ulong ULongField(string label, ulong value)
         {
             var newValue = EditorGUILayout.TextField(label, value.ToString());
+            ulong parseResult;
+            return ulong.TryParse(newValue, out parseResult) ? parseResult : value;
+        }
+
+        public static ulong ULongField(Rect position, ulong value)
+        {
+            var newValue = EditorGUI.TextField(position, value.ToString());
             ulong parseResult;
             return ulong.TryParse(newValue, out parseResult) ? parseResult : value;
         }
@@ -77,6 +122,13 @@ namespace FoxKit.Utils
         {
             var euler = value.eulerAngles;
             var rawValue = EditorGUILayout.Vector3Field(label, euler);
+            return Quaternion.Euler(rawValue);
+        }
+
+        public static Quaternion QuaternionField(Rect position, Quaternion value)
+        {
+            var euler = value.eulerAngles;
+            var rawValue = EditorGUI.Vector3Field(position, string.Empty, euler);
             return Quaternion.Euler(rawValue);
         }
 
@@ -104,6 +156,31 @@ namespace FoxKit.Utils
             return value;
         }
 
+
+        public static object EntityPtrField(Rect position, object value, Type type, bool allowSceneObjects = false)
+        {
+            // TODO Icon
+            EditorGUILayout.BeginHorizontal();
+
+            if (value == null)
+            {
+                if (GUILayout.Button($"Create {type.Name}", EditorStyles.miniButton))
+                {
+                }
+            }
+            else
+            {
+                if (GUI.Button(position, $"Edit {value.GetType().Name}", EditorStyles.miniButton))
+                {
+                    FoxKitEditor.InspectedEntity = value as Entity;
+                }
+            }
+
+            EditorGUILayout.EndHorizontal();
+
+            return value;
+        }
+
         public static object EntityHandleField(string label, object value, Type type, bool allowSceneObjects = false)
         {
             // TODO Icon
@@ -114,6 +191,21 @@ namespace FoxKit.Utils
 
             var text = value?.GetType().Name ?? $"Null ({type.Name})";
             EditorGUILayout.LabelField(new GUIContent(text), EditorStyles.objectField);
+
+            EditorGUILayout.EndHorizontal();
+
+            return value;
+        }
+
+        public static object EntityHandleField(Rect position, object value, Type type, bool allowSceneObjects = false)
+        {
+            // TODO Icon
+            // TODO Picker
+            // TODO Select on click
+            EditorGUILayout.BeginHorizontal();
+
+            var text = value?.GetType().Name ?? $"Null ({type.Name})";
+            EditorGUI.LabelField(position, new GUIContent(text), EditorStyles.objectField);
 
             EditorGUILayout.EndHorizontal();
 

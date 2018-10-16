@@ -117,7 +117,12 @@
 
                 if (property.Type == Core.PropertyInfoType.FilePtr || property.Type == Core.PropertyInfoType.Path)
                 {
-                    this.desiredFiles.Add(convertedValue as string, new FilePtrEntry(property.Name, null));
+                    // FIXME TODO
+                    // This hack is due to https://github.com/youarebritish/FoxKit/projects/2#card-13933891
+                    if (!this.desiredFiles.ContainsKey(convertedValue as string))
+                    {
+                        this.desiredFiles.Add(convertedValue as string, new FilePtrEntry(property.Name, null));
+                    }
                 }
 
                 return convertedValue;
@@ -248,14 +253,14 @@
                 switch (propertyInfo.Type)
                 {
                     case Core.PropertyInfoType.Int8:
-                        value = ExtractPropertyValue<byte, byte>(
+                        value = ExtractPropertyValue<sbyte, sbyte>(
                             loadedProperty,
                             null,
                             propertyInfo.Container,
                             propertyInfo.ArraySize);
                         break;
                     case Core.PropertyInfoType.UInt8:
-                        value = ExtractPropertyValue<sbyte, sbyte>(
+                        value = ExtractPropertyValue<byte, byte>(
                             loadedProperty,
                             null,
                             propertyInfo.Container,
