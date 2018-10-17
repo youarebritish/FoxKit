@@ -244,21 +244,19 @@
 
         private void RemoveDataSet(object userData)
         {
-            // TODO
-            /*
             var dataSetPath = userData as string;
             if (dataSetPath == null)
             {
                 return;
             }
             
-           // TODO dataSet.UnloadAllEntities();
+            // TODO dataSet.UnloadAllEntities();
 
             if (this.activeDataSetPath == dataSetPath)
             {
                 if (this.openDataSetPaths.Count > 1)
                 {
-                    this.activeDataSet = AssetDatabase.LoadAssetAtPath<FoxCore.DataSet>(this.openDataSetPaths[0]);
+                    this.activeDataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(this.openDataSetPaths[0]).GetDataSet();
                     this.treeView.SetActiveDataSet(this.activeDataSet);
                 }
                 else
@@ -269,7 +267,7 @@
             
             this.openDataSetPaths.Remove(dataSetPath);
             this.treeView.RemoveDataSet();
-            this.treeView.Reload();*/
+            this.treeView.Reload();
         }
 
         /// <summary>

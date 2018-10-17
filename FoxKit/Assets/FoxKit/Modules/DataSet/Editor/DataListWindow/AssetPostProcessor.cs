@@ -6,7 +6,6 @@
 
     public class AssetPostprocessor : UnityEditor.AssetPostprocessor
     {
-
         private static void OnPostprocessAllAssets(
             string[] importedAssets,
             string[] deletedAssets,

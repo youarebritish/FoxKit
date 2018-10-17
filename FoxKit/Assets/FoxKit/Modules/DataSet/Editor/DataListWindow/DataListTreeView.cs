@@ -269,7 +269,8 @@
             }
 
             var dataSet = this.idToDataMap[id] as DataSet;
-            DataListWindow.GetInstance().MakeShowItemContextMenuDelegate()(dataSet);
+            var dataSetPath = AssetDatabase.GetAssetPath(this.idToDataSetMap[id]);
+            DataListWindow.GetInstance().MakeShowItemContextMenuDelegate()(dataSetPath, dataSet);
         }
 
         public void RemoveDataSet()
