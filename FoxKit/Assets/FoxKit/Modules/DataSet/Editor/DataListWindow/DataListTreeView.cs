@@ -41,6 +41,12 @@
         /// </summary>
         [SerializeField]
         private List<int> dataSetTreeIds = new List<int>();
+
+        /// <summary>
+        /// For a given tree item ID, what DataSetAsset does it belong to?
+        /// </summary>
+        [SerializeField]
+        private List<DataSetAsset> idToDataSetMap = new List<DataSetAsset>();
         
         private DataSet activeDataSet;
 
@@ -160,6 +166,7 @@
 
             // ID 0 is the root, not an actual Data reference.
             this.idToDataMap.Add(null);
+            this.idToDataSetMap.Add(null);
 
             if (this.openDataSetPaths.Count == 0)
             {
@@ -179,12 +186,13 @@
                 var dataSetNode = new TreeViewItem { id = index, displayName = dataSet.name, icon = dataSet.GetDataSet().Icon };
 
                 this.idToDataMap.Add(dataSet.GetDataSet());
+                this.idToDataSetMap.Add(dataSet);
                 this.dataSetTreeIds.Add(index);
                 root.AddChild(dataSetNode);
                 index++;
                 
                 index = dataSet.GetDataSet().GetDataList().Values
-                    .Aggregate(index, (current, data) => this.AddData(data, dataSetNode, current));
+                    .Aggregate(index, (current, data) => this.AddData(dataSet, data, dataSetNode, current));
             }
 
             TreeView.SetupDepthsFromParentsAndChildren(root);
@@ -192,7 +200,7 @@
             return root;
         }
 
-        private int AddData(Data data, TreeViewItem parent, int id)
+        private int AddData(DataSetAsset asset, Data data, TreeViewItem parent, int id)
         {
             // If we're adding a TransformData entity that has a valid parent, only add it to the tree under its parent.
             // TODO: Consider moving this out and checking for this case before calling AddData().
@@ -210,6 +218,7 @@
             var node = new TreeViewItem { id = id, displayName = data.Name, icon = data.Icon };
 
             this.idToDataMap.Add(data);
+            this.idToDataSetMap.Add(asset);
             parent.AddChild(node);
             id++;
             
@@ -219,7 +228,7 @@
             }
 
             return transformData.GetChildren()
-                .Aggregate(id, (current, child) => this.AddData(child, node, current));
+                .Aggregate(id, (current, child) => this.AddData(asset, child, node, current));
         }
 
         protected override void SelectionChanged(IList<int> selectedIds)
@@ -232,6 +241,7 @@
             }
 
             FoxKitEditor.InspectedEntity = selected[0];
+            Selection.objects = (from id in selectedIds select this.idToDataSetMap[id]).ToArray();
 
             // TODO refresh inspector somehow
 
