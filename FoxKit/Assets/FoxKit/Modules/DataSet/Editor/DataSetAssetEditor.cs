@@ -499,7 +499,11 @@
                         false);
                     break;
                 case Core.PropertyInfoType.EntityPtr:
-                    newValue = FoxKitUiUtils.EntityPtrField(field.Item1.Name, currentValue, field.Item2.PtrType);
+                    newValue = FoxKitUiUtils.EntityPtrField(
+                        field.Item1.Name,
+                        currentValue,
+                        field.Item2.PtrType,
+                        () => AddEntityWindow.Create(field.Item2.PtrType, true, type => field.Item1.SetValue(entity, Activator.CreateInstance(type))));
                     break;
                 case Core.PropertyInfoType.Vector3:
                     newValue = EditorGUILayout.Vector3Field(
@@ -571,7 +575,29 @@
             public override void DrawItem(Rect position, int index)
             {
                 var item = this[index];
-                FoxKitUiUtils.EntityPtrField(position, item, this.ptrType, () => AddEntityWindow.Create(this.ptrType, true, type => this.CreateNewEntityAtIndex(type, index)));
+
+                var editButtonPosition = position;
+                editButtonPosition.width = position.width * 0.8f;
+
+                FoxKitUiUtils.EntityPtrField(editButtonPosition, item, this.ptrType, () => AddEntityWindow.Create(this.ptrType, true, type => this.CreateNewEntityAtIndex(type, index)));
+
+                var wasGuiEnabled = GUI.enabled;
+
+                if (item == null)
+                {
+                    GUI.enabled = false;
+                }
+
+                var deleteButtonPosition = position;
+                deleteButtonPosition.x += editButtonPosition.width;
+                deleteButtonPosition.width = position.width * 0.2f;
+                if (GUI.Button(deleteButtonPosition, new GUIContent("Delete"), EditorStyles.miniButton))
+                {
+                    this.list[index] = null;
+                }
+
+                GUI.enabled = wasGuiEnabled;
+
                 base.DrawItem(position, index);
             }
 

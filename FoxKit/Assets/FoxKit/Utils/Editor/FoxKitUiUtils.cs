@@ -9,6 +9,8 @@ namespace FoxKit.Utils
 
     using UnityEditor;
 
+    using UnityEngine.Assertions;
+
     /// <summary>
     /// Helper functions for FoxKit UI.
     /// </summary>
@@ -132,8 +134,11 @@ namespace FoxKit.Utils
             return Quaternion.Euler(rawValue);
         }
 
-        public static object EntityPtrField(string label, object value, Type type, bool allowSceneObjects = false)
+        public static object EntityPtrField(string label, object value, Type type, Action createNewEntityCallback, bool allowSceneObjects = false)
         {
+            Assert.IsNotNull(type);
+            Assert.IsNotNull(createNewEntityCallback);
+
             // TODO Icon
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel(new GUIContent(label));
@@ -142,13 +147,20 @@ namespace FoxKit.Utils
             {
                 if (GUILayout.Button($"Create {type.Name}", EditorStyles.miniButton))
                 {
+                    createNewEntityCallback();
                 }
             }
             else
             {
+                var isGuiEnabled = GUI.enabled;
                 GUI.enabled = false;
                 EditorGUILayout.LabelField(new GUIContent(value.GetType().Name), EditorStyles.objectField);
-                GUI.enabled = true;
+                GUI.enabled = isGuiEnabled;
+
+                if (GUILayout.Button("Delete", EditorStyles.miniButton))
+                {
+                    return null;
+                }
             }
             
             EditorGUILayout.EndHorizontal();
@@ -158,6 +170,9 @@ namespace FoxKit.Utils
         
         public static object EntityPtrField(Rect position, object value, Type type, Action createNewEntityCallback, bool allowSceneObjects = false)
         {
+            Assert.IsNotNull(type);
+            Assert.IsNotNull(createNewEntityCallback);
+
             if (value == null)
             {
                 if (GUI.Button(position, "Null", EditorStyles.miniButton))
