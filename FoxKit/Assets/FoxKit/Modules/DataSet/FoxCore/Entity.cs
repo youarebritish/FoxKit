@@ -61,7 +61,7 @@
         /// Files that this Entity is looking for, along with the name of the field that wants the file.
         /// </summary>
         [OdinSerialize]
-        private Dictionary<string, FilePtrEntry> desiredFiles = new Dictionary<string, FilePtrEntry>();
+        private Dictionary<FilePtrEntry, string> desiredFiles = new Dictionary<FilePtrEntry, string>();
 
         /// <summary>
         /// The icon to use in the Data List window.
@@ -117,12 +117,7 @@
 
                 if (property.Type == Core.PropertyInfoType.FilePtr || property.Type == Core.PropertyInfoType.Path)
                 {
-                    // FIXME TODO
-                    // This hack is due to https://github.com/youarebritish/FoxKit/projects/2#card-13933891
-                    if (!this.desiredFiles.ContainsKey(convertedValue as string))
-                    {
-                        this.desiredFiles.Add(convertedValue as string, new FilePtrEntry(property.Name, null));
-                    }
+                    this.desiredFiles.Add(new FilePtrEntry(property.Name, null), convertedValue as string);
                 }
 
                 return convertedValue;
@@ -146,7 +141,7 @@
 
                 for (var i = 0; i < convertedValues.Count; i++)
                 {
-                    this.desiredFiles.Add(convertedValues[i] as string, new FilePtrEntry(property.Name, i));
+                    this.desiredFiles.Add(new FilePtrEntry(property.Name, i), convertedValues[i] as string);
                 }
 
                 return convertedValues;
@@ -170,7 +165,7 @@
 
                 for (var i = 0; i < convertedValues.Count; i++)
                 {
-                    this.desiredFiles.Add(convertedValues[i] as string, new FilePtrEntry(property.Name, i));
+                    this.desiredFiles.Add(new FilePtrEntry(property.Name, i), convertedValues[i] as string);
                 }
 
                 return convertedValues;
@@ -194,7 +189,7 @@
 
                 for (var i = 0; i < convertedValues.Count; i++)
                 {
-                    this.desiredFiles.Add(convertedValues[i] as string, new FilePtrEntry(property.Name, i));
+                    this.desiredFiles.Add(new FilePtrEntry(property.Name, i), convertedValues[i] as string);
                 }
 
                 return convertedValues;
@@ -217,7 +212,7 @@
 
                 foreach (var kvp in convertedValues)
                 {
-                    this.desiredFiles.Add(kvp.Value as string, new FilePtrEntry(property.Name, kvp.Key));
+                    this.desiredFiles.Add(new FilePtrEntry(property.Name, kvp.Key), kvp.Value as string);
                 }
             }
 
@@ -443,14 +438,11 @@
             AssetPostprocessor.GetDataSetDelegate getDataSet,
             AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
-            //this.OnAssetsImported(tryGetAsset);
-
-            // TODO: This will break if multiple properties want the same file. Consider swapping the keys and the values.
-            var entriesToRemove = new HashSet<string>();
+            var entriesToRemove = new HashSet<FilePtrEntry>();
             foreach (var entry in this.desiredFiles)
             {
                 Object file;
-                tryGetAsset(entry.Key, out file);
+                tryGetAsset(entry.Value, out file);
 
                 if (file == null)
                 {
@@ -458,7 +450,7 @@
                 }
                 
                 var field = (from type in ReflectionUtils.GetParentTypes(this.GetType(), true)
-                            let candidate = type.GetField(entry.Value.FieldName, BindingFlags.Instance | BindingFlags.NonPublic)
+                            let candidate = type.GetField(entry.Key.FieldName, BindingFlags.Instance | BindingFlags.NonPublic)
                             where candidate != null
                             select candidate).First();
                 Assert.IsNotNull(field);
@@ -474,15 +466,15 @@
                 {
                     var list = field.GetValue(this) as IList;
                     Assert.IsNotNull(list);
-                    list[(int)entry.Value.Index] = file;
+                    list[(int)entry.Key.Index] = file;
                 }
                 else
                 {
                     // StringMap
                     var dictionary = field.GetValue(this) as IDictionary;
                     Assert.IsNotNull(dictionary);
-                    Assert.IsTrue(entry.Value.Index is string);
-                    dictionary[entry.Value.Index] = file;
+                    Assert.IsTrue(entry.Key.Index is string);
+                    dictionary[entry.Key.Index] = file;
                 }
 
                 entriesToRemove.Add(entry.Key);
@@ -530,8 +522,6 @@
             Func<Entity, ulong> getEntityAddress,
             Func<EntityLink, Core.EntityLink> convertEntityLink)
         {
-            //return new List<Core.PropertyInfo>();
-
             var baseTypes = ReflectionUtils.GetParentTypes(this.GetType());
             baseTypes.Add(this.GetType());
 

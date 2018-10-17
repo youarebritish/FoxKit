@@ -409,6 +409,7 @@
                     break;
                 case Core.PropertyInfoType.Matrix4:
                     // TODO
+                    Debug.LogError("Matrix4 properties not currently supported.");
                     break;
                 case Core.PropertyInfoType.Color:
                     newValue = EditorGUI.ColorField(position, (Color)(object)itemValue);
@@ -425,6 +426,7 @@
                     break;
                 case Core.PropertyInfoType.EntityLink:
                     // TODO
+                    Debug.LogError("EntityLink properties not currently supported.");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -523,6 +525,7 @@
                     break;
                 case Core.PropertyInfoType.Matrix4:
                     // TODO
+                    Debug.LogError("Matrix4 properties not currently supported.");
                     break;
                 case Core.PropertyInfoType.Color:
                     newValue = EditorGUILayout.ColorField(field.Item1.Name, (Color)field.Item1.GetValue(entity));
@@ -539,6 +542,7 @@
                     break;
                 case Core.PropertyInfoType.EntityLink:
                     // TODO
+                    Debug.LogError("EntityLink properties not currently supported.");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
