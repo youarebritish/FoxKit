@@ -155,29 +155,24 @@ namespace FoxKit.Utils
 
             return value;
         }
-
-
-        public static object EntityPtrField(Rect position, object value, Type type, bool allowSceneObjects = false)
+        
+        public static object EntityPtrField(Rect position, object value, Type type, Action createNewEntityCallback, bool allowSceneObjects = false)
         {
-            // TODO Icon
-            EditorGUILayout.BeginHorizontal();
-
             if (value == null)
             {
-                if (GUILayout.Button($"Create {type.Name}", EditorStyles.miniButton))
+                if (GUI.Button(position, "Null", EditorStyles.miniButton))
                 {
+                    createNewEntityCallback();
                 }
             }
             else
             {
-                if (GUI.Button(position, $"Edit {value.GetType().Name}", EditorStyles.miniButton))
+                if (GUI.Button(position, $"Edit ({value.GetType().Name})", EditorStyles.miniButton))
                 {
                     FoxKitEditor.InspectedEntity = value as Entity;
                 }
             }
-
-            EditorGUILayout.EndHorizontal();
-
+            
             return value;
         }
 

@@ -34,6 +34,7 @@
         public override void OnImportAsset(AssetImportContext ctx)
         {
             var asset = ScriptableObject.CreateInstance<DataSetAsset>();
+            asset.IsReadOnly = true;
             Assert.IsNotNull(ctx.assetPath);
 
             asset.name = Path.GetFileNameWithoutExtension(ctx.assetPath);
@@ -53,7 +54,7 @@
 
             InitializeEntities(ctx, entities, dataSet, dataSetName, MakeEntityInitializeFunctions(dataSet, entities));
 
-            asset.DataSet = dataSet;
+            asset.SetDataSet(dataSet);
 
             ctx.AddObjectToAsset("DataSet", asset);
             ctx.SetMainObject(asset);

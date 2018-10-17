@@ -5,7 +5,6 @@
     using System.Linq;
 
     using FoxKit.Modules.DataSet.FoxCore;
-    using FoxKit.Utils;
 
     using UnityEditor;
     using UnityEditor.Callbacks;
@@ -289,7 +288,7 @@
 
                 if (this.activeDataSet != null)
                 {
-                    menu.AddItem(new GUIContent("Entity"), false, () => AddEntityWindow.Create());
+                    menu.AddItem(new GUIContent("Entity"), false, () => AddEntityWindow.Create(typeof(Data), false, GetInstance().AddEntity));
                 }
 
                 menu.ShowAsContext();

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
 
     using FoxKit.Modules.DataSet.FoxCore;
@@ -16,6 +15,13 @@
     {
         private string searchString = string.Empty;
         private Vector2 scrollPos;
+
+        private Type baseClass;
+        private Action<Type> onTypeSelected;
+
+        private List<Type> selectableTypes;
+
+        private bool closeAfterSelection;
         
         private class Styles
         {
@@ -29,10 +35,15 @@
             }
         }
 
-        public static SearchableEditorWindow Create()
+        public static SearchableEditorWindow Create(Type baseClass, bool closeAfterSelection, Action<Type> onTypeSelectedCallback)
         {
             var window = GetWindow<AddEntityWindow>();
-            window.titleContent = new GUIContent("New Entity");
+            window.titleContent = new GUIContent($"New {baseClass.Name}");
+            window.onTypeSelected = onTypeSelectedCallback;
+            window.selectableTypes = (from type in DataSetImporter.EntityTypes
+                                     where type == baseClass || type.IsSubclassOf(baseClass)
+                                     select type).ToList();
+            window.closeAfterSelection = closeAfterSelection;
             
             window.minSize = new Vector2(230, 320);
             window.Show();
@@ -62,9 +73,9 @@
 
             this.scrollPos = EditorGUILayout.BeginScrollView(this.scrollPos, GUILayout.Width(this.position.width), GUILayout.Height(this.position.height));
             
-            foreach (var type in DataSetImporter.EntityTypes)
+            foreach (var type in this.selectableTypes)
             {
-                if (type.IsSubclassOf(typeof(DataElement)) || type == typeof(DataSet))
+                if (type == typeof(DataSet))
                 {
                     continue;
                 }
@@ -80,16 +91,20 @@
                 {
                     continue;
                 }
-                if (DataListWindow.GetInstance().ActiveDataSet == null)
+                /*if (DataListWindow.GetInstance().ActiveDataSet == null)
                 {
                     Debug.LogError("Can't create an Entity without an active DataSet.");
                     return;
-                }
+                }*/
 
-                DataListWindow.GetInstance().AddEntity(type);
+                this.onTypeSelected(type);
+
+                if (this.closeAfterSelection)
+                {
+                    this.Close();
+                }
             }
 
-            GUI.enabled = true;
             EditorGUILayout.EndScrollView();
         }
     }

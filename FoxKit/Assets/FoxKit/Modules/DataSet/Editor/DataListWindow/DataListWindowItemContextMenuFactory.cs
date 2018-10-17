@@ -1,7 +1,6 @@
 ﻿namespace FoxKit.Modules.DataSet.Editor.DataListWindow
 {
     using System.Collections.Generic;
-    using System.Linq;
 
     using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Modules.DataSet.FoxCore;
@@ -65,7 +64,7 @@
         private static void OnAddEntity()
         {
             // TODO maybe send the DataSet to add to?
-            AddEntityWindow.Create();
+            AddEntityWindow.Create(typeof(Data), false, DataListWindow.GetInstance().AddEntity);
         }
 
         private static void SaveDataSetAs(object dataSet)

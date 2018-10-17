@@ -7,6 +7,7 @@
     using System.Reflection;
 
     using FoxKit.Core;
+    using FoxKit.Modules.DataSet.Editor.DataListWindow;
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
@@ -31,7 +32,9 @@
             if (asset.IsReadOnly)
             {
                 GUI.enabled = true;
-                EditorGUILayout.HelpBox("Unity marks imported assets as read-only. To make changes to this asset, create an editable copy.", MessageType.Warning);
+                EditorGUILayout.HelpBox(
+                    "Unity marks imported assets as read-only. To make changes to this asset, create an editable copy.",
+                    MessageType.Warning);
                 if (GUILayout.Button("Create Editable Copy", GUILayout.Width(200)))
                 {
                     var duplicate = Instantiate(this.target) as DataSetAsset;
@@ -52,17 +55,21 @@
                 EditorGUILayout.Separator();
                 GUI.enabled = false;
             }
-            
-            var entity = FoxKitEditor.InspectedEntity ?? ((DataSetAsset)this.serializedObject.targetObject).GetDataSet();
-            
+
+            var entity = FoxKitEditor.InspectedEntity
+                         ?? ((DataSetAsset)this.serializedObject.targetObject).GetDataSet();
+
             var fields = GetPropertyFields(entity);
             DrawStaticProperties(fields, entity, asset.IsReadOnly);
             this.Repaint();
-            
+
             EditorUtility.SetDirty(this.target);
         }
 
-        private static void DrawStaticProperties(IEnumerable<Tuple<FieldInfo, PropertyInfoAttribute>> fields, Entity entity, bool isReadOnly)
+        private static void DrawStaticProperties(
+            IEnumerable<Tuple<FieldInfo, PropertyInfoAttribute>> fields,
+            Entity entity,
+            bool isReadOnly)
         {
             foreach (var field in fields)
             {
@@ -90,12 +97,15 @@
             }
         }
 
-        private static void DrawStaticProperty(Entity entity, Tuple<FieldInfo, PropertyInfoAttribute> field, bool isReadOnly)
+        private static void DrawStaticProperty(
+            Entity entity,
+            Tuple<FieldInfo, PropertyInfoAttribute> field,
+            bool isReadOnly)
         {
             GUI.enabled = !isReadOnly && field.Item2.Writable != PropertyExport.Never;
 
             var currentValue = field.Item1.GetValue(entity);
-            
+
             if (field.Item2.Container == Core.ContainerType.StaticArray && field.Item2.ArraySize == 1)
             {
                 var newValue = DrawField(entity, field, currentValue);
@@ -103,21 +113,45 @@
             }
             else if (field.Item2.Container == Core.ContainerType.StaticArray)
             {
-                DrawListField(field.Item1.Name, field.Item2.Type, field.Item2.Enum, field.Item2.PtrType, currentValue as IList, false);
+                DrawListField(
+                    field.Item1.Name,
+                    field.Item2.Type,
+                    field.Item2.Enum,
+                    field.Item2.PtrType,
+                    currentValue as IList,
+                    false);
             }
             else if (field.Item2.Container == Core.ContainerType.DynamicArray)
             {
-                DrawListField(field.Item1.Name, field.Item2.Type, field.Item2.Enum, field.Item2.PtrType, currentValue as IList, true);
+                DrawListField(
+                    field.Item1.Name,
+                    field.Item2.Type,
+                    field.Item2.Enum,
+                    field.Item2.PtrType,
+                    currentValue as IList,
+                    true);
             }
             else if (field.Item2.Container == Core.ContainerType.List)
             {
-                DrawListField(field.Item1.Name, field.Item2.Type, field.Item2.Enum, field.Item2.PtrType, currentValue as IList, true);
+                DrawListField(
+                    field.Item1.Name,
+                    field.Item2.Type,
+                    field.Item2.Enum,
+                    field.Item2.PtrType,
+                    currentValue as IList,
+                    true);
             }
 
             // TODO Handle StringMaps
         }
 
-        private static void DrawListField(string fieldName, Core.PropertyInfoType type, Type @enum, Type ptrType, IList list, bool isResizable)
+        private static void DrawListField(
+            string fieldName,
+            Core.PropertyInfoType type,
+            Type @enum,
+            Type ptrType,
+            IList list,
+            bool isResizable)
         {
             ReorderableListGUI.Title(fieldName);
 
@@ -130,72 +164,157 @@
             switch (type)
             {
                 case Core.PropertyInfoType.Int8:
-                    ReorderableListGUI.ListField(list as IList<sbyte>, (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType), DrawEmpty, flags);
+                    ReorderableListGUI.ListField(
+                        list as IList<sbyte>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType),
+                        DrawEmpty,
+                        flags);
                     break;
                 case Core.PropertyInfoType.UInt8:
-                    ReorderableListGUI.ListField(list as IList<byte>, (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType), DrawEmpty, flags);
+                    ReorderableListGUI.ListField(
+                        list as IList<byte>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType),
+                        DrawEmpty,
+                        flags);
                     break;
                 case Core.PropertyInfoType.Int16:
-                    ReorderableListGUI.ListField(list as IList<short>, (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType), DrawEmpty, flags);
+                    ReorderableListGUI.ListField(
+                        list as IList<short>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType),
+                        DrawEmpty,
+                        flags);
                     break;
                 case Core.PropertyInfoType.UInt16:
-                    ReorderableListGUI.ListField(list as IList<ushort>, (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType), DrawEmpty, flags);
+                    ReorderableListGUI.ListField(
+                        list as IList<ushort>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType),
+                        DrawEmpty,
+                        flags);
                     break;
                 case Core.PropertyInfoType.Int32:
-                    ReorderableListGUI.ListField(list as IList<int>, (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType), DrawEmpty, flags);
+                    ReorderableListGUI.ListField(
+                        list as IList<int>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType),
+                        DrawEmpty,
+                        flags);
                     break;
                 case Core.PropertyInfoType.UInt32:
-                    ReorderableListGUI.ListField(list as IList<uint>, (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType), DrawEmpty, flags);
+                    ReorderableListGUI.ListField(
+                        list as IList<uint>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType),
+                        DrawEmpty,
+                        flags);
                     break;
                 case Core.PropertyInfoType.Int64:
-                    ReorderableListGUI.ListField(list as IList<long>, (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType), DrawEmpty, flags);
+                    ReorderableListGUI.ListField(
+                        list as IList<long>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType),
+                        DrawEmpty,
+                        flags);
                     break;
                 case Core.PropertyInfoType.UInt64:
-                    ReorderableListGUI.ListField(list as IList<ulong>, (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType), DrawEmpty, flags);
+                    ReorderableListGUI.ListField(
+                        list as IList<ulong>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType),
+                        DrawEmpty,
+                        flags);
                     break;
                 case Core.PropertyInfoType.Float:
-                    ReorderableListGUI.ListField(list as IList<float>, (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType), DrawEmpty, flags);
+                    ReorderableListGUI.ListField(
+                        list as IList<float>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType),
+                        DrawEmpty,
+                        flags);
                     break;
                 case Core.PropertyInfoType.Double:
-                    ReorderableListGUI.ListField(list as IList<double>, (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType), DrawEmpty, flags);
+                    ReorderableListGUI.ListField(
+                        list as IList<double>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType),
+                        DrawEmpty,
+                        flags);
                     break;
                 case Core.PropertyInfoType.Bool:
-                    ReorderableListGUI.ListField(list as IList<bool>, (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType), DrawEmpty, flags);
+                    ReorderableListGUI.ListField(
+                        list as IList<bool>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType),
+                        DrawEmpty,
+                        flags);
                     break;
                 case Core.PropertyInfoType.String:
-                    ReorderableListGUI.ListField(list as IList<string>, (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType), DrawEmpty, flags);
+                    ReorderableListGUI.ListField(
+                        list as IList<string>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType),
+                        DrawEmpty,
+                        flags);
                     break;
                 case Core.PropertyInfoType.Path:
-                    ReorderableListGUI.ListField(list as IList<UnityEngine.Object>, (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType), DrawEmpty, flags);
+                    ReorderableListGUI.ListField(
+                        list as IList<UnityEngine.Object>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType),
+                        DrawEmpty,
+                        flags);
                     break;
                 case Core.PropertyInfoType.EntityPtr:
-                    ReorderableListGUI.ListField(list as IList<Entity>, (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType), DrawEmpty, flags);
+                    var adapter = new EntityPtrListAdapter(list as IList<Entity>, ptrType);
+                    ReorderableListGUI.ListField(adapter);
                     break;
                 case Core.PropertyInfoType.Vector3:
-                    ReorderableListGUI.ListField(list as IList<UnityEngine.Vector3>, (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType), DrawEmpty, flags);
+                    ReorderableListGUI.ListField(
+                        list as IList<UnityEngine.Vector3>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType),
+                        DrawEmpty,
+                        flags);
                     break;
                 case Core.PropertyInfoType.Vector4:
-                    ReorderableListGUI.ListField(list as IList<UnityEngine.Vector4>, (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType), DrawEmpty, flags);
+                    ReorderableListGUI.ListField(
+                        list as IList<UnityEngine.Vector4>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType),
+                        DrawEmpty,
+                        flags);
                     break;
                 case Core.PropertyInfoType.Quat:
-                    ReorderableListGUI.ListField(list as IList<UnityEngine.Quaternion>, (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType), DrawEmpty, flags);
+                    ReorderableListGUI.ListField(
+                        list as IList<UnityEngine.Quaternion>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType),
+                        DrawEmpty,
+                        flags);
                     break;
                 case Core.PropertyInfoType.Matrix3:
                     break;
                 case Core.PropertyInfoType.Matrix4:
-                    ReorderableListGUI.ListField(list as IList<UnityEngine.Matrix4x4>, (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType), DrawEmpty, flags);
+                    ReorderableListGUI.ListField(
+                        list as IList<UnityEngine.Matrix4x4>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType),
+                        DrawEmpty,
+                        flags);
                     break;
                 case Core.PropertyInfoType.Color:
-                    ReorderableListGUI.ListField(list as IList<Color>, (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType), DrawEmpty, flags);
+                    ReorderableListGUI.ListField(
+                        list as IList<Color>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType),
+                        DrawEmpty,
+                        flags);
                     break;
                 case Core.PropertyInfoType.FilePtr:
-                    ReorderableListGUI.ListField(list as IList<UnityEngine.Object>, (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType), DrawEmpty, flags);
+                    ReorderableListGUI.ListField(
+                        list as IList<UnityEngine.Object>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType),
+                        DrawEmpty,
+                        flags);
                     break;
                 case Core.PropertyInfoType.EntityHandle:
-                    ReorderableListGUI.ListField(list as IList<Entity>, (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType), DrawEmpty, flags);
+                    ReorderableListGUI.ListField(
+                        list as IList<Entity>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType),
+                        DrawEmpty,
+                        flags);
                     break;
                 case Core.PropertyInfoType.EntityLink:
-                    ReorderableListGUI.ListField(list as IList<EntityLink>, (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType), DrawEmpty, flags);
+                    ReorderableListGUI.ListField(
+                        list as IList<EntityLink>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType),
+                        DrawEmpty,
+                        flags);
                     break;
                 case Core.PropertyInfoType.PropertyInfo:
                     break;
@@ -206,7 +325,13 @@
             }
         }
 
-        private static T DrawListItem<T>(Rect position, T itemValue, Core.PropertyInfoType type, Type @enum, Type ptrType)
+        private static T DrawListItem<T>(
+            Rect position,
+            T itemValue,
+            Core.PropertyInfoType type,
+            Type @enum,
+            Type ptrType,
+            Action<Type> createEntityCallback = null)
         {
             object newValue = null;
 
@@ -264,19 +389,17 @@
                         false);
                     break;
                 case Core.PropertyInfoType.EntityPtr:
-                    newValue = FoxKitUiUtils.EntityPtrField(position, itemValue, ptrType);
+                    newValue = FoxKitUiUtils.EntityPtrField(
+                        position,
+                        itemValue,
+                        ptrType,
+                        () => AddEntityWindow.Create(ptrType, true, createEntityCallback));
                     break;
                 case Core.PropertyInfoType.Vector3:
-                    newValue = EditorGUI.Vector3Field(
-                        position,
-                        string.Empty,
-                        (UnityEngine.Vector3)(object)itemValue);
+                    newValue = EditorGUI.Vector3Field(position, string.Empty, (UnityEngine.Vector3)(object)itemValue);
                     break;
                 case Core.PropertyInfoType.Vector4:
-                    newValue = EditorGUI.Vector4Field(
-                        position,
-                        string.Empty,
-                        (UnityEngine.Vector4)(object)itemValue);
+                    newValue = EditorGUI.Vector4Field(position, string.Empty, (UnityEngine.Vector4)(object)itemValue);
                     break;
                 case Core.PropertyInfoType.Quat:
                     newValue = FoxKitUiUtils.QuaternionField(position, (UnityEngine.Quaternion)(object)itemValue);
@@ -315,7 +438,10 @@
             GUILayout.Label("No items in array.", EditorStyles.miniLabel);
         }
 
-        private static object DrawField(Entity entity, Tuple<FieldInfo, PropertyInfoAttribute> field, object currentValue)
+        private static object DrawField(
+            Entity entity,
+            Tuple<FieldInfo, PropertyInfoAttribute> field,
+            object currentValue)
         {
             object newValue = null;
 
@@ -373,7 +499,7 @@
                         false);
                     break;
                 case Core.PropertyInfoType.EntityPtr:
-                    newValue = currentValue; //FoxKitUiUtils.EntityPtrField(field.Item1.Name, currentValue, field.Item2.PtrType);
+                    newValue = FoxKitUiUtils.EntityPtrField(field.Item1.Name, currentValue, field.Item2.PtrType);
                     break;
                 case Core.PropertyInfoType.Vector3:
                     newValue = EditorGUILayout.Vector3Field(
@@ -420,12 +546,44 @@
         {
             var baseTypes = new HashSet<Type> { entity.GetType() };
             baseTypes.AddRange(ReflectionUtils.GetParentTypes(entity.GetType()));
-            
+
             return from type in baseTypes.Reverse()
                    from field in type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
                    let attribute = field.GetCustomAttribute<PropertyInfoAttribute>()
                    where attribute != null
                    select Tuple.Create(field, attribute);
+        }
+
+        private class EntityPtrListAdapter : GenericListAdaptor<Entity>
+        {
+            private Type ptrType;
+
+            private readonly IList<Entity> list;
+
+            public EntityPtrListAdapter(
+                IList<Entity> list, Type ptrType)
+                : base(list, Draw, 15.0f)
+            {
+                this.list = list;
+                this.ptrType = ptrType;
+            }
+
+            public override void DrawItem(Rect position, int index)
+            {
+                var item = this[index];
+                FoxKitUiUtils.EntityPtrField(position, item, this.ptrType, () => AddEntityWindow.Create(this.ptrType, true, type => this.CreateNewEntityAtIndex(type, index)));
+                base.DrawItem(position, index);
+            }
+
+            private static Entity Draw(Rect position, Entity item)
+            {
+                return item;
+            }
+
+            private void CreateNewEntityAtIndex(Type entityType, int index)
+            {
+                this.list[index] = Activator.CreateInstance(entityType) as Entity;
+            }
         }
     }
 }
