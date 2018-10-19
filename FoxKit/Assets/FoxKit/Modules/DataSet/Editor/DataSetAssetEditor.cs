@@ -596,7 +596,12 @@
             var window = DataListWindow.DataListWindow.GetInstance();
 
             var transformData = owningEntity as TransformData;
-            window.CreateSceneProxyForEntity(transformData.DataSetGuid, transformData.Name);
+            var sceneProxy = window.CreateSceneProxyForEntity(transformData.DataSetGuid, transformData.Name);
+
+            if (transformData.Parent != null)
+            {
+                sceneProxy.transform.SetParent(window.FindSceneProxyForEntity(transformData.DataSetGuid, transformData.Parent.Name).transform);
+            }
 
             if (!wasDataListWindowOpen)
             {
@@ -707,7 +712,12 @@
                 var window = DataListWindow.DataListWindow.GetInstance();
 
                 var transformData = this.owningEntity as TransformData;
-                window.CreateSceneProxyForEntity(transformData.DataSetGuid, transformData.Name);
+                var sceneProxy = window.CreateSceneProxyForEntity(transformData.DataSetGuid, transformData.Name);
+
+                if (transformData.Parent != null)
+                {
+                    sceneProxy.transform.SetParent(window.FindSceneProxyForEntity(transformData.DataSetGuid, transformData.Parent.Name).transform);
+                }
 
                 if (!wasDataListWindowOpen)
                 {

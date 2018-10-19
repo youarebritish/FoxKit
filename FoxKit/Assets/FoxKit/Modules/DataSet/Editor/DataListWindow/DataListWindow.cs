@@ -252,7 +252,7 @@
             return sceneProxy;
         }
 
-        private SceneProxy FindSceneProxyForEntity(string dataSetGuid, string entityName)
+        public SceneProxy FindSceneProxyForEntity(string dataSetGuid, string entityName)
         {
             foreach (var record in this.sceneProxyRecords)
             {
