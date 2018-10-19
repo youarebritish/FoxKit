@@ -6,6 +6,8 @@
     using FoxKit.Core;
     using FoxKit.Modules.DataSet.FoxCore;
 
+    using JetBrains.Annotations;
+
     using UnityEditor;
     using UnityEditor.IMGUI.Controls;
 
@@ -28,7 +30,7 @@
         /// The currently open DataSets.
         /// </summary>
         [SerializeField]
-        private List<string> openDataSetPaths;
+        private List<string> openDataSetGuids;
 
         /// <summary>
         /// The index of this list is the tree item ID of a given Data.
@@ -50,11 +52,11 @@
         
         private DataSet activeDataSet;
 
-        public DataListTreeView(TreeViewState treeViewState, List<string> openDataSetPaths, DataSet activeDataSet)
+        public DataListTreeView(TreeViewState treeViewState, List<string> openDataSetGuids, DataSet activeDataSet)
             : base(treeViewState)
         {
             this.showAlternatingRowBackgrounds = true;
-            this.openDataSetPaths = openDataSetPaths;
+            this.openDataSetGuids = openDataSetGuids;
             this.activeDataSet = activeDataSet;
         }
 
@@ -97,7 +99,7 @@
                 this.Reload();
             }
         }
-
+        
         protected override bool CanRename(TreeViewItem item)
         {
             return true;
@@ -114,13 +116,15 @@
 
             var entity = this.idToDataMap[args.itemID];
             
-            entity.Name = args.newName;
-            
             if (entity is DataSet)
             {
+                var path = AssetDatabase.GUIDToAssetPath(entity.DataSetGuid);
+                AssetDatabase.RenameAsset(path, args.newName + ".asset");
                 return;
             }
-            
+
+            entity.Name = args.newName;
+
             // If we've renamed a Data, change its key.
             entity.GetDataSet().RemoveData(args.originalName);
             entity.GetDataSet().AddData(args.newName, entity);
@@ -168,18 +172,18 @@
             this.idToDataMap.Add(null);
             this.idToDataSetMap.Add(null);
 
-            if (this.openDataSetPaths.Count == 0)
+            if (this.openDataSetGuids.Count == 0)
             {
                 root.children = new List<TreeViewItem>();
                 return root;
             }
             
-            foreach (var dataSetPath in this.openDataSetPaths)
+            foreach (var dataSetGuid in this.openDataSetGuids)
             {
-                var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(dataSetPath);
+                var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(AssetDatabase.GUIDToAssetPath(dataSetGuid));
                 if (dataSet == null)
                 {
-                    Debug.LogWarning($"DataSet {dataSetPath} could not be loaded or does not exist.");
+                    Debug.LogWarning($"DataSet {AssetDatabase.GUIDToAssetPath(dataSetGuid)} could not be loaded or does not exist.");
                     continue;
                 }
 
@@ -212,7 +216,7 @@
 
             if (this.idToDataMap.Contains(data))
             {
-                Assert.IsTrue(false, $"Attempted to add duplicate {data.Name} to DataListTreeView.");
+                Debug.LogError($"Attempted to add duplicate Entity '{data.Name}' to DataListTreeView.");
             }
 
             var node = new TreeViewItem { id = id, displayName = data.Name, icon = data.Icon };
@@ -269,26 +273,28 @@
             }
 
             var dataSet = this.idToDataMap[id] as DataSet;
-            var dataSetPath = AssetDatabase.GetAssetPath(this.idToDataSetMap[id]);
-            DataListWindow.GetInstance().MakeShowItemContextMenuDelegate()(dataSetPath, dataSet);
-        }
 
-        public void RemoveDataSet()
-        {
-            this.Reload();
-            // TODO: Does any of this actually do anything?
-            /*
-            var id = this.idToDataMap.IndexOf(dataSet);
-            this.RemoveDataSet(id);*/
-        }
+            foreach (var guid in AssetDatabase.FindAssets($"t:{typeof(DataSetAsset).Name}"))
+            {
+                var assetPath = AssetDatabase.GUIDToAssetPath(guid);
+                var asset = AssetDatabase.LoadAssetAtPath(assetPath, typeof(DataSetAsset));
+                if (asset.name != dataSet.OwningDataSetName)
+                {
+                    continue;
+                }
 
+                DataListWindow.GetInstance().MakeShowItemContextMenuDelegate()(guid, dataSet);
+                return;
+            }
+        }
+        
         public void SelectDataSet(DataSet dataSet)
         {
             var id = this.idToDataMap.IndexOf(dataSet);
             this.SetSelection(new List<int> { id });
         }
         
-        private void RemoveDataSet(object id)
+        public void RemoveDataSet(object id)
         {
             // TODO: Does this actually do anything?
             /*var dataSetId = (int)id;

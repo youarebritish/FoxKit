@@ -10,6 +10,7 @@
 
     using FoxLib;
 
+    using UnityEditor;
     using UnityEditor.Experimental.AssetImporters;
 
     using UnityEngine;
@@ -50,9 +51,11 @@
             
             var entities = CreateEntityInstances(rawEntities, Path.GetFileName(ctx.assetPath), MakeEntityCreateFunctions());
             var dataSet = FindDataSet(entities);
-            var dataSetName = Path.GetFileNameWithoutExtension(ctx.assetPath);
+            dataSet.OwningDataSetName = asset.name;
 
-            InitializeEntities(ctx, entities, dataSet, dataSetName, MakeEntityInitializeFunctions(dataSet, entities));
+            var dataSetGuid = AssetDatabase.AssetPathToGUID(this.assetPath);
+
+            InitializeEntities(ctx, entities, dataSet, dataSetGuid, MakeEntityInitializeFunctions(dataSet, entities));
 
             asset.SetDataSet(dataSet);
 
@@ -146,12 +149,19 @@
             AssetImportContext ctx,
             Dictionary<Entity, Core.Entity> entities,
             DataSet dataSet,
-            string dataSetName,
+            string dataSetGuid,
             EntityInitializeFunctions entityInitializeFunctions)
         {
             foreach (var entity in entities)
             {
                 entity.Key.Initialize(entity.Value, entityInitializeFunctions);
+
+                // TODO: Make this less ugly
+                var data = entity.Key as Data;
+                if (data != null)
+                {
+                    data.DataSetGuid = dataSetGuid;
+                }
 
                 // We don't need to add the DataSet to itself, and it gets added to the asset later.
                 if (entity.Key.GetType() == typeof(DataSet) || (entity.Key as Data) == null)

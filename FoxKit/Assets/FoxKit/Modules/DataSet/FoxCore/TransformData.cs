@@ -128,7 +128,7 @@
             base.OnUnloaded();
             this.DestroySceneProxy();
         }
-        
+
         public void SetSceneProxyParent(Transform parent)
         {
             Assert.IsNotNull(this.sceneProxyGameObject);
@@ -141,6 +141,7 @@
             {
                 return;
             }
+
             this.sceneProxyGameObject = new GameObject { name = this.Name };
             this.sceneProxyGameObject.transform.position = this.transform.Translation;
         }
@@ -151,6 +152,7 @@
             {
                 return;
             }
+
             GameObject.DestroyImmediate(this.sceneProxyGameObject);
             this.sceneProxyGameObject = null;
         }

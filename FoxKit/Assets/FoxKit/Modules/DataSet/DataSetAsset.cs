@@ -8,7 +8,7 @@ using Sirenix.Serialization;
 
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Create DataSet Asset")]
+[CreateAssetMenu(menuName = "FoxKit/DataSet")]
 public class DataSetAsset : SerializedScriptableObject
 {
     [OdinSerialize, NonSerialized]

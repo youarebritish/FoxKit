@@ -10,7 +10,10 @@
     
     using Sirenix.Serialization;
 
+    using UnityEditor;
+
     using UnityEngine;
+    using UnityEngine.Assertions;
 
     /// <inheritdoc />
     /// <summary>
@@ -22,15 +25,15 @@
         [SerializeField, PropertyInfo(Core.PropertyInfoType.String, 72)]
         private string name;
 
-        public string Test2 = "test";
-
         // Temporarily commented out. Can't have recursive references.
         //[SerializeField, PropertyInfo(Core.PropertyInfoType.EntityHandle, 80, readable: PropertyExport.Never, writable: PropertyExport.Never)]
         //private DataSet dataSet;
-        
-        /*[SerializeField, PropertyInfo(Core.PropertyInfoType.String, 0, writable: PropertyExport.Never)]
-        private string referencePath = "blah blah blah";*/
 
+        /// <summary>
+        /// Since we can't store a reference to the owning DataSet (recursive reference), we store its GUID instead.
+        /// </summary>
+        public string DataSetGuid;
+        
         /// <inheritdoc />
         public string Name
         {
@@ -66,9 +69,12 @@
 
         public DataSet GetDataSet()
         {
-            // TODO Fix
-            return null;
-            //return this.dataSet;
+            Assert.IsNotNull(this.DataSetGuid);
+
+            var dataSetPath = AssetDatabase.GUIDToAssetPath(this.DataSetGuid);
+            Assert.IsNotNull(dataSetPath);
+
+            return AssetDatabase.LoadAssetAtPath<DataSetAsset>(dataSetPath).GetDataSet();
         }
 
         public override string ToString()

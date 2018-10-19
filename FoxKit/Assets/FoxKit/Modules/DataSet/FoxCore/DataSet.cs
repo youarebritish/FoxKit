@@ -26,6 +26,8 @@
         /// </summary>
         [OdinSerialize]
         public Dictionary<string, Data> dataList = new Dictionary<string, Data>();
+
+        public string OwningDataSetName;
         
         /// <inheritdoc />
         public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(BoxCollider)).image as Texture2D;
@@ -108,7 +110,7 @@
         /// <param name="key">The key to remove.</param>
         public void RemoveData(string key)
         {
-            // TODO
+            this.dataList.Remove(key);
         }
         
         /// <summary>
