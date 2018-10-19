@@ -12,11 +12,33 @@
         /// <returns></returns>
         public static AssetDeleteResult OnWillDeleteAsset(string assetPath, RemoveAssetOptions rao)
         {
-            var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(assetPath)?.GetDataSet();
+            const AssetDeleteResult Result = AssetDeleteResult.DidNotDelete;
 
-            // TODO: Only do this if loaded
-            dataSet?.UnloadAllEntities();
-            return AssetDeleteResult.DidNotDelete;
+            var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(assetPath);
+            if (dataSet == null)
+            {
+                return Result;
+            }
+
+            // TODO: Refactor and fix this monstrosity
+
+            var wasDataListWindowOpen = DataListWindow.IsOpen;
+            var window = DataListWindow.GetInstance();
+            var guid = AssetDatabase.AssetPathToGUID(assetPath);
+
+            if (!window.IsDataSetOpen(guid))
+            {
+                return Result;
+            }
+
+            window.RemoveDataSet(guid);
+
+            if (!wasDataListWindowOpen)
+            {
+                window.Close();
+            }
+
+            return Result;
         }
     }
 }

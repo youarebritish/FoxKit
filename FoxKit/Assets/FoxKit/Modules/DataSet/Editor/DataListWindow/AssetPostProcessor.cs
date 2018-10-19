@@ -4,6 +4,8 @@
 
     using UnityEditor;
 
+    using UnityEngine;
+
     public class AssetPostprocessor : UnityEditor.AssetPostprocessor
     {
         private static void OnPostprocessAllAssets(
@@ -14,12 +16,14 @@
         {
             var importedDataSets = from importedAsset in importedAssets select importedAsset;
             var deletedDataSets = from deletedAsset in deletedAssets select deletedAsset;
+            
+            var wasDataListWindowOpen = DataListWindow.IsOpen;
+            var window = DataListWindow.GetInstance();
+            window.OnPostprocessDataSets(importedDataSets, deletedDataSets);
 
-            // TODO This should update it even if it's not open
-            // But calling GetInstance() shows it which is annoying.
-            if (DataListWindow.IsOpen)
+            if (!wasDataListWindowOpen)
             {
-                EditorWindow.GetWindow<DataListWindow>().OnPostprocessDataSets(importedDataSets, deletedDataSets);
+                window.Close();
             }
         }
     }

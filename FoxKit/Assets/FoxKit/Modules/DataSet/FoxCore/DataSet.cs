@@ -34,31 +34,35 @@
 
         /// <inheritdoc />
         public override short ClassId => 232;
-        
+
+        public delegate SceneProxy CreateSceneProxyForEntityDelegate(string entityName);
+
+        public delegate void DestroySceneProxyForEntityDelegate(string entityName);
+
         /// <summary>
         /// Loads all owned Entities.
         /// </summary>
-        public void LoadAllEntities()
+        public void LoadAllEntities(CreateSceneProxyForEntityDelegate createSceneProxy, GetSceneProxyDelegate getSceneProxy)
         {
             foreach (var data in this.dataList.Values)
             {
-                data.OnLoaded();
+                data.OnLoaded(() => createSceneProxy(data.Name));
             }
 
             foreach (var data in this.dataList.Values)
             {
-                data.PostOnLoaded();
+                data.PostOnLoaded(getSceneProxy);
             }
         }
 
         /// <summary>
         /// Unloads all owned Entities.
         /// </summary>
-        public void UnloadAllEntities()
+        public void UnloadAllEntities(DestroySceneProxyForEntityDelegate destroySceneProxy)
         {
             foreach (var data in this.dataList.Values)
             {
-                data?.OnUnloaded();
+                data?.OnUnloaded(() => destroySceneProxy(data.Name));
             }
         }
 

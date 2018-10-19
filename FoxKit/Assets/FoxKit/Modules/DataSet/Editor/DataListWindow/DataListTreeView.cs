@@ -52,12 +52,17 @@
         
         private DataSet activeDataSet;
 
-        public DataListTreeView(TreeViewState treeViewState, List<string> openDataSetGuids, DataSet activeDataSet)
+        public delegate SceneProxy GetSceneProxyDelegate(string dataSetGuid, string entityName);
+
+        private GetSceneProxyDelegate getSceneProxy;
+
+        public DataListTreeView(TreeViewState treeViewState, List<string> openDataSetGuids, DataSet activeDataSet, GetSceneProxyDelegate getSceneProxy)
             : base(treeViewState)
         {
             this.showAlternatingRowBackgrounds = true;
             this.openDataSetGuids = openDataSetGuids;
             this.activeDataSet = activeDataSet;
+            this.getSceneProxy = getSceneProxy;
         }
 
         public void SetActiveDataSet(DataSet dataSet)
@@ -150,7 +155,10 @@
                 }
 
                 // If the user double clicked a TransformData, navigate to its scene proxy.
-                var sceneProxyPosition = ((TransformData)this.idToDataMap[id]).SceneProxyTransform.position;
+                var transformData = this.idToDataMap[id] as TransformData;
+                var sceneProxy = this.getSceneProxy(transformData.DataSetGuid, transformData.Name);
+
+                var sceneProxyPosition = sceneProxy.transform.position;
                 SceneView.lastActiveSceneView.LookAt(sceneProxyPosition);
             }
         }

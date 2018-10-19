@@ -486,25 +486,31 @@
             }
         }
 
+        public delegate SceneProxy CreateSceneProxyDelegate();
+
         /// <summary>
         /// Invoked when the containing DataSet is loaded.
         /// </summary>
-        public virtual void OnLoaded()
+        public virtual void OnLoaded(CreateSceneProxyDelegate createSceneProxy)
         {
         }
+
+        public delegate SceneProxy GetSceneProxyDelegate(string entityName);
 
         /// <summary>
         /// Invoked for all Entities in a DataSet after OnLoaded() has been called for each of them.
         /// </summary>
-        public virtual void PostOnLoaded()
+        public virtual void PostOnLoaded(GetSceneProxyDelegate getSceneProxy)
         {
         }
 
 
+        public delegate void DestroySceneProxyDelegate();
+
         /// <summary>
         /// Invoked when the containing DataSet is unloaded.
         /// </summary>
-        public virtual void OnUnloaded()
+        public virtual void OnUnloaded(DestroySceneProxyDelegate destroySceneProxy)
         {
         }
 

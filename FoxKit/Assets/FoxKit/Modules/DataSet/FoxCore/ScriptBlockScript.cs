@@ -7,7 +7,7 @@
     using FoxKit.Utils;
 
     using FoxLib;
-
+    
     using UnityEditor;
 
     using UnityEngine;
@@ -22,51 +22,13 @@
         /// <summary>
         /// The Lua script to execute when the ScriptBlock activates.
         /// </summary>
-        //[SerializeField, Modules.DataSet.Property("ScriptBlockScript")]
         [SerializeField, PropertyInfo(Core.PropertyInfoType.FilePtr, 24)]
         private UnityEngine.Object script;
-
-        /// <summary>
-        /// The script path.
-        /// </summary>
-        [SerializeField]
-        private string scriptPath;
-
+        
         /// <inheritdoc />
         public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(MonoScript)).image as Texture2D;
 
         /// <inheritdoc />
         public override short ClassId => 88;
-
-        /// <inheritdoc />
-        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
-        {
-            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
-            parentProperties.Add(
-                PropertyInfoFactory.MakeStaticArrayProperty(
-                    "script",
-                    Core.PropertyInfoType.FilePtr,
-                    FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.script))));
-
-            return parentProperties;
-        }
-
-        /// <inheritdoc />
-        public override void OnAssetsImported(FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
-        {
-            base.OnAssetsImported(tryGetAsset);
-            tryGetAsset(this.scriptPath, out this.script);
-        }
-
-        /// <inheritdoc />
-        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
-        {
-            base.ReadProperty(propertyData, initFunctions);
-
-            if (propertyData.Name == "script")
-            {
-                this.scriptPath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
-            }
-        }
     }
 }

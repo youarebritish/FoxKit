@@ -47,67 +47,67 @@
         /// <summary>
         /// The model file.
         /// </summary>
-        [SerializeField, Modules.DataSet.Property("Model")]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.FilePtr, 304)]
         private UnityEngine.Object modelFile;
 
         /// <summary>
         /// The collision file.
         /// </summary>
-        [SerializeField, Modules.DataSet.Property("Geom")]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.FilePtr, 328)]
         private UnityEngine.Object geomFile;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField, Modules.DataSet.Property("Geom")]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.Bool, 352)]
         private bool isVisibleGeom;
 
         /// <summary>
         /// TODO: Figure out.
         /// </summary>
-        [SerializeField, Modules.DataSet.Property("Model")]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.Bool, 353)]
         private bool isIsolated = true;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField, Modules.DataSet.Property("LOD")]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.Float, 360)]
         private float lodFarSize = -1;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField, Modules.DataSet.Property("LOD")]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.Float, 364)]
         private float lodNearSize = -1;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField, Modules.DataSet.Property("LOD")]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.Float, 368)]
         private float lodPolygonSize = -1;
 
         /// <summary>
         /// TODO: Figure this out.
         /// </summary>
-        [SerializeField, Modules.DataSet.Property("Rendering")]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.Color, 368)]
         private Color color = UnityEngine.Color.white;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField, Modules.DataSet.Property("Rendering")]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.Int32, 384, enumType: typeof(DrawRejectionLevel))]
         private DrawRejectionLevel drawRejectionLevel = DrawRejectionLevel.Default;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField, Modules.DataSet.Property("Rendering")]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.Int32, 388, enumType: typeof(DrawMode))]
         private DrawMode drawMode = DrawMode.Normal;
 
         /// <summary>
         /// Not sure what this is.
         /// </summary>
-        [SerializeField, Modules.DataSet.Property("Rendering")]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.Int32, 392, enumType: typeof(RejectFarRangeShadowCast))]
         private RejectFarRangeShadowCast rejectFarRangeShadowCast = RejectFarRangeShadowCast.Default;
 
         /// <summary>
@@ -132,18 +132,20 @@
         public override ushort Version => 9;
 
         /// <inheritdoc />
-        public override void PostOnLoaded()
+        public override void PostOnLoaded(GetSceneProxyDelegate getSceneProxy)
         {
-            base.PostOnLoaded();
+            base.PostOnLoaded(getSceneProxy);
 
             if (this.modelFile != null)
             {
                 // TODO make better
                 var instance = UnityEngine.Object.Instantiate(this.modelFile) as GameObject;
-                instance.transform.position = this.SceneProxyTransform.position;
-                instance.transform.rotation = this.SceneProxyTransform.rotation;
-                instance.transform.localScale = this.SceneProxyTransform.localScale;
-                instance.transform.SetParent(this.SceneProxyTransform, true);
+                var sceneProxy = getSceneProxy(this.Name);
+
+                instance.transform.position = sceneProxy.transform.position;
+                instance.transform.rotation = sceneProxy.transform.rotation;
+                instance.transform.localScale = sceneProxy.transform.localScale;
+                instance.transform.SetParent(sceneProxy.transform, true);
             }
         }
 

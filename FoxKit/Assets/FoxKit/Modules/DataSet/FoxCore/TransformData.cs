@@ -90,14 +90,9 @@
         /// </summary>
         [SerializeField, Property("Flags")]
         protected bool selection = true;
-
-        [SerializeField, HideInInspector]
-        private GameObject sceneProxyGameObject;
-
+        
         public TransformData Parent => this.parent;
-
-        public Transform SceneProxyTransform => this.sceneProxyGameObject.transform;
-
+        
         public IEnumerable<TransformData> GetChildren()
         {
             return from child in this.children
@@ -105,56 +100,50 @@
         }
 
         /// <inheritdoc />
-        public override void OnLoaded()
+        public override void OnLoaded(CreateSceneProxyDelegate createSceneProxy)
         {
-            base.OnLoaded();
-            this.CreateSceneProxy();
+            base.OnLoaded(createSceneProxy);
+            this.CreateSceneProxy(createSceneProxy);
         }
 
         /// <inheritdoc />
-        public override void PostOnLoaded()
+        public override void PostOnLoaded(GetSceneProxyDelegate getSceneProxy)
         {
-            base.PostOnLoaded();
+            base.PostOnLoaded(getSceneProxy);
             
             foreach (var child in this.GetChildren())
             {
-                child?.SetSceneProxyParent(this.sceneProxyGameObject.transform);
+                var sceneProxy = getSceneProxy(this.Name);
+                var childSceneProxy = getSceneProxy(child.Name);
+                childSceneProxy.transform.SetParent(sceneProxy.transform);
             }
         }
 
         /// <inheritdoc />
-        public override void OnUnloaded()
+        public override void OnUnloaded(DestroySceneProxyDelegate destroySceneProxy)
         {
-            base.OnUnloaded();
-            this.DestroySceneProxy();
+            base.OnUnloaded(destroySceneProxy);
+            this.DestroySceneProxy(destroySceneProxy);
         }
-
-        public void SetSceneProxyParent(Transform parent)
-        {
-            Assert.IsNotNull(this.sceneProxyGameObject);
-            this.sceneProxyGameObject.transform.SetParent(parent);
-        }
-
-        protected virtual void CreateSceneProxy()
+        
+        protected virtual void CreateSceneProxy(CreateSceneProxyDelegate createSceneProxy)
         {
             if (this.transform == null)
             {
                 return;
             }
 
-            this.sceneProxyGameObject = new GameObject { name = this.Name };
-            this.sceneProxyGameObject.transform.position = this.transform.Translation;
+            var sceneProxy = createSceneProxy();
+
+            // TODO: Rotation et al
+            sceneProxy.transform.position = this.transform.Translation;
         }
 
-        protected virtual void DestroySceneProxy()
+        protected virtual void DestroySceneProxy(DestroySceneProxyDelegate destroySceneProxy)
         {
-            if (this.sceneProxyGameObject == null)
-            {
-                return;
-            }
-
-            GameObject.DestroyImmediate(this.sceneProxyGameObject);
-            this.sceneProxyGameObject = null;
+            destroySceneProxy();
+            //GameObject.DestroyImmediate(this.sceneProxyGameObject);
+            //this.sceneProxyGameObject = null;
         }
 
         /// <inheritdoc />

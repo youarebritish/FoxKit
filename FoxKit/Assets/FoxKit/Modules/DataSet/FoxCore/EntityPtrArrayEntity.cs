@@ -11,8 +11,6 @@ namespace FoxKit.Modules.DataSet.FoxCore
 
     using FoxLib;
 
-    using NUnit.Framework;
-
     using UnityEditor;
 
     using UnityEngine;
