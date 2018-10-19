@@ -40,6 +40,7 @@
                     var duplicate = Instantiate(this.target) as DataSetAsset;
                     duplicate.IsReadOnly = false;
 
+                    var originalPath = AssetDatabase.GetAssetPath(asset);
                     var path = EditorUtility.SaveFilePanelInProject(
                         "Create editable copy",
                         this.target.name,
@@ -48,7 +49,16 @@
 
                     if (!string.IsNullOrEmpty(path))
                     {
+                        var guid = AssetDatabase.AssetPathToGUID(path);
+                        duplicate.GetDataSet().DataSetGuid = guid;
+                        foreach (var data in duplicate.GetDataSet().GetDataList())
+                        {
+                            data.Value.DataSetGuid = guid;
+                        }
+
+                        EditorUtility.SetDirty(duplicate);
                         AssetDatabase.CreateAsset(duplicate, path);
+                        AssetDatabase.SaveAssets();
                     }
                 }
 
@@ -119,6 +129,7 @@
                     field.Item2.Enum,
                     field.Item2.PtrType,
                     currentValue as IList,
+                    entity,
                     false);
             }
             else if (field.Item2.Container == Core.ContainerType.DynamicArray)
@@ -129,6 +140,7 @@
                     field.Item2.Enum,
                     field.Item2.PtrType,
                     currentValue as IList,
+                    entity,
                     true);
             }
             else if (field.Item2.Container == Core.ContainerType.List)
@@ -139,6 +151,7 @@
                     field.Item2.Enum,
                     field.Item2.PtrType,
                     currentValue as IList,
+                    entity,
                     true);
             }
 
@@ -151,6 +164,7 @@
             Type @enum,
             Type ptrType,
             IList list,
+            Entity entity,
             bool isResizable)
         {
             ReorderableListGUI.Title(fieldName);
@@ -255,7 +269,7 @@
                         flags);
                     break;
                 case Core.PropertyInfoType.EntityPtr:
-                    var adapter = new EntityPtrListAdapter(list as IList<Entity>, ptrType);
+                    var adapter = new EntityPtrListAdapter(list as IList<Entity>, ptrType, entity);
                     ReorderableListGUI.ListField(adapter);
                     break;
                 case Core.PropertyInfoType.Vector3:
@@ -505,7 +519,8 @@
                         field.Item1.Name,
                         currentValue,
                         field.Item2.PtrType,
-                        () => AddEntityWindow.Create(field.Item2.PtrType, true, type => field.Item1.SetValue(entity, Activator.CreateInstance(type))));
+                        () => AddEntityWindow.Create(field.Item2.PtrType, true, type => field.Item1.SetValue(entity, CreateEntity(type, entity))),
+                        dataElement => DestroyEntity(dataElement, entity));
                     break;
                 case Core.PropertyInfoType.Vector3:
                     newValue = EditorGUILayout.Vector3Field(
@@ -562,20 +577,77 @@
                    select Tuple.Create(field, attribute);
         }
 
+        private static Entity CreateEntity(Type entityType, Entity owningEntity)
+        {
+            var entity = Activator.CreateInstance(entityType) as Entity;
+
+            // TODO: Refactor and fix this monstrosity
+            if (!(entity is TransformEntity))
+            {
+                return entity;
+            }
+
+            if (!(owningEntity is TransformData))
+            {
+                return entity;
+            }
+
+            var wasDataListWindowOpen = DataListWindow.DataListWindow.IsOpen;
+            var window = DataListWindow.DataListWindow.GetInstance();
+
+            var transformData = owningEntity as TransformData;
+            window.CreateSceneProxyForEntity(transformData.DataSetGuid, transformData.Name);
+
+            if (!wasDataListWindowOpen)
+            {
+                window.Close();
+            }
+
+            return entity;
+        }
+
+        private static void DestroyEntity(Entity entity, Entity owningEntity)
+        {
+            // TODO: Refactor and fix this monstrosity
+            if (!(entity is TransformEntity))
+            {
+                return;
+            }
+
+            if (!(owningEntity is TransformData))
+            {
+                return;
+            }
+
+            var wasDataListWindowOpen = DataListWindow.DataListWindow.IsOpen;
+            var window = DataListWindow.DataListWindow.GetInstance();
+
+            var transformData = owningEntity as TransformData;
+            window.DeleteSceneProxyRecordForEntity(transformData.DataSetGuid, transformData.Name, true);
+
+            if (!wasDataListWindowOpen)
+            {
+                window.Close();
+            }
+        }
+
         private class EntityPtrListAdapter : GenericListAdaptor<Entity>
         {
-            private Type ptrType;
+            private readonly Type ptrType;
 
             private readonly IList<Entity> list;
 
+            private readonly Entity owningEntity;
+
             public EntityPtrListAdapter(
-                IList<Entity> list, Type ptrType)
+                IList<Entity> list, Type ptrType, Entity owningEntity)
                 : base(list, Draw, 15.0f)
             {
                 this.list = list;
                 this.ptrType = ptrType;
+                this.owningEntity = owningEntity;
             }
-
+            
             public override void DrawItem(Rect position, int index)
             {
                 var item = this[index];
@@ -583,7 +655,7 @@
                 var editButtonPosition = position;
                 editButtonPosition.width = position.width * 0.8f;
 
-                FoxKitUiUtils.EntityPtrField(editButtonPosition, item, this.ptrType, () => AddEntityWindow.Create(this.ptrType, true, type => this.CreateNewEntityAtIndex(type, index)));
+                FoxKitUiUtils.EntityPtrField(editButtonPosition, item, this.ptrType, () => this.CreateEntity(index));
 
                 var wasGuiEnabled = GUI.enabled;
 
@@ -610,9 +682,37 @@
                 return item;
             }
 
+            private void CreateEntity(int index)
+            {
+                AddEntityWindow.Create(this.ptrType, true, type => this.CreateNewEntityAtIndex(type, index));
+            }
+
             private void CreateNewEntityAtIndex(Type entityType, int index)
             {
-                this.list[index] = Activator.CreateInstance(entityType) as Entity;
+                var entity = Activator.CreateInstance(entityType) as Entity;
+                this.list[index] = entity;
+
+                // TODO: Refactor and fix this monstrosity
+                if (!entityType.IsAssignableFrom(typeof(TransformEntity)))
+                {
+                    return;
+                }
+
+                if (!this.owningEntity.GetType().IsAssignableFrom(typeof(TransformData)))
+                {
+                    return;
+                }
+
+                var wasDataListWindowOpen = DataListWindow.DataListWindow.IsOpen;
+                var window = DataListWindow.DataListWindow.GetInstance();
+
+                var transformData = this.owningEntity as TransformData;
+                window.CreateSceneProxyForEntity(transformData.DataSetGuid, transformData.Name);
+
+                if (!wasDataListWindowOpen)
+                {
+                    window.Close();
+                }
             }
         }
     }

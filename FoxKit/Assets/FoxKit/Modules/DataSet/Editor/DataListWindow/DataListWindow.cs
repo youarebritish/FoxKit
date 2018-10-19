@@ -241,7 +241,7 @@
             this.treeView.Reload();
         }
 
-        private SceneProxy CreateSceneProxyForEntity(string dataSetGuid, string entityName)
+        public SceneProxy CreateSceneProxyForEntity(string dataSetGuid, string entityName)
         {
             var gameObject = new GameObject(entityName);
             var sceneProxy = gameObject.AddComponent<SceneProxy>();
@@ -285,7 +285,7 @@
             this.sceneProxyRecords.RemoveAll(record => record.DoesBelongToDataSet(dataSetGuid));
         }
 
-        private void DeleteSceneProxyRecordForEntity(string dataSetGuid, string entityName, bool destroyGameObject)
+        public void DeleteSceneProxyRecordForEntity(string dataSetGuid, string entityName, bool destroyGameObject)
         {
             SceneProxyRecord recordToDelete = null;
 
@@ -295,6 +295,11 @@
                 {
                     recordToDelete = record;
                 }
+            }
+
+            if (recordToDelete == null)
+            {
+                return;
             }
 
             if (destroyGameObject && recordToDelete.SceneProxy != null)

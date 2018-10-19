@@ -172,6 +172,7 @@
         protected override TreeViewItem BuildRoot()
         {
             this.idToDataMap.Clear();
+            this.idToDataSetMap.Clear();
 
             var index = 1;
             var root = new TreeViewItem { id = 0, depth = -1, displayName = "root" };
@@ -188,10 +189,11 @@
             
             foreach (var dataSetGuid in this.openDataSetGuids)
             {
-                var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(AssetDatabase.GUIDToAssetPath(dataSetGuid));
+                var path = AssetDatabase.GUIDToAssetPath(dataSetGuid);
+                var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(path);
                 if (dataSet == null)
                 {
-                    Debug.LogWarning($"DataSet {AssetDatabase.GUIDToAssetPath(dataSetGuid)} could not be loaded or does not exist.");
+                    Debug.LogWarning($"DataSet {path} could not be loaded or does not exist.");
                     continue;
                 }
 
@@ -282,7 +284,7 @@
 
             var dataSet = this.idToDataMap[id] as DataSet;
 
-            foreach (var guid in AssetDatabase.FindAssets($"t:{typeof(DataSetAsset).Name}"))
+            /*foreach (var guid in AssetDatabase.FindAssets($"t:{typeof(DataSetAsset).Name}"))
             {
                 var assetPath = AssetDatabase.GUIDToAssetPath(guid);
                 var asset = AssetDatabase.LoadAssetAtPath(assetPath, typeof(DataSetAsset));
@@ -293,7 +295,9 @@
 
                 DataListWindow.GetInstance().MakeShowItemContextMenuDelegate()(guid, dataSet);
                 return;
-            }
+            }*/
+
+            DataListWindow.GetInstance().MakeShowItemContextMenuDelegate()(dataSet.DataSetGuid, dataSet);
         }
         
         public void SelectDataSet(DataSet dataSet)

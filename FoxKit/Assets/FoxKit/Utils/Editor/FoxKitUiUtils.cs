@@ -134,10 +134,11 @@ namespace FoxKit.Utils
             return Quaternion.Euler(rawValue);
         }
 
-        public static object EntityPtrField(string label, object value, Type type, Action createNewEntityCallback, bool allowSceneObjects = false)
+        public static object EntityPtrField(string label, object value, Type type, Action createNewEntityCallback, Action<Entity> deleteEntityCallback, bool allowSceneObjects = false)
         {
             Assert.IsNotNull(type);
             Assert.IsNotNull(createNewEntityCallback);
+            Assert.IsNotNull(deleteEntityCallback);
 
             // TODO Icon
             EditorGUILayout.BeginHorizontal();
@@ -159,6 +160,7 @@ namespace FoxKit.Utils
 
                 if (GUILayout.Button("Delete", EditorStyles.miniButton))
                 {
+                    deleteEntityCallback(value as Entity);
                     return null;
                 }
             }

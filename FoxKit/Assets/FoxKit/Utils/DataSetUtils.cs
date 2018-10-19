@@ -27,7 +27,6 @@
         {
             CheckContainerType(property, Core.ContainerType.StaticArray);
 
-            UnityEngine.Debug.Log(property.Name);
             var container = ((Core.Container<TValue>.StaticArray)property.Container).Item;
             Assert.IsTrue(
                 container.Length == 1,
