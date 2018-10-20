@@ -29,6 +29,8 @@
             var unityTexture = Utils.FoxUtils.FoxHalfColorRGBAToUnityTexture2D(128, 64, pixels, false, true);
 
             unityTexture.alphaIsTransparency = false;
+            unityTexture.anisoLevel = 0;
+            unityTexture.wrapMode = UnityEngine.TextureWrapMode.Clamp;
 
             SkyParameters skyParameters = UnityEngine.ScriptableObject.CreateInstance<SkyParameters>();
 

@@ -7,13 +7,16 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
     using UnityEditor;
 
     using FoxKit.Modules.PartsBuilder.FormVariation;
+    using FoxKit.Modules.PartsBuilder.FormVariation.Importer;
     using FoxKit.Modules.PartsBuilder.FormVariation.Exporter;
+
+    using UnityEditor.Experimental.AssetImporters;
 
     /// <summary>
     /// Custom editor for FormVariations.
     /// </summary>
-    [CustomEditor(typeof(FormVariation))]
-    public class FormVariationEditor : Editor
+    [CustomEditor(typeof(FormVariationImporter))]
+    public class FormVariationEditor : ScriptedImporterEditor
     {
         private GUIStyle operationHeaderGUIStyle = new GUIStyle();
 
@@ -41,11 +44,11 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
         {
             operationHeaderGUIStyle.alignment = TextAnchor.MiddleCenter;
 
-            serializedObject.Update();
-
             EditorGUILayout.Space();
 
-            var myTarget = (FormVariation)this.target;
+            var importer = (FormVariationImporter)this.target;
+
+            var myTarget = AssetDatabase.LoadAssetAtPath<FormVariation>(importer.assetPath);
 
             if (GUILayout.Button("Export fv2"))
             {
@@ -61,6 +64,8 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
                 }
                 FormVariationExporter.ExportFormVariation(myTarget as FormVariation, exportPath);
             }
+
+            EditorGUI.BeginChangeCheck();
 
             #region HiddenMeshGroups
 
@@ -209,7 +214,19 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
             }
             #endregion
 
-            serializedObject.ApplyModifiedProperties();
+            if (EditorGUI.EndChangeCheck())
+            {
+                Debug.Log("Change made.");
+
+                serializedObject.Update();
+                serializedObject.ApplyModifiedProperties();
+
+                base.Apply();
+
+                AssetDatabase.SaveAssets();
+
+                AssetDatabase.Refresh();
+            }
         }
 
         private static void drawTools<TProperty>(List<TProperty> property, FormVariationEditor editor) where TProperty : new()

@@ -1,0 +1,26 @@
+﻿#define blockWidth 8
+#define blockHeight 8
+#define blockDepth 16
+
+Texture3D<float4> input;
+SamplerState samplerinput;
+RWTexture3D<float4> output;
+
+int textureWidth;
+int textureHeight;
+int textureDepth;
+
+#pragma kernel Convert
+[numthreads(blockWidth, blockHeight, blockDepth)]
+void Convert(uint3 id : SV_DispatchThreadID)
+{
+    float3 coordinates = float3((float)id.x / (float)textureWidth,
+                                (float)id.y / (float)textureHeight,
+                                (float)id.z / (float)textureDepth
+                               );
+
+    output[id.xyz] = input.Load(float4(id.xyz, 0)).argb; //input.SampleLevel(samplerinput, coordinates, 0);
+
+	// or
+    //output[id.xyz] = dot(input.Load(id), float4(1, 0.8, 0.8, 1));
+}
