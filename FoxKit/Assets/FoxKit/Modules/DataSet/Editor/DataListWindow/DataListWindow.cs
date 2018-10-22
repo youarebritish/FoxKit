@@ -196,7 +196,7 @@
                 this.treeViewState,
                 this.openDataSetGuids,
                 this.activeDataSet,
-                this.CreateSceneProxyForEntity);
+                this.FindSceneProxyForEntity);
             this.treeView.Reload();
         }
 

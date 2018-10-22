@@ -54,7 +54,7 @@
 
         public delegate SceneProxy GetSceneProxyDelegate(string dataSetGuid, string entityName);
 
-        private GetSceneProxyDelegate getSceneProxy;
+        private readonly GetSceneProxyDelegate getSceneProxy;
 
         public DataListTreeView(TreeViewState treeViewState, List<string> openDataSetGuids, DataSet activeDataSet, GetSceneProxyDelegate getSceneProxy)
             : base(treeViewState)
