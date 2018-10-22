@@ -69,6 +69,11 @@
             EditorUtility.SetDirty(this.target);
         }
 
+        public override bool RequiresConstantRepaint()
+        {
+            return true;
+        }
+
         private static void DrawStaticProperties(
             IEnumerable<Tuple<FieldInfo, PropertyInfoAttribute>> fields,
             Entity entity,

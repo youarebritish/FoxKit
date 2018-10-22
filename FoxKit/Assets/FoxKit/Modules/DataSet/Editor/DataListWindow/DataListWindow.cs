@@ -245,6 +245,14 @@
         {
             var gameObject = new GameObject(entityName);
             var sceneProxy = gameObject.AddComponent<SceneProxy>();
+            var asset = AssetDatabase.LoadAssetAtPath<DataSetAsset>(AssetDatabase.GUIDToAssetPath(dataSetGuid));
+            var entity = asset.GetDataSet().GetData(entityName);
+            var transformData = entity as TransformData;
+
+            Assert.IsNotNull(transformData);
+
+            sceneProxy.Entity = transformData;
+            sceneProxy.Asset = asset;
 
             var sceneProxyRecord = new SceneProxyRecord(dataSetGuid, entityName, sceneProxy);
             this.sceneProxyRecords.Add(sceneProxyRecord);

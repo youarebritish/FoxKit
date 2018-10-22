@@ -18,7 +18,7 @@
     /// A DataElement attached to TransformData Entities representing a transform matrix.
     /// </summary>
     [Serializable]
-    public class TransformEntity : DataElement//<TransformData>
+    public class TransformEntity : DataElement
     {
         /// <summary>
         /// The translation.
@@ -41,7 +41,41 @@
         /// <summary>
         /// The translation.
         /// </summary>
-        public Vector3 Translation => this.transform_translation;
+        public Vector3 Translation
+        {
+            get
+            {
+                return this.transform_translation;
+            }
+            set
+            {
+                this.transform_translation = value;
+            }
+        }
+
+        public Quaternion RotQuat
+        {
+            get
+            {
+                return this.transform_rotation_quat;
+            }
+            set
+            {
+                this.transform_rotation_quat = value;
+            }
+        }
+
+        public Vector3 Scale
+        {
+            get
+            {
+                return this.transform_scale;
+            }
+            set
+            {
+                this.transform_scale = value;
+            }
+        }
 
         /// <inheritdoc />
         public override short ClassId => 80;

@@ -92,6 +92,8 @@
         protected bool selection = true;
         
         public TransformData Parent => this.parent;
+
+        public TransformEntity Transform => this.transform;
         
         public IEnumerable<TransformData> GetChildren()
         {
