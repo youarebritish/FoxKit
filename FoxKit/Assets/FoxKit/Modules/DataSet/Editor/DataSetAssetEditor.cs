@@ -49,13 +49,6 @@
 
                     if (!string.IsNullOrEmpty(path))
                     {
-                        var guid = AssetDatabase.AssetPathToGUID(path);
-                        duplicate.GetDataSet().DataSetGuid = guid;
-                        foreach (var data in duplicate.GetDataSet().GetDataList())
-                        {
-                            data.Value.DataSetGuid = guid;
-                        }
-
                         EditorUtility.SetDirty(duplicate);
                         AssetDatabase.CreateAsset(duplicate, path);
                         AssetDatabase.SaveAssets();

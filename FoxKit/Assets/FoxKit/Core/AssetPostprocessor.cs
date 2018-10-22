@@ -31,7 +31,21 @@ namespace FoxKit.Core
 
                 if (loadedAsset is DataSetAsset)
                 {
-                    dataSets.Add(Path.GetFileNameWithoutExtension(asset), (loadedAsset as DataSetAsset).GetDataSet());
+                    var dataSet = (loadedAsset as DataSetAsset).GetDataSet();
+                    dataSets.Add(Path.GetFileNameWithoutExtension(asset), dataSet);
+
+                    // Assign GUID reference.
+                    var guid = AssetDatabase.AssetPathToGUID(asset);
+                    if (dataSet.DataSetGuid == guid)
+                    {
+                        continue;
+                    }
+
+                    dataSet.DataSetGuid = guid;
+                    foreach (var entity in dataSet.GetDataList())
+                    {
+                        entity.Value.DataSetGuid = guid;
+                    }
                 }
             }
 
