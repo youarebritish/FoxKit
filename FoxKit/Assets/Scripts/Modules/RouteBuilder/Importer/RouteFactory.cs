@@ -33,7 +33,7 @@ namespace FoxKit.Modules.RouteBuilder.Importer
         /// <param name="getRouteName">Function to get a Route's name.</param>
         /// <param name="generateNodeName">Function to generate a RouteNode name.</param>
         /// <returns>Function to construct Routes.</returns>
-        public static CreateRouteDelegate CreateFactory(CreateNodeDelegate createNode, TryUnhashDelegate getRouteName, GenerateNodeNameDelegate generateNodeName)
+        public static CreateRouteDelegate CreateFactory(CreateNodeDelegate createNode, TryUnhashDelegate<uint> getRouteName, GenerateNodeNameDelegate generateNodeName)
         {
             return (data, routeSet) => Create(data, routeSet, createNode, getRouteName, generateNodeName);
         }
@@ -47,7 +47,7 @@ namespace FoxKit.Modules.RouteBuilder.Importer
         /// <param name="getRouteName">Function to get a Route's name.</param>
         /// <param name="generateNodeName">Function to generate a RouteNode name.</param>
         /// <returns>The constructed Route.</returns>
-        private static Route Create(FoxLib.Tpp.RouteSet.Route data, RouteSet routeSet, CreateNodeDelegate createNode, TryUnhashDelegate getRouteName, GenerateNodeNameDelegate generateNodeName)
+        private static Route Create(FoxLib.Tpp.RouteSet.Route data, RouteSet routeSet, CreateNodeDelegate createNode, TryUnhashDelegate<uint> getRouteName, GenerateNodeNameDelegate generateNodeName)
         {
             var gameObject = new GameObject();
             var routeComponent = gameObject.AddComponent<Route>();

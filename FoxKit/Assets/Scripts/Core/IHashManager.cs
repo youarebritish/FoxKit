@@ -14,35 +14,66 @@ namespace FoxKit.Core
 
     public static class IHashManagerExtensions
     {
-        public delegate TryUnhashResult TryUnhashDelegate(uint hash);
+        public delegate TryUnhashResult<THash> TryUnhashDelegate<THash>(THash hash) where THash : struct;
 
-        public static TryUnhashDelegate MakeUnhashFunc(this IHashManager<uint> hashManager)
+        public static TryUnhashDelegate<THash> MakeUnhashFunc<THash>(this IHashManager<THash> hashManager) where THash : struct
         {
             return (hash =>
             {
                 string result;
                 if (!hashManager.TryGetStringFromHash(hash, out result))
                 {
-                    return new TryUnhashResult(hash);
+                    return new TryUnhashResult<THash>(hash);
                 }
-                return new TryUnhashResult(result);
+                return new TryUnhashResult<THash>(result);
             });
         }
 
-        public class TryUnhashResult
+        public static UStringPair TryUnhash<THash, UStringPair>(this IHashManager<THash> hashManager, THash hash, System.Func<THash, UStringPair> makeHashPair, System.Func<string, UStringPair> makeStringPair)
+            where THash : struct 
+            where UStringPair : IStringHashPair<THash>
+        {
+            string outString;
+
+            if (hashManager.TryGetStringFromHash(hash, out outString) == true)
+            {
+                return makeStringPair(outString);
+            }
+            else
+            {
+                return makeHashPair(hash);
+            }
+        }
+
+        public static UHash RetrieveHashFromStringPair<TStringPair, UHash>(this IHashManager<UHash> hashManager, TStringPair stringPair)
+            where TStringPair : IStringHashPair<UHash>
+            where UHash : struct
+        {
+            if (stringPair.IsUnhashed == 0)
+            {
+                return hashManager.GetHash(stringPair.String);
+            }
+            else
+            {
+                return stringPair.Hash;
+            }
+        }
+
+
+        public class TryUnhashResult<THash> where THash : struct
         {
             public bool WasNameUnhashed { get; }
             public string UnhashedString { get; }
-            public uint Hash { get; }
+            public THash Hash { get; }
 
             public TryUnhashResult(string unhashedName)
             {
                 WasNameUnhashed = true;
                 UnhashedString = unhashedName;
-                Hash = uint.MaxValue;
+                Hash = default(THash);
             }
 
-            public TryUnhashResult(uint hash)
+            public TryUnhashResult(THash hash)
             {
                 WasNameUnhashed = false;
                 UnhashedString = null;

@@ -38,3 +38,7 @@ FoxKit/.vs/FoxKit/v15/sqlite3/storage.ide
 FoxKit/Assets/Lib/FoxLib.dll.mdb
 FoxKit/Assets/Lib/FoxLib.dll.mdb.meta
 FoxKit/.vs/FoxKit/v15/sqlite3/storage.ide
+*.fv2
+*.lock
+*.ide-shm
+*.ide-wal
