@@ -8,8 +8,6 @@
 
     using FoxLib;
     
-    using Sirenix.Serialization;
-
     using UnityEditor;
 
     using UnityEngine;

@@ -15,8 +15,7 @@
 
     using FoxLib;
 
-    using Sirenix.OdinInspector;
-    using Sirenix.Serialization;
+    using OdinSerializer;
 
     using UnityEditor;
 

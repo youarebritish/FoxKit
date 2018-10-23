@@ -22,128 +22,31 @@
     [Serializable]
     public class TppVehicle2AttachmentData : Data
     {
-        /// <summary>
-        /// TODO: Figure this out.
-        /// </summary>
-        [SerializeField, Modules.DataSet.Property("Vehicle Attachment")]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.UInt8, 177)]
         private byte vehicleTypeCode;
 
-        /// <summary>
-        /// TODO: Figure this out.
-        /// </summary>
-        [SerializeField, Modules.DataSet.Property("Vehicle Attachment")]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.UInt8, 178)]
         private byte attachmentImplTypeIndex;
 
-        /// <summary>
-        /// TODO: Figure this out.
-        /// </summary>
-        [SerializeField, Modules.DataSet.Property("Vehicle Attachment")]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.FilePtr, 136)]
         private UnityEngine.Object attachmentFile;
 
-        /// <summary>
-        /// TODO: Figure this out.
-        /// </summary>
-        [SerializeField, Modules.DataSet.Property("Vehicle Attachment")]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.UInt8, 176)]
         private byte attachmentInstanceCount;
 
-        /// <summary>
-        /// TODO: Figure this out.
-        /// </summary>
-        [SerializeField, Modules.DataSet.Property("Vehicle Attachment")]
-        private string bodyCnpName;
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.String, 160)]
+        private string bodyCnpName = string.Empty;
 
-        /// <summary>
-        /// TODO: Figure this out.
-        /// </summary>
-        [SerializeField, Modules.DataSet.Property("Vehicle Attachment")]
-        private string attachmentBoneName;
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.String, 168)]
+        private string attachmentBoneName = string.Empty;
 
-        /// <summary>
-        /// TODO: Figure this out.
-        /// </summary>
-        [SerializeField, Modules.DataSet.Property("Vehicle Attachment")]
-        private List<TppVehicle2WeaponParameter> weaponParams = new List<TppVehicle2WeaponParameter>();
-
-        /// <summary>
-        /// Path to <see cref="attachmentFile"/>.
-        /// </summary>
-        [SerializeField, Modules.DataSet.Property("Vehicle Attachment")]
-        private string attachmentFilePath;
-
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.EntityPtr, 120, ptrType: typeof(TppVehicle2WeaponParameter), container: Core.ContainerType.DynamicArray)]
+        private List<Entity> weaponParams = new List<Entity>();
+        
         /// <inheritdoc />
         public override short ClassId => 120;
 
         /// <inheritdoc />
         public override ushort Version => 1;
-
-        /// <inheritdoc />
-        public override void OnAssetsImported(FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
-        {
-            base.OnAssetsImported(tryGetAsset);
-            tryGetAsset(this.attachmentFilePath, out this.attachmentFile);
-        }
-
-        /// <inheritdoc />
-        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
-        {
-            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("vehicleTypeCode", Core.PropertyInfoType.UInt8, this.vehicleTypeCode));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("attachmentImplTypeIndex", Core.PropertyInfoType.UInt8, this.attachmentImplTypeIndex));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("attachmentFile", Core.PropertyInfoType.FilePtr, FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.attachmentFile))));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("attachmentInstanceCount", Core.PropertyInfoType.UInt8, this.attachmentInstanceCount));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("bodyCnpName", Core.PropertyInfoType.String, this.bodyCnpName));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("attachmentBoneName", Core.PropertyInfoType.String, this.attachmentBoneName));
-            parentProperties.Add(
-                PropertyInfoFactory.MakeDynamicArrayProperty(
-                    "weaponParams",
-                    Core.PropertyInfoType.EntityPtr,
-                    (from weaponParam in this.weaponParams
-                     select getEntityAddress(weaponParam) as object)
-                    .ToArray()));
-
-            return parentProperties;
-        }
-
-        /// <inheritdoc />
-        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
-        {
-            base.ReadProperty(propertyData, initFunctions);
-
-            switch (propertyData.Name)
-            {
-                case "vehicleTypeCode":
-                    this.vehicleTypeCode = DataSetUtils.GetStaticArrayPropertyValue<byte>(propertyData);
-                    break;
-                case "attachmentImplTypeIndex":
-                    this.attachmentImplTypeIndex = DataSetUtils.GetStaticArrayPropertyValue<byte>(propertyData);
-                    break;
-                case "attachmentFile":
-                    this.attachmentFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
-                    break;
-                case "attachmentInstanceCount":
-                    this.attachmentInstanceCount = DataSetUtils.GetStaticArrayPropertyValue<byte>(propertyData);
-                    break;
-                case "bodyCnpName":
-                    this.bodyCnpName = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
-                    break;
-                case "attachmentBoneName":
-                    this.attachmentBoneName = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
-                    break;
-                case "weaponParams":
-                    var list = DataSetUtils.GetDynamicArrayValues<ulong>(propertyData);
-                    this.weaponParams = new List<TppVehicle2WeaponParameter>(list.Count);
-
-                    foreach (var param in list)
-                    {
-                        var entity = initFunctions.GetEntityFromAddress(param) as TppVehicle2WeaponParameter;
-                        Assert.IsNotNull(entity);
-
-                        this.weaponParams.Add(entity);
-                        entity.Owner = this;
-                    }
-
-                    break;
-            }
-        }
     }
 }

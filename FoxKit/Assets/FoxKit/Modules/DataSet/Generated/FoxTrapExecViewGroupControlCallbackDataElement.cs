@@ -10,9 +10,7 @@ namespace FoxKit.Modules.DataSet
     using FoxKit.Utils.UI.StringMap;
 
     using FoxLib;
-
-    using NUnit.Framework;
-
+    
     using UnityEditor;
 
     using UnityEngine;

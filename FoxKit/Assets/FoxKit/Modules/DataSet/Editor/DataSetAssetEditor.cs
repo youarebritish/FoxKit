@@ -15,8 +15,6 @@
 
     using Rotorz.Games.Collections;
 
-    using Sirenix.Utilities;
-
     using UnityEditor;
 
     using UnityEngine;
@@ -566,7 +564,11 @@
         private static IEnumerable<Tuple<FieldInfo, PropertyInfoAttribute>> GetPropertyFields(Entity entity)
         {
             var baseTypes = new HashSet<Type> { entity.GetType() };
-            baseTypes.AddRange(ReflectionUtils.GetParentTypes(entity.GetType()));
+
+            foreach (var type in ReflectionUtils.GetParentTypes(entity.GetType()))
+            {
+                baseTypes.Add(type);
+            }
 
             return from type in baseTypes.Reverse()
                    from field in type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic)

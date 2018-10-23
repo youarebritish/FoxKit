@@ -7,8 +7,8 @@
     using FoxKit.Modules.DataSet.Exporter;
 
     using FoxLib;
-    
-    using Sirenix.Serialization;
+
+    using OdinSerializer;
 
     using UnityEditor;
 

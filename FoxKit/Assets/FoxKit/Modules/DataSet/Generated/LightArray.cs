@@ -11,8 +11,6 @@ namespace FoxKit.Modules.DataSet
 
     using FoxLib;
 
-    using NUnit.Framework;
-
     using UnityEditor;
 
     using UnityEngine;

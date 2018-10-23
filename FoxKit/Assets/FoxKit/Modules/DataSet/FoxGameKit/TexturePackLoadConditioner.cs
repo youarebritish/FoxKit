@@ -8,8 +8,8 @@
     using FoxKit.Utils;
 
     using FoxLib;
-    
-    using Sirenix.Serialization;
+
+    using OdinSerializer;
 
     using UnityEditor;
 
@@ -25,8 +25,8 @@
         /// <summary>
         /// The texture pack path.
         /// </summary>
-        [OdinSerialize, Modules.DataSet.Property("Path")]
-        public string texturePackPath = string.Empty;
+        [OdinSerialize, PropertyInfo(Core.PropertyInfoType.Path, 120)]
+        private UnityEngine.Object texturePackPath;
 
         /// <inheritdoc />
         public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(Texture)).image as Texture2D;
@@ -38,7 +38,7 @@
         public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
         {
             var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("texturePackPath", Core.PropertyInfoType.Path, this.texturePackPath));
+            /*parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("texturePackPath", Core.PropertyInfoType.Path, this.texturePackPath));*/
 
             return parentProperties;
         }
@@ -47,11 +47,11 @@
         protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
         {
             base.ReadProperty(propertyData, initFunctions);
-
+            /*
             if (propertyData.Name == "texturePackPath")
             {
                 this.texturePackPath = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
-            }
+            }*/
         }
     }
 }

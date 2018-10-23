@@ -3,8 +3,7 @@ using System.Collections.Generic;
 
 using FoxKit.Modules.DataSet.FoxCore;
 
-using Sirenix.OdinInspector;
-using Sirenix.Serialization;
+using OdinSerializer;
 
 using UnityEngine;
 
