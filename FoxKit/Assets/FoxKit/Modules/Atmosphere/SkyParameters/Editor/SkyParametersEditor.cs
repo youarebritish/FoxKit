@@ -16,8 +16,7 @@
     {
         public override void OnInspectorGUI()
         {
-            EditorGUILayout.Space();
-
+            EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Export pcsp"))
             {
                 var myTarget = (SkyParameters)this.target;
@@ -34,10 +33,7 @@
                 }
                 SkyParametersExporter.ExportSkyParameters(myTarget.precomputedSkyParameters, exportPath);
             }
-
-            EditorGUILayout.Space();
-
-            if (GUILayout.Button("Export png"))
+            else if (GUILayout.Button("Export png"))
             {
                 var myTarget = (SkyParameters)this.target;
 
@@ -55,6 +51,7 @@
                 byte[] pngPixels = (myTarget.precomputedSkyParameters).EncodeToPNG();
                 File.WriteAllBytes(exportPath, pngPixels);
             }
+            EditorGUILayout.EndHorizontal();
 
             this.DrawDefaultInspector();
         }

@@ -5,17 +5,24 @@
     using FoxKit.Modules.RailBuilder.Exporter;
     using System.IO;
 
+    using Rotorz.Games.Collections;
+
     /// <summary>
     /// Custom editor for MaterialDatabases.
     /// </summary>
     [CustomEditor(typeof(RailUniqueIdSet))]
     public class RailUniqueIdSetEditor : Editor
     {
+        private SerializedProperty idsProperty;
+
+        private void OnEnable()
+        {
+            this.idsProperty = this.serializedObject.FindProperty("Ids");
+        }
+
         public override void OnInspectorGUI()
         {
-            this.DrawDefaultInspector();
-            EditorGUILayout.Space();
-
+            EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Export frld"))
             {
                 var myTarget = (RailUniqueIdSet)this.target;
@@ -56,6 +63,9 @@
                     }
                 }
             }
+            EditorGUILayout.EndHorizontal();
+
+            ReorderableListGUI.ListField(this.idsProperty, ReorderableListFlags.ShowIndices);
         }
     }
 }

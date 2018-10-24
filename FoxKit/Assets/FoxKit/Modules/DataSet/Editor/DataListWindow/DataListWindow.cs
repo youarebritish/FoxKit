@@ -191,9 +191,15 @@
                 if (!string.IsNullOrEmpty(path))
                 {
                     var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(path);
-                    Assert.IsNotNull(dataSet, path);
+                    if (dataSet == null)
+                    {
+                        this.activeDataSetGuid = null;
+                    }
+                    else
+                    {
+                        this.activeDataSet = dataSet.GetDataSet();
+                    }
 
-                    this.activeDataSet = dataSet.GetDataSet();
                 }
                 else
                 {
