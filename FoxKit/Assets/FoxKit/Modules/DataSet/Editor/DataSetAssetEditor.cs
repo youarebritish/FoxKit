@@ -394,6 +394,7 @@
                 case Core.PropertyInfoType.Matrix4:
                     // TODO
                     Debug.LogError("Matrix4 properties not currently supported.");
+                    newValue = itemValue;
                     break;
                 case Core.PropertyInfoType.Color:
                     newValue = EditorGUI.ColorField(position, (Color)(object)itemValue);
@@ -410,6 +411,7 @@
                     break;
                 case Core.PropertyInfoType.EntityLink:
                     // TODO
+                    newValue = itemValue;
                     Debug.LogError("EntityLink properties not currently supported.");
                     break;
                 default:

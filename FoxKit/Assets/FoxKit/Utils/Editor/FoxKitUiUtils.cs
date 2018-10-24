@@ -170,7 +170,7 @@ namespace FoxKit.Utils
             var rawValue = EditorGUI.Vector3Field(position, string.Empty, euler);
             return Quaternion.Euler(rawValue);
         }
-
+        
         public static object EntityPtrField(string label, object value, Type type, Action createNewEntityCallback, Action<Entity> deleteEntityCallback, bool allowSceneObjects = false)
         {
             Assert.IsNotNull(type);
