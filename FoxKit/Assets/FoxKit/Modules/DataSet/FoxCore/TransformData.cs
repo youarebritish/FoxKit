@@ -90,6 +90,12 @@
         /// </summary>
         [SerializeField, Property("Flags")]
         protected bool selection = true;
+
+        public bool Visibility => this.visibility;
+
+        public bool InheritTransform => this.inheritTransform;
+
+        public bool Selection => this.selection;
         
         public TransformData Parent => this.parent;
 
@@ -115,8 +121,15 @@
             
             foreach (var child in this.GetChildren())
             {
+                // A child is occasionally (but very rarely) null. Seems to only happen in ombs.
+                if (child == null)
+                {
+                    continue;
+                }
+
                 var sceneProxy = getSceneProxy(this.Name);
                 var childSceneProxy = getSceneProxy(child.Name);
+
                 childSceneProxy.transform.SetParent(sceneProxy.transform);
             }
         }

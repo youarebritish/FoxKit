@@ -142,6 +142,12 @@
                 var instance = UnityEngine.Object.Instantiate(this.modelFile) as GameObject;
                 var sceneProxy = getSceneProxy(this.Name);
 
+                if (this.modelFile is DefaultAsset)
+                {
+                    Debug.LogError($"Model file {this.modelFile.name} is not a recognized format. Did it import correctly?");
+                    return;
+                }
+
                 instance.transform.position = sceneProxy.transform.position;
                 instance.transform.rotation = sceneProxy.transform.rotation;
                 instance.transform.localScale = sceneProxy.transform.localScale;

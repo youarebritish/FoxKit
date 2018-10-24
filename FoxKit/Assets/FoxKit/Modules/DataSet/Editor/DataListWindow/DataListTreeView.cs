@@ -241,6 +241,7 @@
             }
 
             return transformData.GetChildren()
+                .Where(child => child != null)  // Stupidly, a child can be null, thanks to our friend ombs
                 .Aggregate(id, (current, child) => this.AddData(asset, child, node, current));
         }
 

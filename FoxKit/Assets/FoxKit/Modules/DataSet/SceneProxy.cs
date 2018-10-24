@@ -10,7 +10,7 @@
     /// <summary>
     /// A scene representation of a FoxKit Entity. Created to visualize spatial Entity data.
     /// </summary>
-    [DisallowMultipleComponent]
+    [DisallowMultipleComponent, ExecuteInEditMode]
     public class SceneProxy : MonoBehaviour
     {
         [SerializeField, HideInInspector]
@@ -35,8 +35,14 @@
             }
         }
 
+        void Update()
+        {
+            this.gameObject.SetActive(this.entity.Visibility);
+        }
+
         void OnDrawGizmosSelected()
         {
+
             // TODO Don't allow to move if read-only.
             this.entity.Transform.Translation = this.transform.position;
             this.entity.Transform.RotQuat = this.transform.rotation;
