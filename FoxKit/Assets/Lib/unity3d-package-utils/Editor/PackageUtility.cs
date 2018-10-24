@@ -19,11 +19,11 @@ namespace Rotorz.Games.EditorExtensions
 
         private const string PackageNameRegex_ScopeName = @"[@a-z_\-][a-z0-9_\-]+";
         private const string PackageNameRegex_PackageName = @"[a-z_\-][a-z0-9_\-]+";
-        private static Regex s_PackageNameRegex = new Regex(PackageNameRegex_ScopeName + "(/" + PackageNameRegex_PackageName + ")?", RegexOptions.Compiled);
+        private static Regex s_PackageNameRegex = new Regex(PackageNameRegex_ScopeName + "(/" + PackageNameRegex_PackageName + ")?");
 
         private const string AssetFileNameRegex = @"[A-Za-z0-9_\-\.]";
-        private static Regex s_AssetFileNameRegex = new Regex(AssetFileNameRegex, RegexOptions.Compiled);
-        private static Regex s_RelativeAssetPathRegex = new Regex(AssetFileNameRegex + "(/" + AssetFileNameRegex + ")*", RegexOptions.Compiled);
+        private static Regex s_AssetFileNameRegex = new Regex(AssetFileNameRegex);
+        private static Regex s_RelativeAssetPathRegex = new Regex(AssetFileNameRegex + "(/" + AssetFileNameRegex + ")*");
 
 
         /// <summary>

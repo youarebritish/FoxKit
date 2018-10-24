@@ -2,9 +2,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root.
 
 using Rotorz.Games.EditorExtensions;
-using Rotorz.Json;
 using System;
 using System.IO;
+using UnityEngine;
 
 namespace Rotorz.Games.UnityEditorExtensions
 {
@@ -41,16 +41,13 @@ namespace Rotorz.Games.UnityEditorExtensions
 
         private static EditorMenuSettings LoadSettings()
         {
-            EditorMenuSettings settings = null;
+            EditorMenuSettings settings = new EditorMenuSettings();
 
             string editorMenuSettingsFilePath = PackageUtility.ResolveDataPathAbsolute("@rotorz/unity3d-editor-menu", null, "EditorMenuSettings.json");
             if (File.Exists(editorMenuSettingsFilePath)) {
                 var jsonRaw = File.ReadAllText(editorMenuSettingsFilePath);
-                settings = JsonUtility.ReadFrom(jsonRaw).ConvertTo<EditorMenuSettings>();
-            }
-
-            if (settings == null) {
-                settings = new EditorMenuSettings();
+                var data = JsonUtility.FromJson<JsonData>(jsonRaw);
+                settings.FromSerializable(data);
             }
 
             return settings;
@@ -66,23 +63,6 @@ namespace Rotorz.Games.UnityEditorExtensions
         public EditorMenuSettings()
         {
             this.defaultPresenterType = this.FallbackDefaultPresenterType;
-        }
-
-
-        [JsonProperty]
-        private string DefaultPresenterTypeName {
-            get { return this.defaultPresenterType.AssemblyQualifiedName; }
-            set {
-                if (!string.IsNullOrEmpty(value)) {
-                    var type = Type.GetType(value, throwOnError: false);
-                    if (type != null && typeof(IEditorMenuPresenter).IsAssignableFrom(type)) {
-                        this.defaultPresenterType = type;
-                        return;
-                    }
-                }
-
-                this.defaultPresenterType = this.FallbackDefaultPresenterType;
-            }
         }
 
 
@@ -108,6 +88,29 @@ namespace Rotorz.Games.UnityEditorExtensions
 
                 this.defaultPresenterType = value;
             }
+        }
+
+
+
+        private void FromSerializable(JsonData data)
+        {
+            if (!string.IsNullOrEmpty(data.DefaultPresenterTypeName)) {
+                var type = Type.GetType(data.DefaultPresenterTypeName, throwOnError: false);
+                if (type != null && typeof(IEditorMenuPresenter).IsAssignableFrom(type)) {
+                    this.defaultPresenterType = type;
+                    return;
+                }
+            }
+
+            this.defaultPresenterType = this.FallbackDefaultPresenterType;
+        }
+
+
+
+        [Serializable]
+        private sealed class JsonData
+        {
+            public string DefaultPresenterTypeName;
         }
     }
 }

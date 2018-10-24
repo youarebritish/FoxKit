@@ -71,8 +71,8 @@ namespace Rotorz.Games.UnityEditorExtensions
 
         private const string SlugPattern = @"[^\s/\\][^/\\]*";
 
-        //private static readonly Regex SlugRegex = new Regex(SlugPattern, RegexOptions.Compiled | RegexOptions.CultureInvariant);
-        private static readonly Regex PathRegex = new Regex(string.Format(@"^{0}(/{0})*$", SlugPattern), RegexOptions.Compiled | RegexOptions.CultureInvariant);
+        //private static readonly Regex SlugRegex = new Regex(SlugPattern, RegexOptions.CultureInvariant);
+        private static readonly Regex PathRegex = new Regex(string.Format(@"^{0}(/{0})*$", SlugPattern), RegexOptions.CultureInvariant);
 
         private static string GetAssetPathError(string assetPath)
         {

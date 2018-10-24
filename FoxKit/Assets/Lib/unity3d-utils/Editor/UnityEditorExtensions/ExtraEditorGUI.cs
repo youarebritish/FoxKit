@@ -34,9 +34,10 @@ namespace Rotorz.Games.UnityEditorExtensions
         {
             var tyGUIClip = typeof(GUI).Assembly.GetType("UnityEngine.GUIClip");
             if (tyGUIClip != null) {
-                var piVisibleRect = tyGUIClip.GetProperty("visibleRect", BindingFlags.Static | BindingFlags.Public);
+                var piVisibleRect = tyGUIClip.GetProperty("visibleRect", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
                 if (piVisibleRect != null) {
-                    s_VisibleRect = (Func<Rect>)Delegate.CreateDelegate(typeof(Func<Rect>), piVisibleRect.GetGetMethod());
+                    var getMethod = piVisibleRect.GetGetMethod(true) ?? piVisibleRect.GetGetMethod(false);
+                    s_VisibleRect = (Func<Rect>)Delegate.CreateDelegate(typeof(Func<Rect>), getMethod);
                 }
             }
         }
