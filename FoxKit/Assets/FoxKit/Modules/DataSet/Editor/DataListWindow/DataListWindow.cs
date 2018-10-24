@@ -56,18 +56,24 @@
         /// Create a new Entity of a given type in the active DataSet.
         /// </summary>
         /// <param name="entityType">Type of the Entity to add.</param>
-        public void AddEntity(Type entityType)
+        public Data AddEntity(Type entityType)
         {
-            // TODO
-            /*
-            var instance = ScriptableObject.CreateInstance(entityType);
-            instance.name = GenerateNameForType(entityType, this.activeDataSet);
-            // TODO (instance as Entity).AssignDataSet(this.activeDataSet);
+            var instance = Activator.CreateInstance(entityType) as Data;
+            instance.Name = GenerateNameForType(entityType, this.activeDataSet);
+            instance.DataSetGuid = this.activeDataSetGuid;
 
-            this.ActiveDataSet.AddData(instance.name, instance as Data);
+            this.ActiveDataSet.AddData(instance.Name, instance);
             
+            // TODO
+            // There must be a better way of doing this
+            this.treeView = new DataListTreeView(
+                this.treeViewState,
+                this.openDataSetGuids,
+                this.activeDataSet,
+                this.FindSceneProxyForEntity);
             this.treeView.Reload();
-            this.treeView.SelectItem(instance as Data);*/
+
+            return instance;
         }
 
         /// <summary>
@@ -331,14 +337,11 @@
 
         public void SetActiveDataSet(object userData)
         {
-            // TODO: This is getting DataSet objects, not DataSetAssets.
-            var dataSet = userData as DataSetAsset;
+            var dataSet = userData as DataSet;
             Assert.IsNotNull(dataSet);
-
-            var path = AssetDatabase.GetAssetPath(dataSet);
-
+            
             this.activeDataSet = dataSet.GetDataSet();
-            this.activeDataSetGuid = path;
+            this.activeDataSetGuid = dataSet.DataSetGuid;
             this.treeView.SetActiveDataSet(dataSet.GetDataSet());
         }
 
@@ -390,7 +393,7 @@
 
                 if (this.activeDataSet != null)
                 {
-                    menu.AddItem(new GUIContent("Entity"), false, () => AddEntityWindow.Create(typeof(Data), false, GetInstance().AddEntity));
+                    menu.AddItem(new GUIContent("Entity"), false, () => AddEntityWindow.Create(typeof(Data), false, type => GetInstance().AddEntity(type)));
                 }
 
                 menu.ShowAsContext();

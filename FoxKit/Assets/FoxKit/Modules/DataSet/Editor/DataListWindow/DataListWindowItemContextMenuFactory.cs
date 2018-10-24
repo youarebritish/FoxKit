@@ -58,8 +58,7 @@
 
         private static void OnAddEntity()
         {
-            // TODO maybe send the DataSet to add to?
-            AddEntityWindow.Create(typeof(Data), false, DataListWindow.GetInstance().AddEntity);
+            AddEntityWindow.Create(typeof(Data), false, type => DataListWindow.GetInstance().AddEntity(type));
         }
 
         private static void SaveDataSetAs(object dataSet)
