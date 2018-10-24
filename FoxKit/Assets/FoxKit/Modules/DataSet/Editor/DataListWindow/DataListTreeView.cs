@@ -277,27 +277,15 @@
         {
             // For the time being, we only care about right clicking on the DataSet, not its children.
             // So, don't open the menu if the user didn't right click on a DataSet.
-            if (!this.dataSetTreeIds.Contains(id))
-            {
-                return;
-            }
+            var selectedDataSets = from treeId in this.GetSelection()
+                                   where this.dataSetTreeIds.Contains(treeId)
+                                   select this.idToDataMap[treeId] as DataSet;
 
-            var dataSet = this.idToDataMap[id] as DataSet;
 
-            /*foreach (var guid in AssetDatabase.FindAssets($"t:{typeof(DataSetAsset).Name}"))
-            {
-                var assetPath = AssetDatabase.GUIDToAssetPath(guid);
-                var asset = AssetDatabase.LoadAssetAtPath(assetPath, typeof(DataSetAsset));
-                if (asset.name != dataSet.OwningDataSetName)
-                {
-                    continue;
-                }
+            var clickedDataSet = this.idToDataMap[id] as DataSet;
 
-                DataListWindow.GetInstance().MakeShowItemContextMenuDelegate()(guid, dataSet);
-                return;
-            }*/
-
-            DataListWindow.GetInstance().MakeShowItemContextMenuDelegate()(dataSet.DataSetGuid, dataSet);
+            DataListWindow.GetInstance()
+                .MakeShowItemContextMenuDelegate()(clickedDataSet, selectedDataSets.ToList());
         }
         
         public void SelectDataSet(DataSet dataSet)

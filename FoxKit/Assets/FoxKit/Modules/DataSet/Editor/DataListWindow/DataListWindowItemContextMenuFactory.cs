@@ -12,30 +12,29 @@
 
     public static class DataListWindowItemContextMenuFactory
     {
-        public delegate void ShowItemContextMenuDelegate(string dataSetPath, DataSet dataSet);
+        public delegate void ShowItemContextMenuDelegate(DataSet clickedDataSet, IEnumerable<DataSet> selectedDataSets);
 
         public static ShowItemContextMenuDelegate Create(GenericMenu.MenuFunction2 setActiveDataSet, GenericMenu.MenuFunction2 onRemoveDataSet)
         {
-            return (dataSetPath, dataSet) => ShowContextMenu(dataSetPath, dataSet, setActiveDataSet, onRemoveDataSet);
+            return (clickedDataSet, selectedDataSets) => ShowContextMenu(clickedDataSet, selectedDataSets, setActiveDataSet, onRemoveDataSet);
         }
 
-        private static void ShowContextMenu(string dataSetGuid, DataSet dataSet, GenericMenu.MenuFunction2 setActiveDataSet, GenericMenu.MenuFunction2 onRemoveDataSet)
+        private static void ShowContextMenu(DataSet clickedDataSet, IEnumerable<DataSet> dataSets, GenericMenu.MenuFunction2 setActiveDataSet, GenericMenu.MenuFunction2 onRemoveDataSet)
         {
             var menu = new GenericMenu();
-            AddMenuItem(menu, "Set Active DataSet", setActiveDataSet, dataSet);
+            AddMenuItem(menu, "Set Active DataSet", setActiveDataSet, clickedDataSet);
 
             menu.AddSeparator(string.Empty);
 
-            AddMenuItem(menu, "Export DataSet", SaveDataSetAs, dataSet);
-
-            menu.AddSeparator(string.Empty);
-            
-            AddMenuItem(menu, "Unload DataSet", OnSetActiveDataSet);
-            AddMenuItem(menu, "Remove DataSet", onRemoveDataSet, dataSetGuid);
+            AddMenuItem(menu, "Export DataSet", SaveDataSetAs, clickedDataSet);
 
             menu.AddSeparator(string.Empty);
             
-            AddMenuItem(menu, "Select DataSet Asset", SelectDataSetAsset, dataSetGuid);
+            AddMenuItem(menu, "Remove DataSet", onRemoveDataSet, dataSets);
+
+            menu.AddSeparator(string.Empty);
+            
+            AddMenuItem(menu, "Select DataSet Asset", SelectDataSetAsset, clickedDataSet);
             AddMenuItem(menu, "Add Entity", OnAddEntity);
 
             menu.ShowAsContext();

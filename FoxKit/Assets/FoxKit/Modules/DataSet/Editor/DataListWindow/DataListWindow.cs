@@ -49,7 +49,14 @@
 
         public DataListWindowItemContextMenuFactory.ShowItemContextMenuDelegate MakeShowItemContextMenuDelegate()
         {
-            return DataListWindowItemContextMenuFactory.Create(this.SetActiveDataSet, dataSetGuid => this.RemoveDataSet(dataSetGuid as string));
+            return DataListWindowItemContextMenuFactory.Create(
+                this.SetActiveDataSet,
+                delegate(object dataSets)
+                    {
+                        var guids = from dataSet in (dataSets as IEnumerable<DataSet>)
+                                    select dataSet.DataSetGuid;
+                        this.RemoveDataSets(guids);
+                    });
         }
 
         /// <summary>
@@ -372,6 +379,14 @@
         public bool IsDataSetOpen(string dataSetGuid)
         {
             return this.openDataSetGuids.Contains(dataSetGuid);
+        }
+
+        public void RemoveDataSets(IEnumerable<string> dataSetGuids)
+        {
+            foreach (var guid in dataSetGuids)
+            {
+                this.RemoveDataSet(guid);
+            }
         }
         
         public void RemoveDataSet(string dataSetGuid)
