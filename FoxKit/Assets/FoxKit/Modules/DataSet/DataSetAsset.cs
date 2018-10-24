@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using FoxKit.Modules.DataSet.FoxCore;
 
@@ -7,7 +6,7 @@ using OdinSerializer;
 
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "FoxKit/DataSet")]
+[CreateAssetMenu(fileName = "New DataSet", menuName = "FoxKit/DataSet", order = 1)]
 public class DataSetAsset : SerializedScriptableObject
 {
     [OdinSerialize, NonSerialized]

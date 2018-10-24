@@ -1,14 +1,13 @@
 ﻿namespace FoxKit.Modules.RouteBuilder
 {
     using FoxKit.Utils;
-
-    using UnityEditor;
-
+    
     using UnityEngine;
 
     /// <summary>
     /// Route Builder preferences.
     /// </summary>
+    [CreateAssetMenu(menuName = "FoxKit/Preferences/Route Builder Preferences", order = 5)]
     public class RouteBuilderPreferences : SingletonScriptableObject<RouteBuilderPreferences>
     {
         /// <summary>
@@ -55,14 +54,5 @@
         /// Route event message dictionary.
         /// </summary>
         public TextAsset MessageDictionary;
-
-        /// <summary>
-        /// Creates a new RouteBuilderPreferences asset.
-        /// </summary>
-        [MenuItem("Assets/Create/FoxKit/Preferences/Route Builder")]
-        public static void CreateAsset()
-        {
-            CreateScriptableObject.CreateAsset<RouteBuilderPreferences>();
-        }
     }
 }

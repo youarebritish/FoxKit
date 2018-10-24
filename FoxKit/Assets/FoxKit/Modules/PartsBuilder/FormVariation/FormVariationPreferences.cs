@@ -2,13 +2,12 @@
 {
     using FoxKit.Utils;
 
-    using UnityEditor;
-
     using UnityEngine;
 
     /// <summary>
     /// Form Variation Builder preferences.
     /// </summary>
+    [CreateAssetMenu(menuName = "FoxKit/Preferences/Form Variation Preferences", order = 5)]
     public class FormVariationPreferences : SingletonScriptableObject<FormVariationPreferences>
     {
         /// <summary>
@@ -20,14 +19,5 @@
         /// File name dictionary.
         /// </summary>
         public TextAsset FileDictionary;
-
-        /// <summary>
-        /// Creates a new Form Variation Builder asset.
-        /// </summary>
-        [MenuItem("Assets/Create/FoxKit/Preferences/Part Builder/Form Variation")]
-        public static void CreateAsset()
-        {
-            CreateScriptableObject.CreateAsset<FormVariationPreferences>();
-        }
     }
 }

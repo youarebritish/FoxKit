@@ -184,8 +184,20 @@
         {
             if (!string.IsNullOrEmpty(this.activeDataSetGuid))
             {
-                this.activeDataSet =
-                    AssetDatabase.LoadAssetAtPath<DataSetAsset>(AssetDatabase.GUIDToAssetPath(this.activeDataSetGuid)).GetDataSet();
+                var path = AssetDatabase.GUIDToAssetPath(this.activeDataSetGuid);
+
+                // The asset was probably deleted, so stop holding onto its GUID.
+                if (!string.IsNullOrEmpty(path))
+                {
+                    var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(path);
+                    Assert.IsNotNull(dataSet);
+
+                    this.activeDataSet = dataSet.GetDataSet();
+                }
+                else
+                {
+                    this.activeDataSet = null;
+                }
             }
 
             IsOpen = true;

@@ -1,14 +1,13 @@
 ﻿namespace FoxKit.Modules.Terrain
 {
     using FoxKit.Utils;
-
-    using UnityEditor;
-
+    
     using UnityEngine;
 
     /// <summary>
     /// Terrain preferences.
     /// </summary>
+    [CreateAssetMenu(menuName = "FoxKit/Preferences/Terrain Preferences", order = 5)]
     public class TerrainPreferences : SingletonScriptableObject<TerrainPreferences>
     {
         /// <summary>
@@ -30,14 +29,5 @@
         public const float MAX_HEIGHT_AFC0 = 200f;
         public const float MAX_HEIGHT_AFC1 = 200f;
         public const float MAX_HEIGHT_SVA0 = 234.2403f;
-
-        /// <summary>
-        /// Creates a new TerrainPreferences asset.
-        /// </summary>
-        [MenuItem("Assets/Create/FoxKit/Preferences/Terrain")]
-        public static void CreateAsset()
-        {
-            CreateScriptableObject.CreateAsset<TerrainPreferences>();
-        }
     }
 }
