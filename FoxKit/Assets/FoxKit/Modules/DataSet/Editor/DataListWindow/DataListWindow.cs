@@ -5,6 +5,7 @@
     using System.Linq;
 
     using FoxKit.Modules.DataSet.FoxCore;
+    using FoxKit.Utils;
 
     using UnityEditor;
     using UnityEditor.Callbacks;
@@ -434,14 +435,15 @@
 
         private void CreateDataSet()
         {
-            // TODO 
-            /*
-            var dataSet = CreateInstance<DataSet>();
+            var dataSet = CreateInstance<DataSetAsset>();
 
             var path = UnityFileUtils.GetUniqueAssetPathNameOrFallback("DataSet0000.asset");
             AssetDatabase.CreateAsset(dataSet, path);
 
-            this.OpenDataSet(path);*/
+            var guid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(dataSet));
+            dataSet.GetDataSet().DataSetGuid = guid;
+
+            this.OpenDataSet(guid);
         }
 
         private void ProcessKeyboardShortcuts()
