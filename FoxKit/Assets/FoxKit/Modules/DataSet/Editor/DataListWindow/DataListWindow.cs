@@ -190,7 +190,7 @@
                 if (!string.IsNullOrEmpty(path))
                 {
                     var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(path);
-                    Assert.IsNotNull(dataSet);
+                    Assert.IsNotNull(dataSet, path);
 
                     this.activeDataSet = dataSet.GetDataSet();
                 }
