@@ -11,6 +11,8 @@ namespace FoxKit.Utils
 
     using UnityEngine.Assertions;
 
+    using Object = UnityEngine.Object;
+
     /// <summary>
     /// Helper functions for FoxKit UI.
     /// </summary>
@@ -20,6 +22,41 @@ namespace FoxKit.Utils
         /// Height and width of FoxKit buttons.
         /// </summary>
         public const float BUTTON_DIMENSION = 32.0f;
+
+        /// <summary>
+        /// Display the read-only asset warning and provide the user with a button to create an editable copy of the asset.
+        /// </summary>
+        /// <typeparam name="T">Type of the asset.</typeparam>
+        /// <param name="asset">The original, read-only asset.</param>
+        /// <param name="setNotReadOnly">Function to set an asset of type T to not read-only.</param>
+        public static void ReadOnlyWarningAndButton<T>(T asset, Action<T> setNotReadOnly) where T : UnityEngine.Object
+        {
+            GUI.enabled = true;
+            EditorGUILayout.HelpBox(
+                "Unity marks imported assets as read-only. To make changes to this asset, create an editable copy.",
+                MessageType.Warning);
+            if (GUILayout.Button("Create Editable Copy", GUILayout.Width(200)))
+            {
+                var duplicate = Object.Instantiate(asset);
+                setNotReadOnly(duplicate);
+
+                var path = EditorUtility.SaveFilePanelInProject(
+                    "Create editable copy",
+                    asset.name,
+                    "asset",
+                    "Create editable copy");
+
+                if (!string.IsNullOrEmpty(path))
+                {
+                    EditorUtility.SetDirty(duplicate);
+                    AssetDatabase.CreateAsset(duplicate, path);
+                    AssetDatabase.SaveAssets();
+                }
+            }
+
+            EditorGUILayout.Separator();
+            GUI.enabled = false;
+        }
 
         /// <summary>
         /// Draw a FoxKit tool button.

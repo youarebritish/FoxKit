@@ -9,5 +9,8 @@ namespace FoxKit.Modules.MaterialDatabase
     public class MaterialDatabase : ScriptableObject
     {
         public MaterialPreset[] materialPresets;
+
+        [HideInInspector]
+        public bool IsReadOnly;
     }
 }

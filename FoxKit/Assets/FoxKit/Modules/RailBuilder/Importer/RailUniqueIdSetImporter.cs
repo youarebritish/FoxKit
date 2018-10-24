@@ -19,6 +19,7 @@
         {
             var railIdsAsset = UnityEngine.ScriptableObject.CreateInstance<RailUniqueIdSet>();
             railIdsAsset.name = Path.GetFileNameWithoutExtension(ctx.assetPath);
+            railIdsAsset.IsReadOnly = true;
 
             using (var reader = new BinaryReader(new FileStream(ctx.assetPath, FileMode.Open), FoxLib.Tpp.RouteSet.getEncoding()))
             {

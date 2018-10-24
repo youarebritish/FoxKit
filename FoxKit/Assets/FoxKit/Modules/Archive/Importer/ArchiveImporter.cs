@@ -48,7 +48,7 @@
 
             ctx.AddObjectToAsset("definition", archiveDefinition);
             ctx.SetMainObject(archiveDefinition);
-
+            
             /* TODO
              * Calling this currently triggers a (harmless?) "A default asset was created for 'blah.fpkd' because the asset importer crashed on it last time."
              * error message. However, removing it makes it so that Unity doesn't detect the new files immediately. Figure out what to do about this. */
@@ -65,9 +65,6 @@
                 {
                     var outputDirectory = new FileSystemDirectory(Path.GetDirectoryName(exportedFile.FileName));
                     var filename = Path.GetFileName(exportedFile.FileName);
-
-                    Debug.Log(filename);
-
                     outputDirectory.WriteFile(filename, exportedFile.DataStream);
                 }
             }

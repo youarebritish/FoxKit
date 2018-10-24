@@ -9,6 +9,7 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
     using FoxKit.Modules.PartsBuilder.FormVariation;
     using FoxKit.Modules.PartsBuilder.FormVariation.Importer;
     using FoxKit.Modules.PartsBuilder.FormVariation.Exporter;
+    using FoxKit.Utils;
 
     using UnityEditor.Experimental.AssetImporters;
 
@@ -43,12 +44,15 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
         public override void OnInspectorGUI()
         {
             operationHeaderGUIStyle.alignment = TextAnchor.MiddleCenter;
-
-            EditorGUILayout.Space();
-
+            
             var importer = (FormVariationImporter)this.target;
 
             var myTarget = AssetDatabase.LoadAssetAtPath<FormVariation>(importer.assetPath);
+
+            if (myTarget.IsReadOnly)
+            {
+                FoxKitUiUtils.ReadOnlyWarningAndButton(myTarget, asset => asset.IsReadOnly = false);
+            }
 
             if (GUILayout.Button("Export fv2"))
             {

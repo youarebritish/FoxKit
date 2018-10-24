@@ -61,6 +61,7 @@
             var buildRouteSet = RouteSetFactory.CreateFactory(buildRoute);
 
             var routeSetGameObject = buildRouteSet.Invoke(routeSet, Path.GetFileNameWithoutExtension(ctx.assetPath));
+            routeSetGameObject.IsReadOnly = true;
 
             ctx.AddObjectToAsset(routeSetGameObject.name, routeSetGameObject.gameObject);
             ctx.SetMainObject(routeSetGameObject.gameObject);

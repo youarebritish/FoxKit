@@ -9,5 +9,8 @@ namespace FoxKit.Modules.Atmosphere.SkyParameters
     public class SkyParameters : ScriptableObject
     {
         public Texture2D precomputedSkyParameters;
+
+        [HideInInspector]
+        public bool IsReadOnly;
     }
 }

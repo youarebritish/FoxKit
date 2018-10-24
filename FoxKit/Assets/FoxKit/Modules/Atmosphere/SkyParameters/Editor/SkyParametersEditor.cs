@@ -7,6 +7,7 @@
 
     using FoxKit.Modules.Atmosphere.SkyParameters;
     using FoxKit.Modules.Atmosphere.SkyParameters.Exporter;
+    using FoxKit.Utils;
 
     /// <summary>
     /// Custom editor for PrecomputedSkyParameters.
@@ -16,10 +17,15 @@
     {
         public override void OnInspectorGUI()
         {
+            var myTarget = (SkyParameters)this.target;
+            if (myTarget.IsReadOnly)
+            {
+                FoxKitUiUtils.ReadOnlyWarningAndButton(myTarget, asset => asset.IsReadOnly = false);
+            }
+
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Export pcsp"))
             {
-                var myTarget = (SkyParameters)this.target;
 
                 var exportPath = EditorUtility.SaveFilePanel(
                     "Export pcsp",
@@ -35,8 +41,6 @@
             }
             else if (GUILayout.Button("Export png"))
             {
-                var myTarget = (SkyParameters)this.target;
-
                 var exportPath = EditorUtility.SaveFilePanel(
                     "Export png",
                     string.Empty,
@@ -48,7 +52,7 @@
                     return;
                 }
 
-                byte[] pngPixels = (myTarget.precomputedSkyParameters).EncodeToPNG();
+                var pngPixels = (myTarget.precomputedSkyParameters).EncodeToPNG();
                 File.WriteAllBytes(exportPath, pngPixels);
             }
             EditorGUILayout.EndHorizontal();

@@ -5,6 +5,7 @@
 
     using FoxKit.Modules.MaterialDatabase;
     using FoxKit.Modules.MaterialDatabase.Exporter;
+    using FoxKit.Utils;
 
     /// <summary>
     /// Custom editor for MaterialDatabases.
@@ -14,12 +15,14 @@
     {
         public override void OnInspectorGUI()
         {
-            EditorGUILayout.Space();
+            var asset = (MaterialDatabase)this.target;
+            if (asset.IsReadOnly)
+            {
+                FoxKitUiUtils.ReadOnlyWarningAndButton(asset, duplicate => duplicate.IsReadOnly = false);
+            }
 
             if (GUILayout.Button("Export fmtt"))
             {
-                var myTarget = (MaterialDatabase)this.target;
-
                 var exportPath = EditorUtility.SaveFilePanel(
                     "Export fmtt",
                     string.Empty,
@@ -30,7 +33,8 @@
                 {
                     return;
                 }
-                MaterialDatabaseExporter.ExportMaterialDatabase(myTarget.materialPresets as MaterialPreset[], exportPath);
+
+                MaterialDatabaseExporter.ExportMaterialDatabase(asset.materialPresets, exportPath);
             }
 
             this.DrawDefaultInspector();

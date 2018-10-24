@@ -17,6 +17,9 @@
         public List<BoneAttachment> BoneAttachments = new List<BoneAttachment>();
         public List<CNPAttachment> CNPAttachments = new List<CNPAttachment>();
 
+        [HideInInspector]
+        public bool IsReadOnly;
+
         /// <summary>
         /// Makes a FoxKit FormVariation from a FoxLib FormVariation.
         /// </summary>

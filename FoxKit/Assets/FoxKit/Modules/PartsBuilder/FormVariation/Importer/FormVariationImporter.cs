@@ -51,8 +51,8 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Importer
             }
 
             var formVariationSet = UnityEngine.ScriptableObject.CreateInstance<FormVariation>();
-
             formVariationSet = FormVariation.MakeFoxKitFormVariation(formVariation, nameHashManager, fileNameHashManager);
+            formVariationSet.IsReadOnly = true;
 
             ctx.AddObjectToAsset("fv2", formVariationSet);
             ctx.SetMainObject(formVariationSet);

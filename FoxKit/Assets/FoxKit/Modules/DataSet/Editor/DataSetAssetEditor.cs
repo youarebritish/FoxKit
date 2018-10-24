@@ -26,35 +26,9 @@
         public override void OnInspectorGUI()
         {
             var asset = this.target as DataSetAsset;
-
             if (asset.IsReadOnly)
             {
-                GUI.enabled = true;
-                EditorGUILayout.HelpBox(
-                    "Unity marks imported assets as read-only. To make changes to this asset, create an editable copy.",
-                    MessageType.Warning);
-                if (GUILayout.Button("Create Editable Copy", GUILayout.Width(200)))
-                {
-                    var duplicate = Instantiate(this.target) as DataSetAsset;
-                    duplicate.IsReadOnly = false;
-
-                    var originalPath = AssetDatabase.GetAssetPath(asset);
-                    var path = EditorUtility.SaveFilePanelInProject(
-                        "Create editable copy",
-                        this.target.name,
-                        "asset",
-                        "Create editable copy");
-
-                    if (!string.IsNullOrEmpty(path))
-                    {
-                        EditorUtility.SetDirty(duplicate);
-                        AssetDatabase.CreateAsset(duplicate, path);
-                        AssetDatabase.SaveAssets();
-                    }
-                }
-
-                EditorGUILayout.Separator();
-                GUI.enabled = false;
+                FoxKitUiUtils.ReadOnlyWarningAndButton(this.target as DataSetAsset, duplicate => duplicate.IsReadOnly = false);
             }
 
             var entity = FoxKitEditor.InspectedEntity
