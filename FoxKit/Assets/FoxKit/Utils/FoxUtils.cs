@@ -15,7 +15,7 @@ namespace FoxKit.Utils
     /// <summary>
     /// Helper functions for working with Fox Engine-formatted data.
     /// </summary>
-    public static class FoxUtils
+    public static class FoxUtils123
     {
         /// <summary>
         /// Converts a Fox Engine Vector3 to a Unity Vector3.

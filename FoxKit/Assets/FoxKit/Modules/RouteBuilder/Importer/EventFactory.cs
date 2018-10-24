@@ -1,9 +1,10 @@
 ﻿using System.Linq;
 using UnityEngine;
-using static FoxKit.Core.IHashManagerExtensions;
 
 namespace FoxKit.Modules.RouteBuilder.Importer
 {
+    using FoxKit.Core;
+
     /// <summary>
     /// Collection of helper functions for constructing RouteEvents.
     /// </summary>
@@ -30,8 +31,7 @@ namespace FoxKit.Modules.RouteBuilder.Importer
         /// <param name="getEventTypeName"></param>
         /// <param name="generateEventName"></param>
         /// <returns></returns>
-        public static CreateEventDelegate CreateFactory(TryUnhashDelegate<uint> getEventTypeName, GenerateEventNameDelegate generateEventName)
-        public static CreateEventDelegate CreateNodeEventFactory(TryUnhashDelegate<uint> getEventTypeName, GenerateEventNameDelegate generateEventName)
+        public static CreateEventDelegate CreateNodeEventFactory(IHashManagerExtensions.TryUnhashDelegate<uint> getEventTypeName, GenerateEventNameDelegate generateEventName)
         {
             return (parent, data) => CreateNodeEvent(parent, data, getEventTypeName, generateEventName);
         }
@@ -42,7 +42,7 @@ namespace FoxKit.Modules.RouteBuilder.Importer
         /// <param name="getEventTypeName"></param>
         /// <param name="generateEventName"></param>
         /// <returns></returns>
-        public static CreateEventDelegate CreateEdgeEventFactory(TryUnhashDelegate<uint> getEventTypeName, GenerateEventNameDelegate generateEventName)
+        public static CreateEventDelegate CreateEdgeEventFactory(IHashManagerExtensions.TryUnhashDelegate<uint> getEventTypeName, GenerateEventNameDelegate generateEventName)
         {
             return (parent, data) => CreateEdgeEvent(parent, data, getEventTypeName, generateEventName);
         }
@@ -55,7 +55,7 @@ namespace FoxKit.Modules.RouteBuilder.Importer
         /// <param name="getEventTypeName">Function to get the name of the RouteEvent's type.</param>
         /// <param name="generateEventName">Function to generate a name for a RouteEvent.</param>
         /// <returns>The constructed RouteEvent.</returns>
-        private static RouteNodeEvent CreateNodeEvent(GameObject parent, FoxLib.Tpp.RouteSet.RouteEvent data, TryUnhashDelegate<uint> getEventTypeName, GenerateEventNameDelegate generateEventName)
+        private static RouteNodeEvent CreateNodeEvent(GameObject parent, FoxLib.Tpp.RouteSet.RouteEvent data, IHashManagerExtensions.TryUnhashDelegate<uint> getEventTypeName, GenerateEventNameDelegate generateEventName)
         {
             var component = parent.GetComponent<RouteNodeEvent>();
             if (component == null)
@@ -86,7 +86,7 @@ namespace FoxKit.Modules.RouteBuilder.Importer
         /// <param name="getEventTypeName">Function to get the name of the RouteEvent's type.</param>
         /// <param name="generateEventName">Function to generate a name for a RouteEvent.</param>
         /// <returns>The constructed RouteEvent.</returns>
-        private static RouteEdgeEvent CreateEdgeEvent(GameObject parent, FoxLib.Tpp.RouteSet.RouteEvent data, TryUnhashDelegate<uint> getEventTypeName, GenerateEventNameDelegate generateEventName)
+        private static RouteEdgeEvent CreateEdgeEvent(GameObject parent, FoxLib.Tpp.RouteSet.RouteEvent data, IHashManagerExtensions.TryUnhashDelegate<uint> getEventTypeName, GenerateEventNameDelegate generateEventName)
         {
             var component = parent.GetComponent<RouteEdgeEvent>();
             if (component == null)

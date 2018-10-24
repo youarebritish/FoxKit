@@ -69,7 +69,7 @@ namespace FoxKit.Core
             return (string path, out Object asset) => TryGetAsset(assets, path, out asset);
         }
 
-        private static bool TryGetAsset(IReadOnlyDictionary<string, Object> newlyImportedAssets, string path, out Object asset)
+        private static bool TryGetAsset(IDictionary<string, Object> newlyImportedAssets, string path, out Object asset)
         {
             if (string.IsNullOrEmpty(path))
             {
@@ -94,12 +94,12 @@ namespace FoxKit.Core
             return false;
         }
 
-        private static GetDataSetDelegate MakeGetDataSetDelegate(IReadOnlyDictionary<string, DataSet> dataSets)
+        private static GetDataSetDelegate MakeGetDataSetDelegate(IDictionary<string, DataSet> dataSets)
         {
             return (string name) => GetDataSet(dataSets, name);
         }
 
-        private static DataSet GetDataSet(IReadOnlyDictionary<string, DataSet> dataSets, string name)
+        private static DataSet GetDataSet(IDictionary<string, DataSet> dataSets, string name)
         {
             DataSet result = null;
 
