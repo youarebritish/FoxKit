@@ -157,8 +157,6 @@
         protected virtual void DestroySceneProxy(DestroySceneProxyDelegate destroySceneProxy)
         {
             destroySceneProxy();
-            //GameObject.DestroyImmediate(this.sceneProxyGameObject);
-            //this.sceneProxyGameObject = null;
         }
 
         /// <inheritdoc />

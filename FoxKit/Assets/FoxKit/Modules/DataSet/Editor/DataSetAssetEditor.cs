@@ -568,20 +568,13 @@
                 return entity;
             }
 
-            var wasDataListWindowOpen = DataListWindow.DataListWindow.IsOpen;
-            var window = DataListWindow.DataListWindow.GetInstance();
-
+            var dataListWindowState = SingletonScriptableObject<DataListWindowState>.Instance;
             var transformData = owningEntity as TransformData;
-            var sceneProxy = window.CreateSceneProxyForEntity(transformData.DataSetGuid, transformData.Name);
+            var sceneProxy = dataListWindowState.CreateSceneProxyForEntity(transformData.DataSetGuid, transformData.Name);
 
             if (transformData.Parent != null)
             {
-                sceneProxy.transform.SetParent(window.FindSceneProxyForEntity(transformData.DataSetGuid, transformData.Parent.Name).transform);
-            }
-
-            if (!wasDataListWindowOpen)
-            {
-                window.Close();
+                sceneProxy.transform.SetParent(dataListWindowState.FindSceneProxyForEntity(transformData.DataSetGuid, transformData.Parent.Name).transform);
             }
 
             return entity;
@@ -599,17 +592,9 @@
             {
                 return;
             }
-
-            var wasDataListWindowOpen = DataListWindow.DataListWindow.IsOpen;
-            var window = DataListWindow.DataListWindow.GetInstance();
-
+            
             var transformData = owningEntity as TransformData;
-            window.DeleteSceneProxyRecordForEntity(transformData.DataSetGuid, transformData.Name, true);
-
-            if (!wasDataListWindowOpen)
-            {
-                window.Close();
-            }
+            SingletonScriptableObject<DataListWindowState>.Instance.DeleteSceneProxy(transformData.DataSetGuid, transformData.Name, DataListWindowState.DestroyGameObject.Destroy);
         }
 
         private class EntityPtrListAdapter : GenericListAdaptor<Entity>
@@ -684,20 +669,13 @@
                     return;
                 }
 
-                var wasDataListWindowOpen = DataListWindow.DataListWindow.IsOpen;
-                var window = DataListWindow.DataListWindow.GetInstance();
-
+                var dataListWindowState = SingletonScriptableObject<DataListWindowState>.Instance;
                 var transformData = this.owningEntity as TransformData;
-                var sceneProxy = window.CreateSceneProxyForEntity(transformData.DataSetGuid, transformData.Name);
+                var sceneProxy = dataListWindowState.CreateSceneProxyForEntity(transformData.DataSetGuid, transformData.Name);
 
                 if (transformData.Parent != null)
                 {
-                    sceneProxy.transform.SetParent(window.FindSceneProxyForEntity(transformData.DataSetGuid, transformData.Parent.Name).transform);
-                }
-
-                if (!wasDataListWindowOpen)
-                {
-                    window.Close();
+                    sceneProxy.transform.SetParent(dataListWindowState.FindSceneProxyForEntity(transformData.DataSetGuid, transformData.Parent.Name).transform);
                 }
             }
         }

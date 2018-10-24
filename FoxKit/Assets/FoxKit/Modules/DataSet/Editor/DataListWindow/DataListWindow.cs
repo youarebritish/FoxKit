@@ -36,17 +36,12 @@
 
         [SerializeField]
         private string activeDataSetGuid;
-
-        [SerializeField]
-        private List<SceneProxyRecord> sceneProxyRecords = new List<SceneProxyRecord>();
-
+        
         /// <summary>
         /// Tree view widget.
         /// </summary>
         private DataListTreeView treeView;
         
-        public DataSet ActiveDataSet => this.activeDataSet;
-
         public DataListWindowItemContextMenuFactory.ShowItemContextMenuDelegate MakeShowItemContextMenuDelegate()
         {
             return DataListWindowItemContextMenuFactory.Create(
@@ -69,7 +64,7 @@
             instance.Name = GenerateNameForType(entityType, this.activeDataSet);
             instance.DataSetGuid = this.activeDataSetGuid;
 
-            this.ActiveDataSet.AddData(instance.Name, instance);
+            this.activeDataSet.AddData(instance.Name, instance);
             
             // TODO
             // There must be a better way of doing this
@@ -77,7 +72,7 @@
                 this.treeViewState,
                 this.openDataSetGuids,
                 this.activeDataSet,
-                this.FindSceneProxyForEntity);
+                SingletonScriptableObject<DataListWindowState>.Instance.FindSceneProxyForEntity);
             this.treeView.Reload();
 
             return instance;
@@ -233,7 +228,7 @@
                 this.treeViewState,
                 this.openDataSetGuids,
                 this.activeDataSet,
-                this.FindSceneProxyForEntity);
+                SingletonScriptableObject<DataListWindowState>.Instance.FindSceneProxyForEntity);
             this.treeView.Reload();
         }
 
@@ -267,92 +262,17 @@
                 return;
             }
 
-            DataSet.CreateSceneProxyForEntityDelegate createSceneProxy = entityName => this.CreateSceneProxyForEntity(dataSetGuid, entityName);
+            var state = SingletonScriptableObject<DataListWindowState>.Instance;
+            DataSet.CreateSceneProxyForEntityDelegate createSceneProxy = entityName => state.CreateSceneProxyForEntity(dataSetGuid, entityName);
 
-            Entity.GetSceneProxyDelegate getSceneProxy =
-                entityName => this.FindSceneProxyForEntity(dataSetGuid, entityName);
+            Entity.GetSceneProxyDelegate getSceneProxy = entityName => state.FindSceneProxyForEntity(
+                dataSetGuid,
+                entityName);
 
             dataSet.LoadAllEntities(createSceneProxy, getSceneProxy);
 
             this.openDataSetGuids.Add(dataSetGuid);
             this.treeView.Reload();
-        }
-
-        public SceneProxy CreateSceneProxyForEntity(string dataSetGuid, string entityName)
-        {
-            var gameObject = new GameObject(entityName);
-            var sceneProxy = gameObject.AddComponent<SceneProxy>();
-            var asset = AssetDatabase.LoadAssetAtPath<DataSetAsset>(AssetDatabase.GUIDToAssetPath(dataSetGuid));
-            var entity = asset.GetDataSet().GetData(entityName);
-            var transformData = entity as TransformData;
-
-            Assert.IsNotNull(transformData);
-
-            sceneProxy.Entity = transformData;
-            sceneProxy.Asset = asset;
-
-            var sceneProxyRecord = new SceneProxyRecord(dataSetGuid, entityName, sceneProxy);
-            this.sceneProxyRecords.Add(sceneProxyRecord);
-
-            return sceneProxy;
-        }
-
-        public SceneProxy FindSceneProxyForEntity(string dataSetGuid, string entityName)
-        {
-            foreach (var record in this.sceneProxyRecords)
-            {
-                if (record.DoesBelongToEntity(dataSetGuid, entityName))
-                {
-                    return record.SceneProxy;
-                }
-            }
-
-            Debug.LogError($"Unable to find scene proxy for entity {entityName} in DataSet {AssetDatabase.GUIDToAssetPath(dataSetGuid)}");
-            return null;
-        }
-        
-        private void DeleteSceneProxyRecordsForDataSet(string dataSetGuid, bool destroyGameObjects)
-        {
-            var recordsToDelete = (from record in this.sceneProxyRecords
-                                  where record.DoesBelongToDataSet(dataSetGuid)
-                                  select record).ToList();
-
-            foreach (var record in recordsToDelete)
-            {
-                this.sceneProxyRecords.Remove(record);
-
-                if (destroyGameObjects && record.SceneProxy != null)
-                {
-                    GameObject.DestroyImmediate(record.SceneProxy);
-                }
-            }
-
-            this.sceneProxyRecords.RemoveAll(record => record.DoesBelongToDataSet(dataSetGuid));
-        }
-
-        public void DeleteSceneProxyRecordForEntity(string dataSetGuid, string entityName, bool destroyGameObject)
-        {
-            SceneProxyRecord recordToDelete = null;
-
-            foreach (var record in this.sceneProxyRecords)
-            {
-                if (record.DoesBelongToEntity(dataSetGuid, entityName))
-                {
-                    recordToDelete = record;
-                }
-            }
-
-            if (recordToDelete == null)
-            {
-                return;
-            }
-
-            if (destroyGameObject && recordToDelete.SceneProxy != null)
-            {
-                GameObject.DestroyImmediate(recordToDelete.SceneProxy.gameObject);
-            }
-            
-            this.sceneProxyRecords.Remove(recordToDelete);
         }
         
         private void OnUnitySelectionChange()
@@ -397,7 +317,7 @@
             var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(AssetDatabase.GUIDToAssetPath(dataSetGuid))?.GetDataSet();
             Assert.IsNotNull(dataSet);
 
-            dataSet?.UnloadAllEntities(entityName => this.DeleteSceneProxyRecordForEntity(dataSetGuid, entityName, true));
+            dataSet?.UnloadAllEntities(entityName => SingletonScriptableObject<DataListWindowState>.Instance.DeleteSceneProxy(dataSetGuid, entityName, DataListWindowState.DestroyGameObject.Destroy));
 
             if (this.activeDataSetGuid == dataSetGuid)
             {
@@ -443,7 +363,7 @@
                 this.activeDataSet = null;
                 this.activeDataSetGuid = null;
                 this.openDataSetGuids.Clear();
-                this.sceneProxyRecords.Clear();
+                SingletonScriptableObject<DataListWindowState>.Instance.ClearState();
                 this.treeView.Reload();
             }
 
@@ -482,38 +402,6 @@
 
             this.treeView.HandleDelete();
             current.Use();
-        }
-
-        [Serializable]
-        private class SceneProxyRecord
-        {
-            [SerializeField]
-            private string owningDataSetGuid;
-
-            [SerializeField]
-            private string owningEntityName;
-
-            [SerializeField]
-            private SceneProxy sceneProxy;
-
-            public SceneProxy SceneProxy => this.sceneProxy;
-
-            public SceneProxyRecord(string owningDataSetGuid, string owningEntityName, SceneProxy sceneProxy)
-            {
-                this.owningDataSetGuid = owningDataSetGuid;
-                this.owningEntityName = owningEntityName;
-                this.sceneProxy = sceneProxy;
-            }
-
-            public bool DoesBelongToDataSet(string dataSetGuid)
-            {
-                return this.owningDataSetGuid == dataSetGuid;
-            }
-
-            public bool DoesBelongToEntity(string dataSetGuid, string entityName)
-            {
-                return this.DoesBelongToDataSet(dataSetGuid) && this.owningEntityName == entityName;
-            }
         }
     }
 }
