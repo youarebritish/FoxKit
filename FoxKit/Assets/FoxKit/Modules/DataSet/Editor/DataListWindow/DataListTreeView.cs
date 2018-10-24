@@ -5,9 +5,7 @@
 
     using FoxKit.Core;
     using FoxKit.Modules.DataSet.FoxCore;
-
-    using JetBrains.Annotations;
-
+    
     using UnityEditor;
     using UnityEditor.IMGUI.Controls;
 
@@ -50,6 +48,7 @@
         [SerializeField]
         private List<DataSetAsset> idToDataSetMap = new List<DataSetAsset>();
         
+        [SerializeField]
         private DataSet activeDataSet;
 
         public delegate SceneProxy GetSceneProxyDelegate(string dataSetGuid, string entityName);

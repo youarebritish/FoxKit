@@ -31,7 +31,6 @@
         [SerializeField]
         private TreeViewState treeViewState;
 
-        [SerializeField]
         private DataSet activeDataSet;
 
         [SerializeField]
@@ -183,6 +182,12 @@
         /// </summary>
         private void OnEnable()
         {
+            if (!string.IsNullOrEmpty(this.activeDataSetGuid))
+            {
+                this.activeDataSet =
+                    AssetDatabase.LoadAssetAtPath<DataSetAsset>(AssetDatabase.GUIDToAssetPath(this.activeDataSetGuid)).GetDataSet();
+            }
+
             IsOpen = true;
 
             if (this.treeViewState == null)
