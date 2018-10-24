@@ -1,11 +1,8 @@
 ﻿namespace FoxKit.Modules.MaterialDatabase.Editor
 {
-    using System;
-
     using UnityEngine;
     using UnityEditor;
 
-    using FoxKit.Core;
     using FoxKit.Modules.MaterialDatabase;
     using FoxKit.Modules.MaterialDatabase.Exporter;
 
@@ -33,7 +30,7 @@
                 {
                     return;
                 }
-                MaterialDatabaseExporter.ExportMaterialDatabase(((MaterialDatabase)this.target).materialPresets as MaterialPreset[], exportPath);
+                MaterialDatabaseExporter.ExportMaterialDatabase(myTarget.materialPresets as MaterialPreset[], exportPath);
             }
 
             this.DrawDefaultInspector();

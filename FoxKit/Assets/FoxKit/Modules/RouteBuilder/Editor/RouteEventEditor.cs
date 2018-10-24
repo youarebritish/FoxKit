@@ -6,17 +6,17 @@
     using UnityEngine;
 
     /// <summary>
-    /// Custom editor for RouteEvents.
+    /// Base class for custom editor for RouteEvents.
     /// </summary>
-    [CustomEditor(typeof(RouteEvent))]
-    public class RouteEventEditor : Editor
+    //[CustomEditor(typeof(RouteNodeEvent))]
+    public abstract class RouteEventEditor : Editor
     {
         public override void OnInspectorGUI()
         {
             var @event = (this.target as RouteEvent);
 
             DrawToolShelf(@event);
-            DrawSettings(@event);
+            DrawSettings();
             DrawParams(@event);
         }
 
@@ -39,9 +39,9 @@
             }
 
             // Add event button
-            if (FoxKitUiUtils.ToolButton(iconAddEvent, "Add a new event."))
+            if (FoxKitUiUtils.ToolButton(iconAddEvent, "Add a new node event."))
             {
-                @event.AddNewEvent();
+                @event.AddNewRouteNodeEvent();
             }
 
             // Select parent button
@@ -76,16 +76,16 @@
             EditorGUILayout.EndHorizontal();
         }
 
-        private static void DrawSettings(RouteEvent @event)
+        protected abstract void DrawSettings();/*
         {
             Rotorz.Games.Collections.ReorderableListGUI.Title("Settings");
 
             var eventTypeContent = new GUIContent("Event type", "The type of this event.");
-            @event.Type = (RouteEventType)EditorGUILayout.EnumPopup(eventTypeContent, @event.Type);
+            @event.Type = (RouteNodeEventType)EditorGUILayout.EnumPopup(eventTypeContent, @event.Type);
 
             var snippetContent = new GUIContent("Snippet", "Must be a maximum of four characters.");
             @event.Snippet = EditorGUILayout.TextField(snippetContent, @event.Snippet);
-        }
+        }*/
 
         private static void DrawParams(RouteEvent @event)
         {

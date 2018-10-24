@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace FoxKit.Modules.MaterialDatabase
 {

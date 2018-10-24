@@ -35,6 +35,7 @@ sysinfo.txt
 *.unitypackage
 *.ide
 *.db
+<<<<<<< HEAD
 *.mdb
 *.cache
 *.force
@@ -44,3 +45,4 @@ sysinfo.txt
 *.fmdl
 *.frt
 *.fv2
+*.lock
