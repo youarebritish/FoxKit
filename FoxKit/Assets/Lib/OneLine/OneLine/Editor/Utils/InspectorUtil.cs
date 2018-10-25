@@ -5,6 +5,8 @@ using UnityEditor;
 using UnityEngine;
 using System.Reflection;
 
+using OneLine.Settings;
+
 namespace OneLine {
     // Optimization: ommit drawing properties that lie outside window.
     // Grow up performance on drawing bit (100+ arrays)
@@ -17,6 +19,11 @@ You may experience some performance issues.
 Please create an issue on https://github.com/slavniyteo/one-line/ and we will repair it.
 
 ";
+#if UNITY_2018_1_OR_NEWER
+        private const BindingFlags ACCESS_LEVEL = BindingFlags.NonPublic;
+#else
+        private const BindingFlags ACCESS_LEVEL = BindingFlags.Public;
+#endif
 
         private bool enabled = true;
 
@@ -28,6 +35,7 @@ Please create an issue on https://github.com/slavniyteo/one-line/ and we will re
         public InspectorUtil() {
             enabled = false;
             if (EditorWindow.focusedWindow is PopupWindow) return; // Detect is it [Expandable] popup
+            if (!SettingsMenu.Value.CullingOptimization) return; // If culling is disabled via settings
 
             try {
                 Initialize();
@@ -41,11 +49,11 @@ Please create an issue on https://github.com/slavniyteo/one-line/ and we will re
         private void Initialize(){
             inspectorWindowType = Type.GetType(INSPECTOR_WINDOW_ASSEMBLY_QUALIFIED_NAME);
             window = inspectorWindowType
-                        .GetField("s_CurrentInspectorWindow", 
-                                    BindingFlags.Public | BindingFlags.Static)
+                        .GetField("s_CurrentInspectorWindow", ACCESS_LEVEL | BindingFlags.Static)
                         .GetValue(null);
-            
-            scrollPositionInfo = inspectorWindowType.GetField("m_ScrollPosition");
+
+            scrollPositionInfo = inspectorWindowType.GetField("m_ScrollPosition", 
+                                                              ACCESS_LEVEL | BindingFlags.Instance);
             getWindowPositionInfo = inspectorWindowType.GetProperty("position", typeof(Rect))
                                                         .GetGetMethod();
             

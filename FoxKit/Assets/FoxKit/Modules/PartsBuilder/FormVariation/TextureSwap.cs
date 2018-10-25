@@ -2,6 +2,7 @@
 {
     using FoxKit.Core;
     using FoxKit.Utils;
+    using UnityEngine;
                 
     [System.Serializable]
     public struct TextureSwap
@@ -9,6 +10,9 @@
         public StrCode32StringPair MaterialInstanceName;
         public StrCode32StringPair TextureTypeName;
         public PathFileNameCode64StringPair TextureFileName;
+        public Material MaterialInstance;
+        public string TextureType;
+        public Texture Texture;
 
         /// <summary>
         /// Initializes a new instance of the TextureSwap struct.
@@ -23,6 +27,10 @@
             this.TextureTypeName = textureTypeName;
 
             this.TextureFileName = textureFileName;
+
+            this.MaterialInstance = null;
+            this.TextureType = null;
+            this.Texture = null;
         }
 
         /// <summary>

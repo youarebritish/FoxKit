@@ -6,7 +6,9 @@ using System.Collections.Generic;
 using RectEx;
 
 namespace OneLine {
+    #if ! ONE_LINE_DISABLED
     [CustomPropertyDrawer(typeof(OneLineAttribute), true)]
+    #endif
     public class OneLinePropertyDrawer : PropertyDrawer {
 
         private Drawer simpleDrawer;
@@ -37,11 +39,11 @@ namespace OneLine {
             arraysSizeObserver = new ArraysSizeObserver();
         }
 
-        protected void OnDestroy(){
+        private void OnDestroy(){
             Undo.undoRedoPerformed -= ResetCache;
         }
 
-        protected Drawer GetDrawer(SerializedProperty property) {
+        private Drawer GetDrawer(SerializedProperty property) {
             if (property.isArray && !(property.propertyType == SerializedPropertyType.String)) {
                 if (property.GetCustomAttribute<ArrayLengthAttribute>() == null) {
                     return dynamicArrayDrawer;
@@ -67,8 +69,8 @@ namespace OneLine {
             }
         }
 
-        protected void InvalidateCache(SerializedProperty property){
-            cache.InvalidateLastUsedId();
+        private void InvalidateCache(SerializedProperty property){
+            cache.InvalidateLastUsedId(property);
         }
 
 #region Height
@@ -80,7 +82,7 @@ namespace OneLine {
             return lineHeight + headerHeight;
         }
 
-        protected bool NeedDrawHeader(SerializedProperty property){
+        private bool NeedDrawHeader(SerializedProperty property){
             if (Header == LineHeader.None){ return false; }
 
             bool notArray = ! property.IsArrayElement();
@@ -106,47 +108,18 @@ namespace OneLine {
             EditorGUI.indentLevel = 0;
 
             position = DrawHeaderIfNeed(position, property);
-            DrawLine(position, property, (slice,rect) => slice.Draw(rect));
+            cache[property].Draw(position);
 
             EditorGUI.indentLevel = indentLevel;
         }
 
-        protected Rect DrawHeaderIfNeed(Rect position, SerializedProperty property){
+        private Rect DrawHeaderIfNeed(Rect position, SerializedProperty property){
             if (! NeedDrawHeader(property)) return position;
 
             var rects = position.Column(2, 2);
-            DrawLine(rects[0], property, (slice, rect) => slice.DrawHeader(rect));
+            cache[property].DrawHeader(rects[0]);
             
             return rects[1];
-        }
-
-        private void DrawLine(Rect position, SerializedProperty property, Action<Slice, Rect> draw){
-            var slices = cache[property];
-            var rects = position.Row(slices.Weights, slices.Widthes, 2);
-
-            int rectIndex = 0;
-            foreach (var slice in slices){
-                if (slice is MetaSlice){
-                    var rect = CalculateMetaSliceRect(slice as MetaSlice, position, rects, rectIndex);
-                    draw(slice, rect);
-                }
-                else {
-                    draw(slice, rects[rectIndex]);
-                    rectIndex++;
-                }
-            }
-        }
-
-        protected Rect CalculateMetaSliceRect(MetaSlice slice, Rect wholeRect, Rect[] rects, int currentRect){
-            var from = rects[currentRect - slice.Before];
-            var to = rects[currentRect + slice.After - 1];
-            var result = from.Union(to);
-
-            if (slice.Expand && rects.Length == currentRect) {
-                result.xMax = wholeRect.xMax;
-            }
-
-            return result;
         }
 
 #endregion
