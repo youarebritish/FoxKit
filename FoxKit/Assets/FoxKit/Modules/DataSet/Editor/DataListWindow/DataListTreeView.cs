@@ -73,8 +73,29 @@
         public void SelectItem(Data item)
         {
             // TODO Scroll to this item
-            var id = this.idToDataMap.IndexOf(item);
+            //var id = this.idToDataMap.IndexOf(item);
+
+            var id = 0;
+            var foundItem = false;
+            foreach (var entry in this.idToDataMap)
+            {
+                if (entry != null && entry.DataSetGuid == item.DataSetGuid && entry.Name == item.Name)
+                {
+                    foundItem = true;
+                    break;
+                }
+
+                id++;
+            }
+
+            if (!foundItem)
+            {
+                return;
+            }
+
+
             this.SetSelection(new[]{id}, TreeViewSelectionOptions.FireSelectionChanged | TreeViewSelectionOptions.RevealAndFrame);
+            this.Repaint();
         }
 
         public void HandleDelete()

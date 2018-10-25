@@ -21,6 +21,10 @@
 
         public TransformData Entity
         {
+            get
+            {
+                return this.entity;
+            }
             set
             {
                 this.entity = value;

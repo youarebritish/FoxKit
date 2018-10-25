@@ -466,5 +466,32 @@
 
             this.Repaint();
         }
+
+        private void OnSelectionChange()
+        {
+            foreach (var selection in Selection.gameObjects)
+            {
+                var foxModel = selection.GetComponent<FoxModel>();
+                if (foxModel == null)
+                {
+                    continue;
+                }
+
+                var parent = foxModel.transform.parent;
+                if (parent == null)
+                {
+                    continue;
+                }
+
+                var sceneProxy = parent.GetComponent<SceneProxy>();
+                if (sceneProxy == null)
+                {
+                    continue;
+                }
+
+                var entity = sceneProxy.Entity;
+                this.treeView.SelectItem(entity);
+            }
+        }
     }
 }
