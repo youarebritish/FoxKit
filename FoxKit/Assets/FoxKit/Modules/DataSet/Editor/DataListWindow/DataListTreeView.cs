@@ -72,30 +72,33 @@
 
         public void SelectItem(Data item)
         {
-            // TODO Scroll to this item
-            //var id = this.idToDataMap.IndexOf(item);
-
-            var id = 0;
-            var foundItem = false;
-            foreach (var entry in this.idToDataMap)
-            {
-                if (entry != null && entry.DataSetGuid == item.DataSetGuid && entry.Name == item.Name)
-                {
-                    foundItem = true;
-                    break;
-                }
-
-                id++;
-            }
+            int id;
+            var foundItem = this.TryGetSelectedIdFromData(item, out id);
 
             if (!foundItem)
             {
                 return;
             }
 
-
             this.SetSelection(new[]{id}, TreeViewSelectionOptions.FireSelectionChanged | TreeViewSelectionOptions.RevealAndFrame);
+
             this.Repaint();
+        }
+
+        private bool TryGetSelectedIdFromData(Data item, out int id)
+        {
+            id = 0;
+            foreach (var entry in this.idToDataMap)
+            {
+                if (entry != null && entry.DataSetGuid == item.DataSetGuid && entry.Name == item.Name)
+                {
+                    return true;
+                }
+
+                id++;
+            }
+
+            return false;
         }
 
         public void HandleDelete()
@@ -272,13 +275,17 @@
         {
             // TODO handle multiple selections
             var selected = (from id in selectedIds select this.idToDataMap[id]).ToArray();
+            
             if (selected.Length == 0)
             {
                 FoxKitEditor.InspectedEntity = null;
+                return;
             }
 
             FoxKitEditor.InspectedEntity = selected[0];
-            Selection.objects = (from id in selectedIds select this.idToDataSetMap[id]).ToArray();
+
+            var dataSets = (from id in selectedIds select this.idToDataSetMap[id]).ToArray();
+            Selection.objects = dataSets;
             
             // Lock the inspector to the selected entities so that we can edit the scene proxies without changing the Inspector.
             ActiveEditorTracker.sharedTracker.isLocked = false;

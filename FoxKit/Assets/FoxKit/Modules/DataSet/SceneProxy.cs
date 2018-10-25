@@ -46,7 +46,6 @@
 
         void OnDrawGizmosSelected()
         {
-
             // TODO Don't allow to move if read-only.
             this.entity.Transform.Translation = this.transform.position;
             this.entity.Transform.RotQuat = this.transform.rotation;

@@ -469,6 +469,7 @@
 
         private void OnSelectionChange()
         {
+            // When selecting a FoxModel, if it belongs to an Entity, select it in the Data List window.
             foreach (var selection in Selection.gameObjects)
             {
                 var foxModel = selection.GetComponent<FoxModel>();
