@@ -5,6 +5,7 @@
     using System.Linq;
 
     using FoxKit.Modules.DataSet.Exporter;
+    using FoxKit.Utils;
 
     using FoxLib;
 
@@ -104,6 +105,7 @@
         {
             if (entity != null)
             {
+                // TODO Add scene proxy?
                 this.dataList.Add(key, entity);
             }
         }

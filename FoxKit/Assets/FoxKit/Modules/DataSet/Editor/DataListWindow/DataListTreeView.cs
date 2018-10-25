@@ -5,7 +5,8 @@
 
     using FoxKit.Core;
     using FoxKit.Modules.DataSet.FoxCore;
-    
+    using FoxKit.Utils;
+
     using UnityEditor;
     using UnityEditor.IMGUI.Controls;
 
@@ -87,6 +88,7 @@
                 {
                     var data = this.idToDataMap[item];
                     this.activeDataSet.RemoveData(data.Name);
+                    SingletonScriptableObject<DataListWindowState>.Instance.DeleteSceneProxy(this.activeDataSet.DataSetGuid, data.Name, DataListWindowState.DestroyGameObject.Destroy);
                 }
 
                 AssetDatabase.Refresh();
