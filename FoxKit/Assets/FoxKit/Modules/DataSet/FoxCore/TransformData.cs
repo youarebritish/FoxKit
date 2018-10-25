@@ -99,7 +99,17 @@
         
         public TransformData Parent => this.parent;
 
-        public TransformEntity Transform => this.transform;
+        public TransformEntity Transform
+        {
+            get
+            {
+                return this.transform;
+            }
+            set
+            {
+                this.transform = value;
+            }
+        }
         
         public IEnumerable<TransformData> GetChildren()
         {

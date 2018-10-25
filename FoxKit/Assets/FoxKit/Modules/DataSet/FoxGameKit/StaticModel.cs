@@ -109,19 +109,7 @@
         /// </summary>
         [SerializeField, PropertyInfo(Core.PropertyInfoType.Int32, 392, enumType: typeof(RejectFarRangeShadowCast))]
         private RejectFarRangeShadowCast rejectFarRangeShadowCast = RejectFarRangeShadowCast.Default;
-
-        /// <summary>
-        /// The model file path.
-        /// </summary>
-        [SerializeField, HideInInspector]
-        private string modelFilePath;
-
-        /// <summary>
-        /// The collision file path.
-        /// </summary>
-        [SerializeField, HideInInspector]
-        private string geomFilePath;
-
+        
         /// <inheritdoc />
         public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(MeshRenderer)).image as Texture2D;
 
@@ -131,6 +119,18 @@
         /// <inheritdoc />
         public override ushort Version => 9;
 
+        public UnityEngine.Object ModelFile
+        {
+            get
+            {
+                return this.modelFile;
+            }
+            set
+            {
+                this.modelFile = value;
+            }
+        }
+
         /// <inheritdoc />
         public override void PostOnLoaded(GetSceneProxyDelegate getSceneProxy)
         {
@@ -139,7 +139,7 @@
             if (this.modelFile != null)
             {
                 // TODO make better
-                var instance = UnityEngine.Object.Instantiate(this.modelFile) as GameObject;
+                var instance = PrefabUtility.InstantiatePrefab(this.modelFile) as GameObject;
                 var sceneProxy = getSceneProxy(this.Name);
 
                 if (this.modelFile is DefaultAsset)
@@ -152,82 +152,6 @@
                 instance.transform.rotation = sceneProxy.transform.rotation;
                 instance.transform.localScale = sceneProxy.transform.localScale;
                 instance.transform.SetParent(sceneProxy.transform, true);
-            }
-        }
-
-        /// <inheritdoc />
-        public override void OnAssetsImported(AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
-        {
-            base.OnAssetsImported(tryGetAsset);
-
-            tryGetAsset(this.modelFilePath, out this.modelFile);
-            tryGetAsset(this.geomFilePath, out this.geomFile);
-        }
-
-        /// <inheritdoc />
-        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
-        {
-            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("modelFile", Core.PropertyInfoType.FilePtr, FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.modelFile))));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("geomFile", Core.PropertyInfoType.FilePtr, FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.geomFile))));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("isVisibleGeom", Core.PropertyInfoType.Bool, this.isVisibleGeom));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("isIsolated", Core.PropertyInfoType.Bool, this.isIsolated));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("lodFarSize", Core.PropertyInfoType.Float, this.lodFarSize));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("lodNearSize", Core.PropertyInfoType.Float, this.lodNearSize));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("lodPolygonSize", Core.PropertyInfoType.Float, this.lodPolygonSize));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("color", Core.PropertyInfoType.Color, FoxUtils.UnityColorToFoxColorRGBA(this.color)));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("drawRejectionLevel", Core.PropertyInfoType.Int32, this.drawRejectionLevel));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("drawMode", Core.PropertyInfoType.Int32, this.drawMode));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("rejectFarRangeShadowCast", Core.PropertyInfoType.Int32, this.rejectFarRangeShadowCast));
-
-            return parentProperties;
-        }
-
-        /// <inheritdoc />
-        protected override void ReadProperty(
-            Core.PropertyInfo propertyData,
-            Importer.EntityFactory.EntityInitializeFunctions initFunctions)
-        {
-            base.ReadProperty(propertyData, initFunctions);
-
-            switch (propertyData.Name)
-            {
-                case "modelFile":
-                    this.modelFilePath = FoxUtils.FoxPathToUnityPath(
-                        DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
-                    break;
-                case "geomFile":
-                    this.modelFilePath = FoxUtils.FoxPathToUnityPath(
-                        DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
-                    break;
-                case "isVisibleGeom":
-                    this.isVisibleGeom = DataSetUtils.GetStaticArrayPropertyValue<bool>(propertyData);
-                    break;
-                case "isIsolated":
-                    this.isIsolated = DataSetUtils.GetStaticArrayPropertyValue<bool>(propertyData);
-                    break;
-                case "lodFarSize":
-                    this.lodFarSize = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);
-                    break;
-                case "lodNearSize":
-                    this.lodFarSize = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);
-                    break;
-                case "lodPolygonSize":
-                    this.lodFarSize = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);
-                    break;
-                case "color":
-                    var foxColor = DataSetUtils.GetStaticArrayPropertyValue<Core.ColorRGBA>(propertyData);
-                    this.color = new Color(foxColor.Red, foxColor.Green, foxColor.Blue, foxColor.Alpha);
-                    break;
-                case "drawRejectionLevel":
-                    this.drawRejectionLevel = (DrawRejectionLevel)DataSetUtils.GetStaticArrayPropertyValue<int>(propertyData);
-                    break;
-                case "drawMode":
-                    this.drawMode = (DrawMode)DataSetUtils.GetStaticArrayPropertyValue<int>(propertyData);
-                    break;
-                case "rejectFarRangeShadowCast":
-                    this.rejectFarRangeShadowCast = (RejectFarRangeShadowCast)DataSetUtils.GetStaticArrayPropertyValue<int>(propertyData);
-                    break;
             }
         }
     }

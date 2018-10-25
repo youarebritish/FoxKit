@@ -4,7 +4,10 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using FmdlStudio.Scripts.MonoBehaviours;
+
     using FoxKit.Modules.DataSet.FoxCore;
+    using FoxKit.Modules.DataSet.Sdx;
     using FoxKit.Utils;
 
     using UnityEditor;
@@ -58,10 +61,27 @@
         /// Create a new Entity of a given type in the active DataSet.
         /// </summary>
         /// <param name="entityType">Type of the Entity to add.</param>
-        public Data AddEntity(Type entityType)
+        public Data AddEntity(Type entityType, GenerateEntityNameDelegate generateName = null)
         {
             var instance = Activator.CreateInstance(entityType) as Data;
-            instance.Name = GenerateNameForType(entityType, this.activeDataSet);
+
+            if (generateName == null)
+            {
+                instance.Name = GenerateNameForType(entityType, this.activeDataSet);
+            }
+            else
+            {
+                uint index = 0;
+                var instanceName = generateName(index);
+                while (this.activeDataSet.GetDataList().ContainsKey(instanceName))
+                {
+                    index++;
+                    instanceName = generateName(index);
+                }
+
+                instance.Name = generateName(index);
+            }
+
             instance.DataSetGuid = this.activeDataSetGuid;
 
             this.activeDataSet.AddData(instance.Name, instance);
@@ -96,7 +116,7 @@
 
             return instanceName;
         }
-
+        
         public void OnPostprocessDataSets(IEnumerable<string> importedFiles, IEnumerable<string> deletedFiles)
         {
             // Remove deleted DataSets.
@@ -402,6 +422,48 @@
 
             this.treeView.HandleDelete();
             current.Use();
+        }
+
+        public delegate string GenerateEntityNameDelegate(uint id);
+
+        private void OnHierarchyChange()
+        {
+            var allModelsInScene = GameObject.FindObjectsOfType<FoxModel>();
+
+            foreach (var model in allModelsInScene)
+            {
+                var parent = model.transform.parent; // TODO What if null?
+
+                if (parent != null)
+                {
+                    var sceneProxy = parent.GetComponent<SceneProxy>();
+                    if (sceneProxy != null)
+                    {
+                        continue;
+                    }
+                }
+
+                var prefab = PrefabUtility.GetCorrespondingObjectFromSource(model.gameObject);
+                GenerateEntityNameDelegate generateName = id => $"{prefab.name}_{id.ToString("D4")}";
+
+                // New model was added to the scene. Add it to the active DataSet.
+                var staticModel = this.AddEntity(typeof(StaticModel), generateName) as StaticModel;
+                var transformEntity = new TransformEntity
+                                          {
+                                              Translation = model.transform.position,
+                                              RotQuat = model.transform.rotation,
+                                              Scale = model.transform.localScale
+                                          };
+                staticModel.Transform = transformEntity;
+                staticModel.ModelFile = prefab;
+                
+                var newSceneProxy = SingletonScriptableObject<DataListWindowState>.Instance.CreateSceneProxyForEntity(
+                    this.activeDataSetGuid,
+                    staticModel.Name);
+                model.transform.SetParent(newSceneProxy.transform, true);
+            }
+
+            this.Repaint();
         }
     }
 }

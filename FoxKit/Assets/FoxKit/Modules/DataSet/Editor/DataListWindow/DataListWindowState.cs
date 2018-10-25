@@ -100,7 +100,6 @@
             SceneProxy sceneProxy;
             if (!dataSetSceneProxies.TryGetValue(entityName, out sceneProxy))
             {
-                Debug.LogError($"No scene proxy was found for {entityName}.");
                 return;
             }
 
