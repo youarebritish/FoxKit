@@ -258,21 +258,33 @@
 
             FoxKitEditor.InspectedEntity = selected[0];
             Selection.objects = (from id in selectedIds select this.idToDataSetMap[id]).ToArray();
-
-            // TODO refresh inspector somehow
-
-            // TODO 
+            
             // Lock the inspector to the selected entities so that we can edit the scene proxies without changing the Inspector.
-            /*ActiveEditorTracker.sharedTracker.isLocked = false;
-            Selection.objects = (from id in selectedIds select this.idToDataMap[id]).ToArray();
-            ActiveEditorTracker.sharedTracker.isLocked = true;*/
+            ActiveEditorTracker.sharedTracker.isLocked = false;
+            Selection.objects = (from id in selectedIds
+                                 select AssetDatabase.LoadAssetAtPath<DataSetAsset>(AssetDatabase.GUIDToAssetPath(this.idToDataMap[id].DataSetGuid)))
+                                 .ToArray();
+            ActiveEditorTracker.sharedTracker.isLocked = true;
+            
+            // For each TransformData selected, select its scene proxy.
+            var newSelection = new List<UnityEngine.Object>();
+            foreach (var id in selectedIds)
+            {
+                var data = this.idToDataMap[id];
+                var transformData = data as TransformData;
 
-            // Replace any selection of TransformDatas with their scene proxies.
-            // TODO: Handle null transforms
-            /*Selection.objects =
-                (from obj in Selection.objects
-                 select (obj as TransformData)?.SceneProxyTransform.gameObject ?? obj)
-                 .ToArray();*/
+                if (transformData == null)
+                {
+                    var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(AssetDatabase.GUIDToAssetPath(data.DataSetGuid));
+                    newSelection.Add(dataSet);
+                    continue;
+                }
+
+                var sceneProxy = this.getSceneProxy(data.DataSetGuid, data.Name);
+                newSelection.Add(sceneProxy.gameObject);
+            }
+
+            Selection.objects = newSelection.ToArray();
         }
 
         protected override void ContextClickedItem(int id)
