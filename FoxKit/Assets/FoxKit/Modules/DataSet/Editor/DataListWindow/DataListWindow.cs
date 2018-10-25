@@ -432,7 +432,7 @@
 
             foreach (var model in allModelsInScene)
             {
-                var parent = model.transform.parent; // TODO What if null?
+                var parent = model.transform.parent;
 
                 if (parent != null)
                 {
@@ -461,6 +461,7 @@
                     this.activeDataSetGuid,
                     staticModel.Name);
                 model.transform.SetParent(newSceneProxy.transform, true);
+                this.treeView.SelectItem(staticModel);
             }
 
             this.Repaint();
