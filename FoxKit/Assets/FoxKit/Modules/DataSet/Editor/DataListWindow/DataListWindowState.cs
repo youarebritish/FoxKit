@@ -18,12 +18,35 @@
     [CreateAssetMenu(menuName = "FoxKit/Config/Data List Window State", order = 6)]
     public class DataListWindowState : SerializedScriptableObject
     {
+
+        /// <summary>
+        /// GUID of the active DataSet.
+        /// </summary>
+        [HideInInspector, SerializeField]
+        private string activeDataSetGuid;
+
         /// <summary>
         /// The outer dictionary is keyed by DataSet GUID, and returns a dictionary of that DataSet's scene proxies, keyed by entity name.
         /// </summary>
         [OdinSerialize]
         private readonly DoubleLookupDictionary<string, string, SceneProxy> sceneProxies = new DoubleLookupDictionary<string, string, SceneProxy>();
-        
+
+        /// <summary>
+        /// GUID of the active DataSet.
+        /// </summary>
+        public string ActiveDataSetGuid
+        {
+            get
+            {
+                return this.activeDataSetGuid;
+            }
+
+            set
+            {
+                this.activeDataSetGuid = value;
+            }
+        }
+
         /// <summary>
         /// What to do with a SceneProxy GameObject when deleting the SceneProxy record.
         /// </summary>
@@ -46,6 +69,7 @@
         public void ClearState()
         {
             this.sceneProxies.Clear();
+            this.ActiveDataSetGuid = null;
         }
 
         /// <summary>

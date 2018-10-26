@@ -128,7 +128,7 @@
         /// <returns>
         /// The <see cref="Entity"/> with the given key.
         /// </returns>
-        public Entity GetData(string key)
+        public Data GetData(string key)
         {
             return this.dataList[key];
         }

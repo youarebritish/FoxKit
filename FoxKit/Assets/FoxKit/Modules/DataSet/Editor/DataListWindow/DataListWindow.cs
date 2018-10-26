@@ -36,9 +36,6 @@
         private TreeViewState treeViewState;
 
         private DataSet activeDataSet;
-
-        [SerializeField]
-        private string activeDataSetGuid;
         
         /// <summary>
         /// Tree view widget.
@@ -82,7 +79,8 @@
                 instance.Name = generateName(index);
             }
 
-            instance.DataSetGuid = this.activeDataSetGuid;
+            var state = SingletonScriptableObject<DataListWindowState>.Instance;
+            instance.DataSetGuid = state.ActiveDataSetGuid;
 
             this.activeDataSet.AddData(instance.Name, instance);
             
@@ -92,7 +90,7 @@
                 this.treeViewState,
                 this.openDataSetGuids,
                 this.activeDataSet,
-                SingletonScriptableObject<DataListWindowState>.Instance.FindSceneProxyForEntity);
+                state.FindSceneProxyForEntity);
             this.treeView.Reload();
 
             return instance;
@@ -205,9 +203,10 @@
         /// </summary>
         private void OnEnable()
         {
-            if (!string.IsNullOrEmpty(this.activeDataSetGuid))
+            var state = SingletonScriptableObject<DataListWindowState>.Instance;
+            if (!string.IsNullOrEmpty(state.ActiveDataSetGuid))
             {
-                var path = AssetDatabase.GUIDToAssetPath(this.activeDataSetGuid);
+                var path = AssetDatabase.GUIDToAssetPath(state.ActiveDataSetGuid);
 
                 // The asset was probably deleted, so stop holding onto its GUID.
                 if (!string.IsNullOrEmpty(path))
@@ -215,7 +214,7 @@
                     var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(path);
                     if (dataSet == null)
                     {
-                        this.activeDataSetGuid = null;
+                        state.ActiveDataSetGuid = null;
                     }
                     else
                     {
@@ -260,12 +259,25 @@
         }
 
         /// <summary>
+        /// Opens a DataSet in the Data List window and selects an Entity within it.
+        /// </summary>
+        /// <param name="dataSetGuid"></param>
+        /// <param name="entityName"></param>
+        public void OpenDataSet(string dataSetGuid, string entityName)
+        {
+            var dataSet = this.OpenDataSet(dataSetGuid);
+            Assert.IsTrue(dataSet.dataList.ContainsKey(entityName));
+
+            this.treeView.SelectItem(dataSet.GetData(entityName));
+        }
+
+        /// <summary>
         /// Opens a DataSet in the Data List Window.
         /// </summary>
         /// <param name="dataSet">
         /// The DataSet to open.
         /// </param>
-        private void OpenDataSet(string dataSetGuid)
+        public DataSet OpenDataSet(string dataSetGuid)
         {
             Assert.IsFalse(string.IsNullOrEmpty(dataSetGuid));
 
@@ -273,13 +285,13 @@
             Assert.IsNotNull(dataSet);
 
             this.activeDataSet = dataSet;
-            this.activeDataSetGuid = dataSetGuid;
+            SingletonScriptableObject<DataListWindowState>.Instance.ActiveDataSetGuid = dataSetGuid;
             this.treeView.SetActiveDataSet(dataSet);
             this.treeView.SelectDataSet(dataSet);
             
             if (this.openDataSetGuids.Contains(dataSetGuid))
             {
-                return;
+                return dataSet;
             }
 
             var state = SingletonScriptableObject<DataListWindowState>.Instance;
@@ -293,6 +305,7 @@
 
             this.openDataSetGuids.Add(dataSetGuid);
             this.treeView.Reload();
+            return dataSet;
         }
         
         private void OnUnitySelectionChange()
@@ -312,7 +325,7 @@
             Assert.IsNotNull(dataSet);
             
             this.activeDataSet = dataSet.GetDataSet();
-            this.activeDataSetGuid = dataSet.DataSetGuid;
+            SingletonScriptableObject<DataListWindowState>.Instance.ActiveDataSetGuid = dataSet.DataSetGuid;
             this.treeView.SetActiveDataSet(dataSet.GetDataSet());
         }
 
@@ -339,7 +352,7 @@
 
             dataSet?.UnloadAllEntities(entityName => SingletonScriptableObject<DataListWindowState>.Instance.DeleteSceneProxy(dataSetGuid, entityName, DataListWindowState.DestroyGameObject.Destroy));
 
-            if (this.activeDataSetGuid == dataSetGuid)
+            if (SingletonScriptableObject<DataListWindowState>.Instance.ActiveDataSetGuid == dataSetGuid)
             {
                 if (this.openDataSetGuids.Count > 1)
                 {
@@ -381,7 +394,6 @@
             if (GUILayout.Button("DEBUG RESET", EditorStyles.toolbarDropDown))
             {
                 this.activeDataSet = null;
-                this.activeDataSetGuid = null;
                 this.openDataSetGuids.Clear();
                 SingletonScriptableObject<DataListWindowState>.Instance.ClearState();
                 this.treeView.Reload();
@@ -458,7 +470,7 @@
                 staticModel.ModelFile = prefab;
                 
                 var newSceneProxy = SingletonScriptableObject<DataListWindowState>.Instance.CreateSceneProxyForEntity(
-                    this.activeDataSetGuid,
+                    SingletonScriptableObject<DataListWindowState>.Instance.ActiveDataSetGuid,
                     staticModel.Name);
                 model.transform.SetParent(newSceneProxy.transform, true);
                 this.treeView.SelectItem(staticModel);

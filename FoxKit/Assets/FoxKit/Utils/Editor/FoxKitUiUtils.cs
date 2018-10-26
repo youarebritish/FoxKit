@@ -5,6 +5,8 @@ namespace FoxKit.Utils
     using System;
 
     using FoxKit.Core;
+    using FoxKit.Modules.DataSet.Editor;
+    using FoxKit.Modules.DataSet.Editor.DataListWindow;
     using FoxKit.Modules.DataSet.FoxCore;
 
     using UnityEditor;
@@ -258,6 +260,36 @@ namespace FoxKit.Utils
 
             EditorGUILayout.EndHorizontal();
 
+            return value;
+        }
+
+        public static Data EntityLinkField(string label, Data value, Action<Data> entitySelectedCallback)
+        {
+            EditorGUILayout.ObjectField(label, null, typeof(DataSetAsset), false);
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PrefixLabel(label);
+
+            // TODO Icon
+            var labelText = value != null ? $"{value.Name} (EntityLink)" : "None (EntityLink)";
+            var textFieldStyle = EditorStyles.textField;
+            textFieldStyle.clipping = TextClipping.Clip;
+            if (GUILayout.Button(labelText, textFieldStyle, GUILayout.ExpandWidth(true), GUILayout.MinWidth(0)))
+            {
+                if (value != null)
+                {
+                    DataListWindow.GetInstance().OpenDataSet(value.DataSetGuid, value.Name);
+                }
+            }
+
+            var editorSkin = EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
+            if (GUILayout.Button(string.Empty, editorSkin.GetStyle("IN ObjectField"), GUILayout.Width(14f)))
+            {
+                SelectEntityWindow.Create(entitySelectedCallback);
+            }
+
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.Space();
             return value;
         }
     }

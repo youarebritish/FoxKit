@@ -20,7 +20,19 @@
 
         public ulong Address => this.address;
 
-            /// <summary>
+        public Data Entity
+        {
+            get
+            {
+                return this.referencedEntity;
+            }
+            set
+            {
+                this.referencedEntity = value;
+            }
+        }
+
+        /// <summary>
         /// The package the referenced Entity belongs to. If empty, it belongs to the same package as the owning Entity.
         /// It may also have the value "DATA_IDENTIFIER", indicating that instead of looking for a file, it should look for a DataIdentifier.
         /// </summary>
@@ -57,7 +69,7 @@
         /// The referenced Entity.
         /// </summary>
         [SerializeField]
-        private Entity referencedEntity;
+        private Data referencedEntity;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityLink"/> class.

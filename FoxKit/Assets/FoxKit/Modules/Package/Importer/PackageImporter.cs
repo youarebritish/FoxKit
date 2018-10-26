@@ -19,29 +19,29 @@
         public override void OnImportAsset(AssetImportContext ctx)
         {
             var extension = Path.GetExtension(ctx.assetPath);
-            var archiveDefinition = ScriptableObject.CreateInstance<ArchiveDefinition>();
+            var archiveDefinition = ScriptableObject.CreateInstance<PackageDefinition>();
 
             // TODO Read dictionaries
             switch (extension)
             {
                 case ".dat":
-                    archiveDefinition.Type = ArchiveDefinition.ArchiveType.Dat;
+                    archiveDefinition.Type = PackageDefinition.PackageType.Dat;
                     ReadArchive<QarFile>(ctx.assetPath);
                     break;
                 case ".fpk":
-                    archiveDefinition.Type = ArchiveDefinition.ArchiveType.Fpk;
+                    archiveDefinition.Type = PackageDefinition.PackageType.Fpk;
                     ReadArchive<FpkFile>(ctx.assetPath);
                     break;
                 case ".fpkd":
-                    archiveDefinition.Type = ArchiveDefinition.ArchiveType.Fpkd;
+                    archiveDefinition.Type = PackageDefinition.PackageType.Fpkd;
                     ReadArchive<FpkFile>(ctx.assetPath);
                     break;
                 case ".pftxs":
-                    archiveDefinition.Type = ArchiveDefinition.ArchiveType.Pftxs;
+                    archiveDefinition.Type = PackageDefinition.PackageType.Pftxs;
                     ReadArchive<PftxsFile>(ctx.assetPath);
                     break;
                 case ".sbp":
-                    archiveDefinition.Type = ArchiveDefinition.ArchiveType.Sbp;
+                    archiveDefinition.Type = PackageDefinition.PackageType.Sbp;
                     ReadArchive<SbpFile>(ctx.assetPath);
                     break;
             }
