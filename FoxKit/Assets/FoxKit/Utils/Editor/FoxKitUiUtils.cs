@@ -263,29 +263,50 @@ namespace FoxKit.Utils
             return value;
         }
 
-        public static Data EntityLinkField(string label, Data value, Action<Data> entitySelectedCallback)
+        public static EntityLink EntityLinkField(string label, EntityLink value, Action<Data> entitySelectedCallback, Action<DataIdentifier, string> onDataIdentifierEntitySelectedCallback)
         {
+            Assert.IsNotNull(value);
+
             EditorGUILayout.ObjectField(label, null, typeof(DataSetAsset), false);
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel(label);
 
             // TODO Icon
-            var labelText = value != null ? $"{value.Name} (EntityLink)" : "None (EntityLink)";
+            var labelText = "None (EntityLink)";
+            if (value.IsDataIdentifierEntityLink)
+            {
+                labelText = $"{value.NameInArchive} (EntityLink)";
+            }
+            else if (value.Entity != null)
+            {
+                labelText = $"{value.Entity.Name} (EntityLink)";
+            }
+
             var textFieldStyle = EditorStyles.textField;
             textFieldStyle.clipping = TextClipping.Clip;
             if (GUILayout.Button(labelText, textFieldStyle, GUILayout.ExpandWidth(true), GUILayout.MinWidth(0)))
             {
-                if (value != null)
+                if (value.IsDataIdentifierEntityLink)
                 {
-                    DataListWindow.GetInstance().OpenDataSet(value.DataSetGuid, value.Name);
+                    if (value.DataIdentifier != null)
+                    {
+                        DataListWindow.GetInstance().OpenDataSet(value.DataIdentifier.DataSetGuid, value.DataIdentifier.Name);
+                    }
+                }
+                else
+                {
+                    if (value.Entity != null)
+                    {
+                        DataListWindow.GetInstance().OpenDataSet(value.Entity.DataSetGuid, value.Entity.Name);
+                    }
                 }
             }
 
             var editorSkin = EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
             if (GUILayout.Button(string.Empty, editorSkin.GetStyle("IN ObjectField"), GUILayout.Width(14f)))
             {
-                SelectEntityWindow.Create(entitySelectedCallback);
+                SelectEntityWindow.Create(entitySelectedCallback, onDataIdentifierEntitySelectedCallback);
             }
 
             EditorGUILayout.EndHorizontal();

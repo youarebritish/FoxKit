@@ -1,10 +1,12 @@
 ﻿namespace FoxKit.Modules.DataSet.FoxCore
 {
     using System;
+    using System.Configuration;
 
     using FoxKit.Core;
 
     using UnityEngine;
+    using UnityEngine.Assertions;
 
     /// <summary>
     /// A reference to an Entity, which may or may not exist in a separate DataSet.
@@ -29,7 +31,29 @@
             set
             {
                 this.referencedEntity = value;
+                this.dataIdentifier = null;
+
+                // TODO Set packagePath, archivePath, address
+                this.packagePath = null;
+                this.archivePath = null;
             }
+        }
+
+        public DataIdentifier DataIdentifier => this.dataIdentifier;
+
+        public void SetDataIdentifier(DataIdentifier dataIdentifier, string key)
+        {
+            Assert.IsNotNull(dataIdentifier);
+            Assert.IsFalse(string.IsNullOrEmpty(key));
+            Assert.IsNotNull(dataIdentifier.Links);
+            Assert.IsTrue(dataIdentifier.Links.ContainsKey(key));
+
+            this.dataIdentifier = dataIdentifier;
+            this.Entity = dataIdentifier.Links[key].Entity;
+
+            this.packagePath = "DATA_IDENTIFIER";
+            this.archivePath = dataIdentifier.Identifier;
+            this.nameInArchive = key;
         }
 
         /// <summary>
@@ -60,16 +84,16 @@
         private ulong address;
 
         /// <summary>
-        /// The DataSet to which the owning Entity belongs.
-        /// </summary>
-        [SerializeField]
-        private DataSet owningDataSet;
-
-        /// <summary>
         /// The referenced Entity.
         /// </summary>
         [SerializeField]
         private Data referencedEntity;
+
+        /// <summary>
+        /// The referenced DataIdentifier, if any.
+        /// </summary>
+        [SerializeField]
+        private DataIdentifier dataIdentifier;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityLink"/> class.

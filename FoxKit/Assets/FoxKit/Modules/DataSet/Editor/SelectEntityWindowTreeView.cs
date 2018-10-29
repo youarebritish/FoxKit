@@ -16,27 +16,39 @@
     {
         private readonly Dictionary<PackageDefinition, List<DataSetAsset>> packages;
 
+        private readonly List<DataIdentifier> dataIdentifiers;
+
         private readonly Action<Data> onEntitySelected;
-        
+
+        private readonly Action<DataIdentifier, string> onDataIdentifierEntitySelected;
+
         private readonly List<Data> idToData = new List<Data>();
+
+        private readonly List<string> idToDataIdentifierLinkKeys = new List<string>();
         
         /// <summary>
         /// IDs of root (i.e., non-selectable) items.
         /// </summary>
         private readonly HashSet<int> rootIds = new HashSet<int>();
-
-        //private string searchString = string.Empty;
-
-        public SelectEntityWindowTreeView(TreeViewState state, IReadOnlyCollection<PackageDefinition> packages, Action<Data> onEntitySelectedCallback)
+        
+        public SelectEntityWindowTreeView(TreeViewState state, IReadOnlyCollection<PackageDefinition> packages, Action<Data> onEntitySelectedCallback, Action<DataIdentifier, string> onDataIdentifierEntitySelectedCallback)
             : base(state)
         {
             this.onEntitySelected = onEntitySelectedCallback;
+            this.onDataIdentifierEntitySelected = onDataIdentifierEntitySelectedCallback;
             this.showAlternatingRowBackgrounds = true;
             this.useScrollView = true;
+            this.searchString = string.Empty;
             
             this.packages = packages.ToDictionary(package => package, package => (from asset in package.Entries
                                                                                   where asset is DataSetAsset
                                                                                   select asset as DataSetAsset).ToList());
+
+            this.dataIdentifiers = (from entry in this.packages.Values
+                                   from dataSet in entry
+                                   from entity in dataSet.GetDataSet().dataList.Values
+                                   where entity is DataIdentifier
+                                   select entity as DataIdentifier).ToList();
 
             this.Reload();
         }
@@ -66,29 +78,51 @@
 
             // Add placeholder for the root.
             this.idToData.Add(null);
+            this.idToDataIdentifierLinkKeys.Add(null);
 
             // Add placeholder for "None."
             this.idToData.Add(null);
+            this.idToDataIdentifierLinkKeys.Add(null);
 
-            // Add placeholder for package.
+            // Add placeholder for "DataIdentifiers".
             this.idToData.Add(null);
-
-            // Add placeholder for DataSet.
-            this.idToData.Add(null);
+            this.idToDataIdentifierLinkKeys.Add(null);
 
             this.rootIds.Add(0);    // Root
             this.rootIds.Add(1);    // None
+            this.rootIds.Add(2);    // DataIdentifiers
 
             var allItems = new List<TreeViewItem>
                                {
-                                   new TreeViewItem { id = 1, depth = 0, displayName = "None" }
+                                   new TreeViewItem { id = 1, depth = 0, displayName = "None" },
+                                   new TreeViewItem { id = 2, depth = 0, displayName = "DataIdentifiers" }
                                };
 
-            var id = 2;
+            // Show DataIdentifiers.
+            var id = 3;
+            foreach (var dataIdentifier in this.dataIdentifiers)
+            {
+                allItems.Add(new TreeViewItem { id = id, depth = 1, displayName = dataIdentifier.Identifier });
+                this.idToData.Add(null);
+                this.idToDataIdentifierLinkKeys.Add(null);
+                this.rootIds.Add(id);
+                id++;
+
+                foreach (var link in dataIdentifier.Links)
+                {
+                    allItems.Add(new TreeViewItem { id = id, depth = 2, displayName = link.Key });
+                    this.idToData.Add(dataIdentifier);
+                    this.idToDataIdentifierLinkKeys.Add(link.Key);
+                    id++;
+                }
+            }
+
+            // Show packages.
             foreach (var package in this.packages)
             {
                 // Add package node.
                 allItems.Add(new TreeViewItem { id = id, depth = 0, displayName = package.Key.name });
+                this.idToData.Add(null);
                 this.rootIds.Add(id);
                 id++;
 
@@ -96,6 +130,7 @@
                 {
                     // Add DataSet node.
                     allItems.Add(new TreeViewItem { id = id, depth = 1, displayName = dataSet.name });
+                    this.idToData.Add(null);
                     this.rootIds.Add(id);
                     id++;
 
@@ -132,9 +167,19 @@
                 this.onEntitySelected(null);
                 return;
             }
-
+            
             var selectedData = this.idToData[selectedId];
             Assert.IsNotNull(selectedData);
+            
+            if (selectedData is DataIdentifier)
+            {
+                var key = this.idToDataIdentifierLinkKeys[selectedId];
+                if (!string.IsNullOrEmpty(key))
+                {
+                    this.onDataIdentifierEntitySelected(selectedData as DataIdentifier, key);
+                    return;
+                }
+            }
 
             this.onEntitySelected(selectedData);
         }
