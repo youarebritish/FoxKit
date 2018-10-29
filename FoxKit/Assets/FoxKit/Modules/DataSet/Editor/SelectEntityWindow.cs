@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using FoxKit.Modules.Archive;
     using FoxKit.Modules.DataSet.Editor.DataListWindow;
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
@@ -21,7 +22,6 @@
 
         private Type baseClass;
         private Action<Data> onEntitySelected;
-        private List<Data> selectableEntities = new List<Data>();
 
         private Data selectedEntity;
 
@@ -62,14 +62,13 @@
             {
                 this.treeViewState = new TreeViewState();
             }
+            
+            var packages = (from guid in AssetDatabase.FindAssets($"t:{typeof(PackageDefinition).Name}")
+                            let package = AssetDatabase.LoadAssetAtPath<PackageDefinition>(AssetDatabase.GUIDToAssetPath(guid))
+                            where package.Type == PackageDefinition.PackageType.Fpkd
+                            select package).ToList();
 
-            var activeDataSetGuid = SingletonScriptableObject<DataListWindowState>.Instance.ActiveDataSetGuid;
-            Assert.IsFalse(string.IsNullOrEmpty(activeDataSetGuid));
-
-            var activeDataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(AssetDatabase.GUIDToAssetPath(activeDataSetGuid));
-            this.selectableEntities = activeDataSet.GetDataSet().dataList.Values.ToList();
-
-            this.treeView = new SelectEntityWindowTreeView(this.treeViewState, this.selectableEntities, this.OnEntitySelected);
+            this.treeView = new SelectEntityWindowTreeView(this.treeViewState, packages, this.OnEntitySelected);
         }
 
         private void OnGUI()
@@ -84,7 +83,7 @@
             this.searchString = EditorGUILayout.TextField(this.searchString, GUI.skin.FindStyle("ToolbarSeachTextField"));
             if (GUILayout.Button(string.Empty, GUI.skin.FindStyle("ToolbarSeachCancelButton")))
             {
-                // Remove focus if cleared
+                // Remove focus if cleared.
                 this.searchString = string.Empty;
                 GUI.FocusControl(null);
             }
