@@ -44,7 +44,7 @@ namespace FoxKit.Utils
 
                 var path = EditorUtility.SaveFilePanelInProject(
                     "Create editable copy",
-                    asset.name,
+                    $"{asset.name}_copy",
                     "asset",
                     "Create editable copy");
 

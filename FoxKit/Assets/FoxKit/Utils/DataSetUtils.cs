@@ -76,23 +76,29 @@
                 foxEntityLink.NameInArchive,
                 foxEntityLink.EntityHandle);
 
+            if (link.IsDataIdentifierEntityLink)
+            {
+                return link;
+            }
+
             // Store the archivePath for convenience later.
-            if (!link.IsDataIdentifierEntityLink)
+            if (string.IsNullOrEmpty(link.ArchivePath))
             {
                 link.ArchivePath = AssetDatabase.GUIDToAssetPath(owningDataSet.DataSetGuid);
+            }
 
-                // If the EntityLink references an Entity inside its own DataSet, resolve it now.
-                if (Path.GetFileNameWithoutExtension(link.ArchivePath) == owningDataSet.OwningDataSetName)
-                {
-                    if (link.Address != 0)
-                    {
-                        link.Entity = getEntityByAddress(link.Address) as Data;
-                    }
-                    else if (!string.IsNullOrEmpty(link.NameInArchive))
-                    {
-                        link.Entity = getEntityByName(link.NameInArchive);
-                    }
-                }
+            // If the EntityLink references an Entity inside its own DataSet, resolve it now.
+            if (Path.GetFileNameWithoutExtension(link.ArchivePath) != owningDataSet.OwningDataSetName)
+            {
+                return link;
+            }
+            else if (link.Address != 0)
+            {
+                link.Entity = getEntityByAddress(link.Address) as Data;
+            }
+            else if (!string.IsNullOrEmpty(link.NameInArchive))
+            {
+                link.Entity = getEntityByName(link.NameInArchive);
             }
 
             return link;

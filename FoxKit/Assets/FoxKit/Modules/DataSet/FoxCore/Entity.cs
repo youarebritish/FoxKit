@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
 
@@ -61,6 +62,9 @@
         [OdinSerialize]
         private Dictionary<FilePtrEntry, string> desiredFiles = new Dictionary<FilePtrEntry, string>();
 
+        [SerializeField]
+        private List<EntityLink> entityLinks = new List<EntityLink>();
+
         /// <summary>
         /// The icon to use in the Data List window.
         /// </summary>
@@ -108,6 +112,15 @@
 
                 var convertedValue = conversionFunc(rawValue);
 
+                if (property.Type == Core.PropertyInfoType.EntityLink)
+                {
+                    // TODO DataIdentifiers
+                    var link = convertedValue as EntityLink;
+                    if (link.Entity == null)
+                    {
+                        this.entityLinks.Add(link);
+                    }
+                }
                 if (property.Type == Core.PropertyInfoType.FilePtr || property.Type == Core.PropertyInfoType.Path)
                 {
                     this.desiredFiles.Add(new FilePtrEntry(property.Name, null), convertedValue as string);
@@ -126,6 +139,21 @@
 
                 var convertedValues = (from rawValue in rawValues
                                       select conversionFunc(rawValue)).ToList();
+
+                if (property.Type == Core.PropertyInfoType.EntityLink)
+                {
+                    foreach (var convertedValue in convertedValues)
+                    {
+                        // TODO DataIdentifiers
+                        var link = convertedValue as EntityLink;
+                        if (link.Entity == null)
+                        {
+                            this.entityLinks.Add(link);
+                        }
+                    }
+
+                    return convertedValues;
+                }
 
                 if (property.Type != Core.PropertyInfoType.FilePtr || property.Type == Core.PropertyInfoType.Path)
                 {
@@ -151,6 +179,21 @@
                 var convertedValues = (from rawValue in rawValues
                                        select conversionFunc(rawValue)).ToList();
 
+                if (property.Type == Core.PropertyInfoType.EntityLink)
+                {
+                    foreach (var convertedValue in convertedValues)
+                    {
+                        // TODO DataIdentifiers
+                        var link = convertedValue as EntityLink;
+                        if (link.Entity == null)
+                        {
+                            this.entityLinks.Add(link);
+                        }
+                    }
+
+                    return convertedValues;
+                }
+
                 if (property.Type != Core.PropertyInfoType.FilePtr || property.Type == Core.PropertyInfoType.Path)
                 {
                     return convertedValues;
@@ -175,6 +218,21 @@
                 var convertedValues = (from rawValue in rawValues
                                        select conversionFunc(rawValue)).ToList();
 
+                if (property.Type == Core.PropertyInfoType.EntityLink)
+                {
+                    foreach (var convertedValue in convertedValues)
+                    {
+                        // TODO DataIdentifiers
+                        var link = convertedValue as EntityLink;
+                        if (link.Entity == null)
+                        {
+                            this.entityLinks.Add(link);
+                        }
+                    }
+
+                    return convertedValues;
+                }
+
                 if (property.Type != Core.PropertyInfoType.FilePtr || property.Type == Core.PropertyInfoType.Path)
                 {
                     return convertedValues;
@@ -197,6 +255,21 @@
                 }
 
                 var convertedValues = rawValues.ToDictionary(item => item.Key, item => conversionFunc(item.Value));
+
+                if (property.Type == Core.PropertyInfoType.EntityLink)
+                {
+                    foreach (var convertedValue in convertedValues)
+                    {
+                        // TODO DataIdentifiers
+                        var link = convertedValue.Value as EntityLink;
+                        if (link.Entity == null)
+                        {
+                            this.entityLinks.Add(link);
+                        }
+                    }
+
+                    return convertedValues;
+                }
 
                 if (property.Type != Core.PropertyInfoType.FilePtr || property.Type == Core.PropertyInfoType.Path)
                 {
@@ -409,7 +482,7 @@
                         Debug.LogError("Property type WideVector3 is not supported. Is the DataSet file well-formed?");
                         break;
                 }
-
+                
                 // FilePtr and Path properties are unique in that we don't actually get the value at this stage.
                 if (field.PropertyInfo.Type != Core.PropertyInfoType.FilePtr && field.PropertyInfo.Type != Core.PropertyInfoType.Path)
                 {
@@ -432,6 +505,44 @@
             AssetPostprocessor.GetDataSetDelegate getDataSet,
             AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
         {
+            // Resolve EntityLinks.
+            var linksToRemove = new HashSet<EntityLink>();
+            foreach (var link in this.entityLinks)
+            {
+                // TODO: DataIdentifiers
+                if (link.IsDataIdentifierEntityLink)
+                {
+                    continue;
+                }
+
+                if (string.IsNullOrEmpty(link.NameInArchive))
+                {
+                    if (link.Address == 0)
+                    {
+                        // If we have neither a name nor an address, there's nothing we can do but ignore it.
+                        linksToRemove.Add(link);
+                        continue;
+                    }
+
+                    // TODO
+                    Debug.LogError($"EntityLink in {this} had an address but no nameInArchive. Report this.");
+                    continue;
+                }
+                else
+                {
+                    var dataSet = getDataSet(Path.GetFileNameWithoutExtension(link.ArchivePath));
+                    var entity = dataSet.GetData(link.NameInArchive);
+                    link.Entity = entity;
+                    linksToRemove.Add(link);
+                }
+            }
+
+            foreach (var entryToRemove in linksToRemove)
+            {
+                this.entityLinks.Remove(entryToRemove);
+            }
+
+            // Resolve FilePtrs/Paths.
             var entriesToRemove = new HashSet<FilePtrEntry>();
             foreach (var entry in this.desiredFiles)
             {
