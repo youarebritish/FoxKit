@@ -24,8 +24,9 @@
         {
             var extension = Path.GetExtension(ctx.assetPath);
             var archiveDefinition = ScriptableObject.CreateInstance<PackageDefinition>();
+            archiveDefinition.name = Path.GetFileNameWithoutExtension(ctx.assetPath);
             archiveDefinition.IsReadOnly = true;
-            Action<IEnumerable<UnityEngine.Object>> assignEntries = entries => archiveDefinition.Entries = entries.ToList();
+            Action<IEnumerable<UnityEngine.Object>> assignEntries = entries => archiveDefinition.AssignEntries(entries.ToList());
 
             // TODO Read dictionaries
             switch (extension)

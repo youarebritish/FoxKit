@@ -1,5 +1,6 @@
 ﻿using System;
 
+using FoxKit.Modules.Archive;
 using FoxKit.Modules.DataSet.FoxCore;
 
 using OdinSerializer;
@@ -11,8 +12,23 @@ public class DataSetAsset : SerializedScriptableObject
 {
     [OdinSerialize, NonSerialized]
     private DataSet DataSet = new DataSet();
+
+    [OdinSerialize, NonSerialized]
+    private PackageDefinition package;
     
     public bool IsReadOnly;
+
+    public PackageDefinition Package
+    {
+        get
+        {
+            return this.package;
+        }
+        set
+        {
+            this.package = value;
+        }
+    }
 
     public DataSet GetDataSet()
     {

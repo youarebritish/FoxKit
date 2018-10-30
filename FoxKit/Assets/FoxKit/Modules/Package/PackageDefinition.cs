@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
 
+    using UnityEditor;
+
     using UnityEngine;
 
     [CreateAssetMenu(menuName = "FoxKit/Package Definition", fileName = "New Package Definition", order = 4)]
@@ -21,5 +23,20 @@
         public List<UnityEngine.Object> Entries = new List<Object>();
 
         public bool IsReadOnly;
+
+        public void AssignEntries(List<UnityEngine.Object> entries)
+        {
+            this.Entries = entries;
+            foreach (var entry in this.Entries)
+            {
+                var dataSet = entry as DataSetAsset;
+                if (dataSet == null)
+                {
+                    continue;
+                }
+
+                dataSet.Package = this;
+            }
+        }
     }
 }

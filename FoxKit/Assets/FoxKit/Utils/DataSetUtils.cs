@@ -106,11 +106,33 @@
 
         public static Core.EntityLink MakeEntityLink(EntityLink unityEntityLink)
         {
+            if (unityEntityLink.Entity == null)
+            {
+                return new Core.EntityLink(string.Empty, string.Empty, string.Empty, 0);
+            }
+
+            if (unityEntityLink.IsDataIdentifierEntityLink)
+            {
+                Assert.IsNotNull(unityEntityLink.DataIdentifier);
+                Assert.IsFalse(string.IsNullOrEmpty(unityEntityLink.DataIdentifier.Identifier));
+                Assert.IsFalse(string.IsNullOrEmpty(unityEntityLink.NameInArchive));
+                return new Core.EntityLink("DATA_IDENTIFIER", unityEntityLink.DataIdentifier.Identifier, unityEntityLink.NameInArchive, 0);
+            }
+
+            var dataSetAsset = AssetDatabase.LoadAssetAtPath<DataSetAsset>(AssetDatabase.GUIDToAssetPath(unityEntityLink.Entity.DataSetGuid));
+            var packagePath = AssetToFoxPath(dataSetAsset.Package);
+            var archivePath = AssetToFoxPath(dataSetAsset);
+            var nameInArchive = unityEntityLink.Entity.Name;
+
+            /* It's going to be kind of a pain to implement a system for getting addresses, so for now let's just pray that we only need the nameInArchive.
+             * If this causes problems ingame, we'll fix it then. */
+            const ulong Address = 0UL;
+
             return new Core.EntityLink(
-                unityEntityLink.PackagePath,
-                unityEntityLink.ArchivePath,
-                unityEntityLink.NameInArchive,
-                unityEntityLink.Address);
+                packagePath,
+                archivePath,
+                nameInArchive,
+                Address);
         }
 
         /// <summary>
