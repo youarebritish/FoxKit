@@ -233,6 +233,7 @@
                     Debug.LogError("Property " + field.Field.Name + " is null.");
                     continue;
                 }
+
                 Assert.IsNotNull(loadedProperty);
 
                 var propertyInfo = field.PropertyInfo;

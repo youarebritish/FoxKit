@@ -40,35 +40,5 @@
 
         /// <inheritdoc />
         public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(MeshFilter)).image as Texture2D;
-
-        /// <inheritdoc />
-        public override void OnAssetsImported(FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
-        {
-            foreach (var link in this.depends)
-            {
-                link.ResolveReference(tryGetAsset);
-            }
-        }
-
-        /// <inheritdoc />
-        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
-        {
-            base.ReadProperty(propertyData, initFunctions);
-
-            switch (propertyData.Name)
-            {
-                case "depends":
-                    this.depends = (from link in DataSetUtils.GetDynamicArrayValues<Core.EntityLink>(propertyData)
-                                    select DataSetUtils.MakeEntityLink(this.GetDataSet(), link))
-                                    .ToList();
-                    break;
-                case "partName":
-                    this.partName = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
-                    break;
-                case "buildType":
-                    this.buildType = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
-                    break;
-            }
-        }
     }
 }

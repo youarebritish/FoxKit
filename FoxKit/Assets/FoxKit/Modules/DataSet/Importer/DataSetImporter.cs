@@ -195,9 +195,14 @@
         /// </returns>
         private static EntityInitializeFunctions MakeEntityInitializeFunctions(DataSet dataSet, Dictionary<Entity, Core.Entity> entities)
         {
+            EntityInitializeFunctions.GetEntityFromAddressDelegate getEntityByAddress =
+                address => entities.FirstOrDefault(e => e.Value.Address == address).Key;
+
+            Func<string, Data> getEntityByName = dataSet.GetData;
+
             return new EntityInitializeFunctions(
-                address => entities.FirstOrDefault(e => e.Value.Address == address).Key,
-                entityLink => DataSetUtils.MakeEntityLink(dataSet, entityLink));
+                getEntityByAddress,
+                entityLink => DataSetUtils.MakeEntityLink(dataSet, entityLink, getEntityByAddress, getEntityByName));
         }
 
         /// <summary>

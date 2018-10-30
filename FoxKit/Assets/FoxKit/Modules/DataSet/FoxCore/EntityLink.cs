@@ -16,7 +16,17 @@
     {
         public string PackagePath => this.packagePath;
 
-        public string ArchivePath => this.archivePath;
+        public string ArchivePath
+        {
+            get
+            {
+                return this.archivePath;
+            }
+            set
+            {
+                this.archivePath = value;
+            }
+        }
         
         public string NameInArchive => this.nameInArchive;
 
@@ -26,7 +36,7 @@
         {
             get
             {
-                return this.referencedEntity;
+                return this.IsDataIdentifierEntityLink ? this.dataIdentifier.Links[this.NameInArchive].Entity : this.referencedEntity;
             }
             set
             {

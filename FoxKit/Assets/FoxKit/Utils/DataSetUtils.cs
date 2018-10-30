@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
 
     using FoxKit.Modules.DataSet.FoxCore;
+    using FoxKit.Modules.DataSet.Importer;
 
     using FoxLib;
 
@@ -66,13 +68,34 @@
             return FoxUtils.UnityPathToFoxPath(unityPath);
         }
 
-        public static EntityLink MakeEntityLink(DataSet owningDataSet, Core.EntityLink foxEntityLink)
+        public static EntityLink MakeEntityLink(DataSet owningDataSet, Core.EntityLink foxEntityLink, EntityFactory.EntityInitializeFunctions.GetEntityFromAddressDelegate getEntityByAddress, Func<string, Data> getEntityByName)
         {
-            return new EntityLink(
+            var link = new EntityLink(
                 foxEntityLink.PackagePath,
                 foxEntityLink.ArchivePath,
                 foxEntityLink.NameInArchive,
                 foxEntityLink.EntityHandle);
+
+            // Store the archivePath for convenience later.
+            if (!link.IsDataIdentifierEntityLink)
+            {
+                link.ArchivePath = AssetDatabase.GUIDToAssetPath(owningDataSet.DataSetGuid);
+
+                // If the EntityLink references an Entity inside its own DataSet, resolve it now.
+                if (Path.GetFileNameWithoutExtension(link.ArchivePath) == owningDataSet.OwningDataSetName)
+                {
+                    if (link.Address != 0)
+                    {
+                        link.Entity = getEntityByAddress(link.Address) as Data;
+                    }
+                    else if (!string.IsNullOrEmpty(link.NameInArchive))
+                    {
+                        link.Entity = getEntityByName(link.NameInArchive);
+                    }
+                }
+            }
+
+            return link;
         }
 
         public static Core.EntityLink MakeEntityLink(EntityLink unityEntityLink)
