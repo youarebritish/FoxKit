@@ -503,15 +503,17 @@
 
         public void OnAssetsImported(
             AssetPostprocessor.GetDataSetDelegate getDataSet,
-            AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
+            AssetPostprocessor.TryGetAssetDelegate tryGetAsset,
+            AssetPostprocessor.GetDataIdentifierDelegate getDataIdentifier)
         {
             // Resolve EntityLinks.
             var linksToRemove = new HashSet<EntityLink>();
             foreach (var link in this.entityLinks)
             {
-                // TODO: DataIdentifiers
                 if (link.IsDataIdentifierEntityLink)
                 {
+                    var dataIdentifier = getDataIdentifier(link.ArchivePath);
+                    link.SetDataIdentifier(dataIdentifier, link.NameInArchive);
                     continue;
                 }
 
@@ -524,8 +526,7 @@
                         continue;
                     }
 
-                    // TODO
-                    Debug.LogError($"EntityLink in {this} had an address but no nameInArchive. Report this.");
+                    Debug.LogError($"EntityLink in {this} has an address but no nameInArchive. Report this.");
                     continue;
                 }
                 else

@@ -7,6 +7,7 @@ using UnityEngine;
 namespace FoxKit.Core
 {
     using System;
+    using System.Linq;
 
     using Object = UnityEngine.Object;
 
@@ -14,38 +15,49 @@ namespace FoxKit.Core
     {
         public delegate bool TryGetAssetDelegate(string filename, out Object asset);
         public delegate DataSet GetDataSetDelegate(string filename);
-        
+        public delegate DataIdentifier GetDataIdentifierDelegate(string identifier);
+
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
             // TODO: Handle existing assets
             var assets = new Dictionary<string, UnityEngine.Object>();
-            var dataSets = new Dictionary<string, DataSet>();
+
+            var dataSets =
+                (from guid in AssetDatabase.FindAssets($"t:{typeof(DataSetAsset).Name}")
+                 select AssetDatabase.GUIDToAssetPath(guid))
+                .ToDictionary(Path.GetFileNameWithoutExtension, path => AssetDatabase.LoadAssetAtPath<DataSetAsset>(path).GetDataSet());
+
+            var dataIdentifiers = (from dataSet in dataSets
+                                  from entity in dataSet.Value.dataList.Values
+                                  where entity is DataIdentifier
+                                  select entity as DataIdentifier).ToList();
 
             var tryGetAsset = MakeTryGetAssetDelegate(assets);
             var getDataSet = MakeGetDataSetDelegate(dataSets);
+            var getDataIdentifier = MakeGetDataIdentifierDelegate(dataIdentifiers);
 
             foreach (var asset in importedAssets)
             {
                 var loadedAsset = AssetDatabase.LoadAssetAtPath<Object>(asset);
                 assets.Add(asset, loadedAsset);
 
-                if (loadedAsset is DataSetAsset)
+                if (!(loadedAsset is DataSetAsset))
                 {
-                    var dataSet = (loadedAsset as DataSetAsset).GetDataSet();
-                    dataSets.Add(Path.GetFileNameWithoutExtension(asset), dataSet);
+                    continue;
+                }
 
-                    // Assign GUID reference.
-                    var guid = AssetDatabase.AssetPathToGUID(asset);
-                    if (dataSet.DataSetGuid == guid)
-                    {
-                        continue;
-                    }
+                // Assign GUID reference.
+                var dataSet = (loadedAsset as DataSetAsset).GetDataSet();
+                var guid = AssetDatabase.AssetPathToGUID(asset);
+                if (dataSet.DataSetGuid == guid)
+                {
+                    continue;
+                }
 
-                    dataSet.DataSetGuid = guid;
-                    foreach (var entity in dataSet.GetDataList())
-                    {
-                        entity.Value.DataSetGuid = guid;
-                    }
+                dataSet.DataSetGuid = guid;
+                foreach (var entity in dataSet.GetDataList())
+                {
+                    entity.Value.DataSetGuid = guid;
                 }
             }
 
@@ -59,7 +71,7 @@ namespace FoxKit.Core
 
                 foreach (var entity in dataSetAsset.GetDataSet().GetDataList().Values)
                 {
-                    entity.OnAssetsImported(getDataSet, tryGetAsset);
+                    entity.OnAssetsImported(getDataSet, tryGetAsset, getDataIdentifier);
                 }
             }
         }
@@ -90,13 +102,18 @@ namespace FoxKit.Core
                 return true;
             }
 
-            Debug.LogError($"Referenced asset {path} not found.");
+            Debug.LogWarning($"Referenced asset {path} not found.");
             return false;
         }
 
         private static GetDataSetDelegate MakeGetDataSetDelegate(IDictionary<string, DataSet> dataSets)
         {
             return (string name) => GetDataSet(dataSets, name);
+        }
+
+        private static GetDataIdentifierDelegate MakeGetDataIdentifierDelegate(IEnumerable<DataIdentifier> dataIdentifiers)
+        {
+            return identifier => GetDataIdentifier(dataIdentifiers, identifier);
         }
 
         private static DataSet GetDataSet(IDictionary<string, DataSet> dataSets, string name)
@@ -116,6 +133,17 @@ namespace FoxKit.Core
             
             Debug.LogError($"Referenced DataSet {name} not found.");
             return null;
+        }
+
+        private static DataIdentifier GetDataIdentifier(IEnumerable<DataIdentifier> dataIdentifiers, string identifier)
+        {
+            var result = dataIdentifiers.FirstOrDefault(dataIdentifier => dataIdentifier.Identifier == identifier);
+            if (result == null)
+            {
+                Debug.LogError($"DataIdentifier {identifier} was not found.");
+            }
+
+            return result;
         }
     }
 }

@@ -130,7 +130,13 @@
         /// </returns>
         public Data GetData(string key)
         {
-            return this.dataList[key];
+            if (this.dataList.ContainsKey(key))
+            {
+                return this.dataList[key];
+            }
+
+            Debug.LogError($"No Entity named {key} was present in the DataSet.");
+            return null;
         }
 
         /// <summary>

@@ -5,6 +5,8 @@
 
     using FoxKit.Core;
 
+    using OdinSerializer;
+
     using UnityEngine;
     using UnityEngine.Assertions;
 
@@ -36,8 +38,9 @@
         {
             get
             {
-                return this.IsDataIdentifierEntityLink ? this.dataIdentifier.Links[this.NameInArchive].Entity : this.referencedEntity;
+                return this.IsDataIdentifierEntityLink ? this.dataIdentifier?.Links[this.NameInArchive].Entity : this.referencedEntity;
             }
+
             set
             {
                 this.referencedEntity = value;
@@ -96,13 +99,13 @@
         /// <summary>
         /// The referenced Entity.
         /// </summary>
-        [SerializeField]
+        [OdinSerialize]
         private Data referencedEntity;
 
         /// <summary>
         /// The referenced DataIdentifier, if any.
         /// </summary>
-        [SerializeField]
+        [OdinSerialize]
         private DataIdentifier dataIdentifier;
 
         public EntityLink()
