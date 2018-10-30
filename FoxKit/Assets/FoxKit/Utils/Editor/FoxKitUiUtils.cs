@@ -314,7 +314,10 @@ namespace FoxKit.Utils
 
         public static EntityLink EntityLinkField(Rect rect, EntityLink value, Action<Data> entitySelectedCallback, Action<DataIdentifier, string> onDataIdentifierEntitySelectedCallback)
         {
-            Assert.IsNotNull(value);
+            if (value == null)
+            {
+                value = new EntityLink();
+            }
             
             // TODO Icon
             var labelText = "None (EntityLink)";
