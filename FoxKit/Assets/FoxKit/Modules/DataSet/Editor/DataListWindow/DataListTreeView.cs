@@ -183,6 +183,11 @@
                 var transformData = this.idToDataMap[id] as TransformData;
                 var sceneProxy = this.getSceneProxy(transformData.DataSetGuid, transformData.Name);
 
+                if (sceneProxy == null)
+                {
+                    return;
+                }
+
                 var sceneProxyPosition = sceneProxy.transform.position;
                 SceneView.lastActiveSceneView.LookAt(sceneProxyPosition);
             }
@@ -309,7 +314,10 @@
                 }
 
                 var sceneProxy = this.getSceneProxy(data.DataSetGuid, data.Name);
-                newSelection.Add(sceneProxy.gameObject);
+                if (sceneProxy != null)
+                {
+                    newSelection.Add(sceneProxy.gameObject);
+                }
             }
 
             Selection.objects = newSelection.ToArray();

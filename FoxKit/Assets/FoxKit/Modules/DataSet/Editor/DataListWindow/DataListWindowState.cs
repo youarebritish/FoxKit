@@ -161,7 +161,6 @@
                 return proxy;
             }
 
-            Debug.LogError($"Unable to find scene proxy for entity {entityName} in DataSet {AssetDatabase.GUIDToAssetPath(dataSetGuid)}");
             return null;
         }
     }
