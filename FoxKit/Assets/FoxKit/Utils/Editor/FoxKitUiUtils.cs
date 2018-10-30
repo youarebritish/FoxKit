@@ -311,5 +311,57 @@ namespace FoxKit.Utils
             GUILayout.Space(3);
             return value;
         }
+
+        public static EntityLink EntityLinkField(Rect rect, EntityLink value, Action<Data> entitySelectedCallback, Action<DataIdentifier, string> onDataIdentifierEntitySelectedCallback)
+        {
+            Assert.IsNotNull(value);
+            
+            // TODO Icon
+            var labelText = "None (EntityLink)";
+            if (value.IsDataIdentifierEntityLink)
+            {
+                labelText = $"{value.NameInArchive} (EntityLink)";
+            }
+            else if (value.Entity != null)
+            {
+                labelText = $"{value.Entity.Name} (EntityLink)";
+            }
+
+            var textFieldStyle = EditorStyles.textField;
+            textFieldStyle.clipping = TextClipping.Clip;
+
+            var mainButtonRect = rect;
+            mainButtonRect.width -= 18;
+            if (GUI.Button(mainButtonRect, labelText, textFieldStyle))
+            {
+                if (value.IsDataIdentifierEntityLink)
+                {
+                    if (value.DataIdentifier != null)
+                    {
+                        DataListWindow.GetInstance().OpenDataSet(value.DataIdentifier.DataSetGuid, value.DataIdentifier.Name);
+                    }
+                }
+                else
+                {
+                    if (value.Entity != null)
+                    {
+                        DataListWindow.GetInstance().OpenDataSet(value.Entity.DataSetGuid, value.Entity.Name);
+                    }
+                }
+            }
+
+            var editorSkin = EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
+            var openButtonRect = rect;
+            openButtonRect.width = 14;
+            openButtonRect.position = new Vector2(
+                mainButtonRect.position.x + mainButtonRect.width + 4,
+                mainButtonRect.position.y);
+            if (GUI.Button(openButtonRect, string.Empty, editorSkin.GetStyle("IN ObjectField")))
+            {
+                SelectEntityWindow.Create(entitySelectedCallback, onDataIdentifierEntitySelectedCallback);
+            }
+
+            return value;
+        }
     }
 }
