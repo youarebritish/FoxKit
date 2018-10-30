@@ -95,6 +95,10 @@
         [SerializeField]
         private DataIdentifier dataIdentifier;
 
+        public EntityLink()
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityLink"/> class.
         /// </summary>

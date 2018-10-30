@@ -5,7 +5,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
 
     using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Modules.DataSet.Importer;
@@ -88,11 +87,6 @@
         /// </param>
         public void Initialize(Core.Entity entityData, EntityFactory.EntityInitializeFunctions initFunctions)
         {
-            /*foreach (var property in entityData.StaticProperties)
-            {
-                this.ReadProperty(property, initFunctions);
-            }*/
-
             this.ReadStaticProperties(entityData.StaticProperties, initFunctions);
 
             foreach (var unused in entityData.DynamicProperties)

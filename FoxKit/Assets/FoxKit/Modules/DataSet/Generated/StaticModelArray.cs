@@ -44,7 +44,7 @@ namespace FoxKit.Modules.DataSet
         private RejectFarRangeShadowCast rejectFarRangeShadowCast;
 
         [SerializeField, PropertyInfo(Core.PropertyInfoType.EntityLink, 232)]
-        private FoxCore.EntityLink parentLocator;
+        private FoxCore.EntityLink parentLocator = new EntityLink();
 
         [SerializeField, PropertyInfo(Core.PropertyInfoType.Matrix4, 200, container: Core.ContainerType.DynamicArray)]
         private List<UnityEngine.Matrix4x4> transforms;

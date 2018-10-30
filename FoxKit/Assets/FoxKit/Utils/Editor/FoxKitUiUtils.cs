@@ -266,9 +266,7 @@ namespace FoxKit.Utils
         public static EntityLink EntityLinkField(string label, EntityLink value, Action<Data> entitySelectedCallback, Action<DataIdentifier, string> onDataIdentifierEntitySelectedCallback)
         {
             Assert.IsNotNull(value);
-
-            EditorGUILayout.ObjectField(label, null, typeof(DataSetAsset), false);
-
+            
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel(label);
 
@@ -310,7 +308,7 @@ namespace FoxKit.Utils
             }
 
             EditorGUILayout.EndHorizontal();
-            EditorGUILayout.Space();
+            GUILayout.Space(3);
             return value;
         }
     }

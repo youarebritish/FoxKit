@@ -528,8 +528,11 @@
                     newValue = FoxKitUiUtils.EntityHandleField(field.Item1.Name, currentValue, typeof(Entity));
                     break;
                 case Core.PropertyInfoType.EntityLink:
-                    // TODO
-                    Debug.LogError("EntityLink properties not currently supported.");
+                    var link = field.Item1.GetValue(entity) as EntityLink;
+                    Action<Data> onEntitySelected = selected => link.Entity = selected;
+                    Action<DataIdentifier, string> onDataIdentifierEntitySelected = (identifier, key) => link.SetDataIdentifier(identifier, key);
+
+                    newValue = FoxKitUiUtils.EntityLinkField(field.Item1.Name, link, onEntitySelected, onDataIdentifierEntitySelected);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
