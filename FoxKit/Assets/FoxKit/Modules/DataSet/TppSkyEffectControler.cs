@@ -6,13 +6,15 @@
 
     using FoxLib;
 
+    using OdinSerializer;
+
     using UnityEngine;
 
     /// <inheritdoc />
     [Serializable]
     public class TppSkyEffectControler : Data
     {
-        [SerializeField, PropertyInfo(Core.PropertyInfoType.EntityLink, 120)]
+        [OdinSerialize, PropertyInfo(Core.PropertyInfoType.EntityLink, 120)]
         private FoxCore.EntityLink cameraLight = new EntityLink();
 
         [SerializeField, PropertyInfo(Core.PropertyInfoType.UInt32, 160)]

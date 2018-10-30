@@ -11,6 +11,8 @@ namespace FoxKit.Modules.DataSet
 
     using FoxLib;
 
+    using OdinSerializer;
+
     using UnityEditor;
 
     using UnityEngine;
@@ -23,10 +25,10 @@ namespace FoxKit.Modules.DataSet
         [SerializeField, Modules.DataSet.Property("TppLightProbeArray")]
         private List<int> _drawRejectionLevels;
 
-        [SerializeField, Modules.DataSet.Property("TppLightProbeArray")]
+        [OdinSerialize, Modules.DataSet.Property("TppLightProbeArray")]
         private List<FoxCore.EntityLink> _relatedLights;
 
-        [SerializeField, Modules.DataSet.Property("TppLightProbeArray")]
+        [OdinSerialize, Modules.DataSet.Property("TppLightProbeArray")]
         private List<FoxCore.EntityLink> _shDatas;
 
         [SerializeField, Modules.DataSet.Property("TppLightProbeArray")]

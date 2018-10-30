@@ -7,6 +7,8 @@
 
     using FoxLib;
 
+    using OdinSerializer;
+
     using UnityEngine;
 
     using Object = UnityEngine.Object;
@@ -42,13 +44,13 @@
         [SerializeField, PropertyInfo(Core.PropertyInfoType.Bool, 304)]
         private bool isDebugMaterial;
 
-        [SerializeField, PropertyInfo(Core.PropertyInfoType.EntityLink, 304, 16)]
+        [OdinSerialize, PropertyInfo(Core.PropertyInfoType.EntityLink, 304, 16)]
         private List<EntityLink> materials = new List<EntityLink>(16);
 
         [SerializeField, PropertyInfo(Core.PropertyInfoType.Float, 304)]
         private float lodParam;
 
-        [SerializeField, PropertyInfo(Core.PropertyInfoType.EntityLink, 304, container: Core.ContainerType.DynamicArray)]
+        [OdinSerialize, PropertyInfo(Core.PropertyInfoType.EntityLink, 304, container: Core.ContainerType.DynamicArray)]
         private List<EntityLink> materialConfigs = new List<EntityLink>();
 
         [SerializeField, PropertyInfo(Core.PropertyInfoType.Path, 304)]

@@ -62,7 +62,7 @@
         [OdinSerialize]
         private Dictionary<FilePtrEntry, string> desiredFiles = new Dictionary<FilePtrEntry, string>();
 
-        [SerializeField]
+        [OdinSerialize]
         private List<EntityLink> entityLinks = new List<EntityLink>();
 
         /// <summary>

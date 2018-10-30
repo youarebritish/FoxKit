@@ -8,7 +8,9 @@ namespace FoxKit.Modules.DataSet
     using FoxKit.Modules.DataSet.Sdx;
 
     using FoxLib;
-    
+
+    using OdinSerializer;
+
     using UnityEngine;
 
     // Automatically generated from file afgh_bridge_asset.fox2
@@ -43,7 +45,7 @@ namespace FoxKit.Modules.DataSet
         [SerializeField, PropertyInfo(Core.PropertyInfoType.Int32, 192, enumType: typeof(RejectFarRangeShadowCast))]
         private RejectFarRangeShadowCast rejectFarRangeShadowCast;
 
-        [SerializeField, PropertyInfo(Core.PropertyInfoType.EntityLink, 232)]
+        [OdinSerialize, PropertyInfo(Core.PropertyInfoType.EntityLink, 232)]
         private FoxCore.EntityLink parentLocator = new EntityLink();
 
         [SerializeField, PropertyInfo(Core.PropertyInfoType.Matrix4, 200, container: Core.ContainerType.DynamicArray)]

@@ -99,13 +99,13 @@
         /// <summary>
         /// The referenced Entity.
         /// </summary>
-        [OdinSerialize]
+        [OdinSerialize, NonSerialized]
         private Data referencedEntity;
 
         /// <summary>
         /// The referenced DataIdentifier, if any.
         /// </summary>
-        [OdinSerialize]
+        [OdinSerialize, NonSerialized]
         private DataIdentifier dataIdentifier;
 
         public EntityLink()

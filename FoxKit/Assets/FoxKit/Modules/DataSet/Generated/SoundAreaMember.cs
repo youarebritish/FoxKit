@@ -11,6 +11,8 @@ namespace FoxKit.Modules.DataSet
 
     using FoxLib;
 
+    using OdinSerializer;
+
     using UnityEditor;
 
     using UnityEngine;
@@ -20,13 +22,13 @@ namespace FoxKit.Modules.DataSet
     [Serializable]
     public class SoundAreaMember : Data
     {
-        [SerializeField, Modules.DataSet.Property("SoundAreaMember")]
+        [OdinSerialize, Modules.DataSet.Property("SoundAreaMember")]
         private List<FoxCore.EntityLink> _shapes;
 
         [SerializeField, Modules.DataSet.Property("SoundAreaMember")]
         private uint _priority;
 
-        [SerializeField, Modules.DataSet.Property("SoundAreaMember")]
+        [OdinSerialize, Modules.DataSet.Property("SoundAreaMember")]
         private Entity _parameter;
 
         /// <inheritdoc />

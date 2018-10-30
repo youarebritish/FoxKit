@@ -11,6 +11,8 @@ namespace FoxKit.Modules.DataSet
 
     using FoxLib;
 
+    using OdinSerializer;
+
     using UnityEditor;
 
     using UnityEngine;
@@ -26,7 +28,7 @@ namespace FoxKit.Modules.DataSet
         [SerializeField, Modules.DataSet.Property("TppLadderData")]
         private string _tacticalActionId = string.Empty;
 
-        [SerializeField, Modules.DataSet.Property("TppLadderData")]
+        [OdinSerialize, Modules.DataSet.Property("TppLadderData")]
         private List<FoxCore.EntityLink> _entryPoints;
 
         /// <inheritdoc />

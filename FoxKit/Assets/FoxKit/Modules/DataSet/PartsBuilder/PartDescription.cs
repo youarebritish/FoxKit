@@ -9,6 +9,8 @@
 
     using FoxLib;
 
+    using OdinSerializer;
+
     using UnityEditor;
 
     using UnityEngine;
@@ -23,7 +25,7 @@
         /// <summary>
         /// Other PartDescription Entities that this depends on.
         /// </summary>
-        [SerializeField, Modules.DataSet.Property("Part Description")]
+        [OdinSerialize, Modules.DataSet.Property("Part Description")]
         private List<EntityLink> depends = new List<EntityLink>();
 
         /// <summary>

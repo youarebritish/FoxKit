@@ -7,6 +7,8 @@ namespace FoxKit.Modules.DataSet
 
     using FoxLib;
 
+    using OdinSerializer;
+
     using UnityEngine;
 
     // Automatically generated from file afgh_bridge_light.fox2
@@ -17,10 +19,10 @@ namespace FoxKit.Modules.DataSet
         [SerializeField, PropertyInfo(Core.PropertyInfoType.UInt32, 120)]
         private uint numLightGimmick;
 
-        [SerializeField, PropertyInfo(Core.PropertyInfoType.EntityLink, 128)]
+        [OdinSerialize, PropertyInfo(Core.PropertyInfoType.EntityLink, 128)]
         private FoxCore.EntityLink ownerGimmick;
 
-        [SerializeField, PropertyInfo(Core.PropertyInfoType.EntityLink, 168, container: Core.ContainerType.DynamicArray)]
+        [OdinSerialize, PropertyInfo(Core.PropertyInfoType.EntityLink, 168, container: Core.ContainerType.DynamicArray)]
         private List<FoxCore.EntityLink> lightList;
 
         /// <inheritdoc />

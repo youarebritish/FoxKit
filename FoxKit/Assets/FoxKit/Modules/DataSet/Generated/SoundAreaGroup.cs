@@ -11,6 +11,8 @@ namespace FoxKit.Modules.DataSet
 
     using FoxLib;
 
+    using OdinSerializer;
+
     using UnityEditor;
 
     using UnityEngine;
@@ -26,10 +28,10 @@ namespace FoxKit.Modules.DataSet
         [SerializeField, Modules.DataSet.Property("SoundAreaGroup")]
         private Entity _parameter;
 
-        [SerializeField, Modules.DataSet.Property("SoundAreaGroup")]
+        [OdinSerialize, Modules.DataSet.Property("SoundAreaGroup")]
         private List<FoxCore.EntityLink> _members;
 
-        [SerializeField, Modules.DataSet.Property("SoundAreaGroup")]
+        [OdinSerialize, Modules.DataSet.Property("SoundAreaGroup")]
         private List<FoxCore.EntityLink> _edges;
 
         /// <inheritdoc />

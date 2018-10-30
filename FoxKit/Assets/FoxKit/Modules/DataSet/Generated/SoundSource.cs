@@ -11,6 +11,8 @@ namespace FoxKit.Modules.DataSet
 
     using FoxLib;
 
+    using OdinSerializer;
+
     using UnityEditor;
 
     using UnityEngine;
@@ -23,7 +25,7 @@ namespace FoxKit.Modules.DataSet
         [SerializeField, Modules.DataSet.Property("SoundSource")]
         private string _eventName = string.Empty;
 
-        [SerializeField, Modules.DataSet.Property("SoundSource")]
+        [OdinSerialize, Modules.DataSet.Property("SoundSource")]
         private List<FoxCore.EntityLink> _shapes;
 
         [SerializeField, Modules.DataSet.Property("SoundSource")]

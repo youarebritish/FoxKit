@@ -7,6 +7,8 @@ namespace FoxKit.Modules.DataSet
 
     using FoxLib;
 
+    using OdinSerializer;
+
     using UnityEngine;
 
     // Automatically generated from file afgh_bridge_light.fox2
@@ -14,7 +16,7 @@ namespace FoxKit.Modules.DataSet
     [Serializable]
     public class GeoTrap : TransformData
     {
-        [SerializeField, PropertyInfo(Core.PropertyInfoType.EntityLink, 304, container: Core.ContainerType.DynamicArray)]
+        [OdinSerialize, PropertyInfo(Core.PropertyInfoType.EntityLink, 304, container: Core.ContainerType.DynamicArray)]
         private List<FoxCore.EntityLink> conditionArray;
 
         [SerializeField, PropertyInfo(Core.PropertyInfoType.Bool, 320)]

@@ -11,6 +11,8 @@ namespace FoxKit.Modules.DataSet
 
     using FoxLib;
 
+    using OdinSerializer;
+
     using UnityEditor;
 
     using UnityEngine;
@@ -26,7 +28,7 @@ namespace FoxKit.Modules.DataSet
         [SerializeField, HideInInspector]
         private string terrainDecalPackFilePath;
 
-        [SerializeField, Modules.DataSet.Property("TerrainDecalPack")]
+        [OdinSerialize, Modules.DataSet.Property("TerrainDecalPack")]
         private List<FoxCore.EntityLink> _materialLinks;
 
         /// <inheritdoc />

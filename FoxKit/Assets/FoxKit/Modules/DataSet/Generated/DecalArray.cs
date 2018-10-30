@@ -7,6 +7,8 @@ namespace FoxKit.Modules.DataSet
 
     using FoxLib;
 
+    using OdinSerializer;
+
     using UnityEngine;
 
     // Automatically generated from file afgh_bridge_asset.fox2
@@ -14,7 +16,7 @@ namespace FoxKit.Modules.DataSet
     [Serializable]
     public class DecalArray : TransformData
     {
-        [SerializeField, PropertyInfo(Core.PropertyInfoType.EntityLink, 304)]
+        [OdinSerialize, PropertyInfo(Core.PropertyInfoType.EntityLink, 304)]
         private FoxCore.EntityLink material;
 
         [SerializeField, PropertyInfo(Core.PropertyInfoType.Int32, 304)]
@@ -56,7 +58,7 @@ namespace FoxKit.Modules.DataSet
         [SerializeField, PropertyInfo(Core.PropertyInfoType.Vector3, 304, container: Core.ContainerType.DynamicArray)]
         private List<UnityEngine.Vector3> translations;
 
-        [SerializeField, PropertyInfo(Core.PropertyInfoType.EntityLink, 304, container: Core.ContainerType.DynamicArray)]
+        [OdinSerialize, PropertyInfo(Core.PropertyInfoType.EntityLink, 304, container: Core.ContainerType.DynamicArray)]
         private List<FoxCore.EntityLink> targets;
 
         [SerializeField, PropertyInfo(Core.PropertyInfoType.UInt32, 304, 304, container: Core.ContainerType.DynamicArray)]

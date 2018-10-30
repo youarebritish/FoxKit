@@ -11,6 +11,8 @@ namespace FoxKit.Modules.DataSet
 
     using FoxLib;
 
+    using OdinSerializer;
+
     using UnityEditor;
 
     using UnityEngine;
@@ -20,7 +22,7 @@ namespace FoxKit.Modules.DataSet
     [Serializable]
     public class GeoxTextureMaterialRegister : Data
     {
-        [SerializeField, Modules.DataSet.Property("GeoxTextureMaterialRegister")]
+        [OdinSerialize, Modules.DataSet.Property("GeoxTextureMaterialRegister")]
         private FoxCore.EntityLink _materialLink;
 
         [SerializeField, Modules.DataSet.Property("GeoxTextureMaterialRegister")]
