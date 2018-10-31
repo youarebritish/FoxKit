@@ -288,9 +288,7 @@
 
         private void ReadStaticProperties(Core.PropertyInfo[] properties, EntityFactory.EntityInitializeFunctions initFunctions)
         {
-            var baseTypes = ReflectionUtils.GetParentTypes(this.GetType());
-            baseTypes.Add(this.GetType());
-
+            var baseTypes = ReflectionUtils.GetParentTypes(this.GetType(), true);
             var fields = (from type in baseTypes
                          from field in type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
                          let attribute = field.GetCustomAttribute<PropertyInfoAttribute>()
@@ -624,7 +622,7 @@
         /// Creates writable list of Entity static properties.
         /// </summary>
         /// <param name="getEntityAddress">
-        ///     Function to get an Entity's address.
+        /// Function to get an Entity's address.
         /// </param>
         /// <param name="convertEntityLink"></param>
         /// <returns>
@@ -633,10 +631,10 @@
         public virtual IEnumerable<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
         {
             return from type in ReflectionUtils.GetParentTypes(this.GetType(), true)
-                    from field in type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
-                    let attribute = field.GetCustomAttribute<PropertyInfoAttribute>()
-                    where attribute != null
-                    select this.MakeWritableStaticProperty(field, attribute, getEntityAddress, convertEntityLink);
+                   from field in type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
+                   let attribute = field.GetCustomAttribute<PropertyInfoAttribute>()
+                   where attribute != null
+                   select this.MakeWritableStaticProperty(field, attribute, getEntityAddress, convertEntityLink);
         }
 
         private Core.PropertyInfo MakeWritableStaticProperty(FieldInfo field, PropertyInfoAttribute attribute, Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)

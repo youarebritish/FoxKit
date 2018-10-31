@@ -23,20 +23,21 @@
         /// <param name="type"></param>
         /// <param name="includeSelfType"></param>
         /// <returns></returns>
-        public static IList<Type> GetParentTypes(Type type, bool includeSelfType = false)
+        public static IEnumerable<Type> GetParentTypes(Type type, bool includeSelfType = false)
         {
-            var baseTypes = new List<Type>();
+            var baseTypes = new Stack<Type>();
             if (includeSelfType)
             {
-                baseTypes.Add(type);
+                baseTypes.Push(type);
             }
 
             var baseType = type.BaseType;
             while (baseType != null)
             {
-                baseTypes.Add(baseType);
+                baseTypes.Push(baseType);
                 baseType = baseType.BaseType;
             }
+
             return baseTypes;
         }
     }
