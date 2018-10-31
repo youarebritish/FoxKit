@@ -3,6 +3,7 @@ namespace FoxKit.Modules.DataSet
     using System;
     using System.Linq;
     using System.Collections.Generic;
+    using System.Reflection;
 
     using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Modules.DataSet.FoxCore;
@@ -38,27 +39,6 @@ namespace FoxKit.Modules.DataSet
             base.OnAssetsImported(tryGetAsset);
 
             tryGetAsset(this.pathFixedPackFilePath, out this._pathFixedPackFile);
-        }
-
-        /// <inheritdoc />
-        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
-        {
-            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("pathFixedPackFile", Core.PropertyInfoType.FilePtr, DataSetUtils.AssetToFoxPath(this._pathFixedPackFile)));
-            return parentProperties;
-        }
-
-        /// <inheritdoc />
-        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
-        {
-            base.ReadProperty(propertyData, initFunctions);
-
-            switch (propertyData.Name)
-            {
-                case "pathFixedPackFile":
-                    this.pathFixedPackFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
-                    break;
-            }
         }
     }
 }

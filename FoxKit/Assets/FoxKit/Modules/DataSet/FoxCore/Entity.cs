@@ -630,18 +630,13 @@
         /// <returns>
         /// Writable static properties.
         /// </returns>
-        public virtual List<Core.PropertyInfo> MakeWritableStaticProperties(
-            Func<Entity, ulong> getEntityAddress,
-            Func<EntityLink, Core.EntityLink> convertEntityLink)
+        public virtual IEnumerable<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
         {
-            var baseTypes = ReflectionUtils.GetParentTypes(this.GetType());
-            baseTypes.Add(this.GetType());
-
-            return (from type in baseTypes
+            return from type in ReflectionUtils.GetParentTypes(this.GetType(), true)
                     from field in type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
                     let attribute = field.GetCustomAttribute<PropertyInfoAttribute>()
                     where attribute != null
-                    select this.MakeWritableStaticProperty(field, attribute, getEntityAddress, convertEntityLink)).ToList();
+                    select this.MakeWritableStaticProperty(field, attribute, getEntityAddress, convertEntityLink);
         }
 
         private Core.PropertyInfo MakeWritableStaticProperty(FieldInfo field, PropertyInfoAttribute attribute, Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)

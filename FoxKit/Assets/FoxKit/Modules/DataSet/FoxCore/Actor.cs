@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 
 using FoxKit.Modules.DataSet.FoxCore;
 
@@ -10,8 +11,4 @@ using UnityEngine;
 
 public class Actor : Entity
 {
-    public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
-    {
-        throw new NotImplementedException("Actors should not be written to file!");
-    }
 }

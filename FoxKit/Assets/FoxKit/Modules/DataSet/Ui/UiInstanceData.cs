@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Modules.DataSet.FoxCore;
@@ -59,51 +60,6 @@
                 UnityEngine.Object file;
                 tryGetAsset(path.Value, out file);
                 this.createWindowParams.Add(path.Key, file);
-            }
-        }
-
-        /// <inheritdoc />
-        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
-        {
-            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
-            parentProperties.Add(
-                PropertyInfoFactory.MakeStringMapProperty(
-                    "createWindowParams",
-                    Core.PropertyInfoType.FilePtr,
-                    this.createWindowParams.ToDictionary(
-                        entry => entry.Key,
-                        entry => FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(entry.Value)) as object)));
-            parentProperties.Add(
-                PropertyInfoFactory.MakeStaticArrayProperty(
-                    "windowFactoryName",
-                    Core.PropertyInfoType.String,
-                    this.windowFactoryName));
-            return parentProperties;
-        }
-
-        /// <inheritdoc />
-        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
-        {
-            base.ReadProperty(propertyData, initFunctions);
-
-            switch (propertyData.Name)
-            {
-                case "files":
-                    {
-                        foreach (var entry in DataSetUtils.GetStringMap<string>(propertyData))
-                        {
-                            this.createWindowParamsPaths.Add(entry.Key, FoxUtils.FoxPathToUnityPath(entry.Value));
-                        }
-                        
-                        //this.createWindowParamsPaths.AddRange(DataSetUtils.GetStringMap<string>(propertyData));
-
-                        break;
-                    }
-                case "windowFactoryName":
-                    {
-                        this.windowFactoryName = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
-                        break;
-                    }
             }
         }
     }

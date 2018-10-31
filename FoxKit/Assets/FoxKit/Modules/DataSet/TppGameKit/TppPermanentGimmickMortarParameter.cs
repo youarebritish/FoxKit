@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
 
     using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Modules.DataSet.FoxCore;
@@ -74,55 +75,6 @@
             base.OnAssetsImported(tryGetAsset);
             tryGetAsset(this.defaultShellPartsFilePath, out this.defaultShellPartsFile);
             tryGetAsset(this.flareShellPartsFilePath, out this.flareShellPartsFile);
-        }
-
-        /// <inheritdoc />
-        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
-        {
-            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
-            parentProperties.Add(
-                PropertyInfoFactory.MakeStaticArrayProperty("rotationLimitLeftRight", Core.PropertyInfoType.Float, this.rotationLimitLeftRight));
-            parentProperties.Add(
-                PropertyInfoFactory.MakeStaticArrayProperty("rotationLimitUp", Core.PropertyInfoType.Float, this.rotationLimitUp));
-            parentProperties.Add(
-                PropertyInfoFactory.MakeStaticArrayProperty("rotationLimitDown", Core.PropertyInfoType.Float, this.rotationLimitDown));
-            parentProperties.Add(
-                PropertyInfoFactory.MakeStaticArrayProperty(
-                    "defaultShellPartsFile",
-                    Core.PropertyInfoType.FilePtr,
-                    FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.defaultShellPartsFile))));
-            parentProperties.Add(
-                PropertyInfoFactory.MakeStaticArrayProperty(
-                    "flareShellPartsFile",
-                    Core.PropertyInfoType.FilePtr,
-                    FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.defaultShellPartsFile))));
-
-            return parentProperties;
-        }
-
-        /// <inheritdoc />
-        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
-        {
-            base.ReadProperty(propertyData, initFunctions);
-
-            switch (propertyData.Name)
-            {
-                case "rotationLimitLeftRight":
-                    this.rotationLimitLeftRight = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);
-                    break;
-                case "rotationLimitUp":
-                    this.rotationLimitUp = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);
-                    break;
-                case "rotationLimitDown":
-                    this.rotationLimitDown = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);
-                    break;
-                case "defaultShellPartsFile":
-                    this.defaultShellPartsFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
-                    break;
-                case "flareShellPartsFile":
-                    this.flareShellPartsFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
-                    break;
-            }
         }
     }
 }

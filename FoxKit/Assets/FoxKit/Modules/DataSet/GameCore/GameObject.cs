@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
 
     using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Modules.DataSet.FoxCore;
@@ -53,47 +54,5 @@
 
         /// <inheritdoc />
         public override ushort Version => 2;
-
-        /// <inheritdoc />
-        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
-        {
-            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("typeName", Core.PropertyInfoType.String, this.typeName));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("groupId", Core.PropertyInfoType.UInt32, this.groupId));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("totalCount", Core.PropertyInfoType.UInt32, this.totalCount));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("realizedCount", Core.PropertyInfoType.UInt32, this.realizedCount));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("parameters", Core.PropertyInfoType.EntityPtr, getEntityAddress(this.parameters)));
-
-            return parentProperties;
-        }
-
-        /// <inheritdoc />
-        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
-        {
-            base.ReadProperty(propertyData, initFunctions);
-
-            switch (propertyData.Name)
-            {
-                case "typeName":
-                    this.typeName = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
-                    break;
-                case "groupId":
-                    this.groupId = DataSetUtils.GetStaticArrayPropertyValue<uint>(propertyData);
-                    break;
-                case "totalCount":
-                    this.totalCount = DataSetUtils.GetStaticArrayPropertyValue<uint>(propertyData);
-                    break;
-                case "realizedCount":
-                    this.realizedCount = DataSetUtils.GetStaticArrayPropertyValue<uint>(propertyData);
-                    break;
-                case "parameters":
-                    var address = DataSetUtils.GetStaticArrayPropertyValue<ulong>(propertyData);
-                    this.parameters = initFunctions.GetEntityFromAddress(address) as GameObjectParameter;
-                    Assert.IsNotNull(this.parameters, $"Parameters for {this.Name} was null.");
-
-                    this.parameters.Owner = this;
-                    break;
-            }
-        }
     }
 }

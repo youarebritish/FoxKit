@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Utils;
@@ -65,17 +66,6 @@
             {
                 data?.OnUnloaded(() => destroySceneProxy(data.Name));
             }
-        }
-
-        /// <inheritdoc />
-        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
-        {
-            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
-            parentProperties.Add(PropertyInfoFactory.MakeStringMapProperty(
-                "dataList",
-                Core.PropertyInfoType.EntityPtr,
-                this.dataList.ToDictionary(entry => entry.Key, entry => getEntityAddress(entry.Value) as object)));
-            return parentProperties;
         }
 
         /// <inheritdoc />

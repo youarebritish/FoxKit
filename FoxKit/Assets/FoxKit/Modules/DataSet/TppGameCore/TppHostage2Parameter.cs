@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Modules.DataSet.FoxCore;
@@ -104,74 +105,6 @@
                 UnityEngine.Object asset;
                 tryGetAsset(entry.Value, out asset);
                 this.vfxFiles.Add(entry.Key, asset);
-            }
-        }
-
-        /// <inheritdoc />
-        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
-        {
-            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
-            parentProperties.Add(
-                PropertyInfoFactory.MakeStaticArrayProperty(
-                    "partsFile",
-                    Core.PropertyInfoType.FilePtr,
-                    FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.partsFile))));
-            parentProperties.Add(
-                PropertyInfoFactory.MakeStaticArrayProperty(
-                    "motionGraphFile",
-                    Core.PropertyInfoType.FilePtr,
-                    FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.motionGraphFile))));
-            parentProperties.Add(
-                PropertyInfoFactory.MakeStaticArrayProperty(
-                    "mtarFile",
-                    Core.PropertyInfoType.FilePtr,
-                    FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.mtarFile))));
-            parentProperties.Add(
-                PropertyInfoFactory.MakeStaticArrayProperty(
-                    "extensionMtarFile",
-                    Core.PropertyInfoType.FilePtr,
-                    FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(this.extensionMtarFile))));
-            parentProperties.Add(
-                PropertyInfoFactory.MakeStringMapProperty(
-                    "vfxFiles",
-                    Core.PropertyInfoType.FilePtr,
-                    this.vfxFiles.ToDictionary(
-                        entry => entry.Key,
-                        entry => FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(entry.Value)) as object)));
-
-            return parentProperties;
-        }
-
-        /// <inheritdoc />
-        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
-        {
-            base.ReadProperty(propertyData, initFunctions);
-
-            switch (propertyData.Name)
-            {
-                case "partsFile":
-                    this.partsFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
-                    break;
-                case "motionGraphFile":
-                    this.motionGraphFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
-                    break;
-                case "mtarFile":
-                    this.mtarFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
-                    break;
-                case "extensionMtarFile":
-                    this.extensionMtarFilePath = FoxUtils.FoxPathToUnityPath(DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
-                    break;
-                case "vfxFiles":
-                    var dictionary = DataSetUtils.GetStringMap<string>(propertyData);
-
-                    this.vfxFilePaths = new OrderedDictionary_string_string();
-                    foreach (var entry in dictionary)
-                    {
-                        var path = this.extensionMtarFilePath = FoxUtils.FoxPathToUnityPath(entry.Value);
-                        this.vfxFilePaths.Add(entry.Key, path);
-                    }
-
-                    break;
             }
         }
     }

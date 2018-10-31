@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     using FoxKit.Modules.DataSet.Exporter;
     using FoxKit.Modules.DataSet.FoxCore;
@@ -54,78 +55,5 @@
 
         /// <inheritdoc />
         public override ushort Version => 1;
-
-        /// <inheritdoc />
-        public override void OnAssetsImported(FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
-        {
-            base.OnAssetsImported(tryGetAsset);
-
-            foreach (var path in this.filesPaths)
-            {
-                UnityEngine.Object file = null;
-                tryGetAsset(path, out file);
-                this.files.Add(file);
-            }
-
-            foreach (var path in this.rawFilesPaths)
-            {
-                UnityEngine.Object file = null;
-                tryGetAsset(path, out file);
-                this.rawFiles.Add(file);
-            }
-        }
-
-        /// <inheritdoc />
-        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
-        {
-            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
-            parentProperties.Add(PropertyInfoFactory.MakeDynamicArrayProperty(
-                "files",
-                Core.PropertyInfoType.FilePtr,
-                (from file in this.files
-                 select FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(file)) as object).ToArray()));
-            parentProperties.Add(PropertyInfoFactory.MakeDynamicArrayProperty(
-                "rawFiles",
-                Core.PropertyInfoType.FilePtr,
-                (from file in this.rawFiles
-                 select FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(file)) as object).ToArray()));
-            return parentProperties;
-        }
-
-        /// <inheritdoc />
-        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
-        {
-            base.ReadProperty(propertyData, initFunctions);
-
-            switch (propertyData.Name)
-            {
-                case "files":
-                    {
-                        var filePtrList = DataSetUtils.GetDynamicArrayValues<string>(propertyData);
-                        this.files = new List<UnityEngine.Object>(filePtrList.Count);
-                        this.filesPaths = new List<string>(filePtrList.Count);
-
-                        foreach (var filePtr in filePtrList)
-                        {
-                            var path = FoxUtils.FoxPathToUnityPath(filePtr);
-                            this.filesPaths.Add(path);
-                        }
-                        break;
-                    }
-                case "rawFiles":
-                    {
-                        var filePtrList = DataSetUtils.GetDynamicArrayValues<string>(propertyData);
-                        this.rawFiles = new List<UnityEngine.Object>(filePtrList.Count);
-                        this.rawFilesPaths = new List<string>(filePtrList.Count);
-
-                        foreach (var filePtr in filePtrList)
-                        {
-                            var path = FoxUtils.FoxPathToUnityPath(filePtr);
-                            this.rawFilesPaths.Add(path);
-                        }
-                        break;
-                    }
-            }
-        }
     }
 }

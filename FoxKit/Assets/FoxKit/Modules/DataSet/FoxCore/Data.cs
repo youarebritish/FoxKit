@@ -1,10 +1,6 @@
 ﻿namespace FoxKit.Modules.DataSet.FoxCore
 {
     using System;
-    using System.Collections.Generic;
-
-    using FoxKit.Modules.DataSet.Exporter;
-    using FoxKit.Utils;
 
     using FoxLib;
     
@@ -23,9 +19,8 @@
         [SerializeField, PropertyInfo(Core.PropertyInfoType.String, 72)]
         private string name;
 
-        // Temporarily commented out. Can't have recursive references.
-        //[SerializeField, PropertyInfo(Core.PropertyInfoType.EntityHandle, 80, readable: PropertyExport.Never, writable: PropertyExport.Never)]
-        //private DataSet dataSet;
+        [SerializeField, NonSerialized, PropertyInfo(Core.PropertyInfoType.EntityHandle, 80, readable: PropertyExport.Never, writable: PropertyExport.Never)]
+        private Entity dataSet;
 
         /// <summary>
         /// Since we can't store a reference to the owning DataSet (recursive reference), we store its GUID instead.
