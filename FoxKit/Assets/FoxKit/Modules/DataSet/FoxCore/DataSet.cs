@@ -26,7 +26,7 @@
         /// <summary>
         /// The data list.
         /// </summary>
-        [OdinSerialize]
+        [OdinSerialize, PropertyInfo(Core.PropertyInfoType.EntityHandle, 120, container: Core.ContainerType.StringMap, readable: PropertyExport.Never, writable: PropertyExport.Never)]
         public Dictionary<string, Data> dataList = new Dictionary<string, Data>();
 
         public string OwningDataSetName;
