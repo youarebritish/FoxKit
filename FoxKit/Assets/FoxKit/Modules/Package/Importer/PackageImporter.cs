@@ -26,7 +26,7 @@
             var archiveDefinition = ScriptableObject.CreateInstance<PackageDefinition>();
             archiveDefinition.name = Path.GetFileNameWithoutExtension(ctx.assetPath);
             archiveDefinition.IsReadOnly = true;
-            Action<IEnumerable<UnityEngine.Object>> assignEntries = entries => archiveDefinition.AssignEntries(entries.ToList());
+            Action<IEnumerable<UnityEngine.Object>> assignEntries = entries => archiveDefinition.AssignEntries(entries.ToList(), AssetDatabase.AssetPathToGUID(ctx.assetPath));
 
             // TODO Read dictionaries
             switch (extension)

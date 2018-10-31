@@ -12,24 +12,11 @@ public class DataSetAsset : SerializedScriptableObject
 {
     [OdinSerialize, NonSerialized]
     private DataSet DataSet = new DataSet();
-
-    [OdinSerialize, NonSerialized]
-    private PackageDefinition package;
     
     public bool IsReadOnly;
 
-    public PackageDefinition Package
-    {
-        get
-        {
-            return this.package;
-        }
-        set
-        {
-            this.package = value;
-        }
-    }
-
+    public string PackageGuid;
+    
     public DataSet GetDataSet()
     {
         return this.DataSet;

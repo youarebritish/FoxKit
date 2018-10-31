@@ -33,7 +33,6 @@
             }
             
             var convertedEntities = ConvertEntities(entities, GetEntityAddressAndId).ToList();
-            //convertedEntities = convertedEntities.Take(2).ToList();
 
             using (var writer = new BinaryWriter(new FileStream(exportPath, FileMode.Create)))
             {

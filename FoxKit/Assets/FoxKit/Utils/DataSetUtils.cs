@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
 
+    using FoxKit.Modules.Archive;
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Modules.DataSet.Importer;
 
@@ -120,7 +121,16 @@
             }
 
             var dataSetAsset = AssetDatabase.LoadAssetAtPath<DataSetAsset>(AssetDatabase.GUIDToAssetPath(unityEntityLink.Entity.DataSetGuid));
-            var packagePath = AssetToFoxPath(dataSetAsset.Package);
+
+            var package = AssetDatabase.LoadAssetAtPath<PackageDefinition>(AssetDatabase.GUIDToAssetPath(dataSetAsset.PackageGuid));
+            var packagePath = AssetToFoxPath(package);
+
+            // Weirdly, EntityLinks reference .fpks instead of .fpkds, so remove the 'd' at the end.
+            if (!string.IsNullOrEmpty(packagePath))
+            {
+                packagePath = packagePath.Remove(packagePath.Length - 1);
+            }
+
             var archivePath = AssetToFoxPath(dataSetAsset);
             var nameInArchive = unityEntityLink.Entity.Name;
 

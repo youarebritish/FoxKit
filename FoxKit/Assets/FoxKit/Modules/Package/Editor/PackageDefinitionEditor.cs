@@ -60,7 +60,7 @@
             }
 
             var dataSet = item as DataSetAsset;
-            dataSet.Package = this.target as PackageDefinition;
+            dataSet.PackageGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(this.target));
         }
 
         private void OnItemRemoving(object sender, ItemRemovingEventArgs args)
@@ -73,7 +73,7 @@
             }
 
             var dataSet = item as DataSetAsset;
-            dataSet.Package = null;
+            dataSet.PackageGuid = null;
         }
 
         public override void OnInspectorGUI()

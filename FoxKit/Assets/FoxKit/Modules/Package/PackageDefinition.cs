@@ -24,7 +24,7 @@
 
         public bool IsReadOnly;
 
-        public void AssignEntries(List<UnityEngine.Object> entries)
+        public void AssignEntries(List<UnityEngine.Object> entries, string guid)
         {
             this.Entries = entries;
             foreach (var entry in this.Entries)
@@ -35,7 +35,7 @@
                     continue;
                 }
 
-                dataSet.Package = this;
+                dataSet.PackageGuid = guid;
             }
         }
     }
