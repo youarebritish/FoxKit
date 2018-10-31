@@ -39,38 +39,5 @@ namespace FoxKit.Modules.DataSet
 
         /// <inheritdoc />
         public override ushort Version => 2;
-
-        /// <inheritdoc />
-        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
-        {
-            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("eventName", Core.PropertyInfoType.String, (this._eventName)));
-            parentProperties.Add(PropertyInfoFactory.MakeDynamicArrayProperty("shapes", Core.PropertyInfoType.EntityLink, (from propertyEntry in this._shapes select convertEntityLink(propertyEntry) as object).ToArray()));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("lodRange", Core.PropertyInfoType.Float, (this._lodRange)));
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("playRange", Core.PropertyInfoType.Float, (this._playRange)));
-            return parentProperties;
-        }
-
-        /// <inheritdoc />
-        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
-        {
-            base.ReadProperty(propertyData, initFunctions);
-
-            switch (propertyData.Name)
-            {
-                case "eventName":
-                    this._eventName = (DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData));
-                    break;
-                case "shapes":
-                    this._shapes = (from rawValue in DataSetUtils.GetDynamicArrayValues<Core.EntityLink>(propertyData) select initFunctions.MakeEntityLink(rawValue)).ToList();
-                    break;
-                case "lodRange":
-                    this._lodRange = (DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData));
-                    break;
-                case "playRange":
-                    this._playRange = (DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData));
-                    break;
-            }
-        }
     }
 }

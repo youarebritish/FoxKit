@@ -73,6 +73,9 @@
         [SerializeField, PropertyInfo(Core.PropertyInfoType.EntityHandle, 152, container: Core.ContainerType.List)]
         private List<Entity> children = new List<Entity>();
 
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.UInt32, 184)]
+        private uint flags;
+
         /// <summary>
         /// Unknown. Believed to be a flag for whether or not this TransformData should inherit its owner's transform.
         /// </summary>
@@ -167,112 +170,6 @@
         protected virtual void DestroySceneProxy(DestroySceneProxyDelegate destroySceneProxy)
         {
             destroySceneProxy();
-        }
-
-        /// <inheritdoc />
-        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
-        {
-            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
-            parentProperties.Add(
-                PropertyInfoFactory.MakeStaticArrayProperty(
-                    "parent",
-                    Core.PropertyInfoType.EntityHandle,
-                    getEntityAddress(this.parent)));
-            parentProperties.Add(
-                PropertyInfoFactory.MakeStaticArrayProperty(
-                    "transform",
-                    Core.PropertyInfoType.EntityPtr,
-                    getEntityAddress(this.transform)));
-            parentProperties.Add(
-                PropertyInfoFactory.MakeStaticArrayProperty(
-                    "shearTransform",
-                    Core.PropertyInfoType.EntityPtr,
-                    getEntityAddress(this.shearTransform)));
-            parentProperties.Add(
-                PropertyInfoFactory.MakeStaticArrayProperty(
-                    "pivotTransform",
-                    Core.PropertyInfoType.EntityPtr,
-                    getEntityAddress(this.pivotTransform)));
-            parentProperties.Add(
-                PropertyInfoFactory.MakeListProperty(
-                    "children",
-                    Core.PropertyInfoType.EntityHandle,
-                    (from child in this.children select getEntityAddress(child) as object).ToArray()));
-            var packedFlags = (uint)((this.visibility ? Flags.EnableVisibility : 0)
-                                     | (this.selection ? Flags.EnableSelection : 0)
-                                     | (this.inheritTransform ? Flags.EnableInheritTransform : 0));
-            parentProperties.Add(
-                PropertyInfoFactory.MakeStaticArrayProperty("flags", Core.PropertyInfoType.UInt32, packedFlags));
-
-            return parentProperties;
-        }
-
-        /// <inheritdoc />
-        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
-        {
-            base.ReadProperty(propertyData, initFunctions);
-
-            switch (propertyData.Name)
-            {
-                case "parent":
-                    {
-                        var address = DataSetUtils.GetStaticArrayPropertyValue<ulong>(propertyData);
-                        this.parent = initFunctions.GetEntityFromAddress(address) as TransformData;
-                        break;
-                    }
-
-                case "transform":
-                    {
-                        var address = DataSetUtils.GetStaticArrayPropertyValue<ulong>(propertyData);
-                        this.transform = initFunctions.GetEntityFromAddress(address) as TransformEntity;
-
-                        if (this.transform != null)
-                        {
-                            this.transform.Owner = this;
-                        }
-
-                        break;
-                    }
-
-                case "shearTransform":
-                    {
-                        var address = DataSetUtils.GetStaticArrayPropertyValue<ulong>(propertyData);
-                        this.shearTransform = initFunctions.GetEntityFromAddress(address) as TransformEntity;
-
-                        if (this.shearTransform != null)
-                        {
-                            this.shearTransform.Owner = this;
-                        }
-
-                        break;
-                    }
-
-                case "pivotTransform":
-                    {
-                        var address = DataSetUtils.GetStaticArrayPropertyValue<ulong>(propertyData);
-                        this.pivotTransform = initFunctions.GetEntityFromAddress(address) as TransformEntity;
-
-                        if (this.pivotTransform != null)
-                        {
-                            this.pivotTransform.Owner = this;
-                        }
-
-                        break;
-                    }
-
-                case "children":
-                    this.children = (from handle in DataSetUtils.GetListValues<ulong>(propertyData)
-                                     select initFunctions.GetEntityFromAddress(handle))
-                                     .ToList();
-                    break;
-
-                case "flags":
-                    var flags = (Flags)DataSetUtils.GetStaticArrayPropertyValue<uint>(propertyData);
-                    this.inheritTransform = flags.HasFlag(Flags.EnableInheritTransform);
-                    this.visibility = flags.HasFlag(Flags.EnableVisibility);
-                    this.selection = flags.HasFlag(Flags.EnableVisibility);
-                    break;
-            }
         }
     }
 }

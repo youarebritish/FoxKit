@@ -652,31 +652,41 @@
             }
             if (attribute.Container == Core.ContainerType.StaticArray)
             {
-                var values = from value in field.GetValue(this) as object[]
+                var values = from value in (field.GetValue(this) as IList).Cast<object>()
                              select ConvertValueToFox(attribute.Type, getEntityAddress, convertEntityLink, value);
                 return PropertyInfoFactory.MakeStaticArrayProperty(field.Name, attribute.Type, values.ToArray());
             }
             if (attribute.Container == Core.ContainerType.DynamicArray)
             {
-                var values = from value in field.GetValue(this) as object[]
+                var values = from value in (field.GetValue(this) as IList).Cast<object>()
                              select ConvertValueToFox(attribute.Type, getEntityAddress, convertEntityLink, value);
                 return PropertyInfoFactory.MakeDynamicArrayProperty(field.Name, attribute.Type, values.ToArray());
             }
             if (attribute.Container == Core.ContainerType.List)
             {
-                var values = from value in field.GetValue(this) as object[]
+                var values = from value in (field.GetValue(this) as IList).Cast<object>()
                              select ConvertValueToFox(attribute.Type, getEntityAddress, convertEntityLink, value);
                 return PropertyInfoFactory.MakeListProperty(field.Name, attribute.Type, values.ToArray());
             }
             if (attribute.Container == Core.ContainerType.StringMap)
             {
-                var dict = (field.GetValue(this) as IDictionary<string, object>).ToDictionary(
-                    entry => entry.Key,
+                var enumerableDictionary = IDictionaryToIEnumerable(field.GetValue(this) as IDictionary);
+                var dict = enumerableDictionary.ToDictionary(
+                    entry => entry.Key as string,
                     entry => ConvertValueToFox(attribute.Type, getEntityAddress, convertEntityLink, entry.Value));
                 return PropertyInfoFactory.MakeStringMapProperty(field.Name, attribute.Type, dict);
             }
             Assert.IsTrue(false, "Invalid container.");
             return null;
+        }
+
+        private static IEnumerable<DictionaryEntry> IDictionaryToIEnumerable(IDictionary dict)
+        {
+            // Note: Resharper thinks this can be converted into a call to dict.Cast<DictionaryEntry>(), but this is incorrect.
+            foreach (var item in dict)
+            {
+                yield return (DictionaryEntry)item;
+            }
         }
 
         private static object ConvertValueToFox(Core.PropertyInfoType type, Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink, object value)
@@ -722,7 +732,7 @@
                 case Core.PropertyInfoType.Matrix4:
                     return FoxUtils.UnityToFox((Matrix4x4)value);
                 case Core.PropertyInfoType.Color:
-                    return FoxUtils.UnityToFox((Color)value);
+                    return FoxUtils.UnityColorToFoxColorRGBA((Color)value);
                 case Core.PropertyInfoType.FilePtr:
                     return FoxUtils.UnityPathToFoxPath(AssetDatabase.GetAssetPath(value as UnityEngine.Object));
                 case Core.PropertyInfoType.EntityHandle:

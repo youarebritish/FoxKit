@@ -30,25 +30,5 @@
 
         /// <inheritdoc />
         public override short ClassId => 272;
-
-        /// <inheritdoc />
-        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
-        {
-            var parentProperties = base.MakeWritableStaticProperties(getEntityAddress, convertEntityLink);
-            parentProperties.Add(PropertyInfoFactory.MakeStaticArrayProperty("size", Core.PropertyInfoType.Float, this.size));
-
-            return parentProperties;
-        }
-
-        /// <inheritdoc />
-        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
-        {
-            base.ReadProperty(propertyData, initFunctions);
-
-            if (propertyData.Name == "size")
-            {
-                this.size = DataSetUtils.GetStaticArrayPropertyValue<float>(propertyData);
-            }
-        }
     }
 }

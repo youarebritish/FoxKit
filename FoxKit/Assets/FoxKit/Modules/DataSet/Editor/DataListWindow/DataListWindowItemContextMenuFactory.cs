@@ -63,14 +63,16 @@
         private static void SaveDataSetAs(object dataSet)
         {
             var castDataSet = dataSet as DataSet;
-            var path = EditorUtility.SaveFilePanel("Export DataSet", string.Empty, castDataSet.Name + ".fox2", "fox2");
+            var path = EditorUtility.SaveFilePanel("Export DataSet", string.Empty, castDataSet.OwningDataSetName + ".fox2", "fox2");
             if (path.Length == 0)
             {
                 return;
             }
             
             var entities = new List<Entity> { castDataSet };
-            // TODO entities.AddRange(((DataSet)dataSet).GetAllEntities());
+
+            // TODO: DataElements
+            entities.AddRange(((DataSet)dataSet).dataList.Values);
 
             DataSetExporter.ExportDataSet(entities, path);
         }

@@ -45,26 +45,6 @@
             }
         }
 
-        /// <inheritdoc />
-        public override List<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
-        {
-            var nameProperty = PropertyInfoFactory.MakeStaticArrayProperty("name", Core.PropertyInfoType.String, this.Name);
-            var dataSetProperty = PropertyInfoFactory.MakeStaticArrayProperty("dataSet", Core.PropertyInfoType.EntityHandle, getEntityAddress(this.GetDataSet()));
-            var properties = new List<Core.PropertyInfo> { nameProperty, dataSetProperty };
-            return properties;
-        }
-        
-        /// <inheritdoc />
-        protected override void ReadProperty(Core.PropertyInfo propertyData, Importer.EntityFactory.EntityInitializeFunctions initFunctions)
-        {
-            base.ReadProperty(propertyData, initFunctions);
-
-            if (propertyData.Name == "name")
-            {
-                this.name = DataSetUtils.GetStaticArrayPropertyValue<string>(propertyData);
-            }
-        }
-
         public DataSet GetDataSet()
         {
             Assert.IsNotNull(this.DataSetGuid);
