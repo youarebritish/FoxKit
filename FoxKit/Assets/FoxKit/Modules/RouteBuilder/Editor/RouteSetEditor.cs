@@ -1,5 +1,7 @@
 ﻿namespace FoxKit.Modules.RouteBuilder.Editor
 {
+    using System.Collections.Generic;
+
     using FoxKit.Core;
 
     using UnityEditor;
@@ -14,13 +16,60 @@
     [CustomEditor(typeof(RouteSet))]
     public class RouteSetEditor : Editor
     {
+        static string filter = "";
+        static List<Route> filteredRoutes;
+
+        void OnEnable()
+        {
+            filteredRoutes = new List<Route>();
+            var routeset = this.target as RouteSet;
+            for (int c = 0; c < routeset.transform.childCount; c++)
+            {
+                GameObject childObject = routeset.transform.GetChild(c).gameObject;
+                if (childObject.name.Contains(filter))
+                {
+                    childObject.SetActive(true);
+                    filteredRoutes.Add(childObject.GetComponent<Route>());
+                }
+
+                //Failsafe to re-add routes to the set if it got dumped by the editor
+                if (!routeset.Routes.Contains(childObject.GetComponent<Route>()))
+                {
+                    routeset.Routes.Add(childObject.GetComponent<Route>());
+                }
+            }
+        }
+
         public override void OnInspectorGUI()
         {
-            var routeset = this.target as RouteSet;
+            var routeset = this.target as RouteSet; //Can this be moved to OnEnable instead?
 
+            UpdateFilter(routeset);
             DrawToolShelf(routeset);
             DrawSettings(routeset);
             DrawRouteList(routeset);
+        }
+
+        private void UpdateFilter(RouteSet routeset)
+        {
+            string oldFilter = filter;
+            filter = EditorGUILayout.TextField("Route Filter:", filter);
+            if (!oldFilter.Equals(filter)) //Only rebuild the list if the filter was changed
+            {
+                filteredRoutes.Clear();
+                foreach (Route r in routeset.Routes)
+                {
+                    if (r.name.Contains(filter))
+                    {
+                        filteredRoutes.Add(r);
+                        r.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        r.gameObject.SetActive(false);
+                    }
+                }
+            }
         }
 
         private static void DrawToolShelf(RouteSet routeset)
@@ -73,7 +122,7 @@
         private static void DrawRouteList(RouteSet routeset)
         {
             Rotorz.Games.Collections.ReorderableListGUI.Title("Routes");
-            Rotorz.Games.Collections.ReorderableListGUI.ListField(routeset.Routes, CustomListItem, DrawEmpty);
+            Rotorz.Games.Collections.ReorderableListGUI.ListField(filteredRoutes, CustomListItem, DrawEmpty);
         }
 
         private static Route CustomListItem(Rect position, Route itemValue)
