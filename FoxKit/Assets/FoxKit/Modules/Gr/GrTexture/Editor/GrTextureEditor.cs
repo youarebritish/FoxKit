@@ -15,7 +15,7 @@ namespace FoxKit.Modules.Gr.GrTexture.Editor
     /// <summary>
     /// Custom editor for Texture2Ds.
     /// </summary>
-    [CustomEditor(typeof(Texture2D))]
+    //[CustomEditor(typeof(Texture2D))]
     public class GrTexture2DEditor : Editor
     {
         GrTextureUserData textureData;
