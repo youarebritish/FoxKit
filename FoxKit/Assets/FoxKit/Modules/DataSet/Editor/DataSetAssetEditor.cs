@@ -213,12 +213,6 @@
                         (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
                     break;
                 case Core.PropertyInfoType.EntityPtr:
-                    //var adapter = new EntityPtrListAdapter(list as IList<Entity>, ptrType, entity);
-                    //ReorderableListGUI.ListField(adapter);
-
-                    // TODO
-                   // Debug.LogWarning("StringMap EntityPtrs not currently supported.");
-
                     var adapter = new EntityPtrStringMapAdapter(
                         dictionary as IDictionary<string, Entity>,
                         ptrType,
@@ -545,7 +539,8 @@
                     break;
                 case Core.PropertyInfoType.Matrix4:
                     // TODO
-                    Debug.LogWarning("Matrix4 properties not currently supported.");
+                    //Debug.LogWarning("Matrix4 properties not currently supported.");
+                    EditorGUI.HelpBox(position, "Matrix4 properties are not currently supported.", MessageType.Error);
                     newValue = itemValue;
                     break;
                 case Core.PropertyInfoType.Color:
