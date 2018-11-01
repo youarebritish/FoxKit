@@ -530,6 +530,11 @@
                 else
                 {
                     var dataSet = getDataSet(Path.GetFileNameWithoutExtension(link.ArchivePath));
+                    if (dataSet == null)
+                    {
+                        continue;
+                    }
+
                     var entity = dataSet.GetData(link.NameInArchive);
                     link.Entity = entity;
                     linksToRemove.Add(link);

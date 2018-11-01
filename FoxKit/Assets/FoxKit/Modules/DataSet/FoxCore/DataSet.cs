@@ -15,6 +15,7 @@
     using UnityEditor;
 
     using UnityEngine;
+    using UnityEngine.Assertions;
 
     /// <inheritdoc />
     /// <summary>
@@ -27,7 +28,7 @@
         /// The data list.
         /// </summary>
         [OdinSerialize, PropertyInfo(Core.PropertyInfoType.EntityHandle, 120, container: Core.ContainerType.StringMap, readable: PropertyExport.Never, writable: PropertyExport.Never)]
-        private Dictionary<string, Data> dataList = new Dictionary<string, Data>();
+        private Dictionary<string, Entity> dataList = new Dictionary<string, Entity>();
 
         public string OwningDataSetName;
         
@@ -48,12 +49,12 @@
         {
             foreach (var data in this.dataList.Values)
             {
-                data.OnLoaded(() => createSceneProxy(data.Name));
+                data?.OnLoaded(() => createSceneProxy(((Data)data).Name));
             }
 
             foreach (var data in this.dataList.Values)
             {
-                data.PostOnLoaded(getSceneProxy);
+                data?.PostOnLoaded(getSceneProxy);
             }
         }
 
@@ -64,7 +65,7 @@
         {
             foreach (var data in this.dataList.Values)
             {
-                data?.OnUnloaded(() => destroySceneProxy(data.Name));
+                data?.OnUnloaded(() => destroySceneProxy(((Data)data).Name));
             }
         }
 
@@ -95,7 +96,6 @@
         {
             if (entity != null)
             {
-                // TODO Add scene proxy?
                 this.dataList.Add(key, entity);
             }
         }
@@ -122,7 +122,7 @@
         {
             if (this.dataList.ContainsKey(key))
             {
-                return this.dataList[key];
+                return (Data)this.dataList[key];
             }
 
             Debug.LogError($"No Entity named {key} was present in the DataSet.");
@@ -135,7 +135,7 @@
         /// <returns>
         /// All registered <see cref="Data"/> entries with their keys.
         /// </returns>
-        public IDictionary<string, Data> GetDataList()
+        public IDictionary<string, Entity> GetDataList()
         {
             return this.dataList;
         }
@@ -151,7 +151,7 @@
             foreach (var data in this.dataList.Values)
             {
                 result.Add(data);
-                result.AddRange(from dataElement in data.GetDataElements()
+                result.AddRange(from dataElement in ((Data)data).GetDataElements()
                                 where dataElement != null
                                 select dataElement);
             }

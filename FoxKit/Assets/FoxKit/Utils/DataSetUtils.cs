@@ -13,6 +13,7 @@
 
     using UnityEditor;
 
+    using UnityEngine;
     using UnityEngine.Assertions;
 
     /// <summary>

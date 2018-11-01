@@ -136,14 +136,15 @@
 
                     foreach (var entity in dataSet.GetDataSet().GetDataList().Values)
                     {
+                        var data = entity as Data;
                         // Filter out results that don't contain search string.
-                        if (entity.Name.IndexOf(this.searchString, 0, StringComparison.CurrentCultureIgnoreCase) == -1)
+                        if (data.Name.IndexOf(this.searchString, 0, StringComparison.CurrentCultureIgnoreCase) == -1)
                         {
                             continue;
                         }
 
-                        allItems.Add(new TreeViewItem { id = id, depth = 2, displayName = entity.Name });
-                        this.idToData.Add(entity);
+                        allItems.Add(new TreeViewItem { id = id, depth = 2, displayName = data.Name });
+                        this.idToData.Add(data);
                         id++;
                     }
                 }

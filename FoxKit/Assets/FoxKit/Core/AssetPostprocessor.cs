@@ -28,9 +28,9 @@ namespace FoxKit.Core
                 .ToDictionary(Path.GetFileNameWithoutExtension, path => AssetDatabase.LoadAssetAtPath<DataSetAsset>(path).GetDataSet());
 
             var dataIdentifiers = (from dataSet in dataSets
-                                  from entity in dataSet.Value.GetDataList().Values
-                                  where entity is DataIdentifier
-                                  select entity as DataIdentifier).ToList();
+                                   from entity in dataSet.Value.GetDataList().Values
+                                   where entity is DataIdentifier
+                                   select entity as DataIdentifier).ToList();
 
             var tryGetAsset = MakeTryGetAssetDelegate(assets);
             var getDataSet = MakeGetDataSetDelegate(dataSets);
@@ -57,7 +57,7 @@ namespace FoxKit.Core
                 dataSet.DataSetGuid = guid;
                 foreach (var entity in dataSet.GetDataList())
                 {
-                    entity.Value.DataSetGuid = guid;
+                    ((Data)entity.Value).DataSetGuid = guid;
                 }
             }
 
@@ -131,7 +131,7 @@ namespace FoxKit.Core
                 return result;
             }
             
-            Debug.LogError($"Referenced DataSet {name} not found.");
+            Debug.LogWarning($"Referenced DataSet {name} not found.");
             return null;
         }
 
@@ -140,7 +140,7 @@ namespace FoxKit.Core
             var result = dataIdentifiers.FirstOrDefault(dataIdentifier => dataIdentifier.Identifier == identifier);
             if (result == null)
             {
-                Debug.LogError($"DataIdentifier {identifier} was not found.");
+                Debug.LogWarning($"DataIdentifier {identifier} was not found.");
             }
 
             return result;

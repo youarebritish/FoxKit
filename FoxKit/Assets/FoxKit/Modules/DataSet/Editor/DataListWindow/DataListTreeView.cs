@@ -236,7 +236,7 @@
                 index++;
                 
                 index = dataSet.GetDataSet().GetDataList().Values
-                    .Aggregate(index, (current, data) => this.AddData(dataSet, data, dataSetNode, current));
+                    .Aggregate(index, (current, data) => this.AddData(dataSet, (Data)data, dataSetNode, current));
             }
 
             TreeView.SetupDepthsFromParentsAndChildren(root);

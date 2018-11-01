@@ -169,7 +169,7 @@
                     continue;
                 }
                 
-                dataSet.AddData(((Data)entity.Key).Name, (Data)entity.Key);
+                //dataSet.AddData(((Data)entity.Key).Name, (Data)entity.Key);
             }
         }
 
