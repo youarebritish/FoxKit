@@ -1,6 +1,8 @@
 ﻿namespace FoxKit.Modules.RouteBuilder.Editor
 {
     using FoxKit.Utils;
+    using Rotorz.Games.Collections;
+    using System.Collections.Generic;
     using UnityEditor;
 
     using UnityEngine;
@@ -11,6 +13,35 @@
     [CustomEditor(typeof(Route))]
     public class RouteEditor : Editor
     {
+        private ReorderableListControl listControl;
+        private IReorderableListAdaptor listAdaptor;
+
+        void OnEnable()
+        {
+            var route = this.target as Route;
+            route.Rebuild();
+
+            listControl = new ReorderableListControl();
+            listControl.ItemRemoving += this.OnItemRemoving;
+            listAdaptor = new GenericListAdaptor<RouteNode>(route.Nodes, CustomListItem, ReorderableListGUI.DefaultItemHeight);
+        }
+
+        private void OnDisable()
+        {
+            // Unsubscribe from events
+            if (listControl != null)
+            {
+                listControl.ItemRemoving -= this.OnItemRemoving;
+            }
+        }
+
+        private void OnItemRemoving(object sender, ItemRemovingEventArgs args)
+        {
+            var route = this.target as Route;
+            RouteNode item = route.Nodes[args.ItemIndex];
+            DestroyImmediate(item.gameObject);
+        }
+
         public override void OnInspectorGUI()
         {
             var route = this.target as Route;
@@ -22,7 +53,7 @@
             EditorUtility.SetDirty(target);
         }
 
-        private static void DrawToolShelf(Route route)
+        private void DrawToolShelf(Route route)
         {
             var iconAddNode = Resources.Load("UI/Route Builder/Buttons/routebuilder_button_new_node") as Texture;
             var iconParent = Resources.Load("UI/Route Builder/Buttons/routebuilder_button_parent") as Texture;
@@ -47,7 +78,7 @@
             EditorGUILayout.EndHorizontal();
         }
 
-        private static void DrawSettings(Route route)
+        private void DrawSettings(Route route)
         {
             Rotorz.Games.Collections.ReorderableListGUI.Title("Settings");
 
@@ -58,10 +89,10 @@
             route.TreatNameAsHash = EditorGUILayout.Toggle(treatNameAsHash, route.TreatNameAsHash);
         }
 
-        private static void DrawNodeList(Route route)
+        private void DrawNodeList(Route route)
         {
             Rotorz.Games.Collections.ReorderableListGUI.Title("Nodes");
-            Rotorz.Games.Collections.ReorderableListGUI.ListField(route.Nodes, CustomListItem, DrawEmpty);
+            listControl.Draw(listAdaptor);
         }
 
         private static RouteNode CustomListItem(Rect position, RouteNode itemValue)
