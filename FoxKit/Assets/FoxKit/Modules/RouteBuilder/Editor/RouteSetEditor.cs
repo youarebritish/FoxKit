@@ -9,6 +9,7 @@
     using UnityEngine;
     using FoxKit.Modules.RouteBuilder.Exporter;
     using FoxKit.Utils;
+    using Rotorz.Games.Collections;
 
     /// <summary>
     /// Custom editor for RouteSets.
@@ -16,6 +17,9 @@
     [CustomEditor(typeof(RouteSet))]
     public class RouteSetEditor : Editor
     {
+        private ReorderableListControl listControl;
+        private IReorderableListAdaptor listAdaptor;
+
         static string filter = "";
         static List<Route> filteredRoutes;
 
@@ -38,6 +42,26 @@
                     routeset.Routes.Add(childObject.GetComponent<Route>());
                 }
             }
+            
+            listControl = new ReorderableListControl();
+            listControl.ItemRemoving += this.OnItemRemoving;
+            listAdaptor = new GenericListAdaptor<Route>(routeset.Routes, CustomListItem, ReorderableListGUI.DefaultItemHeight);
+        }
+
+        private void OnDisable()
+        {
+            // Unsubscribe from events
+            if (listControl != null)
+            {
+                listControl.ItemRemoving -= this.OnItemRemoving;
+            }
+        }
+
+        private void OnItemRemoving(object sender, ItemRemovingEventArgs args)
+        {
+            var routeset = this.target as RouteSet;
+            Route item = routeset.Routes[args.ItemIndex];
+            DestroyImmediate(item.gameObject);
         }
 
         public override void OnInspectorGUI()
@@ -72,7 +96,7 @@
             }
         }
 
-        private static void DrawToolShelf(RouteSet routeset)
+        private void DrawToolShelf(RouteSet routeset)
         {
             var iconAddRoute = Resources.Load("UI/Route Builder/Buttons/routebuilder_button_route") as Texture;
             var iconExport = Resources.Load("UI/Route Builder/Buttons/routebuilder_button_export") as Texture;
@@ -108,7 +132,7 @@
             EditorGUILayout.EndHorizontal();
         }
 
-        private static void DrawSettings(RouteSet routeset)
+        private void DrawSettings(RouteSet routeset)
         {
             Rotorz.Games.Collections.ReorderableListGUI.Title("Settings");
 
@@ -119,10 +143,10 @@
             routeset.DefaultEdgeEventType = (RouteEdgeEventType)EditorGUILayout.EnumPopup(edgeEventTypeContent, routeset.DefaultEdgeEventType);
         }
 
-        private static void DrawRouteList(RouteSet routeset)
+        private void DrawRouteList(RouteSet routeset)
         {
-            Rotorz.Games.Collections.ReorderableListGUI.Title("Routes");
-            Rotorz.Games.Collections.ReorderableListGUI.ListField(filteredRoutes, CustomListItem, DrawEmpty);
+            Rotorz.Games.Collections.ReorderableListGUI.Title("Routes"); listControl.Draw(listAdaptor);
+            listControl.Draw(listAdaptor);
         }
 
         private static Route CustomListItem(Rect position, Route itemValue)
