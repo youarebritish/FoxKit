@@ -137,6 +137,11 @@
                     foreach (var entity in dataSet.GetDataSet().GetDataList().Values)
                     {
                         var data = entity as Data;
+                        if (data == null)
+                        {
+                            continue;
+                        }
+
                         // Filter out results that don't contain search string.
                         if (data.Name.IndexOf(this.searchString, 0, StringComparison.CurrentCultureIgnoreCase) == -1)
                         {
