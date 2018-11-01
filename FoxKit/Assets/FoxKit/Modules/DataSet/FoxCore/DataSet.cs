@@ -27,7 +27,7 @@
         /// The data list.
         /// </summary>
         [OdinSerialize, PropertyInfo(Core.PropertyInfoType.EntityHandle, 120, container: Core.ContainerType.StringMap, readable: PropertyExport.Never, writable: PropertyExport.Never)]
-        public Dictionary<string, Data> dataList = new Dictionary<string, Data>();
+        private Dictionary<string, Data> dataList = new Dictionary<string, Data>();
 
         public string OwningDataSetName;
         
@@ -130,14 +130,33 @@
         }
 
         /// <summary>
-        /// Get all of the Entities owned by this DataSet.
+        /// Get all of the Data Entities owned by this DataSet.
         /// </summary>
         /// <returns>
         /// All registered <see cref="Data"/> entries with their keys.
         /// </returns>
-        public Dictionary<string, Data> GetDataList()
+        public IDictionary<string, Data> GetDataList()
         {
             return this.dataList;
+        }
+
+        /// <summary>
+        /// Get all of the Entities, including DataElements, owned by this DataSet.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Entity> GetAllEntities()
+        {
+            var result = new List<Entity>();
+
+            foreach (var data in this.dataList.Values)
+            {
+                result.Add(data);
+                result.AddRange(from dataElement in data.GetDataElements()
+                                where dataElement != null
+                                select dataElement);
+            }
+
+            return result;
         }
     }
 }

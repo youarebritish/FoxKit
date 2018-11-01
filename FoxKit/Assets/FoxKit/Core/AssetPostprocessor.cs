@@ -28,7 +28,7 @@ namespace FoxKit.Core
                 .ToDictionary(Path.GetFileNameWithoutExtension, path => AssetDatabase.LoadAssetAtPath<DataSetAsset>(path).GetDataSet());
 
             var dataIdentifiers = (from dataSet in dataSets
-                                  from entity in dataSet.Value.dataList.Values
+                                  from entity in dataSet.Value.GetDataList().Values
                                   where entity is DataIdentifier
                                   select entity as DataIdentifier).ToList();
 

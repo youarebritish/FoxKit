@@ -70,9 +70,7 @@
             }
             
             var entities = new List<Entity> { castDataSet };
-
-            // TODO: DataElements
-            entities.AddRange(((DataSet)dataSet).dataList.Values);
+            entities.AddRange(castDataSet.GetAllEntities());
 
             DataSetExporter.ExportDataSet(entities, path);
         }

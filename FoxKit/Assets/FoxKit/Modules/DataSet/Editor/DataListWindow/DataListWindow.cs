@@ -266,7 +266,7 @@
         public void OpenDataSet(string dataSetGuid, string entityName)
         {
             var dataSet = this.OpenDataSet(dataSetGuid);
-            Assert.IsTrue(dataSet.dataList.ContainsKey(entityName));
+            Assert.IsTrue(dataSet.GetDataList().ContainsKey(entityName));
 
             this.treeView.SelectItem(dataSet.GetData(entityName));
         }

@@ -46,7 +46,7 @@
 
             this.dataIdentifiers = (from entry in this.packages.Values
                                    from dataSet in entry
-                                   from entity in dataSet.GetDataSet().dataList.Values
+                                   from entity in dataSet.GetDataSet().GetDataList().Values
                                    where entity is DataIdentifier
                                    select entity as DataIdentifier).ToList();
 
@@ -134,7 +134,7 @@
                     this.rootIds.Add(id);
                     id++;
 
-                    foreach (var entity in dataSet.GetDataSet().dataList.Values)
+                    foreach (var entity in dataSet.GetDataSet().GetDataList().Values)
                     {
                         // Filter out results that don't contain search string.
                         if (entity.Name.IndexOf(this.searchString, 0, StringComparison.CurrentCultureIgnoreCase) == -1)

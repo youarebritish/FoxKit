@@ -1,11 +1,6 @@
 ﻿namespace FoxKit.Modules.DataSet.FoxCore
 {
     using System;
-    using System.Collections.Generic;
-
-    using FoxKit.Modules.DataSet.Exporter;
-    using FoxKit.Utils;
-
     using FoxLib;
 
     using UnityEngine;
@@ -21,22 +16,22 @@
     public class TransformEntity : DataElement
     {
         /// <summary>
-        /// The translation.
+        /// The scale.
         /// </summary>
-        [SerializeField, PropertyInfo(Core.PropertyInfoType.Vector3, 0)]
-        private Vector3 transform_translation;
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.Vector3, 64)]
+        private Vector3 transform_scale;
 
         /// <summary>
         /// The rotation.
         /// </summary>
-        [SerializeField, PropertyInfo(Core.PropertyInfoType.Quat, 0)]
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.Quat, 80)]
         private Quaternion transform_rotation_quat;
 
         /// <summary>
-        /// The scale.
+        /// The translation.
         /// </summary>
-        [SerializeField, PropertyInfo(Core.PropertyInfoType.Vector3, 0)]
-        private Vector3 transform_scale;
+        [SerializeField, PropertyInfo(Core.PropertyInfoType.Vector3, 96)]
+        private Vector3 transform_translation;
 
         /// <summary>
         /// The translation.

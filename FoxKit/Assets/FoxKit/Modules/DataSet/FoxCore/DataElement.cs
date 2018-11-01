@@ -1,12 +1,10 @@
 ﻿namespace FoxKit.Modules.DataSet.FoxCore
 {
     using System;
-    using System.Collections.Generic;
-    using System.Reflection;
-
-    using FoxKit.Modules.DataSet.Exporter;
 
     using FoxLib;
+
+    using OdinSerializer;
 
     using UnityEngine;
 
@@ -18,13 +16,12 @@
     /// Type of Entity to which this DataElement can be attached.
     /// </typeparam>
     [Serializable]
-    public abstract class DataElement : Entity//<TOwner> : Entity
-        //where TOwner : Entity
+    public abstract class DataElement : Entity
     {
         /// <summary>
         /// The owner.
         /// </summary>
-        [SerializeField]
+        [OdinSerialize, NonSerialized, PropertyInfo(Core.PropertyInfoType.EntityHandle, 48, readable: PropertyExport.EditorOnly, writable: PropertyExport.EditorOnly)]
         private Entity owner;
 
         /// <summary>

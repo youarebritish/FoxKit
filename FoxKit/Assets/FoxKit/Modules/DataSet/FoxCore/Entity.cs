@@ -631,7 +631,7 @@
         public virtual IEnumerable<Core.PropertyInfo> MakeWritableStaticProperties(Func<Entity, ulong> getEntityAddress, Func<EntityLink, Core.EntityLink> convertEntityLink)
         {
             return from type in ReflectionUtils.GetParentTypes(this.GetType(), true)
-                   from field in type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+                   from field in type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
                    let attribute = field.GetCustomAttribute<PropertyInfoAttribute>()
                    where attribute != null
                    select this.MakeWritableStaticProperty(field, attribute, getEntityAddress, convertEntityLink);

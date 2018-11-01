@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
 
@@ -11,6 +12,8 @@
     using FoxLib;
 
     using UnityEngine.Assertions;
+
+    using Debug = UnityEngine.Debug;
 
     /// <summary>
     /// Collection of helper functions for exporting Entities to DataSetFile2 format.
@@ -33,7 +36,6 @@
             }
             
             var convertedEntities = ConvertEntities(entities, GetEntityAddressAndId).ToList();
-
             using (var writer = new BinaryWriter(new FileStream(exportPath, FileMode.Create)))
             {
                 DataSetFile2.Write(convertedEntities, CreateWriteFunctions(writer));
