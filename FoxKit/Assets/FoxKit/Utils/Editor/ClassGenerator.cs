@@ -53,16 +53,45 @@
             AppendClassAttributes(stringBuilder);
             AppendClassDeclaration(stringBuilder, definition.Name, definition.Parent);
             AppendLineWithIndent(stringBuilder, "{", 1);
+
+            for (var i = 0; i < definition.Properties.Count; i++)
+            {
+                var property = definition.Properties[i];
+                AppendFieldDeclaration(stringBuilder, property, null);
+
+                if (!(i == definition.Properties.Count - 1 && definition.Functions.Count == 0))
+                {
+                    AppendLineWithIndent(stringBuilder, string.Empty, 2);
+                }
+            }
+
+            AppendLineWithIndent(stringBuilder, "}", 1);
+            stringBuilder.AppendLine("}");
         }
 
-        private static void AppendFieldDeclaration(StringBuilder stringBuilder, PropertyDefinition property, Func<string, Type> parseType)
+        private static void AppendFieldDeclaration(StringBuilder stringBuilder, PropertyDefinition property, Func<string, Type> parsePropertyType)
         {
-            AppendFieldAttributes(stringBuilder, property);
-            // TODO: Handle lists/stringmaps!!
-            AppendLineWithIndent(stringBuilder, $"private {parseType(property.Type)} {property.Name};", 2);
+            var containerType = ParseContainerType(property.Container);
+            AppendFieldAttributes(stringBuilder, property, containerType);
+            AppendLineWithIndent(stringBuilder, $"private {MakeTypeDeclaration(parsePropertyType(property.Type), containerType, property.ArraySize)} {property.Name};", 2);
         }
 
-        private static void AppendFieldAttributes(StringBuilder stringBuilder, PropertyDefinition property)
+        private static string MakeTypeDeclaration(Type innerType, Core.ContainerType containerType, uint arraySize)
+        {
+            if (containerType == Core.ContainerType.StaticArray && arraySize == 1)
+            {
+                return innerType.ToString();
+            }
+
+            if (containerType == Core.ContainerType.StringMap)
+            {
+                return $"Dictionary<string, {innerType}>";
+            }
+
+            return $"List<{innerType}>";
+        }
+
+        private static void AppendFieldAttributes(StringBuilder stringBuilder, PropertyDefinition property, Core.ContainerType containerType)
         {
             var propertyInfoStringBuilder = new StringBuilder();
             propertyInfoStringBuilder.Append($"{nameof(PropertyInfoAttribute)}(");
@@ -72,7 +101,7 @@
             propertyInfoStringBuilder.Append(", ");
             propertyInfoStringBuilder.Append(property.ArraySize);
             propertyInfoStringBuilder.Append(", ");
-            propertyInfoStringBuilder.Append(ParseContainerType(property.Container));
+            propertyInfoStringBuilder.Append(containerType);
             propertyInfoStringBuilder.Append(", ");
             propertyInfoStringBuilder.Append(ParseReadableFlag(property.ExportFlag));
             propertyInfoStringBuilder.Append(", ");
