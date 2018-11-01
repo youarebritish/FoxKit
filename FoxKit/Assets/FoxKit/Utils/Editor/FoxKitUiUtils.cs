@@ -265,7 +265,10 @@ namespace FoxKit.Utils
 
         public static EntityLink EntityLinkField(string label, EntityLink value, Action<Data> entitySelectedCallback, Action<DataIdentifier, string> onDataIdentifierEntitySelectedCallback)
         {
-            Assert.IsNotNull(value);
+            if (value == null)
+            {
+                value = new EntityLink();
+            }
             
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel(label);

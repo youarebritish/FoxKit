@@ -217,11 +217,16 @@
                     //ReorderableListGUI.ListField(adapter);
 
                     // TODO
-                    Debug.LogWarning("StringMap EntityPtrs not currently supported.");
+                   // Debug.LogWarning("StringMap EntityPtrs not currently supported.");
+
+                    var adapter = new EntityPtrStringMapAdapter(
+                        dictionary as IDictionary<string, Entity>,
+                        ptrType,
+                        entity);
 
                     StringMapGUI.StringMapField(
                         dictionary as IDictionary<string, Entity>,
-                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
+                        (position, itemValue, key) => adapter.DrawItem(position, key));
 
                     break;
                 case Core.PropertyInfoType.Vector3:
@@ -286,10 +291,10 @@
         {
             ReorderableListGUI.Title(fieldName);
 
-            ReorderableListFlags flags = 0;
+            ReorderableListFlags flags = ReorderableListFlags.ShowIndices;
             if (!isResizable)
             {
-                flags = ReorderableListFlags.HideAddButton | ReorderableListFlags.HideRemoveButtons;
+                flags = ReorderableListFlags.HideAddButton | ReorderableListFlags.HideRemoveButtons | ReorderableListFlags.ShowIndices;
             }
 
             switch (type)
@@ -814,6 +819,90 @@
             {
                 var entity = Activator.CreateInstance(entityType) as Entity;
                 this.list[index] = entity;
+
+                // TODO: Refactor and fix this monstrosity
+                if (!entityType.IsAssignableFrom(typeof(TransformEntity)))
+                {
+                    return;
+                }
+
+                if (!this.owningEntity.GetType().IsAssignableFrom(typeof(TransformData)))
+                {
+                    return;
+                }
+
+                var dataListWindowState = SingletonScriptableObject<DataListWindowState>.Instance;
+                var transformData = this.owningEntity as TransformData;
+                var sceneProxy = dataListWindowState.CreateSceneProxyForEntity(transformData.DataSetGuid, transformData.Name);
+
+                if (transformData.Parent != null)
+                {
+                    sceneProxy.transform.SetParent(dataListWindowState.FindSceneProxyForEntity(transformData.DataSetGuid, transformData.Parent.Name).transform);
+                }
+            }
+        }
+
+        private class EntityPtrStringMapAdapter// : GenericListAdaptor<Entity>
+        {
+            private readonly Type ptrType;
+
+            private readonly IDictionary<string, Entity> dictionary;
+
+            private readonly Entity owningEntity;
+
+            public EntityPtrStringMapAdapter(
+                IDictionary<string, Entity> dictionary, Type ptrType, Entity owningEntity)
+            {
+                this.dictionary = dictionary;
+                this.ptrType = ptrType;
+                this.owningEntity = owningEntity;
+            }
+
+            public Entity DrawItem(Rect position, string key)
+            {
+                var item = this.dictionary[key];
+
+                var editButtonPosition = position;
+                editButtonPosition.width = position.width * 0.8f;
+
+                FoxKitUiUtils.EntityPtrField(editButtonPosition, item, this.ptrType, () => this.CreateEntity(key));
+
+                var wasGuiEnabled = GUI.enabled;
+
+                if (item == null)
+                {
+                    GUI.enabled = false;
+                }
+
+                var deleteButtonPosition = position;
+                deleteButtonPosition.x += editButtonPosition.width;
+                deleteButtonPosition.width = position.width * 0.2f;
+                if (GUI.Button(deleteButtonPosition, new GUIContent("Delete"), EditorStyles.miniButton))
+                {
+                    item = null;
+                    this.dictionary[key] = null;
+                }
+
+                GUI.enabled = wasGuiEnabled;
+
+                //base.DrawItem(position, index);
+                return item;
+            }
+
+            private static Entity Draw(Rect position, Entity item)
+            {
+                return item;
+            }
+
+            private void CreateEntity(string key)
+            {
+                AddEntityWindow.Create(this.ptrType, true, type => this.CreateNewEntityAtKey(type, key));
+            }
+
+            private void CreateNewEntityAtKey(Type entityType, string key)
+            {
+                var entity = Activator.CreateInstance(entityType) as Entity;
+                this.dictionary[key] = entity;
 
                 // TODO: Refactor and fix this monstrosity
                 if (!entityType.IsAssignableFrom(typeof(TransformEntity)))

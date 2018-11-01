@@ -50,25 +50,25 @@ namespace FoxKit.Modules.DataSet
         private uint decalFlags;
 
         [SerializeField, PropertyInfo(Core.PropertyInfoType.Vector3, 304, container: Core.ContainerType.DynamicArray)]
-        private List<UnityEngine.Vector3> scales;
+        private List<UnityEngine.Vector3> scales = new List<UnityEngine.Vector3>();
 
         [SerializeField, PropertyInfo(Core.PropertyInfoType.Quat, 304, container: Core.ContainerType.DynamicArray)]
-        private List<UnityEngine.Quaternion> rotations;
+        private List<UnityEngine.Quaternion> rotations = new List<UnityEngine.Quaternion>();
 
         [SerializeField, PropertyInfo(Core.PropertyInfoType.Vector3, 304, container: Core.ContainerType.DynamicArray)]
-        private List<UnityEngine.Vector3> translations;
+        private List<UnityEngine.Vector3> translations = new List<UnityEngine.Vector3>();
 
         [OdinSerialize, PropertyInfo(Core.PropertyInfoType.EntityLink, 304, container: Core.ContainerType.DynamicArray)]
-        private List<FoxCore.EntityLink> targets;
+        private List<FoxCore.EntityLink> targets = new List<FoxCore.EntityLink>();
 
         [SerializeField, PropertyInfo(Core.PropertyInfoType.UInt32, 304, 304, container: Core.ContainerType.DynamicArray)]
-        private List<uint> targetIndices;
+        private List<uint> targetIndices = new List<uint>();
 
         [SerializeField, PropertyInfo(Core.PropertyInfoType.UInt32, 304, 304, container: Core.ContainerType.DynamicArray)]
-        private List<uint> targetStartIndices;
+        private List<uint> targetStartIndices = new List<uint>();
 
         [SerializeField, PropertyInfo(Core.PropertyInfoType.Int32, 304, 304, container: Core.ContainerType.DynamicArray)]
-        private List<int> renderingPriorities;
+        private List<int> renderingPriorities = new List<int>();
 
         /// <inheritdoc />
         public override short ClassId => 448;
