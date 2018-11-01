@@ -61,7 +61,6 @@
                 DrawStaticProperty(entity, field, isReadOnly);
 
                 // Draw nested fields.
-                // TODO: Handle array conditions.
                 if (field.Item2.Type != Core.PropertyInfoType.EntityPtr)
                 {
                     continue;
@@ -124,8 +123,156 @@
                     entity,
                     true);
             }
+            else if (field.Item2.Container == Core.ContainerType.StringMap)
+            {
+                DrawStringMapField(
+                    field.Item1.Name,
+                    field.Item2.Type,
+                    field.Item2.Enum,
+                    field.Item2.PtrType,
+                    currentValue as IDictionary,
+                    entity);
+            }
+        }
 
-            // TODO Handle StringMaps
+        private static void DrawStringMapField(
+            string fieldName,
+            Core.PropertyInfoType type,
+            Type @enum,
+            Type ptrType,
+            IDictionary dictionary,
+            Entity entity)
+        {
+            ReorderableListGUI.Title(fieldName);
+            
+            switch (type)
+            {
+                case Core.PropertyInfoType.Int8:
+                    StringMapGUI.StringMapField(
+                        dictionary as IDictionary<string, sbyte>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
+                    break;
+                case Core.PropertyInfoType.UInt8:
+                    StringMapGUI.StringMapField(
+                        dictionary as IDictionary<string, byte>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
+                    break;
+                case Core.PropertyInfoType.Int16:
+                    StringMapGUI.StringMapField(
+                        dictionary as IDictionary<string, short>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
+                    break;
+                case Core.PropertyInfoType.UInt16:
+                    StringMapGUI.StringMapField(
+                        dictionary as IDictionary<string, ushort>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
+                    break;
+                case Core.PropertyInfoType.Int32:
+                    StringMapGUI.StringMapField(
+                        dictionary as IDictionary<string, int>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
+                    break;
+                case Core.PropertyInfoType.UInt32:
+                    StringMapGUI.StringMapField(
+                        dictionary as IDictionary<string, uint>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
+                    break;
+                case Core.PropertyInfoType.Int64:
+                    StringMapGUI.StringMapField(
+                        dictionary as IDictionary<string, long>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
+                    break;
+                case Core.PropertyInfoType.UInt64:
+                    StringMapGUI.StringMapField(
+                        dictionary as IDictionary<string, ulong>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
+                    break;
+                case Core.PropertyInfoType.Float:
+                    StringMapGUI.StringMapField(
+                        dictionary as IDictionary<string, float>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
+                    break;
+                case Core.PropertyInfoType.Double:
+                    StringMapGUI.StringMapField(
+                        dictionary as IDictionary<string, double>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
+                    break;
+                case Core.PropertyInfoType.Bool:
+                    StringMapGUI.StringMapField(
+                        dictionary as IDictionary<string, bool>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
+                    break;
+                case Core.PropertyInfoType.String:
+                    StringMapGUI.StringMapField(
+                        dictionary as IDictionary<string, string>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
+                    break;
+                case Core.PropertyInfoType.Path:
+                    StringMapGUI.StringMapField(
+                        dictionary as IDictionary<string, UnityEngine.Object>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
+                    break;
+                case Core.PropertyInfoType.EntityPtr:
+                    //var adapter = new EntityPtrListAdapter(list as IList<Entity>, ptrType, entity);
+                    //ReorderableListGUI.ListField(adapter);
+
+                    // TODO
+                    Debug.LogWarning("StringMap EntityPtrs not currently supported.");
+
+                    StringMapGUI.StringMapField(
+                        dictionary as IDictionary<string, Entity>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
+
+                    break;
+                case Core.PropertyInfoType.Vector3:
+                    StringMapGUI.StringMapField(
+                        dictionary as IDictionary<string, UnityEngine.Vector3>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
+                    break;
+                case Core.PropertyInfoType.Vector4:
+                    StringMapGUI.StringMapField(
+                        dictionary as IDictionary<string, UnityEngine.Vector4>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
+                    break;
+                case Core.PropertyInfoType.Quat:
+                    StringMapGUI.StringMapField(
+                        dictionary as IDictionary<string, UnityEngine.Quaternion>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
+                    break;
+                case Core.PropertyInfoType.Matrix3:
+                    break;
+                case Core.PropertyInfoType.Matrix4:
+                    StringMapGUI.StringMapField(
+                        dictionary as IDictionary<string, UnityEngine.Matrix4x4>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
+                    break;
+                case Core.PropertyInfoType.Color:
+                    StringMapGUI.StringMapField(
+                        dictionary as IDictionary<string, UnityEngine.Color>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
+                    break;
+                case Core.PropertyInfoType.FilePtr:
+                    StringMapGUI.StringMapField(
+                        dictionary as IDictionary<string, UnityEngine.Object>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
+                    break;
+                case Core.PropertyInfoType.EntityHandle:
+                    StringMapGUI.StringMapField(
+                        dictionary as IDictionary<string, Entity>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
+                    break;
+                case Core.PropertyInfoType.EntityLink:
+                    StringMapGUI.StringMapField(
+                        dictionary as IDictionary<string, EntityLink>,
+                        (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
+                    break;
+                case Core.PropertyInfoType.PropertyInfo:
+                    break;
+                case Core.PropertyInfoType.WideVector3:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
         }
 
         private static void DrawListField(
