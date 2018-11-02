@@ -41,7 +41,7 @@
                 "FoxLib", "KopiLua", "OdinSerializer", "UnityEngine"
             };
 
-        public static void GenerateClass(ClassDefinition definition)
+        public static void GenerateClass(ClassDefinition definition, IDictionary<Core.PropertyInfoType, Type> typeMappings, string outputDirectory)
         {
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendLine(GeneratedCodeWarning);
@@ -54,10 +54,11 @@
             AppendClassDeclaration(stringBuilder, definition.Name, definition.Parent);
             AppendLineWithIndent(stringBuilder, "{", 1);
 
+            Func<string, Type> parsePropertyType = propertyTypeString => typeMappings[ParsePropertyType(propertyTypeString)];
             for (var i = 0; i < definition.Properties.Count; i++)
             {
                 var property = definition.Properties[i];
-                AppendFieldDeclaration(stringBuilder, property, null);
+                AppendFieldDeclaration(stringBuilder, property, parsePropertyType);
 
                 if (!(i == definition.Properties.Count - 1 && definition.Functions.Count == 0))
                 {
