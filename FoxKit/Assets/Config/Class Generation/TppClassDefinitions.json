@@ -10128,7 +10128,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "PointLight_LodRadiusLevel",
         "exportFlag": "RW",
         "name": "lodRadiusLevel",
         "offset": 464,
@@ -10161,7 +10161,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "PointLight_PackingGeneration",
         "exportFlag": "RW",
         "name": "packingGeneration",
         "offset": 0,
@@ -10996,7 +10996,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "Horizon_ColorPreset",
         "exportFlag": "RW",
         "name": "colorPreset",
         "offset": 308,
@@ -19078,7 +19078,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "PrimType",
         "exportFlag": "RW",
         "name": "primType",
         "offset": 304,
@@ -19089,7 +19089,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "AxisSort",
         "exportFlag": "RW",
         "name": "axisSortFlag",
         "offset": 308,
@@ -19574,7 +19574,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "Face_Mode",
         "exportFlag": "RW",
         "name": "faceFlag",
         "offset": 308,
@@ -19814,7 +19814,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "CollisionPrimitive_Category",
         "exportFlag": "RW",
         "name": "collisionCategory",
         "offset": 304,
@@ -19825,7 +19825,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "CollisionPrimitive_PrimType",
         "exportFlag": "RW",
         "name": "primitiveType",
         "offset": 308,
@@ -19955,7 +19955,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "CollisionFreeShape_Category",
         "exportFlag": "RW",
         "name": "collisionCategory",
         "offset": 432,
@@ -20020,7 +20020,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "CollisionPyraidFreeShape_Category",
         "exportFlag": "RW",
         "name": "collisionCategory",
         "offset": 384,
@@ -22499,7 +22499,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "ParamDataDesCondition",
         "exportFlag": "Rw",
         "name": "desCondition",
         "offset": 144,
@@ -22598,7 +22598,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "DesEffectDataDesEffectFlag",
         "exportFlag": "Rw",
         "name": "effectFlag",
         "offset": 160,
@@ -40401,7 +40401,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "TppPointLight_PackingGeneration",
         "exportFlag": "RW",
         "name": "packingGeneration",
         "offset": 0,
@@ -40841,7 +40841,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "TppSpotLight_PackingGeneration",
         "exportFlag": "RW",
         "name": "packingGeneration",
         "offset": 0,
@@ -42099,7 +42099,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "TppTrapExecThunder_Type",
         "exportFlag": "RW",
         "name": "type",
         "offset": 108,
@@ -48632,7 +48632,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "SnipePointType",
         "exportFlag": "RW",
         "name": "type",
         "offset": 304,
@@ -49037,7 +49037,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "SearchMissilePointType",
         "exportFlag": "RW",
         "name": "type",
         "offset": 304,
@@ -49069,7 +49069,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "HidePointType",
         "exportFlag": "RW",
         "name": "type",
         "offset": 304,
@@ -51273,7 +51273,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "MbStageBlockCreateMode",
         "exportFlag": "RW",
         "name": "createMode",
         "offset": 120,
