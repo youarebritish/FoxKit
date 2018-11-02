@@ -15161,7 +15161,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "UiModelNodeElementBlend",
         "exportFlag": "RW",
         "name": "blendType",
         "offset": 144,
@@ -15331,7 +15331,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "UiModelDataFlag",
         "exportFlag": "RW",
         "name": "flag",
         "offset": 364,
@@ -15397,7 +15397,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "UiInheritanceSetting",
         "exportFlag": "RW",
         "name": "inheritanceSetting",
         "offset": 416,
@@ -15637,7 +15637,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "UiCameraDataFov",
         "exportFlag": "RW",
         "name": "fovType",
         "offset": 180,
@@ -15648,7 +15648,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "UiCameraDataFlag",
         "exportFlag": "RW",
         "name": "debug",
         "offset": 184,
@@ -15724,7 +15724,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "UiAnimDataFlag",
         "exportFlag": "RW",
         "name": "flag",
         "offset": 208,
@@ -16438,7 +16438,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "UiEventNodeKind",
         "exportFlag": "rw",
         "name": "kind",
         "offset": 280,
@@ -16470,7 +16470,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "UiActionNodeKind",
         "exportFlag": "rw",
         "name": "kind",
         "offset": 280,
@@ -16502,7 +16502,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "UiOperationNodeKind",
         "exportFlag": "rw",
         "name": "kind",
         "offset": 280,

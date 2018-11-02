@@ -1,6 +1,6 @@
 namespace FoxKit.Modules.DataSet.Fox.Ui
 {
-    public enum UiNodeType : int
+    public enum UiNodeBodyType : int
     {
         Page = 0,
         Phase = 1,
@@ -10,7 +10,7 @@ namespace FoxKit.Modules.DataSet.Fox.Ui
         Compound = 6
     }
 
-    public enum UiNodePropType : int
+    public enum UiNodeBodyPropType : int
     {
         Int8 = 0,
         UInt8 = 1,
@@ -38,7 +38,7 @@ namespace FoxKit.Modules.DataSet.Fox.Ui
         Invalid = 23
     }
 
-    public partial class UiNodeData
+    public partial class UiNodeDataBody
     {
     }
 }
