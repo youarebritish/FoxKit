@@ -14691,7 +14691,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "GkTacticalActionDirection",
         "exportFlag": "RW",
         "name": "actionDirection",
         "offset": 64,
@@ -28903,7 +28903,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "ModelDescription_DrawRejectionLevel",
         "exportFlag": "RW",
         "name": "drawRejectionLevel",
         "offset": 324,
@@ -28914,7 +28914,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "ModelDescription_RejectFarRangeShadowCast",
         "exportFlag": "RW",
         "name": "rejectFarRangeShadowCast",
         "offset": 328,
@@ -29155,7 +29155,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "EffectKind",
         "exportFlag": "RW",
         "name": "effectKind",
         "offset": 256,
@@ -43083,7 +43083,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "MGS_LadderEntryType",
         "exportFlag": "  ",
         "name": "entryType",
         "offset": 124,
@@ -45267,7 +45267,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "TppTrapEnvironmentType",
         "exportFlag": "  ",
         "name": "environmentType",
         "offset": 88,
@@ -46616,7 +46616,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "MbConstructDataType",
         "exportFlag": "RW",
         "name": "type",
         "offset": 368,
