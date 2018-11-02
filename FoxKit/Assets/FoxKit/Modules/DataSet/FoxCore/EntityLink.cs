@@ -4,6 +4,7 @@
     using System.Configuration;
 
     using FoxKit.Core;
+    using FoxKit.Modules.DataSet.Fox.FoxCore;
 
     using OdinSerializer;
 

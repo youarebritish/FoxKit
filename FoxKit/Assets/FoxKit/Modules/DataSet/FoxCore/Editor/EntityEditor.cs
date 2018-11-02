@@ -7,6 +7,8 @@ namespace FoxKit.Modules.DataSet.FoxCore.Editor
     using System.Linq;
     using System.Reflection;
 
+    using FoxKit.Modules.DataSet.Fox.FoxCore;
+
     using UnityEngine;
 
     using Editor = UnityEditor.Editor;

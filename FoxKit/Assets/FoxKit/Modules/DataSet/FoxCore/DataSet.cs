@@ -1,42 +1,21 @@
-﻿namespace FoxKit.Modules.DataSet.FoxCore
+﻿namespace FoxKit.Modules.DataSet.Fox.FoxCore
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
-
-    using FoxKit.Modules.DataSet.Exporter;
-    using FoxKit.Utils;
-
-    using FoxLib;
-
-    using OdinSerializer;
 
     using UnityEditor;
 
     using UnityEngine;
-    using UnityEngine.Assertions;
 
-    /// <inheritdoc />
-    /// <summary>
-    /// Container for a set of Fox Engine entities.
-    /// </summary>
-    [Serializable]
-    public class DataSet : Data
+    public partial class DataSet
     {
-        /// <summary>
-        /// The data list.
-        /// </summary>
-        [OdinSerialize, PropertyInfo(Core.PropertyInfoType.EntityHandle, 120, container: Core.ContainerType.StringMap, readable: PropertyExport.Never, writable: PropertyExport.Never)]
-        private Dictionary<string, Entity> dataList = new Dictionary<string, Entity>();
-
         public string OwningDataSetName;
         
         /// <inheritdoc />
-        public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(BoxCollider)).image as Texture2D;
+        //public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(BoxCollider)).image as Texture2D;
 
         /// <inheritdoc />
-        public override short ClassId => 232;
+        //public override short ClassId => 232;
 
         public delegate SceneProxy CreateSceneProxyForEntityDelegate(string entityName);
 
@@ -45,8 +24,9 @@
         /// <summary>
         /// Loads all owned Entities.
         /// </summary>
-        public void LoadAllEntities(CreateSceneProxyForEntityDelegate createSceneProxy, GetSceneProxyDelegate getSceneProxy)
+        public void LoadAllEntities(CreateSceneProxyForEntityDelegate createSceneProxy, Entity.GetSceneProxyDelegate getSceneProxy)
         {
+            /*
             foreach (var data in this.dataList.Values)
             {
                 data?.OnLoaded(() => createSceneProxy(((Data)data).Name));
@@ -55,29 +35,18 @@
             foreach (var data in this.dataList.Values)
             {
                 data?.PostOnLoaded(getSceneProxy);
-            }
+            }*/
         }
 
         /// <summary>
         /// Unloads all owned Entities.
         /// </summary>
         public void UnloadAllEntities(DestroySceneProxyForEntityDelegate destroySceneProxy)
-        {
+        {/*
             foreach (var data in this.dataList.Values)
             {
                 data?.OnUnloaded(() => destroySceneProxy(((Data)data).Name));
-            }
-        }
-
-        /// <inheritdoc />
-        public override void OnAssetsImported(FoxKit.Core.AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
-        {
-            base.OnAssetsImported(tryGetAsset);
-
-            foreach (var kvp in this.dataList)
-            {
-                kvp.Value.OnAssetsImported(tryGetAsset);
-            }
+            }*/
         }
 
         /// <summary>
@@ -93,11 +62,11 @@
         /// The entity to add.
         /// </param>
         public void AddData(string key, Data entity)
-        {
+        {/*
             if (entity != null)
             {
                 this.dataList.Add(key, entity);
-            }
+            }*/
         }
         
         /// <summary>
@@ -105,8 +74,8 @@
         /// </summary>
         /// <param name="key">The key to remove.</param>
         public void RemoveData(string key)
-        {
-            this.dataList.Remove(key);
+        {/*
+            this.dataList.Remove(key);*/
         }
         
         /// <summary>
@@ -120,13 +89,15 @@
         /// </returns>
         public Data GetData(string key)
         {
+            return null;
+            /*
             if (this.dataList.ContainsKey(key))
             {
                 return (Data)this.dataList[key];
             }
 
             Debug.LogError($"No Entity named {key} was present in the DataSet.");
-            return null;
+            return null;*/
         }
 
         /// <summary>
@@ -137,7 +108,9 @@
         /// </returns>
         public IDictionary<string, Entity> GetDataList()
         {
-            return this.dataList;
+            return null;
+            /*
+            return this.dataList;*/
         }
 
         /// <summary>
@@ -146,6 +119,7 @@
         /// <returns></returns>
         public IEnumerable<Entity> GetAllEntities()
         {
+            return null;/*
             var result = new List<Entity>();
 
             foreach (var data in this.dataList.Values)
@@ -156,7 +130,7 @@
                                 select dataElement);
             }
 
-            return result;
+            return result;*/
         }
     }
 }

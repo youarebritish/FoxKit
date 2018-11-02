@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Reflection;
 
+    using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.DataSet.FoxCore;
 
     using FoxLib;

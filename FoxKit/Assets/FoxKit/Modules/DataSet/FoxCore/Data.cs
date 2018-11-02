@@ -1,10 +1,11 @@
-﻿namespace FoxKit.Modules.DataSet.FoxCore
+﻿namespace FoxKit.Modules.DataSet.Fox.FoxCore
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
 
+    using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
     using FoxLib;
@@ -14,19 +15,8 @@
     using UnityEngine;
     using UnityEngine.Assertions;
 
-    /// <inheritdoc />
-    /// <summary>
-    /// Base class for Fox Engine entities with explicit names.
-    /// </summary>
-    [Serializable]
-    public class Data : Entity
+    public partial class Data : Entity
     {
-        [SerializeField, PropertyInfo(Core.PropertyInfoType.String, 72)]
-        private string name;
-
-        [SerializeField, NonSerialized, PropertyInfo(Core.PropertyInfoType.EntityHandle, 80, readable: PropertyExport.Never, writable: PropertyExport.Never)]
-        private Entity dataSet;
-
         /// <summary>
         /// Since we can't store a reference to the owning DataSet (recursive reference), we store its GUID instead.
         /// </summary>
@@ -37,11 +27,11 @@
         {
             get
             {
-                return this.name;
+                return null;// this.name;
             }
             set
             {
-                this.name = value;
+                //this.name = value;
             }
         }
 

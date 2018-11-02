@@ -504,7 +504,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "TransformData_Flags",
         "exportFlag": "  ",
         "name": "flags",
         "offset": 184,
@@ -3516,7 +3516,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "BlockGroupData_ByteOrder",
         "exportFlag": "RW",
         "name": "sizeOrder",
         "offset": 120,
@@ -6424,7 +6424,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "GeoShapeType",
         "exportFlag": "RW",
         "name": "geometryType",
         "offset": 304,
@@ -10843,7 +10843,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "SpotLight_LodRadiusLevel",
         "exportFlag": "RW",
         "name": "lodRadiusLevel",
         "offset": 536,
@@ -10876,7 +10876,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "SpotLight_PackingGeneration",
         "exportFlag": "RW",
         "name": "packingGeneration",
         "offset": 0,
@@ -11886,7 +11886,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "AmbientOcclusionSettings_Method",
         "exportFlag": "RW",
         "name": "method",
         "offset": 120,
@@ -11897,7 +11897,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "AmbientOcclusionSettings_LightAttachment",
         "exportFlag": "RW",
         "name": "attachment",
         "offset": 124,
@@ -16196,7 +16196,7 @@
       {
         "arraySize": 1,
         "container": "DynamicArray",
-        "enum": null,
+        "enum": "UiNodeType",
         "exportFlag": "rw",
         "name": "inputPortTypes",
         "offset": 160,
@@ -16218,7 +16218,7 @@
       {
         "arraySize": 1,
         "container": "DynamicArray",
-        "enum": null,
+        "enum": "UiNodePropType",
         "exportFlag": "rw",
         "name": "inputPropertyTypes",
         "offset": 192,
@@ -16240,7 +16240,7 @@
       {
         "arraySize": 1,
         "container": "DynamicArray",
-        "enum": null,
+        "enum": "UiNodeType",
         "exportFlag": "rw",
         "name": "outputPortTypes",
         "offset": 216,
@@ -16262,7 +16262,7 @@
       {
         "arraySize": 1,
         "container": "DynamicArray",
-        "enum": null,
+        "enum": "UiNodePropType",
         "exportFlag": "rw",
         "name": "outputPropertyTypes",
         "offset": 248,
@@ -16306,7 +16306,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "UiNodeType",
         "exportFlag": "rw",
         "name": "type",
         "offset": 276,
@@ -24257,7 +24257,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "StaticModel_DrawRejectionLevel",
         "exportFlag": "RW",
         "name": "drawRejectionLevel",
         "offset": 384,
@@ -24268,7 +24268,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "StaticModel_DrawMode",
         "exportFlag": "RW",
         "name": "drawMode",
         "offset": 388,
@@ -24279,7 +24279,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "StaticModel_RejectFarRangeShadowCast",
         "exportFlag": "RW",
         "name": "rejectFarRangeShadowCast",
         "offset": 392,
@@ -24411,7 +24411,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "StaticModelArray_DrawRejectionLevel",
         "exportFlag": "RW",
         "name": "drawRejectionLevel",
         "offset": 184,
@@ -24422,7 +24422,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "StaticModelArray_DrawMode",
         "exportFlag": "RW",
         "name": "drawMode",
         "offset": 188,
@@ -24433,7 +24433,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "StaticModelArray_RejectFarRangeShadowCast",
         "exportFlag": "RW",
         "name": "rejectFarRangeShadowCast",
         "offset": 192,
@@ -30398,7 +30398,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "Utility_InterpType",
         "exportFlag": "RW",
         "name": "cameraInterpType",
         "offset": 1152,
@@ -30748,7 +30748,7 @@
       {
         "arraySize": 1,
         "container": "StringMap",
-        "enum": null,
+        "enum": "DemoStreamAnimation_LocatorType",
         "exportFlag": "RW",
         "name": "locatorTypes",
         "offset": 136,
@@ -30759,7 +30759,7 @@
       {
         "arraySize": 1,
         "container": "StringMap",
-        "enum": null,
+        "enum": "DemoStreamAnimation_CameraType",
         "exportFlag": "RW",
         "name": "cameraTypes",
         "offset": 184,
@@ -36995,7 +36995,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "TppSkyClouds3Param_ColorSpace",
         "exportFlag": "RW",
         "name": "colorSpace",
         "offset": 164,
@@ -37006,7 +37006,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "TppSkyClouds3Param_TexColor",
         "exportFlag": "RW",
         "name": "textureColorHandling",
         "offset": 168,

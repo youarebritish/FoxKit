@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
 
+    using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
@@ -22,7 +23,7 @@
     /// <summary>
     /// Imports DataSets.
     /// </summary>
-    [ScriptedImporter(1, new[] { "fox2", "parts" })]
+    [ScriptedImporter(1, new[] { "fox2", "parts", "bnd", "clo", "des", "evf", "fsd", "lad", "ph", "phsd", "sdf", "sim", "tgt", "vdp", "veh", "vfxlf" })]
     public class DataSetImporter : ScriptedImporter
     {
         /// <summary>
@@ -124,10 +125,11 @@
         /// </returns>
         private static DataSet FindDataSet(Dictionary<Entity, Core.Entity> entities)
         {
+            return null;/*
             return (from entity in entities.Keys
                     where entity.GetType() == typeof(DataSet)
                     select entity as DataSet)
-                .First();
+                .First();*/
         }
 
         /// <summary>
@@ -168,8 +170,6 @@
                 {
                     continue;
                 }
-                
-                //dataSet.AddData(((Data)entity.Key).Name, (Data)entity.Key);
             }
         }
 

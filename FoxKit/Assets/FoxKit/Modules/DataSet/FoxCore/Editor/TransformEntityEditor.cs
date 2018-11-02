@@ -2,6 +2,8 @@
 
 namespace FoxKit.Modules.DataSet.FoxCore.Editor
 {
+    using FoxKit.Modules.DataSet.Fox.FoxCore;
+
     using UnityEngine;
 
     [CustomEditor(typeof(TransformEntity), true)]

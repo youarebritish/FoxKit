@@ -1,4 +1,4 @@
-﻿namespace FoxKit.Modules.DataSet.FoxCore
+﻿namespace FoxKit.Modules.DataSet.Fox.FoxCore
 {
     using System;
     using System.Collections;
@@ -8,6 +8,7 @@
     using System.Reflection;
 
     using FoxKit.Modules.DataSet.Exporter;
+    using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Modules.DataSet.Importer;
     using FoxKit.Modules.Lua;
     using FoxKit.Utils;
@@ -27,13 +28,7 @@
 
     using Object = UnityEngine.Object;
 
-    /// <inheritdoc />
-    /// <summary>
-    /// Base class for Fox Engine objects.
-    /// </summary>
-    [Serializable]
-    [ExposeClassToLua]
-    public class Entity
+    public partial class Entity
     {
         [Serializable]
         private class FilePtrEntry
@@ -95,7 +90,7 @@
 
             foreach (var unused in entityData.DynamicProperties)
             {
-                Debug.LogError($"Attempted to read dynamic property in an entity of type {entityData.ClassName} but dynamic properties are not yet supported.");
+                Debug.LogError($"Attempted to read dynamic property in an entity of type {entityData.ClassName} but dynamic properties are not yet supported. Report this.");
             }
         }
 
@@ -280,9 +275,11 @@
                 {
                     this.desiredFiles.Add(new FilePtrEntry(property.Name, kvp.Key), kvp.Value as string);
                 }
+
+                return convertedValues;
             }
 
-            Assert.IsTrue(false, "Unrecognized containerType");
+            Assert.IsTrue(false, $"Unrecognized containerType {containerType}");
             return null;
         }
 
@@ -292,7 +289,7 @@
             var fields = (from type in baseTypes
                          from field in type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
                          let attribute = field.GetCustomAttribute<PropertyInfoAttribute>()
-                         where attribute != null
+                         where attribute != null && !attribute.IsAutoProperty
                          select new { Field = field, PropertyInfo = attribute }).ToList();
             
             foreach (var field in fields)

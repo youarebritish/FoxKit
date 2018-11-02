@@ -1,5 +1,6 @@
 ﻿namespace FoxKit.Modules.DataSet
 {
+    using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.DataSet.FoxCore;
 
     using UnityEditor;
@@ -41,15 +42,15 @@
 
         void Update()
         {
-            this.gameObject.SetActive(this.entity.Visibility);
+            //this.gameObject.SetActive(this.entity.Visibility);
         }
 
         void OnDrawGizmosSelected()
         {
             // TODO Don't allow to move if read-only.
-            this.entity.Transform.Translation = this.transform.position;
+            /*this.entity.Transform.Translation = this.transform.position;
             this.entity.Transform.RotQuat = this.transform.rotation;
-            this.entity.Transform.Scale = this.transform.localScale;
+            this.entity.Transform.Scale = this.transform.localScale;*/
 
             EditorUtility.SetDirty(this.asset);
         }
