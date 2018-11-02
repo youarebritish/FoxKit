@@ -23842,7 +23842,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "OrthogonalCamera_ViewType",
         "exportFlag": "  ",
         "name": "type",
         "offset": 448,
@@ -24660,7 +24660,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "Decal_ProjectionMode",
         "exportFlag": "RW",
         "name": "projectionMode",
         "offset": 344,
@@ -24682,7 +24682,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "Decal_ProjectionTarget",
         "exportFlag": "RW",
         "name": "projectionTarget",
         "offset": 352,
@@ -24726,7 +24726,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "Decal_PolygonDataSource",
         "exportFlag": "RW",
         "name": "polygonDataSource",
         "offset": 368,
@@ -24759,7 +24759,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "Decal_DrawRejectionLevel",
         "exportFlag": "RW",
         "name": "drawRejectionLevel",
         "offset": 376,
@@ -24890,7 +24890,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "DecalArray_ProjectionMode",
         "exportFlag": "RW",
         "name": "projectionMode",
         "offset": 344,
@@ -24912,7 +24912,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "DecalArray_ProjectionTarget",
         "exportFlag": "RW",
         "name": "projectionTarget",
         "offset": 352,
@@ -24956,7 +24956,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "DecalArray_PolygonDataSource",
         "exportFlag": "RW",
         "name": "polygonDataSource",
         "offset": 368,
@@ -24967,7 +24967,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "DecalArray_DrawRejectionLevel",
         "exportFlag": "RW",
         "name": "drawRejectionLevel",
         "offset": 372,
@@ -25549,7 +25549,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "WolrdTerrainTextureMode",
         "exportFlag": "RW",
         "name": "worldTextureMode",
         "offset": 1044,
@@ -25863,7 +25863,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "LevelType",
         "exportFlag": "RW",
         "name": "type",
         "offset": 304,
@@ -26069,7 +26069,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "TerrainDecal_DrawRejectionLevel",
         "exportFlag": "RW",
         "name": "drawRejectionLevel",
         "offset": 408,
@@ -26639,7 +26639,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "DrawRejectionLevel",
         "exportFlag": "RW",
         "name": "drawRejectionLevel",
         "offset": 208,
@@ -26726,7 +26726,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "ObjectBrushPluginClone_ModelRejectionLevel",
         "exportFlag": "RW",
         "name": "modelRejectionLevel",
         "offset": 176,
