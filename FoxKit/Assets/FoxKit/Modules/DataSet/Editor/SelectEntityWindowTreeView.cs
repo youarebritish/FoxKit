@@ -5,6 +5,7 @@
     using System.Linq;
 
     using FoxKit.Modules.Archive;
+    using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.DataSet.FoxCore;
 
     using UnityEditor.IMGUI.Controls;

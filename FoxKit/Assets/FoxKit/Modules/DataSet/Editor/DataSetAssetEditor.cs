@@ -8,6 +8,7 @@
 
     using FoxKit.Core;
     using FoxKit.Modules.DataSet.Editor.DataListWindow;
+    using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
@@ -665,8 +666,7 @@
                     Assert.IsTrue(false, "There shouldn't be any Matrix3 properties. Report this.");
                     break;
                 case Core.PropertyInfoType.Matrix4:
-                    // TODO
-                    Debug.LogError("Matrix4 properties not currently supported.");
+                    EditorGUILayout.HelpBox("Matrix4 properties are not currently supported.", MessageType.Error);
                     break;
                 case Core.PropertyInfoType.Color:
                     newValue = EditorGUILayout.ColorField(field.Item1.Name, (Color)field.Item1.GetValue(entity));
@@ -706,7 +706,7 @@
             return from type in baseTypes.Reverse()
                    from field in type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
                    let attribute = field.GetCustomAttribute<PropertyInfoAttribute>()
-                   where attribute != null
+                   where attribute != null && !attribute.IsAutoProperty
                    select Tuple.Create(field, attribute);
         }
 
@@ -725,14 +725,14 @@
                 return entity;
             }
 
-            var dataListWindowState = SingletonScriptableObject<DataListWindowState>.Instance;
+            /*var dataListWindowState = SingletonScriptableObject<DataListWindowState>.Instance;
             var transformData = owningEntity as TransformData;
             var sceneProxy = dataListWindowState.CreateSceneProxyForEntity(transformData.DataSetGuid, transformData.Name);
 
             if (transformData.Parent != null)
             {
                 sceneProxy.transform.SetParent(dataListWindowState.FindSceneProxyForEntity(transformData.DataSetGuid, transformData.Parent.Name).transform);
-            }
+            }*/
 
             return entity;
         }
@@ -830,10 +830,10 @@
                 var transformData = this.owningEntity as TransformData;
                 var sceneProxy = dataListWindowState.CreateSceneProxyForEntity(transformData.DataSetGuid, transformData.Name);
 
-                if (transformData.Parent != null)
+                /*if (transformData.Parent != null)
                 {
                     sceneProxy.transform.SetParent(dataListWindowState.FindSceneProxyForEntity(transformData.DataSetGuid, transformData.Parent.Name).transform);
-                }
+                }*/
             }
         }
 
@@ -914,10 +914,10 @@
                 var transformData = this.owningEntity as TransformData;
                 var sceneProxy = dataListWindowState.CreateSceneProxyForEntity(transformData.DataSetGuid, transformData.Name);
 
-                if (transformData.Parent != null)
+                /*if (transformData.Parent != null)
                 {
                     sceneProxy.transform.SetParent(dataListWindowState.FindSceneProxyForEntity(transformData.DataSetGuid, transformData.Parent.Name).transform);
-                }
+                }*/
             }
         }
     }

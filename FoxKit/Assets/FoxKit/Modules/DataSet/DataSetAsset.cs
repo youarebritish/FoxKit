@@ -1,7 +1,6 @@
 ﻿using System;
 
-using FoxKit.Modules.Archive;
-using FoxKit.Modules.DataSet.FoxCore;
+using FoxKit.Modules.DataSet.Fox.FoxCore;
 
 using OdinSerializer;
 

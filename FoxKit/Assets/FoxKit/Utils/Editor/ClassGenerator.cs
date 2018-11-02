@@ -3,11 +3,13 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Runtime.Serialization;
     using System.Runtime.Serialization.Json;
     using System.Text;
 
     using FoxKit.Modules.DataSet;
+    using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Modules.Lua;
     using FoxKit.Utils.Structs;
@@ -20,6 +22,8 @@
 
     using UnityEngine;
     using UnityEngine.Assertions;
+
+    using File = System.IO.File;
 
     public static class ClassGenerator
     {
@@ -37,18 +41,20 @@
 
         private static readonly string[] usingNamespaces =
             {
-                "System", "System.Collections.Generic", "FoxKit.Modules.DataSet.FoxCore", "FoxKit.Modules.Lua",
-                "FoxLib", "KopiLua", "OdinSerializer", "UnityEngine"
+                "System", "System.Collections.Generic", "FoxKit.Modules.DataSet.Fox.FoxCore", "FoxKit.Modules.Lua",
+                "FoxLib", "KopiLua", "OdinSerializer", "UnityEngine", "DataSetFile2 = DataSetFile2"
             };
 
-        public static void GenerateClass(ClassDefinition definition, IDictionary<Core.PropertyInfoType, Type> typeMappings, string outputDirectory)
+        private static readonly string[] reservedSymbols = { "string", "object", "params" };
+
+        public static void GenerateClass(ClassDefinition definition, IDictionary<Core.PropertyInfoType, Type> typeMappings, string parentNamespace, string outputDirectory)
         {
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendLine(GeneratedCodeWarning);
             AppendNamespace(stringBuilder, definition.Namespace);
             stringBuilder.AppendLine("{");
 
-            AppendUsingStatements(stringBuilder);
+            AppendUsingStatements(stringBuilder, parentNamespace);
             AppendLineWithIndent(stringBuilder, string.Empty, 1);
             AppendClassAttributes(stringBuilder);
             AppendClassDeclaration(stringBuilder, definition.Name, definition.Parent);
@@ -68,13 +74,25 @@
 
             AppendLineWithIndent(stringBuilder, "}", 1);
             stringBuilder.AppendLine("}");
+
+            var outputFile = $"{outputDirectory}/{definition.Name}.Generated.cs";
+            File.WriteAllText(outputFile, stringBuilder.ToString());
         }
 
         private static void AppendFieldDeclaration(StringBuilder stringBuilder, PropertyDefinition property, Func<string, Type> parsePropertyType)
         {
             var containerType = ParseContainerType(property.Container);
             AppendFieldAttributes(stringBuilder, property, containerType);
-            AppendLineWithIndent(stringBuilder, $"private {MakeTypeDeclaration(parsePropertyType(property.Type), containerType, property.ArraySize)} {property.Name};", 2);
+
+            var propertyName = property.Name;
+
+            // FIXME dumb hack
+            if (propertyName == "string" || propertyName == "params" || propertyName == "object")
+            {
+                propertyName = $"@{propertyName}";
+            }
+
+            AppendLineWithIndent(stringBuilder, $"private {MakeTypeDeclaration(parsePropertyType(property.Type), containerType, property.ArraySize)} {propertyName};", 2);
         }
 
         private static string MakeTypeDeclaration(Type innerType, Core.ContainerType containerType, uint arraySize)
@@ -96,17 +114,17 @@
         {
             var propertyInfoStringBuilder = new StringBuilder();
             propertyInfoStringBuilder.Append($"{nameof(PropertyInfoAttribute)}(");
-            propertyInfoStringBuilder.Append(ParsePropertyType(property.Type));
+            propertyInfoStringBuilder.Append($"Core.PropertyInfoType.{ParsePropertyType(property.Type)}");
             propertyInfoStringBuilder.Append(", ");
             propertyInfoStringBuilder.Append(property.Offset);
             propertyInfoStringBuilder.Append(", ");
             propertyInfoStringBuilder.Append(property.ArraySize);
             propertyInfoStringBuilder.Append(", ");
-            propertyInfoStringBuilder.Append(containerType);
+            propertyInfoStringBuilder.Append($"Core.ContainerType.{containerType}");
             propertyInfoStringBuilder.Append(", ");
-            propertyInfoStringBuilder.Append(ParseReadableFlag(property.ExportFlag));
+            propertyInfoStringBuilder.Append($"PropertyExport.{ParseReadableFlag(property.ExportFlag)}");
             propertyInfoStringBuilder.Append(", ");
-            propertyInfoStringBuilder.Append(ParseWritableFlag(property.ExportFlag));
+            propertyInfoStringBuilder.Append($"PropertyExport.{ParseWritableFlag(property.ExportFlag)}");
             propertyInfoStringBuilder.Append(", ");
             propertyInfoStringBuilder.Append(ParsePtrType(property.PtrType));
             propertyInfoStringBuilder.Append(", ");
@@ -116,7 +134,7 @@
             AppendLineWithIndent(stringBuilder, $"[{nameof(OdinSerializeAttribute)}, {propertyInfoStringBuilder}]", 2);
         }
 
-        private static IDictionary<Core.PropertyInfoType, Type> CreateFoxToUnityTypeMapping()
+        public static IDictionary<Core.PropertyInfoType, Type> CreateFoxToUnityTypeMapping()
         {
             var result = new Dictionary<Core.PropertyInfoType, Type>();
             result.Add(Core.PropertyInfoType.Bool, typeof(bool));
@@ -143,7 +161,7 @@
             result.Add(Core.PropertyInfoType.Int64, typeof(long));
             result.Add(Core.PropertyInfoType.UInt64, typeof(ulong));
             result.Add(Core.PropertyInfoType.PropertyInfo, null);
-            result.Add(Core.PropertyInfoType.WideVector3, typeof(Core.WideVector3));
+            result.Add(Core.PropertyInfoType.WideVector3, typeof(object));
             return result;
         }
 
@@ -272,17 +290,24 @@
             AppendLineWithIndent(stringBuilder, $"[{nameof(SerializableAttribute)}, {nameof(ExposeClassToLuaAttribute)}]", 1);
         }
 
-        private static void AppendUsingStatements(StringBuilder stringBuilder)
+        private static void AppendUsingStatements(StringBuilder stringBuilder, string parentNamespace)
         {
             foreach (var @namespace in usingNamespaces)
             {
                 AppendUsingStatement(stringBuilder, @namespace);
             }
+
+            if (string.IsNullOrEmpty(parentNamespace))
+            {
+                return;
+            }
+
+            AppendUsingStatement(stringBuilder, parentNamespace);
         }
 
         private static void AppendUsingStatement(StringBuilder stringBuilder, string @namespace)
         {
-            AppendLineWithIndent(stringBuilder, @namespace, 1);
+            AppendLineWithIndent(stringBuilder, $"using {@namespace};", 1);
         }
 
         private static void AppendLineWithIndent(StringBuilder stringBuilder, string text, int indentLevel)
@@ -293,13 +318,12 @@
 
         private static void AppendNamespace(StringBuilder stringBuilder, string @namespace)
         {
-            if (string.IsNullOrEmpty(@namespace))
-            {
-                stringBuilder.AppendLine($"namespace {RootNamespace}");
-                return;
-            }
+            stringBuilder.AppendLine($"namespace {GetFullNamespace(@namespace)}");
+        }
 
-            stringBuilder.AppendLine($"namespace {RootNamespace}.@namespace");
+        public static string GetFullNamespace(string @namespace)
+        {
+            return string.IsNullOrEmpty(@namespace) ? $"{RootNamespace}" : $"{RootNamespace}.{@namespace}";
         }
 
         private static void Indent(StringBuilder stringBuilder, int indentLevel)
@@ -401,36 +425,33 @@
         void OnGUI()
         {
             this.classDefinitions = EditorGUILayout.ObjectField("Class Definitions", this.classDefinitions, typeof(TextAsset), false) as TextAsset;
-            this.classNamespaces = EditorGUILayout.ObjectField("Class Namespaces", this.classNamespaces, typeof(TextAsset), false) as TextAsset;
 
-            if (!GUILayout.Button("Add namespaces"))
+            if (!GUILayout.Button("Generate Classes"))
             {
                 return;
             }
 
-            var path = EditorUtility.SaveFilePanelInProject(
-                "Save output",
-                this.classDefinitions.name + " copy",
-                "json",
-                "Please enter a file name to save the output to.");
-
+            var path = EditorUtility.OpenFolderPanel("Select output folder", null, null);
             if (path.Length == 0)
             {
                 return;
             }
 
-            var definitions = ParseAndAssignNamespaces(this.classDefinitions, this.classNamespaces);
-            var settings = new DataContractJsonSerializerSettings { UseSimpleDictionaryFormat = true };
-            var serializer = new DataContractJsonSerializer(typeof(List<ClassGenerator.ClassDefinition>), settings);
+            var definitions = ReadClassDefinitions(this.classDefinitions).ToDictionary(entry => entry.Name, entry => entry);
+            var mappings = ClassGenerator.CreateFoxToUnityTypeMapping();
 
-            using (var stream = new FileStream(path, FileMode.Create))
+            foreach (var definition in definitions.Values)
             {
-                using (var writer = JsonReaderWriterFactory.CreateJsonWriter(
-                    stream, Encoding.UTF8, true, true, "  "))
+                var parent = definition.Parent;
+                string parentNamespace = null;
+
+                if (!string.IsNullOrEmpty(parent))
                 {
-                    serializer.WriteObject(writer, definitions);
-                    writer.Flush();
+                    var parentDefinition = definitions[parent];
+                    parentNamespace = ClassGenerator.GetFullNamespace(parentDefinition.Namespace);
                 }
+
+                ClassGenerator.GenerateClass(definition, mappings, parentNamespace, path);
             }
 
             AssetDatabase.Refresh();

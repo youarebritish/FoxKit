@@ -3,6 +3,7 @@
     using System.Collections.Generic;
 
     using FoxKit.Modules.DataSet.Exporter;
+    using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.DataSet.FoxCore;
 
     using UnityEditor;

@@ -6,7 +6,7 @@
     using System.IO;
     using System.Linq;
 
-    using FoxKit.Modules.DataSet.FoxCore;
+    using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Utils;
 
     using FoxLib;

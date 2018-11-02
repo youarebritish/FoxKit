@@ -6,8 +6,9 @@
 
     using FmdlStudio.Scripts.MonoBehaviours;
 
+    using FoxKit.Modules.DataSet.Fox.FoxCore;
+    using FoxKit.Modules.DataSet.Fox.FoxGameKit;
     using FoxKit.Modules.DataSet.FoxCore;
-    using FoxKit.Modules.DataSet.Sdx;
     using FoxKit.Utils;
 
     using UnityEditor;
@@ -466,8 +467,8 @@
                                               RotQuat = model.transform.rotation,
                                               Scale = model.transform.localScale
                                           };
-                staticModel.Transform = transformEntity;
-                staticModel.ModelFile = prefab;
+                /*staticModel.Transform = transformEntity;
+                staticModel.ModelFile = prefab;*/
                 
                 var newSceneProxy = SingletonScriptableObject<DataListWindowState>.Instance.CreateSceneProxyForEntity(
                     SingletonScriptableObject<DataListWindowState>.Instance.ActiveDataSetGuid,

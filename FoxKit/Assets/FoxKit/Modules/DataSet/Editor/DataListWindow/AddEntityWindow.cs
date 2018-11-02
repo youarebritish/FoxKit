@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using FoxKit.Modules.DataSet.FoxCore;
+    using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.DataSet.Importer;
 
     using UnityEditor;

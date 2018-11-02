@@ -6,6 +6,7 @@
     using System.Linq;
 
     using FoxKit.Modules.Archive;
+    using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Modules.DataSet.Importer;
 
@@ -15,7 +16,7 @@
 
     using UnityEngine;
     using UnityEngine.Assertions;
-
+    
     /// <summary>
     /// Helper functions for working with DataSets.
     /// </summary>

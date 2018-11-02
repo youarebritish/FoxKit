@@ -7,6 +7,7 @@ namespace FoxKit.Utils
     using FoxKit.Core;
     using FoxKit.Modules.DataSet.Editor;
     using FoxKit.Modules.DataSet.Editor.DataListWindow;
+    using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.DataSet.FoxCore;
 
     using UnityEditor;

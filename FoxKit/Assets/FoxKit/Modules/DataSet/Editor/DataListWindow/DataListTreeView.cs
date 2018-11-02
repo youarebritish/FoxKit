@@ -4,6 +4,7 @@
     using System.Linq;
 
     using FoxKit.Core;
+    using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
@@ -249,10 +250,10 @@
             // If we're adding a TransformData entity that has a valid parent, only add it to the tree under its parent.
             // TODO: Consider moving this out and checking for this case before calling AddData().
             var transformData = data as TransformData;
-            if (transformData?.Parent != null && transformData.Parent != this.idToDataMap[parent.id])
+            /*if (transformData?.Parent != null && transformData.Parent != this.idToDataMap[parent.id])
             {
                 return id;
-            }
+            }*/
 
             if (this.idToDataMap.Contains(data))
             {

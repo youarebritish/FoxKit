@@ -9,6 +9,8 @@ namespace FoxKit.Core
     using System;
     using System.Linq;
 
+    using FoxKit.Modules.DataSet.Fox.FoxCore;
+
     using Object = UnityEngine.Object;
 
     public class AssetPostprocessor : UnityEditor.AssetPostprocessor
