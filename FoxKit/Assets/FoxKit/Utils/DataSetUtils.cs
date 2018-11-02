@@ -87,7 +87,7 @@
             // Store the archivePath for convenience later.
             if (string.IsNullOrEmpty(link.ArchivePath))
             {
-                link.ArchivePath = AssetDatabase.GUIDToAssetPath(owningDataSet.DataSetGuid);
+                //link.ArchivePath = AssetDatabase.GUIDToAssetPath(owningDataSet.DataSetGuid);
             }
 
             // If the EntityLink references an Entity inside its own DataSet, resolve it now.

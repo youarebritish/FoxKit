@@ -41,7 +41,7 @@
             this.useScrollView = true;
             this.searchString = string.Empty;
             
-            this.packages = packages.ToDictionary(package => package, package => (from asset in package.Entries
+            /*this.packages = packages.ToDictionary(package => package, package => (from asset in package.Entries
                                                                                   where asset is DataSetAsset
                                                                                   select asset as DataSetAsset).ToList());
 
@@ -49,7 +49,7 @@
                                    from dataSet in entry
                                    from entity in dataSet.GetDataSet().GetDataList().Values
                                    where entity is DataIdentifier
-                                   select entity as DataIdentifier).ToList();
+                                   select entity as DataIdentifier).ToList();*/
 
             this.Reload();
         }
@@ -112,7 +112,7 @@
                 foreach (var link in dataIdentifier.Links)
                 {
                     allItems.Add(new TreeViewItem { id = id, depth = 2, displayName = link.Key });
-                    this.idToData.Add(dataIdentifier);
+                    //this.idToData.Add(dataIdentifier);
                     this.idToDataIdentifierLinkKeys.Add(link.Key);
                     id++;
                 }
@@ -177,7 +177,7 @@
             
             var selectedData = this.idToData[selectedId];
             Assert.IsNotNull(selectedData);
-            
+            /*
             if (selectedData is DataIdentifier)
             {
                 var key = this.idToDataIdentifierLinkKeys[selectedId];
@@ -186,7 +186,7 @@
                     this.onDataIdentifierEntitySelected(selectedData as DataIdentifier, key);
                     return;
                 }
-            }
+            }*/
 
             this.onEntitySelected(selectedData);
         }

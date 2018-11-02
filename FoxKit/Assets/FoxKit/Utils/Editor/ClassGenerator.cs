@@ -45,14 +45,18 @@
                 "FoxLib", "KopiLua", "OdinSerializer", "UnityEngine", "DataSetFile2 = DataSetFile2"
             };
 
-        private static readonly string[] reservedSymbols = { "string", "object", "params" };
-
-        public static void GenerateClass(ClassDefinition definition, IDictionary<Core.PropertyInfoType, Type> typeMappings, string parentNamespace, string outputDirectory)
+        public static void GenerateClass(ClassDefinition definition, IDictionary<Core.PropertyInfoType, Type> typeMappings, Func<string, string> getNamespace, string outputDirectory)
         {
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendLine(GeneratedCodeWarning);
             AppendNamespace(stringBuilder, definition.Namespace);
             stringBuilder.AppendLine("{");
+
+            string parentNamespace = null;
+            if (!string.IsNullOrEmpty(definition.Parent))
+            {
+                parentNamespace = getNamespace(definition.Parent);
+            }
 
             AppendUsingStatements(stringBuilder, parentNamespace);
             AppendLineWithIndent(stringBuilder, string.Empty, 1);
@@ -60,11 +64,29 @@
             AppendClassDeclaration(stringBuilder, definition.Name, definition.Parent);
             AppendLineWithIndent(stringBuilder, "{", 1);
 
-            Func<string, Type> parsePropertyType = propertyTypeString => typeMappings[ParsePropertyType(propertyTypeString)];
+            Func<string, string, string> parsePropertyType = delegate(string propertyTypeString, string ptrTypeString)
+                {
+                    var propertyType = ParsePropertyType(propertyTypeString);
+                    if (propertyType == Core.PropertyInfoType.EntityPtr && !string.IsNullOrEmpty(ptrTypeString))
+                    {
+                        var @namespace = getNamespace(ptrTypeString);
+                        if (string.IsNullOrEmpty(@namespace))
+                        {
+                            return ptrTypeString;
+                        }
+
+                        return $"{getNamespace(ptrTypeString)}.{ptrTypeString}";
+                    }
+                    else
+                    {
+                        return typeMappings[propertyType].ToString();
+                    }
+                };
+
             for (var i = 0; i < definition.Properties.Count; i++)
             {
                 var property = definition.Properties[i];
-                AppendFieldDeclaration(stringBuilder, property, parsePropertyType);
+                AppendFieldDeclaration(stringBuilder, property, parsePropertyType, getNamespace);
 
                 if (!(i == definition.Properties.Count - 1 && definition.Functions.Count == 0))
                 {
@@ -75,14 +97,16 @@
             AppendLineWithIndent(stringBuilder, "}", 1);
             stringBuilder.AppendLine("}");
 
-            var outputFile = $"{outputDirectory}/{definition.Name}.Generated.cs";
+            Directory.CreateDirectory($"{outputDirectory}/{definition.Namespace}");
+            var outputFile = $"{outputDirectory}/{definition.Namespace}/{definition.Name}.Generated.cs";
+
             File.WriteAllText(outputFile, stringBuilder.ToString());
         }
 
-        private static void AppendFieldDeclaration(StringBuilder stringBuilder, PropertyDefinition property, Func<string, Type> parsePropertyType)
+        private static void AppendFieldDeclaration(StringBuilder stringBuilder, PropertyDefinition property, Func<string, string, string> parsePropertyType, Func<string, string> getNamespace)
         {
             var containerType = ParseContainerType(property.Container);
-            AppendFieldAttributes(stringBuilder, property, containerType);
+            AppendFieldAttributes(stringBuilder, property, containerType, getNamespace);
 
             var propertyName = property.Name;
 
@@ -92,14 +116,28 @@
                 propertyName = $"@{propertyName}";
             }
 
-            AppendLineWithIndent(stringBuilder, $"private {MakeTypeDeclaration(parsePropertyType(property.Type), containerType, property.ArraySize)} {propertyName};", 2);
+            var propertyType = parsePropertyType(property.Type, property.PtrType);
+            var typeDeclaration = MakeTypeDeclaration(
+                propertyType,
+                containerType,
+                property.ArraySize);
+            AppendWithIndent(stringBuilder, $"private {typeDeclaration} {propertyName}", 2);
+
+            if (containerType == Core.ContainerType.StaticArray && property.ArraySize == 1)
+            {
+                stringBuilder.AppendLine(";");
+            }
+            else
+            {
+                stringBuilder.AppendLine($" = new {typeDeclaration}();");
+            }
         }
 
-        private static string MakeTypeDeclaration(Type innerType, Core.ContainerType containerType, uint arraySize)
+        private static string MakeTypeDeclaration(string innerType, Core.ContainerType containerType, uint arraySize)
         {
             if (containerType == Core.ContainerType.StaticArray && arraySize == 1)
             {
-                return innerType.ToString();
+                return innerType;
             }
 
             if (containerType == Core.ContainerType.StringMap)
@@ -110,7 +148,7 @@
             return $"List<{innerType}>";
         }
 
-        private static void AppendFieldAttributes(StringBuilder stringBuilder, PropertyDefinition property, Core.ContainerType containerType)
+        private static void AppendFieldAttributes(StringBuilder stringBuilder, PropertyDefinition property, Core.ContainerType containerType, Func<string, string> getNamespace)
         {
             var propertyInfoStringBuilder = new StringBuilder();
             propertyInfoStringBuilder.Append($"{nameof(PropertyInfoAttribute)}(");
@@ -126,7 +164,16 @@
             propertyInfoStringBuilder.Append(", ");
             propertyInfoStringBuilder.Append($"PropertyExport.{ParseWritableFlag(property.ExportFlag)}");
             propertyInfoStringBuilder.Append(", ");
-            propertyInfoStringBuilder.Append(ParsePtrType(property.PtrType));
+
+            var ptrType = ParsePtrType(property.PtrType);
+            var ptrTypeNamespace = getNamespace(ptrType);
+            var ptrTypeString = ptrType;
+            if (!string.IsNullOrEmpty(ptrTypeNamespace))
+            {
+                ptrTypeString = $"{ptrTypeNamespace}.{ptrTypeString}";
+            }
+
+            propertyInfoStringBuilder.Append(ptrTypeString);
             propertyInfoStringBuilder.Append(", ");
             propertyInfoStringBuilder.Append(ParsePtrType(property.Enum));
             propertyInfoStringBuilder.Append(")");
@@ -310,6 +357,12 @@
             AppendLineWithIndent(stringBuilder, $"using {@namespace};", 1);
         }
 
+        private static void AppendWithIndent(StringBuilder stringBuilder, string text, int indentLevel)
+        {
+            Indent(stringBuilder, indentLevel);
+            stringBuilder.Append(text);
+        }
+
         private static void AppendLineWithIndent(StringBuilder stringBuilder, string text, int indentLevel)
         {
             Indent(stringBuilder, indentLevel);
@@ -439,19 +492,11 @@
 
             var definitions = ReadClassDefinitions(this.classDefinitions).ToDictionary(entry => entry.Name, entry => entry);
             var mappings = ClassGenerator.CreateFoxToUnityTypeMapping();
+            Func<string, string> getNamespace = className => definitions[className].Namespace;
 
             foreach (var definition in definitions.Values)
             {
-                var parent = definition.Parent;
-                string parentNamespace = null;
-
-                if (!string.IsNullOrEmpty(parent))
-                {
-                    var parentDefinition = definitions[parent];
-                    parentNamespace = ClassGenerator.GetFullNamespace(parentDefinition.Namespace);
-                }
-
-                ClassGenerator.GenerateClass(definition, mappings, parentNamespace, path);
+                ClassGenerator.GenerateClass(definition, mappings, getNamespace, path);
             }
 
             AssetDatabase.Refresh();

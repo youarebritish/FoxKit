@@ -464,7 +464,7 @@
         "exportFlag": "RW",
         "name": "transform",
         "offset": 128,
-        "ptrType": null,
+        "ptrType": "TransformEntity",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -475,7 +475,7 @@
         "exportFlag": "RW",
         "name": "shearTransform",
         "offset": 136,
-        "ptrType": null,
+        "ptrType": "ShearTransformEntity",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -486,7 +486,7 @@
         "exportFlag": "RW",
         "name": "pivotTransform",
         "offset": 144,
-        "ptrType": null,
+        "ptrType": "PivotTransformEntity",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -815,7 +815,7 @@
         "exportFlag": "  ",
         "name": "bucketCollector",
         "offset": 168,
-        "ptrType": null,
+        "ptrType": "BucketCollector",
         "size": 8,
         "type": "EntityPtr"
       }
@@ -968,7 +968,7 @@
         "exportFlag": "  ",
         "name": "actors",
         "offset": 88,
-        "ptrType": null,
+        "ptrType": "Actor",
         "size": 32,
         "type": "EntityPtr"
       },
@@ -990,7 +990,7 @@
         "exportFlag": "  ",
         "name": "dataBodySets",
         "offset": 168,
-        "ptrType": null,
+        "ptrType": "DataBodySet",
         "size": 48,
         "type": "EntityPtr"
       },
@@ -1001,7 +1001,7 @@
         "exportFlag": "  ",
         "name": "editableDataSet",
         "offset": 224,
-        "ptrType": null,
+        "ptrType": "DataSet",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -1023,7 +1023,7 @@
         "exportFlag": "  ",
         "name": "editableDataBodySet",
         "offset": 240,
-        "ptrType": null,
+        "ptrType": "DataBodySet",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -1067,7 +1067,7 @@
         "exportFlag": "  ",
         "name": "buckets",
         "offset": 48,
-        "ptrType": null,
+        "ptrType": "Bucket",
         "size": 48,
         "type": "EntityPtr"
       },
@@ -1078,7 +1078,7 @@
         "exportFlag": "  ",
         "name": "mainBucket",
         "offset": 96,
-        "ptrType": null,
+        "ptrType": "Bucket",
         "size": 8,
         "type": "EntityPtr"
       }
@@ -1415,7 +1415,7 @@
         "exportFlag": "  ",
         "name": "value",
         "offset": 56,
-        "ptrType": null,
+        "ptrType": "Entity",
         "size": 8,
         "type": "EntityPtr"
       }
@@ -1701,7 +1701,7 @@
         "exportFlag": "rw",
         "name": "array",
         "offset": 48,
-        "ptrType": null,
+        "ptrType": "Entity",
         "size": 16,
         "type": "EntityPtr"
       }
@@ -1789,7 +1789,7 @@
         "exportFlag": "  ",
         "name": "list",
         "offset": 48,
-        "ptrType": null,
+        "ptrType": "Entity",
         "size": 32,
         "type": "EntityPtr"
       }
@@ -1855,7 +1855,7 @@
         "exportFlag": "rw",
         "name": "stringMap",
         "offset": 48,
-        "ptrType": null,
+        "ptrType": "Entity",
         "size": 48,
         "type": "EntityPtr"
       }
@@ -2022,7 +2022,7 @@
         "exportFlag": "  ",
         "name": "dataList",
         "offset": 120,
-        "ptrType": null,
+        "ptrType": "Data",
         "size": 48,
         "type": "EntityPtr"
       }
@@ -2180,7 +2180,7 @@
         "exportFlag": "  ",
         "name": "dataBodyList",
         "offset": 88,
-        "ptrType": null,
+        "ptrType": "DataBody",
         "size": 48,
         "type": "EntityPtr"
       }
@@ -3647,7 +3647,7 @@
         "exportFlag": "r ",
         "name": "dataSet",
         "offset": 0,
-        "ptrType": null,
+        "ptrType": "DataSet",
         "size": 8,
         "type": "EntityPtr"
       }
@@ -3793,7 +3793,7 @@
         "exportFlag": "  ",
         "name": "dataBodySets",
         "offset": 104,
-        "ptrType": null,
+        "ptrType": "DataBodySet",
         "size": 48,
         "type": "EntityPtr"
       },
@@ -3804,7 +3804,7 @@
         "exportFlag": "  ",
         "name": "editableDataBodySet",
         "offset": 152,
-        "ptrType": null,
+        "ptrType": "DataBodySet",
         "size": 8,
         "type": "EntityPtr"
       }
@@ -6177,7 +6177,7 @@
         "exportFlag": "RW",
         "name": "sections",
         "offset": 128,
-        "ptrType": null,
+        "ptrType": "TimeSection",
         "size": 16,
         "type": "EntityPtr"
       },
@@ -6276,7 +6276,7 @@
         "exportFlag": "RW",
         "name": "shaderList",
         "offset": 72,
-        "ptrType": null,
+        "ptrType": "ParameterMaskElement",
         "size": 16,
         "type": "EntityPtr"
       }
@@ -6298,7 +6298,7 @@
         "exportFlag": "RW",
         "name": "aspectMaskList",
         "offset": 120,
-        "ptrType": null,
+        "ptrType": "FacialMaskElement",
         "size": 16,
         "type": "EntityPtr"
       },
@@ -6309,7 +6309,7 @@
         "exportFlag": "RW",
         "name": "mouthMask",
         "offset": 136,
-        "ptrType": null,
+        "ptrType": "FacialMaskElement",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -6320,7 +6320,7 @@
         "exportFlag": "RW",
         "name": "lipMask",
         "offset": 144,
-        "ptrType": null,
+        "ptrType": "FacialMaskElement",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -7255,7 +7255,7 @@
         "exportFlag": "  ",
         "name": "script",
         "offset": 160,
-        "ptrType": null,
+        "ptrType": "SafeScript",
         "size": 8,
         "type": "EntityPtr"
       }
@@ -7321,7 +7321,7 @@
         "exportFlag": "  ",
         "name": "checkScriptArray",
         "offset": 160,
-        "ptrType": null,
+        "ptrType": "SafeScript",
         "size": 16,
         "type": "EntityPtr"
       },
@@ -7332,7 +7332,7 @@
         "exportFlag": "  ",
         "name": "execScriptArray",
         "offset": 176,
-        "ptrType": null,
+        "ptrType": "SafeScript",
         "size": 16,
         "type": "EntityPtr"
       }
@@ -7679,7 +7679,7 @@
         "exportFlag": "R ",
         "name": "checkCallbackDataElements",
         "offset": 344,
-        "ptrType": null,
+        "ptrType": "GeoTrapModuleCallbackDataElement",
         "size": 16,
         "type": "EntityPtr"
       }
@@ -7744,7 +7744,7 @@
         "exportFlag": "RW",
         "name": "checkCallbackDataElements",
         "offset": 360,
-        "ptrType": null,
+        "ptrType": "GeoTrapModuleCallbackDataElement",
         "size": 16,
         "type": "EntityPtr"
       },
@@ -7755,7 +7755,7 @@
         "exportFlag": "RW",
         "name": "execCallbackDataElements",
         "offset": 376,
-        "ptrType": null,
+        "ptrType": "GeoTrapModuleCallbackDataElement",
         "size": 16,
         "type": "EntityPtr"
       }
@@ -9791,7 +9791,7 @@
         "exportFlag": "RW",
         "name": "parameters",
         "offset": 144,
-        "ptrType": null,
+        "ptrType": "DataElement",
         "size": 8,
         "type": "EntityPtr"
       }
@@ -9845,7 +9845,7 @@
         "exportFlag": "RW",
         "name": "parameters",
         "offset": 320,
-        "ptrType": null,
+        "ptrType": "DataElement",
         "size": 8,
         "type": "EntityPtr"
       }
@@ -11912,7 +11912,7 @@
         "exportFlag": "R ",
         "name": "lineSSAOParameters",
         "offset": 128,
-        "ptrType": null,
+        "ptrType": "GrxLineSSAOParameters",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -11923,7 +11923,7 @@
         "exportFlag": "R ",
         "name": "areaSSAOParameters",
         "offset": 136,
-        "ptrType": null,
+        "ptrType": "GrxAreaSSAOParameters",
         "size": 8,
         "type": "EntityPtr"
       }
@@ -12230,7 +12230,7 @@
         "exportFlag": "rw",
         "name": "materialManager",
         "offset": 240,
-        "ptrType": null,
+        "ptrType": "PhMaterialManager",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -12393,7 +12393,7 @@
         "exportFlag": "  ",
         "name": "param",
         "offset": 304,
-        "ptrType": null,
+        "ptrType": "PhObjectParam",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -12436,7 +12436,7 @@
         "exportFlag": "RW",
         "name": "bodies",
         "offset": 120,
-        "ptrType": null,
+        "ptrType": "Entity",
         "size": 16,
         "type": "EntityPtr"
       },
@@ -12447,7 +12447,7 @@
         "exportFlag": "RW",
         "name": "constraints",
         "offset": 136,
-        "ptrType": null,
+        "ptrType": "PhConstraintParam",
         "size": 16,
         "type": "EntityPtr"
       },
@@ -12722,7 +12722,7 @@
         "exportFlag": "  ",
         "name": "param",
         "offset": 304,
-        "ptrType": null,
+        "ptrType": "PhRigidBodyParam",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -13019,7 +13019,7 @@
         "exportFlag": "  ",
         "name": "param",
         "offset": 304,
-        "ptrType": null,
+        "ptrType": "PhShapeParam",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -13194,7 +13194,7 @@
         "exportFlag": "  ",
         "name": "param",
         "offset": 304,
-        "ptrType": null,
+        "ptrType": "PhConstraintParam",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -14794,7 +14794,7 @@
         "exportFlag": "RW",
         "name": "waypoints",
         "offset": 368,
-        "ptrType": null,
+        "ptrType": "GkTacticalActionWaypoint",
         "size": 16,
         "type": "EntityPtr"
       },
@@ -14805,7 +14805,7 @@
         "exportFlag": "RW",
         "name": "edges",
         "offset": 384,
-        "ptrType": null,
+        "ptrType": "GkTacticalActionEdge",
         "size": 16,
         "type": "EntityPtr"
       },
@@ -15412,7 +15412,7 @@
         "exportFlag": "RW",
         "name": "modelNodes",
         "offset": 424,
-        "ptrType": null,
+        "ptrType": "UiModelNodeElement",
         "size": 16,
         "type": "EntityPtr"
       }
@@ -15949,7 +15949,7 @@
         "exportFlag": "RW",
         "name": "fonts",
         "offset": 120,
-        "ptrType": null,
+        "ptrType": "UiFontDataElement",
         "size": 16,
         "type": "EntityPtr"
       }
@@ -16881,7 +16881,7 @@
         "exportFlag": "Rw",
         "name": "nodes",
         "offset": 304,
-        "ptrType": null,
+        "ptrType": "GraphxSpatialGraphDataNode",
         "size": 16,
         "type": "EntityPtr"
       },
@@ -16892,7 +16892,7 @@
         "exportFlag": "Rw",
         "name": "edges",
         "offset": 320,
-        "ptrType": null,
+        "ptrType": "GraphxSpatialGraphDataEdge",
         "size": 16,
         "type": "EntityPtr"
       }
@@ -17455,7 +17455,7 @@
         "exportFlag": "RW",
         "name": "parameter",
         "offset": 120,
-        "ptrType": null,
+        "ptrType": "SoundAreaParameter",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -17518,7 +17518,7 @@
         "exportFlag": "RW",
         "name": "parameter",
         "offset": 128,
-        "ptrType": null,
+        "ptrType": "SoundAreaParameter",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -17607,7 +17607,7 @@
         "exportFlag": "RW",
         "name": "parameter",
         "offset": 144,
-        "ptrType": null,
+        "ptrType": "SoundAreaParameter",
         "size": 8,
         "type": "EntityPtr"
       }
@@ -18184,7 +18184,7 @@
         "exportFlag": "RW",
         "name": "connections",
         "offset": 160,
-        "ptrType": null,
+        "ptrType": "PhxAssociationUnitElement",
         "size": 48,
         "type": "EntityPtr"
       },
@@ -18195,7 +18195,7 @@
         "exportFlag": "  ",
         "name": "param",
         "offset": 208,
-        "ptrType": null,
+        "ptrType": "PhAssociationParam",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -18305,7 +18305,7 @@
         "exportFlag": "  ",
         "name": "vehicleNormalEngineParam",
         "offset": 120,
-        "ptrType": null,
+        "ptrType": "PhVehicleNormalEngineParam",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -18426,7 +18426,7 @@
         "exportFlag": "  ",
         "name": "vehicleAxisParam",
         "offset": 120,
-        "ptrType": null,
+        "ptrType": "PhVehicleAxisParam",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -18437,7 +18437,7 @@
         "exportFlag": "  ",
         "name": "wheelConstraintParam",
         "offset": 128,
-        "ptrType": null,
+        "ptrType": "PhxWheelConstraintParam",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -18448,7 +18448,7 @@
         "exportFlag": "  ",
         "name": "wheelAssociationUnitParams",
         "offset": 136,
-        "ptrType": null,
+        "ptrType": "PhxWheelAssociationUnitParam",
         "size": 16,
         "type": "EntityPtr"
       },
@@ -19276,7 +19276,7 @@
         "exportFlag": "RW",
         "name": "objectArray",
         "offset": 120,
-        "ptrType": null,
+        "ptrType": "GeoxPartsTargetObject",
         "size": 16,
         "type": "EntityPtr"
       }
@@ -20583,7 +20583,7 @@
         "exportFlag": "RW",
         "name": "parameters",
         "offset": 392,
-        "ptrType": null,
+        "ptrType": "NavxNavigableParameter",
         "size": 16,
         "type": "EntityPtr"
       },
@@ -21000,7 +21000,7 @@
         "exportFlag": "RW",
         "name": "attributeInfos",
         "offset": 360,
-        "ptrType": null,
+        "ptrType": "NavxAttributeInfo",
         "size": 16,
         "type": "EntityPtr"
       }
@@ -21524,7 +21524,7 @@
         "exportFlag": "  ",
         "name": "objectParam",
         "offset": 120,
-        "ptrType": null,
+        "ptrType": "SimObjectParam",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -21535,7 +21535,7 @@
         "exportFlag": "  ",
         "name": "engineParam",
         "offset": 128,
-        "ptrType": null,
+        "ptrType": "SimEngineParam",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -21546,7 +21546,7 @@
         "exportFlag": "RW",
         "name": "controls",
         "offset": 136,
-        "ptrType": null,
+        "ptrType": "SimControlElement",
         "size": 16,
         "type": "EntityPtr"
       }
@@ -21568,7 +21568,7 @@
         "exportFlag": "RW",
         "name": "simRootBones",
         "offset": 152,
-        "ptrType": null,
+        "ptrType": "SimAssociationUnit",
         "size": 48,
         "type": "EntityPtr"
       },
@@ -21579,7 +21579,7 @@
         "exportFlag": "RW",
         "name": "simBones",
         "offset": 200,
-        "ptrType": null,
+        "ptrType": "SimAssociationUnit",
         "size": 48,
         "type": "EntityPtr"
       },
@@ -21590,7 +21590,7 @@
         "exportFlag": "RW",
         "name": "simTransBones",
         "offset": 248,
-        "ptrType": null,
+        "ptrType": "SimAssociationUnit",
         "size": 48,
         "type": "EntityPtr"
       },
@@ -21601,7 +21601,7 @@
         "exportFlag": "RW",
         "name": "simHitBones",
         "offset": 296,
-        "ptrType": null,
+        "ptrType": "SimAssociationUnit",
         "size": 48,
         "type": "EntityPtr"
       },
@@ -21722,7 +21722,7 @@
         "exportFlag": "  ",
         "name": "param",
         "offset": 192,
-        "ptrType": null,
+        "ptrType": "SimAssociationUnitParam",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -21788,7 +21788,7 @@
         "exportFlag": "  ",
         "name": "controlParam",
         "offset": 72,
-        "ptrType": null,
+        "ptrType": "SimWindControlParam",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -21821,7 +21821,7 @@
         "exportFlag": "  ",
         "name": "controlParam",
         "offset": 72,
-        "ptrType": null,
+        "ptrType": "SimGravityControlParam",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -21854,7 +21854,7 @@
         "exportFlag": "  ",
         "name": "controlParam",
         "offset": 72,
-        "ptrType": null,
+        "ptrType": "SimInertialControlParam",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -21887,7 +21887,7 @@
         "exportFlag": "  ",
         "name": "controlParam",
         "offset": 72,
-        "ptrType": null,
+        "ptrType": "SimDirectionControlParam",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -21931,7 +21931,7 @@
         "exportFlag": "  ",
         "name": "controlParam",
         "offset": 72,
-        "ptrType": null,
+        "ptrType": "SimClothControlParam",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -21942,7 +21942,7 @@
         "exportFlag": "R ",
         "name": "clothControlUnits",
         "offset": 80,
-        "ptrType": null,
+        "ptrType": "SimClothControlUnit",
         "size": 16,
         "type": "EntityPtr"
       },
@@ -21986,7 +21986,7 @@
         "exportFlag": "  ",
         "name": "controlUnitParam",
         "offset": 56,
-        "ptrType": null,
+        "ptrType": "SimClothControlUnitParam",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -22063,7 +22063,7 @@
         "exportFlag": "  ",
         "name": "controlParam",
         "offset": 72,
-        "ptrType": null,
+        "ptrType": "SimHitGroupControlParam",
         "size": 8,
         "type": "EntityPtr"
       }
@@ -24086,7 +24086,7 @@
         "exportFlag": "RW",
         "name": "offense",
         "offset": 48,
-        "ptrType": null,
+        "ptrType": "GkTargetData",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -24097,7 +24097,7 @@
         "exportFlag": "RW",
         "name": "defense",
         "offset": 56,
-        "ptrType": null,
+        "ptrType": "GkTargetData",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -24305,7 +24305,7 @@
         "exportFlag": "  ",
         "name": "geom",
         "offset": 128,
-        "ptrType": null,
+        "ptrType": "CollisionReference",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -27555,7 +27555,7 @@
         "exportFlag": "  ",
         "name": "checkPointUnits",
         "offset": 48,
-        "ptrType": null,
+        "ptrType": "CheckpointUnit",
         "size": 48,
         "type": "EntityPtr"
       },
@@ -27599,7 +27599,7 @@
         "exportFlag": "  ",
         "name": "checkPointParam",
         "offset": 48,
-        "ptrType": null,
+        "ptrType": "Entity",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -27610,7 +27610,7 @@
         "exportFlag": "  ",
         "name": "checkPointData",
         "offset": 56,
-        "ptrType": null,
+        "ptrType": "Entity",
         "size": 48,
         "type": "EntityPtr"
       },
@@ -27777,7 +27777,7 @@
         "exportFlag": "R ",
         "name": "parameter",
         "offset": 120,
-        "ptrType": null,
+        "ptrType": "EnvironmentParameter",
         "size": 8,
         "type": "EntityPtr"
       }
@@ -27821,7 +27821,7 @@
         "exportFlag": "R ",
         "name": "parameter",
         "offset": 304,
-        "ptrType": null,
+        "ptrType": "EnvironmentParameter",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -28198,7 +28198,7 @@
         "exportFlag": "R ",
         "name": "storage",
         "offset": 160,
-        "ptrType": null,
+        "ptrType": "CheckpointData",
         "size": 8,
         "type": "EntityPtr"
       }
@@ -29563,7 +29563,7 @@
         "exportFlag": "Rw",
         "name": "params",
         "offset": 128,
-        "ptrType": null,
+        "ptrType": "TppDefaultParameterElement",
         "size": 48,
         "type": "EntityPtr"
       }
@@ -30171,7 +30171,7 @@
         "exportFlag": "RW",
         "name": "partsDesc",
         "offset": 440,
-        "ptrType": null,
+        "ptrType": "PartsDesc",
         "size": 48,
         "type": "EntityPtr"
       },
@@ -30182,7 +30182,7 @@
         "exportFlag": "RW",
         "name": "clipDatas",
         "offset": 488,
-        "ptrType": null,
+        "ptrType": "ClipData",
         "size": 16,
         "type": "EntityPtr"
       },
@@ -30347,7 +30347,7 @@
         "exportFlag": "RW",
         "name": "controlCharacters",
         "offset": 928,
-        "ptrType": null,
+        "ptrType": "DemoControlCharacterDesc",
         "size": 48,
         "type": "EntityPtr"
       },
@@ -30380,7 +30380,7 @@
         "exportFlag": "RW",
         "name": "parameters",
         "offset": 1072,
-        "ptrType": null,
+        "ptrType": "DemoParameter",
         "size": 48,
         "type": "EntityPtr"
       },
@@ -30873,7 +30873,7 @@
         "exportFlag": "RW",
         "name": "dynamicModel",
         "offset": 616,
-        "ptrType": null,
+        "ptrType": "DemoDynamicFileChangeModel",
         "size": 48,
         "type": "EntityPtr"
       },
@@ -30884,7 +30884,7 @@
         "exportFlag": "RW",
         "name": "dynamicParts",
         "offset": 664,
-        "ptrType": null,
+        "ptrType": "DemoDynamicFileChangeModel",
         "size": 48,
         "type": "EntityPtr"
       },
@@ -30895,7 +30895,7 @@
         "exportFlag": "RW",
         "name": "dynamicFv2",
         "offset": 712,
-        "ptrType": null,
+        "ptrType": "DemoFv2ResourceMemory",
         "size": 48,
         "type": "EntityPtr"
       }
@@ -36746,7 +36746,7 @@
         "exportFlag": "R ",
         "name": "param",
         "offset": 120,
-        "ptrType": null,
+        "ptrType": "TppSkyClouds3Param",
         "size": 8,
         "type": "EntityPtr"
       }
@@ -39510,7 +39510,7 @@
         "exportFlag": "R ",
         "name": "param",
         "offset": 120,
-        "ptrType": null,
+        "ptrType": "TppGlobalVolumetricFogParam",
         "size": 8,
         "type": "EntityPtr"
       }
@@ -39642,7 +39642,7 @@
         "exportFlag": "RW",
         "name": "param",
         "offset": 304,
-        "ptrType": null,
+        "ptrType": "TppAreaVolumetricFogParam",
         "size": 8,
         "type": "EntityPtr"
       }
@@ -42531,7 +42531,7 @@
         "exportFlag": "RW",
         "name": "param",
         "offset": 120,
-        "ptrType": null,
+        "ptrType": "TppNightVisionParam",
         "size": 8,
         "type": "EntityPtr"
       }
@@ -43549,7 +43549,7 @@
         "exportFlag": "RW",
         "name": "parameters",
         "offset": 176,
-        "ptrType": null,
+        "ptrType": "DataElement",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -44658,7 +44658,7 @@
         "exportFlag": "RW",
         "name": "gimmickParameter",
         "offset": 192,
-        "ptrType": null,
+        "ptrType": "ObjectBrushPluginBushDataElement",
         "size": 8,
         "type": "EntityPtr"
       },
@@ -44855,7 +44855,7 @@
         "exportFlag": "RW",
         "name": "parameter",
         "offset": 120,
-        "ptrType": null,
+        "ptrType": "ObjectBrushPluginBushDataElement",
         "size": 8,
         "type": "EntityPtr"
       }
@@ -48089,7 +48089,7 @@
         "exportFlag": "  ",
         "name": "weaponParams",
         "offset": 136,
-        "ptrType": null,
+        "ptrType": "TppVehicle2WeaponParameter",
         "size": 16,
         "type": "EntityPtr"
       },
@@ -48188,7 +48188,7 @@
         "exportFlag": "  ",
         "name": "weaponParams",
         "offset": 120,
-        "ptrType": null,
+        "ptrType": "TppVehicle2WeaponParameter",
         "size": 16,
         "type": "EntityPtr"
       }

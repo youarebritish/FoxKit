@@ -32,11 +32,11 @@
                 FoxKitUiUtils.ReadOnlyWarningAndButton(this.target as DataSetAsset, duplicate => duplicate.IsReadOnly = false);
             }
 
-            var entity = FoxKitEditor.InspectedEntity
+            /*var entity = FoxKitEditor.InspectedEntity
                          ?? ((DataSetAsset)this.serializedObject.targetObject).GetDataSet();
 
             var fields = GetPropertyFields(entity);
-            DrawStaticProperties(fields, entity, asset.IsReadOnly);
+            DrawStaticProperties(fields, entity, asset.IsReadOnly);*/
             this.Repaint();
 
             EditorUtility.SetDirty(this.target);

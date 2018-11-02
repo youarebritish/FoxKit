@@ -293,7 +293,7 @@ namespace FoxKit.Utils
                 {
                     if (value.DataIdentifier != null)
                     {
-                        DataListWindow.GetInstance().OpenDataSet(value.DataIdentifier.DataSetGuid, value.DataIdentifier.Name);
+                        //DataListWindow.GetInstance().OpenDataSet(value.DataIdentifier.DataSetGuid, value.DataIdentifier.Name);
                     }
                 }
                 else
@@ -345,7 +345,7 @@ namespace FoxKit.Utils
                 {
                     if (value.DataIdentifier != null)
                     {
-                        DataListWindow.GetInstance().OpenDataSet(value.DataIdentifier.DataSetGuid, value.DataIdentifier.Name);
+                        //DataListWindow.GetInstance().OpenDataSet(value.DataIdentifier.DataSetGuid, value.DataIdentifier.Name);
                     }
                 }
                 else

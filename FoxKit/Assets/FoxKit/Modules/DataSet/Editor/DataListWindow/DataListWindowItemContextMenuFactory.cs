@@ -70,10 +70,10 @@
                 return;
             }
             
-            var entities = new List<Entity> { castDataSet };
-            entities.AddRange(castDataSet.GetAllEntities());
+            /*var entities = new List<Entity> { castDataSet };
+            entities.AddRange(castDataSet.GetAllEntities());*/
 
-            DataSetExporter.ExportDataSet(entities, path);
+            //DataSetExporter.ExportDataSet(entities, path);
         }
 
         private static void SelectDataSetAsset(object dataSetPath)
