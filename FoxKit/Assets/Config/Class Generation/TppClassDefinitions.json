@@ -9563,7 +9563,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "NavEdgeType",
         "exportFlag": "  ",
         "name": "type",
         "offset": 64,
@@ -11677,7 +11677,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "GrxLineSSAOParameters_BlurMode",
         "exportFlag": "RW",
         "name": "blurMode",
         "offset": 80,
@@ -11754,7 +11754,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "GrxAreaSSAOParameters_Resolution",
         "exportFlag": "RW",
         "name": "resolution",
         "offset": 48,
@@ -11831,7 +11831,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "GrxAreaSSAOParameters_BlurMode",
         "exportFlag": "RW",
         "name": "blurMode",
         "offset": 76,
@@ -12053,7 +12053,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "OccluderEx_Mode",
         "exportFlag": "RW",
         "name": "mode",
         "offset": 308,
@@ -12927,7 +12927,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "PhRigidBodyType",
         "exportFlag": "RW",
         "name": "motionType",
         "offset": 0,
@@ -12993,7 +12993,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "PhShapeType",
         "exportFlag": "  ",
         "name": "type",
         "offset": 96,
@@ -13069,7 +13069,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "PhPrimitiveShapeType",
         "exportFlag": "RW",
         "name": "type",
         "offset": 312,
@@ -20771,7 +20771,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "NavxBounderLocatorType",
         "exportFlag": "RW",
         "name": "type",
         "offset": 328,
@@ -21630,7 +21630,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "SimLodLevelName",
         "exportFlag": "RW",
         "name": "minLodLevel",
         "offset": 0,
@@ -21641,7 +21641,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "SimLodLevelName",
         "exportFlag": "RW",
         "name": "maxLodLevel",
         "offset": 0,
