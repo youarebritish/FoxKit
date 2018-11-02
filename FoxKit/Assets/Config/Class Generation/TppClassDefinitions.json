@@ -26769,7 +26769,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "ViewGroupControlCondition_Condition",
         "exportFlag": "RW",
         "name": "condition",
         "offset": 124,
@@ -27163,7 +27163,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "SubtitlesGenerator_TextHorizontalAlign",
         "exportFlag": "RW",
         "name": "hAlign",
         "offset": 232,
@@ -27174,7 +27174,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "SubtitlesGenerator_TextVerticalAlign",
         "exportFlag": "RW",
         "name": "vAlign",
         "offset": 233,
@@ -27185,7 +27185,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "SubtitlesGenerator_TextBoxAlign",
         "exportFlag": "RW",
         "name": "bAlign",
         "offset": 234,
@@ -28415,7 +28415,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "Watermark_StandardMode",
         "exportFlag": "RW",
         "name": "standard",
         "offset": 124,
