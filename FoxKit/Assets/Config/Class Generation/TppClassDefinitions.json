@@ -33826,7 +33826,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "TppWaterBoundingType",
         "exportFlag": "RW",
         "name": "type",
         "offset": 308,
@@ -38307,7 +38307,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "TppLensFlareShapeOffsetType",
         "exportFlag": "RW",
         "name": "offsetType",
         "offset": 368,
@@ -38351,7 +38351,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "TppLensFlareShapeRotateType",
         "exportFlag": "RW",
         "name": "rotateType",
         "offset": 384,
@@ -38516,7 +38516,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "TppLensFlareShapeDistanceScalingMode",
         "exportFlag": "RW",
         "name": "distanceScaling",
         "offset": 704,
@@ -38843,7 +38843,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "TppLensFlareFieldShapeType",
         "exportFlag": "RW",
         "name": "shapeType",
         "offset": 120,
@@ -38854,7 +38854,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "TppLensFlareFieldInterpType",
         "exportFlag": "RW",
         "name": "interpType",
         "offset": 124,
@@ -39900,7 +39900,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "TppLightProbe_DebugMode",
         "exportFlag": "RW",
         "name": "debugMode",
         "offset": 488,
@@ -39911,7 +39911,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "TppLightProbe_DrawRejectionLevel",
         "exportFlag": "RW",
         "name": "drawRejectionLevel",
         "offset": 492,
@@ -39922,7 +39922,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "TppLightProbe_ShapeType",
         "exportFlag": "RW",
         "name": "shapeType",
         "offset": 496,
@@ -40010,7 +40010,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "TppLightProbe_PackingGeneration",
         "exportFlag": "RW",
         "name": "packingGeneration",
         "offset": 0,
@@ -40116,7 +40116,7 @@
       {
         "arraySize": 1,
         "container": "DynamicArray",
-        "enum": null,
+        "enum": "TppLightProbeArray_DrawRejectionLevel",
         "exportFlag": "RW",
         "name": "drawRejectionLevels",
         "offset": 304,
@@ -46367,7 +46367,7 @@
       {
         "arraySize": 1,
         "container": "StaticArray",
-        "enum": null,
+        "enum": "TppDemoParameter_WeatherType",
         "exportFlag": "RW",
         "name": "weatherType",
         "offset": 92,
