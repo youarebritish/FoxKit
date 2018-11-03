@@ -17,6 +17,7 @@ namespace FoxKit.Modules.DataSet.Fox.Navx
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     using FoxCore;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
@@ -31,7 +32,7 @@ namespace FoxKit.Modules.DataSet.Fox.Navx
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 320, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String worldName;
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 328, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 328, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(NavxBounderLocatorType))]
         private System.Int32 type;
     }
 }

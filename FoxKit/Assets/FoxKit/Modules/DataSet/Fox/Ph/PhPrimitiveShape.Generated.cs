@@ -17,12 +17,13 @@ namespace FoxKit.Modules.DataSet.Fox.Ph
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     using Ph;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class PhPrimitiveShape : PhShape
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 312, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 312, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(PhPrimitiveShapeType))]
         private System.Int32 type;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Vector3, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]

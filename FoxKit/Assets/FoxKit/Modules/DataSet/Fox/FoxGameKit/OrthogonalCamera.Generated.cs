@@ -17,12 +17,13 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     using FoxGameKit;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class OrthogonalCamera : Camera
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 448, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 448, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, typeof(OrthogonalCamera_ViewType))]
         private System.Int32 type;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 452, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]

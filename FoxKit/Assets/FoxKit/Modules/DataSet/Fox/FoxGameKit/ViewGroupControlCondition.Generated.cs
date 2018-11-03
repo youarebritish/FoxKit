@@ -17,6 +17,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     using FoxCore;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
@@ -25,7 +26,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 120, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.Never, null, null)]
         private System.UInt32 flags;
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 124, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 124, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(ViewGroupControlCondition_Condition))]
         private System.Int32 condition;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 128, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]

@@ -17,6 +17,7 @@ namespace FoxKit.Modules.DataSet.Fox.Ui
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     using Ui;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
@@ -37,7 +38,7 @@ namespace FoxKit.Modules.DataSet.Fox.Ui
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 306, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean isReEnter;
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 280, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 280, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, typeof(UiEventNodeKind))]
         private System.Int32 kind;
     }
 }

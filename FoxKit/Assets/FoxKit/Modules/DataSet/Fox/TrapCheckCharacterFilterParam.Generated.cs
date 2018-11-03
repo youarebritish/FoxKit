@@ -17,6 +17,7 @@ namespace FoxKit.Modules.DataSet.Fox
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class TrapCheckCharacterFilterParam : GeoTrapModuleCallbackDataElement

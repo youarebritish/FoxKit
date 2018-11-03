@@ -17,6 +17,7 @@ namespace FoxKit.Modules.DataSet.Fox.Phx
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     using FoxCore;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
@@ -31,7 +32,7 @@ namespace FoxKit.Modules.DataSet.Fox.Phx
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 160, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.Single> gearRatios = new List<System.Single>();
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 120, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, typeof(PhVehicleNormalEngineParam), null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 120, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, typeof(Phx.PhVehicleNormalEngineParam), null)]
         private Phx.PhVehicleNormalEngineParam vehicleNormalEngineParam;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 0, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]

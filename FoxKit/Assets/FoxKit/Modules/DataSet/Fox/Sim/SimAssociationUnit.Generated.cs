@@ -17,12 +17,13 @@ namespace FoxKit.Modules.DataSet.Fox.Sim
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     using Phx;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class SimAssociationUnit : PhxAssociationUnitElement
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 192, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, typeof(SimAssociationUnitParam), null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 192, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, typeof(Sim.SimAssociationUnitParam), null)]
         private Sim.SimAssociationUnitParam param;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]

@@ -17,14 +17,15 @@ namespace FoxKit.Modules.DataSet.Fox
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class GeoTrapScriptModuleConditionBody : GeoTrapConditionBody
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 160, 1, Core.ContainerType.DynamicArray, PropertyExport.Never, PropertyExport.Never, typeof(SafeScript), null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 160, 1, Core.ContainerType.DynamicArray, PropertyExport.Never, PropertyExport.Never, typeof(FoxCore.SafeScript), null)]
         private List<FoxCore.SafeScript> checkScriptArray = new List<FoxCore.SafeScript>();
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 176, 1, Core.ContainerType.DynamicArray, PropertyExport.Never, PropertyExport.Never, typeof(SafeScript), null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 176, 1, Core.ContainerType.DynamicArray, PropertyExport.Never, PropertyExport.Never, typeof(FoxCore.SafeScript), null)]
         private List<FoxCore.SafeScript> execScriptArray = new List<FoxCore.SafeScript>();
     }
 }

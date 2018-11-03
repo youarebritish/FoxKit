@@ -17,12 +17,13 @@ namespace FoxKit.Modules.DataSet.Fox.Sim
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     using Sim;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class SimHitGroupControl : SimControlElement
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 72, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, typeof(SimHitGroupControlParam), null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 72, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, typeof(Sim.SimHitGroupControlParam), null)]
         private Sim.SimHitGroupControlParam controlParam;
     }
 }

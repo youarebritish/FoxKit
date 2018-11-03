@@ -17,6 +17,7 @@ namespace FoxKit.Modules.DataSet.Fox.Demox
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     using FoxCore;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
@@ -43,11 +44,11 @@ namespace FoxKit.Modules.DataSet.Fox.Demox
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 392, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private Dictionary<string, UnityEngine.Object> helpBoneFiles = new Dictionary<string, UnityEngine.Object>();
         
-        /*[OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 440, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(PartsDesc), null)]
-        private Dictionary<string, Demo.PartsDesc> partsDesc = new Dictionary<string, Demo.PartsDesc>();*/
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 440, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(Demo.PartsDesc), null)]
+        private Dictionary<string, Demo.PartsDesc> partsDesc = new Dictionary<string, Demo.PartsDesc>();
         
-        /*[OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 488, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(ClipData), null)]
-        private List<Demo.ClipData> clipDatas = new List<Demo.ClipData>();*/
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 488, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(Demo.ClipData), null)]
+        private List<Demo.ClipData> clipDatas = new List<Demo.ClipData>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Path, 504, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<UnityEngine.Object> loadFiles = new List<UnityEngine.Object>();
@@ -91,8 +92,8 @@ namespace FoxKit.Modules.DataSet.Fox.Demox
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 880, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private Dictionary<string, UnityEngine.Object> fileParams = new Dictionary<string, UnityEngine.Object>();
         
-        /*[OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 928, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(DemoControlCharacterDesc), null)]
-        private Dictionary<string, Demo.DemoControlCharacterDesc> controlCharacters = new Dictionary<string, Demo.DemoControlCharacterDesc>();*/
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 928, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(Demo.DemoControlCharacterDesc), null)]
+        private Dictionary<string, Demo.DemoControlCharacterDesc> controlCharacters = new Dictionary<string, Demo.DemoControlCharacterDesc>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityLink, 976, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private Dictionary<string, FoxKit.Modules.DataSet.FoxCore.EntityLink> controlDatas = new Dictionary<string, FoxKit.Modules.DataSet.FoxCore.EntityLink>();
@@ -100,13 +101,13 @@ namespace FoxKit.Modules.DataSet.Fox.Demox
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 1024, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private Dictionary<string, System.String> controlCollectibles = new Dictionary<string, System.String>();
         
-        /*[OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 1072, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(DemoParameter), null)]
-        private Dictionary<string, Demo.DemoParameter> parameters = new Dictionary<string, Demo.DemoParameter>();*/
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 1072, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(Demo.DemoParameter), null)]
+        private Dictionary<string, Demo.DemoParameter> parameters = new Dictionary<string, Demo.DemoParameter>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 560, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private Dictionary<string, System.String> setupLights = new Dictionary<string, System.String>();
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 1152, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 1152, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(Utility_InterpType))]
         private System.Int32 cameraInterpType;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 1156, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]

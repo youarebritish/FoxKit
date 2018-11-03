@@ -17,12 +17,13 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     using FoxCore;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class DataSet : Data
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 120, 1, Core.ContainerType.StringMap, PropertyExport.Never, PropertyExport.Never, typeof(Data), null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 120, 1, Core.ContainerType.StringMap, PropertyExport.Never, PropertyExport.Never, typeof(FoxCore.Data), null)]
         private Dictionary<string, FoxCore.Data> dataList = new Dictionary<string, FoxCore.Data>();
         
     }

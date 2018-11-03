@@ -17,6 +17,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     using FoxCore;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
@@ -28,10 +29,10 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 56, 1, Core.ContainerType.StringMap, PropertyExport.Never, PropertyExport.Never, null, null)]
         private Dictionary<string, UnityEngine.Object> dataSetFiles = new Dictionary<string, UnityEngine.Object>();
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 104, 1, Core.ContainerType.StringMap, PropertyExport.Never, PropertyExport.Never, typeof(DataBodySet), null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 104, 1, Core.ContainerType.StringMap, PropertyExport.Never, PropertyExport.Never, typeof(FoxCore.DataBodySet), null)]
         private Dictionary<string, FoxCore.DataBodySet> dataBodySets = new Dictionary<string, FoxCore.DataBodySet>();
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 152, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, typeof(DataBodySet), null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 152, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, typeof(FoxCore.DataBodySet), null)]
         private FoxCore.DataBodySet editableDataBodySet;
     }
 }

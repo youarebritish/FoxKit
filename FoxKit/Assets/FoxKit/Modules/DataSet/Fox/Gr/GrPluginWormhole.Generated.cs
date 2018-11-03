@@ -17,6 +17,7 @@ namespace FoxKit.Modules.DataSet.Fox.Gr
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     using Gr;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]

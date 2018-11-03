@@ -17,12 +17,13 @@ namespace FoxKit.Modules.DataSet.Fox.TppGamekit
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     using FoxCore;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class TppObjectBrushPluginBushData : Data
     {
-        /*[OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 120, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(ObjectBrushPluginBushDataElement), null)]
-        private TppGameKit.ObjectBrushPluginBushDataElement parameter;*/
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 120, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(TppGameKit.ObjectBrushPluginBushDataElement), null)]
+        private TppGameKit.ObjectBrushPluginBushDataElement parameter;
     }
 }

@@ -17,12 +17,13 @@ namespace FoxKit.Modules.DataSet.Fox.Nav
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     using Nav;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class NavEdgeHandleEntity : NavNavigationGraphHandleEntity
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 64, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 64, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, typeof(NavEdgeType))]
         private System.Int32 type;
     }
 }

@@ -17,18 +17,19 @@ namespace FoxKit.Modules.DataSet.Fox.Phx
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     using FoxCore;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class PhxVehicleAxis : Data
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 120, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, typeof(PhVehicleAxisParam), null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 120, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, typeof(Phx.PhVehicleAxisParam), null)]
         private Phx.PhVehicleAxisParam vehicleAxisParam;
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 128, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, typeof(PhxWheelConstraintParam), null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 128, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, typeof(Phx.PhxWheelConstraintParam), null)]
         private Phx.PhxWheelConstraintParam wheelConstraintParam;
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 136, 1, Core.ContainerType.DynamicArray, PropertyExport.Never, PropertyExport.Never, typeof(PhxWheelAssociationUnitParam), null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 136, 1, Core.ContainerType.DynamicArray, PropertyExport.Never, PropertyExport.Never, typeof(Phx.PhxWheelAssociationUnitParam), null)]
         private List<Phx.PhxWheelAssociationUnitParam> wheelAssociationUnitParams = new List<Phx.PhxWheelAssociationUnitParam>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 152, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]

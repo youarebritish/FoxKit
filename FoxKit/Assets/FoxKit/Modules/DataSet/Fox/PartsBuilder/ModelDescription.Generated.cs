@@ -17,6 +17,7 @@ namespace FoxKit.Modules.DataSet.Fox.PartsBuilder
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     using PartsBuilder;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
@@ -52,10 +53,10 @@ namespace FoxKit.Modules.DataSet.Fox.PartsBuilder
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 320, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single lodPolygonSize;
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 324, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 324, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(ModelDescription_DrawRejectionLevel))]
         private System.Int32 drawRejectionLevel;
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 328, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 328, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(ModelDescription_RejectFarRangeShadowCast))]
         private System.Int32 rejectFarRangeShadowCast;
     }
 }

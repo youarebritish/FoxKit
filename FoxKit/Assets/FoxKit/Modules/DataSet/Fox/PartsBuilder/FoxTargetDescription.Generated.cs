@@ -17,6 +17,7 @@ namespace FoxKit.Modules.DataSet.Fox.PartsBuilder
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     using PartsBuilder;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]

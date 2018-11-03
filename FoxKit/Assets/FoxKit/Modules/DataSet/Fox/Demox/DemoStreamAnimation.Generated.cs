@@ -17,6 +17,7 @@ namespace FoxKit.Modules.DataSet.Fox.Demox
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     using FoxCore;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
@@ -28,10 +29,10 @@ namespace FoxKit.Modules.DataSet.Fox.Demox
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 128, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.UInt32 demoLength;
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 136, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 136, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(DemoStreamAnimation_LocatorType))]
         private Dictionary<string, System.Int32> locatorTypes = new Dictionary<string, System.Int32>();
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 184, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 184, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(DemoStreamAnimation_CameraType))]
         private Dictionary<string, System.Int32> cameraTypes = new Dictionary<string, System.Int32>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 232, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
@@ -61,13 +62,13 @@ namespace FoxKit.Modules.DataSet.Fox.Demox
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Path, 568, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private Dictionary<string, UnityEngine.Object> partsProxyPaths = new Dictionary<string, UnityEngine.Object>();
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 616, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(DemoDynamicFileChangeModel), null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 616, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(Demox.DemoDynamicFileChangeModel), null)]
         private Dictionary<string, Demox.DemoDynamicFileChangeModel> dynamicModel = new Dictionary<string, Demox.DemoDynamicFileChangeModel>();
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 664, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(DemoDynamicFileChangeModel), null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 664, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(Demox.DemoDynamicFileChangeModel), null)]
         private Dictionary<string, Demox.DemoDynamicFileChangeModel> dynamicParts = new Dictionary<string, Demox.DemoDynamicFileChangeModel>();
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 712, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(DemoFv2ResourceMemory), null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 712, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(Demox.DemoFv2ResourceMemory), null)]
         private Dictionary<string, Demox.DemoFv2ResourceMemory> dynamicFv2 = new Dictionary<string, Demox.DemoFv2ResourceMemory>();
     }
 }

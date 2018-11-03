@@ -17,6 +17,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     using FoxCore;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
@@ -31,22 +32,22 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 72, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.Never, null, null)]
         private System.String sceneName;
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 88, 1, Core.ContainerType.List, PropertyExport.Never, PropertyExport.Never, typeof(Actor), null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 88, 1, Core.ContainerType.List, PropertyExport.Never, PropertyExport.Never, typeof(FoxCore.Actor), null)]
         private List<FoxCore.Actor> actors = new List<FoxCore.Actor>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 120, 1, Core.ContainerType.StringMap, PropertyExport.Never, PropertyExport.Never, null, null)]
         private Dictionary<string, UnityEngine.Object> dataSetFiles = new Dictionary<string, UnityEngine.Object>();
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 168, 1, Core.ContainerType.StringMap, PropertyExport.Never, PropertyExport.Never, typeof(DataBodySet), null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 168, 1, Core.ContainerType.StringMap, PropertyExport.Never, PropertyExport.Never, typeof(FoxCore.DataBodySet), null)]
         private Dictionary<string, FoxCore.DataBodySet> dataBodySets = new Dictionary<string, FoxCore.DataBodySet>();
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 224, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, typeof(DataSet), null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 224, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, typeof(FoxCore.DataSet), null)]
         private FoxCore.DataSet editableDataSet;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Path, 232, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private UnityEngine.Object editableDataSetPath;
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 240, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, typeof(DataBodySet), null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 240, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, typeof(FoxCore.DataBodySet), null)]
         private FoxCore.DataBodySet editableDataBodySet;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 248, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]

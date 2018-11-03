@@ -17,6 +17,7 @@ namespace FoxKit.Modules.DataSet.Fox.UiScene
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     using FoxCore;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
@@ -37,7 +38,7 @@ namespace FoxKit.Modules.DataSet.Fox.UiScene
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 360, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean useLayoutCamera;
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 364, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 364, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(UiModelDataFlag))]
         private System.UInt32 flag;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 368, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
@@ -55,10 +56,10 @@ namespace FoxKit.Modules.DataSet.Fox.UiScene
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Color, 400, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Color color;
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 416, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 416, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(UiInheritanceSetting))]
         private System.UInt32 inheritanceSetting;
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 424, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(UiModelNodeElement), null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 424, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(UiScene.UiModelNodeElement), null)]
         private List<UiScene.UiModelNodeElement> modelNodes = new List<UiScene.UiModelNodeElement>();
         
     }

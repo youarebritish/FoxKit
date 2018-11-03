@@ -17,6 +17,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     using FoxCore;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
@@ -40,7 +41,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 168, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.String attachmentBoneName;
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 120, 1, Core.ContainerType.DynamicArray, PropertyExport.Never, PropertyExport.Never, typeof(TppVehicle2WeaponParameter), null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 120, 1, Core.ContainerType.DynamicArray, PropertyExport.Never, PropertyExport.Never, typeof(TppGameCore.TppVehicle2WeaponParameter), null)]
         private List<TppGameCore.TppVehicle2WeaponParameter> weaponParams = new List<TppGameCore.TppVehicle2WeaponParameter>();
     }
 }

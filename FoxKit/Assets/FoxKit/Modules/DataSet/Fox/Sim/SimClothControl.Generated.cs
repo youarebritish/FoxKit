@@ -17,15 +17,16 @@ namespace FoxKit.Modules.DataSet.Fox.Sim
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
+    using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
     using Sim;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class SimClothControl : SimControlElement
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 72, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, typeof(SimClothControlParam), null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 72, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, typeof(Sim.SimClothControlParam), null)]
         private Sim.SimClothControlParam controlParam;
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 80, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.Never, typeof(SimClothControlUnit), null)]
+        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 80, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.Never, typeof(Sim.SimClothControlUnit), null)]
         private List<Sim.SimClothControlUnit> clothControlUnits = new List<Sim.SimClothControlUnit>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]

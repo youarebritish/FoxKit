@@ -42,7 +42,7 @@
         private static readonly string[] usingNamespaces =
             {
                 "System", "System.Collections.Generic", "FoxKit.Modules.DataSet.Fox.FoxCore", "FoxKit.Modules.Lua",
-                "FoxLib", "KopiLua", "OdinSerializer", "UnityEngine", "DataSetFile2 = DataSetFile2"
+                "FoxLib", "KopiLua", "OdinSerializer", "UnityEngine", "DataSetFile2 = DataSetFile2", "TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit"
             };
 
         public static void GenerateClass(ClassDefinition definition, IDictionary<Core.PropertyInfoType, Type> typeMappings, Func<string, string> getNamespace, string outputDirectory)
@@ -166,11 +166,19 @@
             propertyInfoStringBuilder.Append(", ");
 
             var ptrType = ParsePtrType(property.PtrType);
-            var ptrTypeNamespace = getNamespace(ptrType);
-            var ptrTypeString = ptrType;
-            if (!string.IsNullOrEmpty(ptrTypeNamespace))
+            var ptrTypeString = "null";
+            if (ptrType != "null")
             {
-                ptrTypeString = $"{ptrTypeNamespace}.{ptrTypeString}";
+                var ptrTypeNamespace = getNamespace(ptrType);
+                ptrTypeString = ptrType;
+                if (!string.IsNullOrEmpty(ptrTypeNamespace))
+                {
+                    ptrTypeString = $"typeof({ptrTypeNamespace}.{ptrTypeString})";
+                }
+                else
+                {
+                    ptrTypeString = $"typeof({ptrTypeString})";
+                }
             }
 
             propertyInfoStringBuilder.Append(ptrTypeString);
@@ -315,7 +323,7 @@
                 return "null";
             }
 
-            return $"typeof({ptrType})";
+            return ptrType; //$"typeof({ptrType})";
         }
 
         private static void AppendClassDeclaration(
