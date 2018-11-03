@@ -241,7 +241,13 @@ namespace FoxKit.Utils
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel(new GUIContent(label));
 
-            var text = value?.GetType().Name ?? $"Null ({type.Name})";
+            var text = $"Null ({type.Name})";
+            if (value != null)
+            {
+                var data = value as Data;
+                text = data != null ? data.Name : value.ToString();
+            }
+
             EditorGUILayout.LabelField(new GUIContent(text), EditorStyles.objectField);
 
             EditorGUILayout.EndHorizontal();
@@ -256,7 +262,13 @@ namespace FoxKit.Utils
             // TODO Select on click
             EditorGUILayout.BeginHorizontal();
 
-            var text = value?.GetType().Name ?? $"Null ({type.Name})";
+            var text = $"Null ({type.Name})";
+            if (value != null)
+            {
+                var data = value as Data;
+                text = data != null ? data.Name : value.ToString();
+            }
+
             EditorGUI.LabelField(position, new GUIContent(text), EditorStyles.objectField);
 
             EditorGUILayout.EndHorizontal();

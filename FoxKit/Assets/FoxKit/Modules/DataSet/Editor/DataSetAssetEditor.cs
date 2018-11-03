@@ -215,6 +215,7 @@
                     break;
                 case Core.PropertyInfoType.EntityPtr:
                     // We don't know the type at compile time so we need to do reflection BS to invoke the draw method.
+                    // Please God come up with a better way to do this.
                     var adapterType = typeof(EntityPtrStringMapAdapter<>).MakeGenericType(ptrType);
                     var adapter = Activator.CreateInstance(adapterType, dictionary, ptrType, entity);
 
@@ -700,14 +701,7 @@
 
         private static IEnumerable<Tuple<FieldInfo, PropertyInfoAttribute>> GetPropertyFields(Entity entity)
         {
-            var baseTypes = new HashSet<Type> { entity.GetType() };
-
-            foreach (var type in ReflectionUtils.GetParentTypes(entity.GetType()))
-            {
-                baseTypes.Add(type);
-            }
-
-            return from type in baseTypes.Reverse()
+            return from type in ReflectionUtils.GetParentTypes(entity.GetType(), true)
                    from field in type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
                    let attribute = field.GetCustomAttribute<PropertyInfoAttribute>()
                    where attribute != null && !attribute.IsAutoProperty
