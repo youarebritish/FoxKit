@@ -117,10 +117,16 @@
             }
 
             var propertyType = parsePropertyType(property.Type, property.PtrType);
+            if (property.Enum != "null" && property.Enum != null)
+            {
+                propertyType = property.Enum;
+            }
+
             var typeDeclaration = MakeTypeDeclaration(
                 propertyType,
                 containerType,
                 property.ArraySize);
+
             AppendWithIndent(stringBuilder, $"private {typeDeclaration} {propertyName}", 2);
 
             if (containerType == Core.ContainerType.StaticArray && property.ArraySize == 1)
