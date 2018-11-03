@@ -113,7 +113,7 @@
                 {
                     var data = this.idToDataMap[item];
                     this.activeDataSet.RemoveData(data.Name);
-                    //SingletonScriptableObject<DataListWindowState>.Instance.DeleteSceneProxy(this.activeDataSet.DataSetGuid, data.Name, DataListWindowState.DestroyGameObject.Destroy);
+                    SingletonScriptableObject<DataListWindowState>.Instance.DeleteSceneProxy(this.activeDataSet.DataSetGuid, data.Name, DataListWindowState.DestroyGameObject.Destroy);
                 }
 
                 AssetDatabase.Refresh();
@@ -123,8 +123,8 @@
             {
                 foreach (var item in selected)
                 {
-                    //var dataSet = this.idToDataMap[item] as DataSet;
-                    //this.RemoveDataSet(dataSet);
+                    var dataSet = this.idToDataMap[item] as DataSet;
+                    this.RemoveDataSet(dataSet);
                 }
 
                 this.Reload();
@@ -196,8 +196,8 @@
 
         protected override void RowGUI(RowGUIArgs args)
         {
-            //var useBoldFont = this.activeDataSet == this.idToDataMap[args.item.id];
-            //this.OnContentGUI(args.rowRect, args.item, args.label, args.selected, args.focused, useBoldFont);
+            var useBoldFont = this.activeDataSet == this.idToDataMap[args.item.id];
+            this.OnContentGUI(args.rowRect, args.item, args.label, args.selected, args.focused, useBoldFont);
         }
 
         protected override TreeViewItem BuildRoot()
@@ -228,16 +228,16 @@
                     continue;
                 }
 
-                //var dataSetNode = new TreeViewItem { id = index, displayName = dataSet.name, icon = dataSet.GetDataSet().Icon };
+                var dataSetNode = new TreeViewItem { id = index, displayName = dataSet.name, icon = dataSet.GetDataSet().Icon };
 
-                //this.idToDataMap.Add(dataSet.GetDataSet());
+                this.idToDataMap.Add(dataSet.GetDataSet());
                 this.idToDataSetMap.Add(dataSet);
                 this.dataSetTreeIds.Add(index);
-                //root.AddChild(dataSetNode);
+                root.AddChild(dataSetNode);
                 index++;
                 
-                /*index = dataSet.GetDataSet().GetDataList().Values
-                    .Aggregate(index, (current, data) => this.AddData(dataSet, (Data)data, dataSetNode, current));*/
+                index = dataSet.GetDataSet().GetDataList().Values
+                    .Aggregate(index, (current, data) => this.AddData(dataSet, data, dataSetNode, current));
             }
 
             TreeView.SetupDepthsFromParentsAndChildren(root);
@@ -250,10 +250,10 @@
             // If we're adding a TransformData entity that has a valid parent, only add it to the tree under its parent.
             // TODO: Consider moving this out and checking for this case before calling AddData().
             var transformData = data as TransformData;
-            /*if (transformData?.Parent != null && transformData.Parent != this.idToDataMap[parent.id])
+            if (transformData?.Parent != null && transformData.Parent != this.idToDataMap[parent.id])
             {
                 return id;
-            }*/
+            }
 
             if (this.idToDataMap.Contains(data))
             {
@@ -328,7 +328,7 @@
         {
             // For the time being, we only care about right clicking on the DataSet, not its children.
             // So, don't open the menu if the user didn't right click on a DataSet.
-            /*var selectedDataSets = from treeId in this.GetSelection()
+            var selectedDataSets = from treeId in this.GetSelection()
                                    where this.dataSetTreeIds.Contains(treeId)
                                    select this.idToDataMap[treeId] as DataSet;
 
@@ -336,13 +336,13 @@
             var clickedDataSet = this.idToDataMap[id] as DataSet;
 
             DataListWindow.GetInstance()
-                .MakeShowItemContextMenuDelegate()(clickedDataSet, selectedDataSets.ToList());*/
+                .MakeShowItemContextMenuDelegate()(clickedDataSet, selectedDataSets.ToList());
         }
         
         public void SelectDataSet(DataSet dataSet)
         {
-            /*var id = this.idToDataMap.IndexOf(dataSet);
-            this.SetSelection(new List<int> { id });*/
+            var id = this.idToDataMap.IndexOf(dataSet);
+            this.SetSelection(new List<int> { id });
         }
         
         public void RemoveDataSet(object id)

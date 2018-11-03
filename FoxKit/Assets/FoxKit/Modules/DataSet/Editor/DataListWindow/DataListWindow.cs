@@ -7,6 +7,7 @@
     using FmdlStudio.Scripts.MonoBehaviours;
 
     using FoxKit.Modules.DataSet.Fox.FoxCore;
+    using FoxKit.Modules.DataSet.Fox.FoxGameKit;
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
@@ -48,9 +49,9 @@
                 this.SetActiveDataSet,
                 delegate(object dataSets)
                     {
-                        /*var guids = from dataSet in (dataSets as IEnumerable<DataSet>)
+                        var guids = from dataSet in (dataSets as IEnumerable<DataSet>)
                                     select dataSet.DataSetGuid;
-                        this.RemoveDataSets(guids);*/
+                        this.RemoveDataSets(guids);
                     });
         }
 
@@ -324,9 +325,9 @@
             var dataSet = userData as DataSet;
             Assert.IsNotNull(dataSet);
             
-            /*this.activeDataSet = dataSet.GetDataSet();
+            this.activeDataSet = dataSet.GetDataSet();
             SingletonScriptableObject<DataListWindowState>.Instance.ActiveDataSetGuid = dataSet.DataSetGuid;
-            this.treeView.SetActiveDataSet(dataSet.GetDataSet());*/
+            this.treeView.SetActiveDataSet(dataSet.GetDataSet());
         }
 
         public bool IsDataSetOpen(string dataSetGuid)
@@ -414,7 +415,7 @@
             AssetDatabase.CreateAsset(dataSet, path);
 
             var guid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(dataSet));
-            //dataSet.GetDataSet().DataSetGuid = guid;
+            dataSet.GetDataSet().DataSetGuid = guid;
 
             this.OpenDataSet(guid);
         }
@@ -456,10 +457,10 @@
                 }
 
                 var prefab = PrefabUtility.GetCorrespondingObjectFromSource(model.gameObject);
-                GenerateEntityNameDelegate generateName = id => $"{prefab.name}_{id.ToString("D4")}";
+                GenerateEntityNameDelegate generateName = id => $"{prefab.name}_{id:D4}";
 
                 // New model was added to the scene. Add it to the active DataSet.
-                /*var staticModel = this.AddEntity(typeof(StaticModel), generateName) as StaticModel;
+                var staticModel = this.AddEntity(typeof(StaticModel), generateName) as StaticModel;
                 var transformEntity = new TransformEntity
                                           {
                                               Translation = model.transform.position,
@@ -467,13 +468,13 @@
                                               Scale = model.transform.localScale
                                           };
                 staticModel.Transform = transformEntity;
-                staticModel.ModelFile = prefab;
+                // TODO staticModel.ModelFile = prefab;
                 
                 var newSceneProxy = SingletonScriptableObject<DataListWindowState>.Instance.CreateSceneProxyForEntity(
                     SingletonScriptableObject<DataListWindowState>.Instance.ActiveDataSetGuid,
                     staticModel.Name);
                 model.transform.SetParent(newSceneProxy.transform, true);
-                this.treeView.SelectItem(staticModel);*/
+                this.treeView.SelectItem(staticModel);
             }
 
             this.Repaint();

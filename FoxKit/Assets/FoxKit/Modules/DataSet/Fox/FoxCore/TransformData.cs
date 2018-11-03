@@ -39,6 +39,8 @@
                 this.transform = value;
             }
         }
+
+        public TransformData Parent => this.parent as TransformData;
         
         public IEnumerable<TransformData> GetChildren()
         {

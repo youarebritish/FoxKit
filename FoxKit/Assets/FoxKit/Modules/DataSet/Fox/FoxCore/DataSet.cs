@@ -26,7 +26,6 @@
         /// </summary>
         public void LoadAllEntities(CreateSceneProxyForEntityDelegate createSceneProxy, Entity.GetSceneProxyDelegate getSceneProxy)
         {
-            /*
             foreach (var data in this.dataList.Values)
             {
                 data?.OnLoaded(() => createSceneProxy(((Data)data).Name));
@@ -35,18 +34,18 @@
             foreach (var data in this.dataList.Values)
             {
                 data?.PostOnLoaded(getSceneProxy);
-            }*/
+            }
         }
 
         /// <summary>
         /// Unloads all owned Entities.
         /// </summary>
         public void UnloadAllEntities(DestroySceneProxyForEntityDelegate destroySceneProxy)
-        {/*
+        {
             foreach (var data in this.dataList.Values)
             {
-                data?.OnUnloaded(() => destroySceneProxy(((Data)data).Name));
-            }*/
+                data?.OnUnloaded(() => destroySceneProxy(data.Name));
+            }
         }
 
         /// <summary>
@@ -62,11 +61,11 @@
         /// The entity to add.
         /// </param>
         public void AddData(string key, Data entity)
-        {/*
+        {
             if (entity != null)
             {
                 this.dataList.Add(key, entity);
-            }*/
+            }
         }
         
         /// <summary>
@@ -74,8 +73,8 @@
         /// </summary>
         /// <param name="key">The key to remove.</param>
         public void RemoveData(string key)
-        {/*
-            this.dataList.Remove(key);*/
+        {
+            this.dataList.Remove(key);
         }
         
         /// <summary>
@@ -89,15 +88,13 @@
         /// </returns>
         public Data GetData(string key)
         {
-            return null;
-            /*
             if (this.dataList.ContainsKey(key))
             {
-                return (Data)this.dataList[key];
+                return this.dataList[key];
             }
 
             Debug.LogError($"No Entity named {key} was present in the DataSet.");
-            return null;*/
+            return null;
         }
 
         /// <summary>
@@ -106,11 +103,9 @@
         /// <returns>
         /// All registered <see cref="Data"/> entries with their keys.
         /// </returns>
-        public IDictionary<string, Entity> GetDataList()
+        public IDictionary<string, Data> GetDataList()
         {
-            return null;
-            /*
-            return this.dataList;*/
+            return this.dataList;
         }
 
         /// <summary>
@@ -119,18 +114,17 @@
         /// <returns></returns>
         public IEnumerable<Entity> GetAllEntities()
         {
-            return null;/*
             var result = new List<Entity>();
 
             foreach (var data in this.dataList.Values)
             {
                 result.Add(data);
-                result.AddRange(from dataElement in ((Data)data).GetDataElements()
+                result.AddRange(from dataElement in data.GetSubEntities()
                                 where dataElement != null
                                 select dataElement);
             }
 
-            return result;*/
+            return result;
         }
     }
 }

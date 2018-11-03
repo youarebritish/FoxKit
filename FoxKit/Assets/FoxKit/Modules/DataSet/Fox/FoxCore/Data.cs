@@ -15,7 +15,7 @@
     using UnityEngine;
     using UnityEngine.Assertions;
 
-    public partial class Data : Entity
+    public partial class Data
     {
         /// <summary>
         /// Since we can't store a reference to the owning DataSet (recursive reference), we store its GUID instead.
@@ -27,11 +27,11 @@
         {
             get
             {
-                return null;// this.name;
+                return this.name;
             }
             set
             {
-                //this.name = value;
+                this.name = value;
             }
         }
 
@@ -51,10 +51,10 @@
         }
 
         /// <summary>
-        /// Get all DataElements owned by this Data Entity.
+        /// Get all sub-Entities owned by this Data Entity.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Entity> GetDataElements()
+        public IEnumerable<Entity> GetSubEntities()
         {
             var entityPtrProperties = from type in ReflectionUtils.GetParentTypes(this.GetType(), true)
                                       from field in type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
