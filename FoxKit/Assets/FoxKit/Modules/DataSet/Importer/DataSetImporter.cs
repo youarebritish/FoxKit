@@ -56,7 +56,7 @@
 
             var dataSetGuid = AssetDatabase.AssetPathToGUID(this.assetPath);
 
-            InitializeEntities(ctx, entities, dataSet, dataSetGuid, MakeEntityInitializeFunctions(dataSet, entities));
+            InitializeEntities(entities, dataSetGuid, MakeEntityInitializeFunctions(dataSet, entities));
 
             asset.SetDataSet(dataSet);
 
@@ -125,32 +125,23 @@
         /// </returns>
         private static DataSet FindDataSet(Dictionary<Entity, Core.Entity> entities)
         {
-            return null;/*
             return (from entity in entities.Keys
                     where entity.GetType() == typeof(DataSet)
                     select entity as DataSet)
-                .First();*/
+                .First();
         }
 
         /// <summary>
         /// Initialize newly-created entity instances.
         /// </summary>
-        /// <param name="ctx">
-        /// The asset import context.
-        /// </param>
         /// <param name="entities">
         /// The entities to initialize.
-        /// </param>
-        /// <param name="dataSet">
-        /// The DataSet owning the entities.
         /// </param>
         /// <param name="entityInitializeFunctions">
         /// The entity initialize functions.
         /// </param>
         private static void InitializeEntities(
-            AssetImportContext ctx,
             Dictionary<Entity, Core.Entity> entities,
-            DataSet dataSet,
             string dataSetGuid,
             EntityInitializeFunctions entityInitializeFunctions)
         {

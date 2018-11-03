@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Reflection;
 
     using FoxKit.Modules.DataSet.Exporter;
@@ -96,6 +97,7 @@
 
         private object ExtractPropertyValue<TRaw, TConverted>(Core.PropertyInfo property, Func<TRaw, TConverted> conversionFunc, Core.ContainerType containerType, uint arraySize)
         {
+            // Non-array
             if (containerType == Core.ContainerType.StaticArray && arraySize == 1)
             {
                 var rawValue = DataSetUtils.GetStaticArrayPropertyValue<TRaw>(property);
@@ -123,6 +125,7 @@
 
                 return convertedValue;
             }
+            // Array
             if (containerType == Core.ContainerType.StaticArray)
             {
                 var rawValues = DataSetUtils.GetStaticArrayValues<TRaw>(property);
@@ -131,7 +134,7 @@
                 {
                     return rawValues;
                 }
-
+                
                 var convertedValues = (from rawValue in rawValues
                                       select conversionFunc(rawValue)).ToList();
 
@@ -149,7 +152,7 @@
 
                     return convertedValues;
                 }
-
+                
                 if (property.Type != Core.PropertyInfoType.FilePtr || property.Type == Core.PropertyInfoType.Path)
                 {
                     return convertedValues;
@@ -240,6 +243,7 @@
 
                 return convertedValues;
             }
+            // StringMap
             if (containerType == Core.ContainerType.StringMap)
             {
                 var rawValues = DataSetUtils.GetStringMap<TRaw>(property);
@@ -305,7 +309,7 @@
                 Assert.IsNotNull(loadedProperty);
 
                 var propertyInfo = field.PropertyInfo;
-                
+
                 object value = null;
                 switch (propertyInfo.Type)
                 {
@@ -401,11 +405,34 @@
                             propertyInfo.ArraySize);
                         break;
                     case Core.PropertyInfoType.EntityPtr:
-                        value = ExtractPropertyValue<ulong, Entity>(
-                            loadedProperty,
-                            address => initFunctions.GetEntityFromAddress(address),
-                            propertyInfo.Container,
-                            propertyInfo.ArraySize);
+                        /* Abandon all hope ye who enter
+                        * So what's going on here is that EntityPtr properties get Entities of varying types depending on their ptrType.
+                        * However, we don't know that type at compile time, so we can't call ExtractPropertyValue.
+                        * To do that, we must use reflection to dynamically invoke ExtractPropertyValue with the ptrType as a generic type argument.
+                        * To make matters worse, it requires a delegate as a parameter, and we need to dynamically create that delegate too since
+                        * its parameters are also unknown at compile time. We use the C# Expression API to create and compile a lambda expression at runtime.
+                        * 
+                        * Last chance to turn back.
+                        */
+                        var method = typeof(Entity).GetMethod(nameof(this.ExtractPropertyValue), BindingFlags.NonPublic | BindingFlags.Instance);
+                        var generic = method.MakeGenericMethod(typeof(ulong), propertyInfo.PtrType);
+
+                        var addressParameter = Expression.Parameter(typeof(ulong), "address");
+                        var initFunctionsInstance = Expression.Constant(initFunctions.GetEntityFromAddress.Target);
+                        var getEntityFunction = initFunctions.GetEntityFromAddress.Method;
+                        var callGetEntityFunction = Expression.Call(
+                            initFunctionsInstance,
+                            getEntityFunction,
+                            addressParameter);
+                        var cast = Expression.Convert(callGetEntityFunction, propertyInfo.PtrType);
+                        var del = Expression.Lambda(cast, addressParameter).Compile();
+                        
+                        value = generic.Invoke(
+                            this,
+                            new object[]
+                                {
+                                    loadedProperty, del, propertyInfo.Container, propertyInfo.ArraySize 
+                                });
                         break;
                     case Core.PropertyInfoType.Vector3:
                         value = ExtractPropertyValue<Core.Vector3, UnityEngine.Vector3>(
@@ -471,7 +498,8 @@
                             propertyInfo.ArraySize);
                         break;
                     case Core.PropertyInfoType.PropertyInfo:
-                        Debug.LogError("Property type PropertyInfo is not supported. I don't think it even exists. Is the DataSet file well-formed?");
+                        Debug.LogError(
+                            "Property type PropertyInfo is not supported. I don't think it even exists. Is the DataSet file well-formed?");
                         break;
                     case Core.PropertyInfoType.WideVector3:
                         Debug.LogError("Property type WideVector3 is not supported. Is the DataSet file well-formed?");
@@ -479,7 +507,8 @@
                 }
                 
                 // FilePtr and Path properties are unique in that we don't actually get the value at this stage.
-                if (field.PropertyInfo.Type != Core.PropertyInfoType.FilePtr && field.PropertyInfo.Type != Core.PropertyInfoType.Path)
+                if (field.PropertyInfo.Type != Core.PropertyInfoType.FilePtr
+                    && field.PropertyInfo.Type != Core.PropertyInfoType.Path)
                 {
                     field.Field.SetValue(this, value);
                 }
