@@ -214,14 +214,16 @@
                         (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType));
                     break;
                 case Core.PropertyInfoType.EntityPtr:
-                    var adapter = new EntityPtrStringMapAdapter(
-                        dictionary as IDictionary<string, Entity>,
-                        ptrType,
-                        entity);
+                    // We don't know the type at compile time so we need to do reflection BS to invoke the draw method.
+                    var adapterType = typeof(EntityPtrStringMapAdapter<>).MakeGenericType(ptrType);
+                    var adapter = Activator.CreateInstance(adapterType, dictionary, ptrType, entity);
 
-                    StringMapGUI.StringMapField(
-                        dictionary as IDictionary<string, Entity>,
-                        (position, itemValue, key) => adapter.DrawItem(position, key));
+                    var delegateType = typeof(StringMapGUI.ItemDrawerWithKey<>).MakeGenericType(ptrType);
+                    var adapterDrawFunc = adapterType.GetMethod("DrawEntityPtrItem");
+                    var adapterDrawDelegate = Delegate.CreateDelegate(delegateType, adapter, adapterDrawFunc);
+
+                    var renderFunc = typeof(StringMapGUI).GetMethod(nameof(StringMapGUI.StringMapFieldWithKey)).MakeGenericMethod(ptrType);
+                    renderFunc.Invoke(null, new object[]{dictionary, adapterDrawDelegate});
 
                     break;
                 case Core.PropertyInfoType.Vector3:
@@ -386,7 +388,9 @@
                         flags);
                     break;
                 case Core.PropertyInfoType.EntityPtr:
-                    var adapter = new EntityPtrListAdapter(list as IList<Entity>, ptrType, entity);
+                    //var adapter = new EntityPtrListAdapter(list as IList<Entity>, ptrType, entity);
+                    var genericAdapterType = typeof(EntityPtrListAdapter<>).MakeGenericType(ptrType);
+                    var adapter = Activator.CreateInstance(genericAdapterType, list, ptrType, entity) as IReorderableListAdaptor;
                     ReorderableListGUI.ListField(adapter);
                     break;
                 case Core.PropertyInfoType.Vector3:
@@ -725,14 +729,14 @@
                 return entity;
             }
 
-            /*var dataListWindowState = SingletonScriptableObject<DataListWindowState>.Instance;
+            var dataListWindowState = SingletonScriptableObject<DataListWindowState>.Instance;
             var transformData = owningEntity as TransformData;
             var sceneProxy = dataListWindowState.CreateSceneProxyForEntity(transformData.DataSetGuid, transformData.Name);
 
             if (transformData.Parent != null)
             {
                 sceneProxy.transform.SetParent(dataListWindowState.FindSceneProxyForEntity(transformData.DataSetGuid, transformData.Parent.Name).transform);
-            }*/
+            }
 
             return entity;
         }
@@ -754,16 +758,16 @@
             SingletonScriptableObject<DataListWindowState>.Instance.DeleteSceneProxy(transformData.DataSetGuid, transformData.Name, DataListWindowState.DestroyGameObject.Destroy);
         }
 
-        private class EntityPtrListAdapter : GenericListAdaptor<Entity>
+        private class EntityPtrListAdapter<T> : GenericListAdaptor<T> where T : Entity
         {
             private readonly Type ptrType;
 
-            private readonly IList<Entity> list;
+            private readonly IList<T> list;
 
             private readonly Entity owningEntity;
 
             public EntityPtrListAdapter(
-                IList<Entity> list, Type ptrType, Entity owningEntity)
+                IList<T> list, Type ptrType, Entity owningEntity)
                 : base(list, Draw, 15.0f)
             {
                 this.list = list;
@@ -800,7 +804,7 @@
                 base.DrawItem(position, index);
             }
 
-            private static Entity Draw(Rect position, Entity item)
+            private static T Draw(Rect position, T item)
             {
                 return item;
             }
@@ -812,7 +816,7 @@
 
             private void CreateNewEntityAtIndex(Type entityType, int index)
             {
-                var entity = Activator.CreateInstance(entityType) as Entity;
+                var entity = Activator.CreateInstance(entityType) as T;
                 this.list[index] = entity;
 
                 // TODO: Refactor and fix this monstrosity
@@ -830,30 +834,30 @@
                 var transformData = this.owningEntity as TransformData;
                 var sceneProxy = dataListWindowState.CreateSceneProxyForEntity(transformData.DataSetGuid, transformData.Name);
 
-                /*if (transformData.Parent != null)
+                if (transformData.Parent != null)
                 {
                     sceneProxy.transform.SetParent(dataListWindowState.FindSceneProxyForEntity(transformData.DataSetGuid, transformData.Parent.Name).transform);
-                }*/
+                }
             }
         }
-
-        private class EntityPtrStringMapAdapter// : GenericListAdaptor<Entity>
+        
+        private class EntityPtrStringMapAdapter<T> where T : Entity
         {
             private readonly Type ptrType;
 
-            private readonly IDictionary<string, Entity> dictionary;
+            private readonly IDictionary<string, T> dictionary;
 
             private readonly Entity owningEntity;
 
             public EntityPtrStringMapAdapter(
-                IDictionary<string, Entity> dictionary, Type ptrType, Entity owningEntity)
+                IDictionary<string, T> dictionary, Type ptrType, Entity owningEntity)
             {
                 this.dictionary = dictionary;
                 this.ptrType = ptrType;
                 this.owningEntity = owningEntity;
             }
 
-            public Entity DrawItem(Rect position, string key)
+            public T DrawEntityPtrItem(Rect position, T itemValue, string key)
             {
                 var item = this.dictionary[key];
 
@@ -896,7 +900,7 @@
 
             private void CreateNewEntityAtKey(Type entityType, string key)
             {
-                var entity = Activator.CreateInstance(entityType) as Entity;
+                var entity = Activator.CreateInstance(entityType) as T;
                 this.dictionary[key] = entity;
 
                 // TODO: Refactor and fix this monstrosity
@@ -914,10 +918,10 @@
                 var transformData = this.owningEntity as TransformData;
                 var sceneProxy = dataListWindowState.CreateSceneProxyForEntity(transformData.DataSetGuid, transformData.Name);
 
-                /*if (transformData.Parent != null)
+                if (transformData.Parent != null)
                 {
                     sceneProxy.transform.SetParent(dataListWindowState.FindSceneProxyForEntity(transformData.DataSetGuid, transformData.Parent.Name).transform);
-                }*/
+                }
             }
         }
     }

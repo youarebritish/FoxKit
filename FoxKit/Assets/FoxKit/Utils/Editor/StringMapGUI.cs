@@ -70,7 +70,7 @@ public static class StringMapGUI
     }
 
     // TODO: Fix repeated code
-    public static void StringMapField<TValue>(IDictionary<string, TValue> dictionary, ItemDrawerWithKey<TValue> drawItem)
+    public static void StringMapFieldWithKey<TValue>(IDictionary<string, TValue> dictionary, ItemDrawerWithKey<TValue> drawItem)
     {
         // Draw entries.
         string keyToRemove = null;
