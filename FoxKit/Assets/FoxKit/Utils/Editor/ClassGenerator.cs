@@ -175,7 +175,7 @@
 
             propertyInfoStringBuilder.Append(ptrTypeString);
             propertyInfoStringBuilder.Append(", ");
-            propertyInfoStringBuilder.Append(ParsePtrType(property.Enum));
+            propertyInfoStringBuilder.Append(string.IsNullOrEmpty(property.Enum) ? "null" : $"typeof({property.Enum})");
             propertyInfoStringBuilder.Append(")");
 
             AppendLineWithIndent(stringBuilder, $"[{nameof(OdinSerializeAttribute)}, {propertyInfoStringBuilder}]", 2);
