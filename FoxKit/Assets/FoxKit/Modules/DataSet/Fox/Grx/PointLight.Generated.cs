@@ -72,7 +72,7 @@ namespace FoxKit.Modules.DataSet.Fox.Grx
         private System.UInt32 lightFlags;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 464, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(PointLight_LodRadiusLevel))]
-        private System.Int32 lodRadiusLevel;
+        private PointLight_LodRadiusLevel lodRadiusLevel;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt8, 468, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Byte lodFadeType;
@@ -81,7 +81,7 @@ namespace FoxKit.Modules.DataSet.Fox.Grx
         private System.Boolean enable;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(PointLight_PackingGeneration))]
-        private System.Int32 packingGeneration;
+        private PointLight_PackingGeneration packingGeneration;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean castShadow;

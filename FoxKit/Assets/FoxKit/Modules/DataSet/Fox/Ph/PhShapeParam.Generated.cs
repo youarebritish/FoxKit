@@ -33,6 +33,6 @@ namespace FoxKit.Modules.DataSet.Fox.Ph
         private UnityEngine.Vector3 size;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 96, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, typeof(PhShapeType))]
-        private System.Int32 type;
+        private PhShapeType type;
     }
 }

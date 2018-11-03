@@ -48,7 +48,7 @@ namespace FoxKit.Modules.DataSet.Fox.Grx
         private System.Single contrastHigh;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 80, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(GrxLineSSAOParameters_BlurMode))]
-        private System.Int32 blurMode;
+        private GrxLineSSAOParameters_BlurMode blurMode;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 84, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single blurRadius;

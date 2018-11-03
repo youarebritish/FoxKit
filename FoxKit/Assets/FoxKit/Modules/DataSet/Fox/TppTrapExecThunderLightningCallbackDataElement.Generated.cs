@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox
     public partial class TppTrapExecThunderLightningCallbackDataElement : GeoTrapModuleCallbackDataElement
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 108, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(TppTrapExecThunder_Type))]
-        private System.Int32 type;
+        private TppTrapExecThunder_Type type;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityLink, 64, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private FoxKit.Modules.DataSet.FoxCore.EntityLink positionLocator;

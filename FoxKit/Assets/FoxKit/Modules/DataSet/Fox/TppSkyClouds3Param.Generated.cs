@@ -87,9 +87,9 @@ namespace FoxKit.Modules.DataSet.Fox
         private UnityEngine.Object lowCylinderTexture;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 164, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(TppSkyClouds3Param_ColorSpace))]
-        private System.Int32 colorSpace;
+        private TppSkyClouds3Param_ColorSpace colorSpace;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 168, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(TppSkyClouds3Param_TexColor))]
-        private System.Int32 textureColorHandling;
+        private TppSkyClouds3Param_TexColor textureColorHandling;
     }
 }

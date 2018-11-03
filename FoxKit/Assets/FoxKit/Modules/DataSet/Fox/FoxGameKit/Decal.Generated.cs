@@ -27,13 +27,13 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         private FoxKit.Modules.DataSet.FoxCore.EntityLink material;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 344, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(Decal_ProjectionMode))]
-        private System.Int32 projectionMode;
+        private Decal_ProjectionMode projectionMode;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 348, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single nearClipScale;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 352, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(Decal_ProjectionTarget))]
-        private System.Int32 projectionTarget;
+        private Decal_ProjectionTarget projectionTarget;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 356, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single repeatU;
@@ -45,7 +45,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         private System.Single transparency;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 368, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(Decal_PolygonDataSource))]
-        private System.Int32 polygonDataSource;
+        private Decal_PolygonDataSource polygonDataSource;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 372, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Int32 renderingPriority;
@@ -54,7 +54,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         private List<FoxKit.Modules.DataSet.FoxCore.EntityLink> targets = new List<FoxKit.Modules.DataSet.FoxCore.EntityLink>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 376, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(Decal_DrawRejectionLevel))]
-        private System.Int32 drawRejectionLevel;
+        private Decal_DrawRejectionLevel drawRejectionLevel;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 380, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single drawRejectionDegree;

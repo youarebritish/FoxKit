@@ -27,13 +27,13 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         private FoxKit.Modules.DataSet.FoxCore.EntityLink material;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 344, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(DecalArray_ProjectionMode))]
-        private System.Int32 projectionMode;
+        private DecalArray_ProjectionMode projectionMode;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 348, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single nearClipScale;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 352, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(DecalArray_ProjectionTarget))]
-        private System.Int32 projectionTarget;
+        private DecalArray_ProjectionTarget projectionTarget;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 356, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single repeatU;
@@ -45,10 +45,10 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         private System.Single transparency;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 368, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(DecalArray_PolygonDataSource))]
-        private System.Int32 polygonDataSource;
+        private DecalArray_PolygonDataSource polygonDataSource;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 372, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(DecalArray_DrawRejectionLevel))]
-        private System.Int32 drawRejectionLevel;
+        private DecalArray_DrawRejectionLevel drawRejectionLevel;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 376, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single drawRejectionDegree;

@@ -39,7 +39,7 @@ namespace FoxKit.Modules.DataSet.Fox.UiScene
         private System.Boolean useLayoutCamera;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 364, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(UiModelDataFlag))]
-        private System.UInt32 flag;
+        private UiModelDataFlag flag;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 368, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single billboardMin;
@@ -57,7 +57,7 @@ namespace FoxKit.Modules.DataSet.Fox.UiScene
         private UnityEngine.Color color;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 416, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(UiInheritanceSetting))]
-        private System.UInt32 inheritanceSetting;
+        private UiInheritanceSetting inheritanceSetting;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 424, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(UiScene.UiModelNodeElement), null)]
         private List<UiScene.UiModelNodeElement> modelNodes = new List<UiScene.UiModelNodeElement>();

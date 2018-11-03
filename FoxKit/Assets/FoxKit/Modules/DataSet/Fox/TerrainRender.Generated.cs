@@ -90,7 +90,7 @@ namespace FoxKit.Modules.DataSet.Fox
         private System.Single materialLodHeightOffset;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 1044, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(WolrdTerrainTextureMode))]
-        private System.Int32 worldTextureMode;
+        private WolrdTerrainTextureMode worldTextureMode;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 1048, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, null, null)]
         private System.UInt32 worldTextureDividedNumX;

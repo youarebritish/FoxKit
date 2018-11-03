@@ -36,7 +36,7 @@ namespace FoxKit.Modules.DataSet.Fox.Des
         private System.String materialName;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 144, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, null, typeof(ParamDataDesCondition))]
-        private System.Int32 desCondition;
+        private ParamDataDesCondition desCondition;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 148, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, null, null)]
         private System.Single desImpactPowerThreshold;

@@ -39,7 +39,7 @@ namespace FoxKit.Modules.DataSet.Fox.Des
         private System.String connectPointName;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 160, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, null, typeof(DesEffectDataDesEffectFlag))]
-        private System.UInt32 effectFlag;
+        private DesEffectDataDesEffectFlag effectFlag;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 164, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, null, null)]
         private System.UInt32 randomSeed;

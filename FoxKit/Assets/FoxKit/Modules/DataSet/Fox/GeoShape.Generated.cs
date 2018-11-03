@@ -24,7 +24,7 @@ namespace FoxKit.Modules.DataSet.Fox
     public partial class GeoShape : TransformData
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 304, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(GeoShapeType))]
-        private System.Int32 geometryType;
+        private GeoShapeType geometryType;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 308, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean isDispShape;

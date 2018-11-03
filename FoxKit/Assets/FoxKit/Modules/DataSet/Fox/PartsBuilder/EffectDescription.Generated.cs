@@ -57,7 +57,7 @@ namespace FoxKit.Modules.DataSet.Fox.PartsBuilder
         private System.UInt32 effectRandomSeed;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 256, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(EffectKind))]
-        private System.Int32 effectKind;
+        private EffectKind effectKind;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 264, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String effectVariationName;

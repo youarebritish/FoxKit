@@ -24,10 +24,10 @@ namespace FoxKit.Modules.DataSet.Fox.Grx
     public partial class AmbientOcclusionSettings : Data
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 120, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(AmbientOcclusionSettings_Method))]
-        private System.Int32 method;
+        private AmbientOcclusionSettings_Method method;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 124, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(AmbientOcclusionSettings_LightAttachment))]
-        private System.Int32 attachment;
+        private AmbientOcclusionSettings_LightAttachment attachment;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 128, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.Never, typeof(Grx.GrxLineSSAOParameters), null)]
         private Grx.GrxLineSSAOParameters lineSSAOParameters;

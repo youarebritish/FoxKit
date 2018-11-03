@@ -24,7 +24,7 @@ namespace FoxKit.Modules.DataSet.Fox.Grx
     public partial class GrxAreaSSAOParameters : Entity
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 48, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(GrxAreaSSAOParameters_Resolution))]
-        private System.Int32 resolution;
+        private GrxAreaSSAOParameters_Resolution resolution;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 52, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single radius;
@@ -45,7 +45,7 @@ namespace FoxKit.Modules.DataSet.Fox.Grx
         private System.Single contrast;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 76, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(GrxAreaSSAOParameters_BlurMode))]
-        private System.Int32 blurMode;
+        private GrxAreaSSAOParameters_BlurMode blurMode;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 80, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single blurRadius;

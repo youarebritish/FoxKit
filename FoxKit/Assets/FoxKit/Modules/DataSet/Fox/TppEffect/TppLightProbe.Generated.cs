@@ -63,13 +63,13 @@ namespace FoxKit.Modules.DataSet.Fox.TppEffect
         private System.Int32 priority;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 488, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(TppLightProbe_DebugMode))]
-        private System.Int32 debugMode;
+        private TppLightProbe_DebugMode debugMode;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 492, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(TppLightProbe_DrawRejectionLevel))]
-        private System.Int32 drawRejectionLevel;
+        private TppLightProbe_DrawRejectionLevel drawRejectionLevel;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 496, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(TppLightProbe_ShapeType))]
-        private System.Int32 shapeType;
+        private TppLightProbe_ShapeType shapeType;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 500, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
         private System.Single exposure;
@@ -93,6 +93,6 @@ namespace FoxKit.Modules.DataSet.Fox.TppEffect
         private System.Boolean enableOcclusionMode;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(TppLightProbe_PackingGeneration))]
-        private System.Int32 packingGeneration;
+        private TppLightProbe_PackingGeneration packingGeneration;
     }
 }

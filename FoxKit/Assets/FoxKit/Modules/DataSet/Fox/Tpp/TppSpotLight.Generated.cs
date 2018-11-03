@@ -111,7 +111,7 @@ namespace FoxKit.Modules.DataSet.Fox.Tpp
         private System.Boolean enable;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(TppSpotLight_PackingGeneration))]
-        private System.Int32 packingGeneration;
+        private TppSpotLight_PackingGeneration packingGeneration;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean castShadow;

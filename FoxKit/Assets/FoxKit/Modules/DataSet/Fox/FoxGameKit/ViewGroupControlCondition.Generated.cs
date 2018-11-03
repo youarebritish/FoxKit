@@ -27,7 +27,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         private System.UInt32 flags;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 124, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(ViewGroupControlCondition_Condition))]
-        private System.Int32 condition;
+        private ViewGroupControlCondition_Condition condition;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 128, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String identify;

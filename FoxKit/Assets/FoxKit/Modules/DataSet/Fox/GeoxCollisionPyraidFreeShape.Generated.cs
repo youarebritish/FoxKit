@@ -24,7 +24,7 @@ namespace FoxKit.Modules.DataSet.Fox
     public partial class GeoxCollisionPyraidFreeShape : TransformData
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 384, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(CollisionPyraidFreeShape_Category))]
-        private System.Int32 collisionCategory;
+        private CollisionPyraidFreeShape_Category collisionCategory;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 392, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.Never, null, null)]
         private System.String collisionMaterial;

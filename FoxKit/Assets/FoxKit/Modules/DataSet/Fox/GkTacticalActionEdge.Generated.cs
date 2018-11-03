@@ -27,6 +27,6 @@ namespace FoxKit.Modules.DataSet.Fox
         private System.String actionName;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 64, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(GkTacticalActionDirection))]
-        private System.Int32 actionDirection;
+        private GkTacticalActionDirection actionDirection;
     }
 }

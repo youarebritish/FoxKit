@@ -30,7 +30,7 @@ namespace FoxKit.Modules.DataSet.Fox.Grx
         private System.Boolean isOneSideMode;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 308, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(OccluderEx_Mode))]
-        private System.Int32 mode;
+        private OccluderEx_Mode mode;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 312, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Int32 numVertices;

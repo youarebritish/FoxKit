@@ -48,12 +48,12 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         private UnityEngine.Color color;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 384, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(StaticModel_DrawRejectionLevel))]
-        private System.Int32 drawRejectionLevel;
+        private StaticModel_DrawRejectionLevel drawRejectionLevel;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 388, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(StaticModel_DrawMode))]
-        private System.Int32 drawMode;
+        private StaticModel_DrawMode drawMode;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 392, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(StaticModel_RejectFarRangeShadowCast))]
-        private System.Int32 rejectFarRangeShadowCast;
+        private StaticModel_RejectFarRangeShadowCast rejectFarRangeShadowCast;
     }
 }

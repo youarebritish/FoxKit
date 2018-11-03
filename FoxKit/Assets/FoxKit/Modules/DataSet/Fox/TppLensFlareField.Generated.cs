@@ -24,10 +24,10 @@ namespace FoxKit.Modules.DataSet.Fox
     public partial class TppLensFlareField : Data
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 120, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(TppLensFlareFieldShapeType))]
-        private System.Int32 shapeType;
+        private TppLensFlareFieldShapeType shapeType;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 124, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(TppLensFlareFieldInterpType))]
-        private System.Int32 interpType;
+        private TppLensFlareFieldInterpType interpType;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 128, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean debugDrawFlag;

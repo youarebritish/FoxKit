@@ -45,7 +45,7 @@ namespace FoxKit.Modules.DataSet.Fox.UiScene
         private UnityEngine.Color color;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 144, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(UiModelNodeElementBlend))]
-        private System.Int32 blendType;
+        private UiModelNodeElementBlend blendType;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 148, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean returnInit;

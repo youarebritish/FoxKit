@@ -24,7 +24,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppMotherBaseStage
     public partial class TppMotherBaseStageBlockControllerData : Data
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 120, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(MbStageBlockCreateMode))]
-        private System.Int32 createMode;
+        private MbStageBlockCreateMode createMode;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt16, 160, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.UInt16 motherBaseId;

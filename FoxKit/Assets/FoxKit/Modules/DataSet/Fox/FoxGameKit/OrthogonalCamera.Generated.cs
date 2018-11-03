@@ -24,7 +24,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
     public partial class OrthogonalCamera : Camera
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 448, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, typeof(OrthogonalCamera_ViewType))]
-        private System.Int32 type;
+        private OrthogonalCamera_ViewType type;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 452, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.Single scale;

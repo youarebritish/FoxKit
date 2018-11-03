@@ -24,7 +24,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppMotherBaseCore
     public partial class MotherBaseConstructData : TransformData
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 368, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(MbConstructDataType))]
-        private System.Int32 type;
+        private MbConstructDataType type;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt16, 372, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.UInt16 index;

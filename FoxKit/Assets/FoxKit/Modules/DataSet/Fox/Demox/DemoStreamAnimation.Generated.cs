@@ -30,10 +30,10 @@ namespace FoxKit.Modules.DataSet.Fox.Demox
         private System.UInt32 demoLength;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 136, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(DemoStreamAnimation_LocatorType))]
-        private Dictionary<string, System.Int32> locatorTypes = new Dictionary<string, System.Int32>();
+        private Dictionary<string, DemoStreamAnimation_LocatorType> locatorTypes = new Dictionary<string, DemoStreamAnimation_LocatorType>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 184, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(DemoStreamAnimation_CameraType))]
-        private Dictionary<string, System.Int32> cameraTypes = new Dictionary<string, System.Int32>();
+        private Dictionary<string, DemoStreamAnimation_CameraType> cameraTypes = new Dictionary<string, DemoStreamAnimation_CameraType>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 232, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private Dictionary<string, UnityEngine.Object> modelFiles = new Dictionary<string, UnityEngine.Object>();

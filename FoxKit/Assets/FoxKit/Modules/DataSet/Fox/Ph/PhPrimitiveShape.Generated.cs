@@ -24,7 +24,7 @@ namespace FoxKit.Modules.DataSet.Fox.Ph
     public partial class PhPrimitiveShape : PhShape
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 312, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(PhPrimitiveShapeType))]
-        private System.Int32 type;
+        private PhPrimitiveShapeType type;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Vector3, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Vector3 size;

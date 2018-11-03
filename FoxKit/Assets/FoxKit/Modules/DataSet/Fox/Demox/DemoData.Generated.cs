@@ -108,7 +108,7 @@ namespace FoxKit.Modules.DataSet.Fox.Demox
         private Dictionary<string, System.String> setupLights = new Dictionary<string, System.String>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 1152, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(Utility_InterpType))]
-        private System.Int32 cameraInterpType;
+        private Utility_InterpType cameraInterpType;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 1156, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Int32 cameraInterpFrame;

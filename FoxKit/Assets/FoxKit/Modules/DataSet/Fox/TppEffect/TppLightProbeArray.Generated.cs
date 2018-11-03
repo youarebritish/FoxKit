@@ -24,7 +24,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppEffect
     public partial class TppLightProbeArray : TransformData
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 304, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(TppLightProbeArray_DrawRejectionLevel))]
-        private List<System.Int32> drawRejectionLevels = new List<System.Int32>();
+        private List<TppLightProbeArray_DrawRejectionLevel> drawRejectionLevels = new List<TppLightProbeArray_DrawRejectionLevel>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityLink, 320, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<FoxKit.Modules.DataSet.FoxCore.EntityLink> relatedLights = new List<FoxKit.Modules.DataSet.FoxCore.EntityLink>();

@@ -48,9 +48,9 @@ namespace FoxKit.Modules.DataSet.Fox.UiScene
         private System.Single fov;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 180, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(UiCameraDataFov))]
-        private System.Int32 fovType;
+        private UiCameraDataFov fovType;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 184, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(UiCameraDataFlag))]
-        private System.UInt32 debug;
+        private UiCameraDataFlag debug;
     }
 }

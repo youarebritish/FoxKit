@@ -24,7 +24,7 @@ namespace FoxKit.Modules.DataSet.Fox
     public partial class GeoxCollisionFreeShape : TransformData
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 432, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(CollisionFreeShape_Category))]
-        private System.Int32 collisionCategory;
+        private CollisionFreeShape_Category collisionCategory;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 440, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.Never, null, null)]
         private System.String collisionMaterial;

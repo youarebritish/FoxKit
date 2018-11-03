@@ -36,6 +36,6 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         private System.Boolean enableLod;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 176, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(ObjectBrushPluginClone_ModelRejectionLevel))]
-        private System.Int32 modelRejectionLevel;
+        private ObjectBrushPluginClone_ModelRejectionLevel modelRejectionLevel;
     }
 }

@@ -26,7 +26,7 @@ namespace FoxKit.Modules.DataSet.Fox
         private List<FoxKit.Modules.DataSet.FoxCore.EntityLink> targetShapes = new List<FoxKit.Modules.DataSet.FoxCore.EntityLink>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 88, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, typeof(TppTrapEnvironmentType))]
-        private System.Int32 environmentType;
+        private TppTrapEnvironmentType environmentType;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 96, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String environmentTypeString;

@@ -54,9 +54,9 @@ namespace FoxKit.Modules.DataSet.Fox.PartsBuilder
         private System.Single lodPolygonSize;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 324, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(ModelDescription_DrawRejectionLevel))]
-        private System.Int32 drawRejectionLevel;
+        private ModelDescription_DrawRejectionLevel drawRejectionLevel;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 328, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(ModelDescription_RejectFarRangeShadowCast))]
-        private System.Int32 rejectFarRangeShadowCast;
+        private ModelDescription_RejectFarRangeShadowCast rejectFarRangeShadowCast;
     }
 }

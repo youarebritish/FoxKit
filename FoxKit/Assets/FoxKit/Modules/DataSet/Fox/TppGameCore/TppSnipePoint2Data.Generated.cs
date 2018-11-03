@@ -24,6 +24,6 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
     public partial class TppSnipePoint2Data : TransformData
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 304, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(SnipePointType))]
-        private System.Int32 type;
+        private SnipePointType type;
     }
 }

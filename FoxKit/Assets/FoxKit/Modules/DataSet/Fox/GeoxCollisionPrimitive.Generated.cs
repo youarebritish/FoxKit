@@ -24,10 +24,10 @@ namespace FoxKit.Modules.DataSet.Fox
     public partial class GeoxCollisionPrimitive : TransformData
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 304, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(CollisionPrimitive_Category))]
-        private System.Int32 collisionCategory;
+        private CollisionPrimitive_Category collisionCategory;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 308, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(CollisionPrimitive_PrimType))]
-        private System.Int32 primitiveType;
+        private CollisionPrimitive_PrimType primitiveType;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 312, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String groupTag;

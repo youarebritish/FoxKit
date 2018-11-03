@@ -27,7 +27,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         private System.Boolean isVisible;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 124, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(Watermark_StandardMode))]
-        private System.Int32 standard;
+        private Watermark_StandardMode standard;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 128, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single offsetX;

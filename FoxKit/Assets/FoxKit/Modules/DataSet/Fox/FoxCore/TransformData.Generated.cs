@@ -39,7 +39,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         private List<FoxKit.Modules.DataSet.Fox.FoxCore.Entity> children = new List<FoxKit.Modules.DataSet.Fox.FoxCore.Entity>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 184, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, typeof(TransformData_Flags))]
-        private System.UInt32 flags;
+        private TransformData_Flags flags;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean inheritTransform;

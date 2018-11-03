@@ -81,7 +81,7 @@ namespace FoxKit.Modules.DataSet.Fox.Ph
         private UnityEngine.Vector3 centerOfMassOffset;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(PhRigidBodyType))]
-        private System.Int32 motionType;
+        private PhRigidBodyType motionType;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String material;

@@ -54,6 +54,6 @@ namespace FoxKit.Modules.DataSet.Fox.EdDemo
         private System.UInt32 second;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 92, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(TppDemoParameter_WeatherType))]
-        private System.Int32 weatherType;
+        private TppDemoParameter_WeatherType weatherType;
     }
 }

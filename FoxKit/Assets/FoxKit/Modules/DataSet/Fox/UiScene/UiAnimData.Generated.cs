@@ -36,7 +36,7 @@ namespace FoxKit.Modules.DataSet.Fox.UiScene
         private System.Single speed;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 208, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(UiAnimDataFlag))]
-        private System.UInt32 flag;
+        private UiAnimDataFlag flag;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 216, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.String> srcNodeNames = new List<System.String>();

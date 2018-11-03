@@ -27,7 +27,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         private System.Single blockMemorySize;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 120, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(BlockGroupData_ByteOrder))]
-        private System.Int32 sizeOrder;
+        private BlockGroupData_ByteOrder sizeOrder;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 124, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
         private System.UInt32 blockSizeInBytes;

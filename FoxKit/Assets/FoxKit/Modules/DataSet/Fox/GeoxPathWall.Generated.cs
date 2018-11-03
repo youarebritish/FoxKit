@@ -30,7 +30,7 @@ namespace FoxKit.Modules.DataSet.Fox
         private System.Boolean isVisibleGeom;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 308, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(Face_Mode))]
-        private System.Int32 faceFlag;
+        private Face_Mode faceFlag;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 312, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.String> collisionAttributeTags = new List<System.String>();

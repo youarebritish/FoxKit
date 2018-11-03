@@ -60,7 +60,7 @@ namespace FoxKit.Modules.DataSet.Fox
         private System.Boolean isTargetBlockTerrain;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 408, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(TerrainDecal_DrawRejectionLevel))]
-        private System.Int32 drawRejectionLevel;
+        private TerrainDecal_DrawRejectionLevel drawRejectionLevel;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 412, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean isDisableAlbedo;

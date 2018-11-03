@@ -24,10 +24,10 @@ namespace FoxKit.Modules.DataSet.Fox
     public partial class GeoxPartsTargetObject : TransformData
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 304, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(PrimType))]
-        private System.Int32 primType;
+        private PrimType primType;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 308, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(AxisSort))]
-        private System.Int32 axisSortFlag;
+        private AxisSort axisSortFlag;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt64, 312, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.UInt64 systemAttribute;

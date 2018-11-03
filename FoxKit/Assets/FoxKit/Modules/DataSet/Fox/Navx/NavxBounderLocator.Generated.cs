@@ -33,6 +33,6 @@ namespace FoxKit.Modules.DataSet.Fox.Navx
         private System.String worldName;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 328, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(NavxBounderLocatorType))]
-        private System.Int32 type;
+        private NavxBounderLocatorType type;
     }
 }

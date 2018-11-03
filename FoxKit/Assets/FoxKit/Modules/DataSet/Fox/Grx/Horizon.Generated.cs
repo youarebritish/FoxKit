@@ -27,7 +27,7 @@ namespace FoxKit.Modules.DataSet.Fox.Grx
         private System.Boolean enable;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 308, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(Horizon_ColorPreset))]
-        private System.Int32 colorPreset;
+        private Horizon_ColorPreset colorPreset;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Color, 320, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Color skyColor;

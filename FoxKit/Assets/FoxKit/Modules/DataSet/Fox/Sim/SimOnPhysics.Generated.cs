@@ -42,10 +42,10 @@ namespace FoxKit.Modules.DataSet.Fox.Sim
         private FoxKit.Modules.DataSet.FoxCore.EntityLink physicsData;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(SimLodLevelName))]
-        private System.Int32 minLodLevel;
+        private SimLodLevelName minLodLevel;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(SimLodLevelName))]
-        private System.Int32 maxLodLevel;
+        private SimLodLevelName maxLodLevel;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean isEnableGeoCheck;

@@ -33,25 +33,25 @@ namespace FoxKit.Modules.DataSet.Fox.Ui
         private System.UInt32 inputPortCount;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 160, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, typeof(UiNodeType))]
-        private List<System.Int32> inputPortTypes = new List<System.Int32>();
+        private List<UiNodeType> inputPortTypes = new List<UiNodeType>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 176, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.String> inputPropertyNames = new List<System.String>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 192, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, typeof(UiNodePropType))]
-        private List<System.Int32> inputPropertyTypes = new List<System.Int32>();
+        private List<UiNodePropType> inputPropertyTypes = new List<UiNodePropType>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 208, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.UInt32 outputPortCount;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 216, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, typeof(UiNodeType))]
-        private List<System.Int32> outputPortTypes = new List<System.Int32>();
+        private List<UiNodeType> outputPortTypes = new List<UiNodeType>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 232, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.String> outputPropertyNames = new List<System.String>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 248, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, typeof(UiNodePropType))]
-        private List<System.Int32> outputPropertyTypes = new List<System.Int32>();
+        private List<UiNodePropType> outputPropertyTypes = new List<UiNodePropType>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 264, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
         private System.Single xPosition;
@@ -63,7 +63,7 @@ namespace FoxKit.Modules.DataSet.Fox.Ui
         private System.Int32 category;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 276, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, typeof(UiNodeType))]
-        private System.Int32 type;
+        private UiNodeType type;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 288, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String nodeName;

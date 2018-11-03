@@ -24,6 +24,6 @@ namespace FoxKit.Modules.DataSet.Fox.Nav
     public partial class NavEdgeHandleEntity : NavNavigationGraphHandleEntity
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 64, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, typeof(NavEdgeType))]
-        private System.Int32 type;
+        private NavEdgeType type;
     }
 }

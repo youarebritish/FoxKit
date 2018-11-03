@@ -36,7 +36,7 @@ namespace FoxKit.Modules.DataSet.Fox
         private UnityEngine.Color baseColor;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 368, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(TppLensFlareShapeOffsetType))]
-        private System.Int32 offsetType;
+        private TppLensFlareShapeOffsetType offsetType;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 372, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single offsetScale;
@@ -48,7 +48,7 @@ namespace FoxKit.Modules.DataSet.Fox
         private System.Single baseOffsetY;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 384, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(TppLensFlareShapeRotateType))]
-        private System.Int32 rotateType;
+        private TppLensFlareShapeRotateType rotateType;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 388, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single baseRotate;
@@ -93,7 +93,7 @@ namespace FoxKit.Modules.DataSet.Fox
         private FoxKit.Modules.DataSet.FoxCore.EntityLink angleAlphaGraph;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 704, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(TppLensFlareShapeDistanceScalingMode))]
-        private System.Int32 distanceScaling;
+        private TppLensFlareShapeDistanceScalingMode distanceScaling;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 708, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single limitDistance;

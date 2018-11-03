@@ -24,7 +24,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
     public partial class TppLadderEntryPointData : Data
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 124, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, typeof(MGS_LadderEntryType))]
-        private System.Int32 entryType;
+        private MGS_LadderEntryType entryType;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 120, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.UInt32 locateStep;

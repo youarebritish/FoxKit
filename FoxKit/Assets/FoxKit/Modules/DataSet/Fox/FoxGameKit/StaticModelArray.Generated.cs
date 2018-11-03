@@ -42,13 +42,13 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         private System.Single lodPolygonSize;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 184, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(StaticModelArray_DrawRejectionLevel))]
-        private System.Int32 drawRejectionLevel;
+        private StaticModelArray_DrawRejectionLevel drawRejectionLevel;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 188, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(StaticModelArray_DrawMode))]
-        private System.Int32 drawMode;
+        private StaticModelArray_DrawMode drawMode;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 192, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(StaticModelArray_RejectFarRangeShadowCast))]
-        private System.Int32 rejectFarRangeShadowCast;
+        private StaticModelArray_RejectFarRangeShadowCast rejectFarRangeShadowCast;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityLink, 232, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private FoxKit.Modules.DataSet.FoxCore.EntityLink parentLocator;

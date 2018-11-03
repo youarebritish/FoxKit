@@ -42,7 +42,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         private System.Single lodNearSize;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 208, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(DrawRejectionLevel))]
-        private System.Int32 drawRejectionLevel;
+        private DrawRejectionLevel drawRejectionLevel;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 212, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean isGeomActivity;
