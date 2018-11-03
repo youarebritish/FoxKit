@@ -9,6 +9,7 @@
     using System.Reflection;
 
     using FoxKit.Modules.DataSet.Exporter;
+    using FoxKit.Modules.DataSet.Fox.TppEffect;
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Modules.DataSet.Importer;
     using FoxKit.Modules.Lua;
@@ -125,6 +126,7 @@
 
                 return convertedValue;
             }
+
             // Array
             if (containerType == Core.ContainerType.StaticArray)
             {
@@ -243,6 +245,7 @@
 
                 return convertedValues;
             }
+
             // StringMap
             if (containerType == Core.ContainerType.StringMap)
             {
@@ -504,6 +507,47 @@
                     case Core.PropertyInfoType.WideVector3:
                         Debug.LogError("Property type WideVector3 is not supported. Is the DataSet file well-formed?");
                         break;
+                }
+
+                // If we're dealing with an enum, we need to cast to the enum type.
+                if (field.PropertyInfo.Enum != null)
+                {
+                    if (field.PropertyInfo.Container == Core.ContainerType.StaticArray
+                        && field.PropertyInfo.ArraySize > 1)
+                    {
+                        var typeOfList = typeof(List<>).MakeGenericType(field.PropertyInfo.Enum);
+                        var castedList = Activator.CreateInstance(typeOfList) as IList;
+                        foreach (var item in (value as IList))
+                        {
+                            castedList.Add(item);
+                        }
+
+                        value = castedList;
+                    }
+                    else if (field.PropertyInfo.Container == Core.ContainerType.DynamicArray || field.PropertyInfo.Container == Core.ContainerType.List)
+                    {
+                        var typeOfList = typeof(List<>).MakeGenericType(field.PropertyInfo.Enum);
+                        var castedList = Activator.CreateInstance(typeOfList) as IList;
+                        foreach (var item in (value as IList))
+                        {
+                            castedList.Add(item);
+                        }
+
+                        value = castedList;
+                    }
+                    else if (field.PropertyInfo.Container == Core.ContainerType.StringMap)
+                    {
+                        var typeOfList = typeof(Dictionary<,>).MakeGenericType(typeof(string), field.PropertyInfo.Enum);
+                        var oldDictionary = value as IDictionary;
+                        var castedDictionary = Activator.CreateInstance(typeOfList) as IDictionary;
+
+                        foreach (var item in oldDictionary.Keys)
+                        {
+                            castedDictionary.Add(item, oldDictionary[item]);
+                        }
+
+                        value = castedDictionary;
+                    }
                 }
                 
                 // FilePtr and Path properties are unique in that we don't actually get the value at this stage.

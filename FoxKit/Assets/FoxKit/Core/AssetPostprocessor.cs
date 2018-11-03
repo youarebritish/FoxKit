@@ -29,10 +29,10 @@ namespace FoxKit.Core
                  select AssetDatabase.GUIDToAssetPath(guid))
                 .ToDictionary(Path.GetFileNameWithoutExtension, path => AssetDatabase.LoadAssetAtPath<DataSetAsset>(path).GetDataSet());
 
-            List<DataIdentifier> dataIdentifiers = null;/*(from dataSet in dataSets
+            List<DataIdentifier> dataIdentifiers = (from dataSet in dataSets
                                    from entity in dataSet.Value.GetDataList().Values
                                    where entity is DataIdentifier
-                                   select entity as DataIdentifier).ToList();*/
+                                   select entity as DataIdentifier).ToList();
 
             var tryGetAsset = MakeTryGetAssetDelegate(assets);
             var getDataSet = MakeGetDataSetDelegate(dataSets);
@@ -51,12 +51,12 @@ namespace FoxKit.Core
                 // Assign GUID reference.
                 var dataSet = (loadedAsset as DataSetAsset).GetDataSet();
                 var guid = AssetDatabase.AssetPathToGUID(asset);
-                //if (dataSet.DataSetGuid == guid)
+                if (dataSet.DataSetGuid == guid)
                 {
                     continue;
                 }
 
-                //dataSet.DataSetGuid = guid;
+                dataSet.DataSetGuid = guid;
                 foreach (var entity in dataSet.GetDataList())
                 {
                     ((Data)entity.Value).DataSetGuid = guid;
