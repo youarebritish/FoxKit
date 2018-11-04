@@ -36,6 +36,8 @@
             var entity = FoxKitEditor.InspectedEntity
                          ?? ((DataSetAsset)this.serializedObject.targetObject).GetDataSet();
 
+            EditorGUILayout.LabelField(entity.GetType().Name, EditorStyles.boldLabel);
+
             var fields = GetPropertyFields(entity);
             DrawStaticProperties(fields, entity, asset.IsReadOnly);
             this.Repaint();
@@ -776,6 +778,8 @@
 
         private static void DestroyEntity(Entity entity, Entity owningEntity)
         {
+            DataListWindow.DataListWindow.GetInstance().UpdateSelection();
+
             // TODO: Refactor and fix this monstrosity
             if (!(entity is TransformEntity))
             {
