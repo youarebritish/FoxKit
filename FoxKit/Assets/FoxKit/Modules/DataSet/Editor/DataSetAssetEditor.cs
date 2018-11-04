@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
 
     using FoxKit.Core;
     using FoxKit.Modules.DataSet.Editor.DataListWindow;
@@ -47,7 +48,7 @@
             return true;
         }
 
-        private static void DrawStaticProperties(
+        private void DrawStaticProperties(
             IEnumerable<Tuple<FieldInfo, PropertyInfoAttribute>> fields,
             Entity entity,
             bool isReadOnly)
@@ -77,7 +78,7 @@
             }
         }
 
-        private static void DrawStaticProperty(
+        private void DrawStaticProperty(
             Entity entity,
             Tuple<FieldInfo, PropertyInfoAttribute> field,
             bool isReadOnly)
@@ -278,7 +279,7 @@
             }
         }
 
-        private static void DrawListField(
+        private void DrawListField(
             string fieldName,
             Core.PropertyInfoType type,
             Type @enum,
@@ -326,6 +327,27 @@
                         flags);
                     break;
                 case Core.PropertyInfoType.Int32:
+                    if (@enum != null)
+                    {
+                        // I'm sorry
+                        // I'll fix this later I swear
+                        var castList = new List<int>(list.Count);
+                        castList.AddRange(from object item in list select Convert.ToInt32(item));
+
+                        ReorderableListGUI.ListField(
+                            castList,
+                            (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType),
+                            DrawEmpty,
+                            flags);
+
+                        list.Clear();
+                        foreach (var item in castList)
+                        {
+                            list.Add(Enum.ToObject(@enum, item));
+                        }
+                        break;
+                    }
+
                     ReorderableListGUI.ListField(
                         list as IList<int>,
                         (position, itemValue) => DrawListItem(position, itemValue, type, @enum, ptrType),
@@ -389,7 +411,6 @@
                         flags);
                     break;
                 case Core.PropertyInfoType.EntityPtr:
-                    //var adapter = new EntityPtrListAdapter(list as IList<Entity>, ptrType, entity);
                     var genericAdapterType = typeof(EntityPtrListAdapter<>).MakeGenericType(ptrType);
                     var adapter = Activator.CreateInstance(genericAdapterType, list, ptrType, entity) as IReorderableListAdaptor;
                     ReorderableListGUI.ListField(adapter);
@@ -461,6 +482,34 @@
             }
         }
 
+        private void IntEnumListField(IList list, Core.PropertyInfoType type, Type @enum, ReorderableListFlags flags)
+        {
+            var listType = typeof(IList<>).MakeGenericType(@enum);
+            var drawerType = typeof(ReorderableListControl.ItemDrawer<>).MakeGenericType(@enum);
+            var drawEmptyType = typeof(ReorderableListControl.DrawEmpty);
+            var flagsType = typeof(ReorderableListFlags);
+            var drawListFunc = typeof(ReorderableListGUI).GetMethod(
+                nameof(ReorderableListGUI.ListField),
+                new[] { listType, drawerType, drawEmptyType, flagsType });
+
+            var drawListItemMethod = this.GetType().GetMethod(nameof(DrawEnumListItem), BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(@enum);
+            var drawer = Delegate.CreateDelegate(drawerType, this, drawListItemMethod);
+            var drawEmpty = this.GetType().GetMethod(nameof(DrawEmpty)).CreateDelegate(drawEmptyType);
+
+            drawListFunc.Invoke(null, new object[]{list, drawer, drawEmpty, flags});
+            
+            /*ReorderableListGUI.ListField(
+                list as IList<int>,
+                (position, itemValue) => DrawListItem(position, itemValue, type, @enum, null),
+                DrawEmpty,
+                flags);*/
+        }
+
+        private static T DrawEnumListItem<T>(Rect position, T itemValue)
+        {
+            return DrawListItem(position, itemValue, Core.PropertyInfoType.Int32, typeof(T), null);
+        }
+
         private static T DrawListItem<T>(
             Rect position,
             T itemValue,
@@ -488,7 +537,9 @@
                 case Core.PropertyInfoType.Int32:
                     if (@enum != null)
                     {
-                        newValue = EditorGUI.EnumPopup(position, (Enum)(object)itemValue);
+                        // I'm sorry
+                        var enumValue = (Enum)Enum.ToObject(@enum, itemValue);
+                        newValue = EditorGUI.EnumPopup(position, enumValue);
                     }
                     else
                     {
@@ -497,7 +548,15 @@
 
                     break;
                 case Core.PropertyInfoType.UInt32:
-                    newValue = FoxKitUiUtils.UIntField(position, (uint)(object)itemValue);
+                    //newValue = FoxKitUiUtils.UIntField(position, (uint)(object)itemValue);
+                    if (@enum != null)
+                    {
+                        newValue = EditorGUI.EnumPopup(position, (Enum)(object)itemValue);
+                    }
+                    else
+                    {
+                        newValue = FoxKitUiUtils.UIntField(position, (uint)(object)itemValue);
+                    }
                     break;
                 case Core.PropertyInfoType.Int64:
                     newValue = EditorGUI.LongField(position, (long)(object)itemValue);
