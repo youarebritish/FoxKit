@@ -768,7 +768,13 @@
 
             if (transformData.Parent != null)
             {
-                sceneProxy.transform.SetParent(dataListWindowState.FindSceneProxyForEntity(transformData.DataSetGuid, transformData.Parent.Name).transform);
+                var parentSceneProxy = dataListWindowState.FindSceneProxyForEntity(
+                    transformData.DataSetGuid,
+                    transformData.Parent.Name);
+                if (parentSceneProxy != null)
+                {
+                    sceneProxy.transform.SetParent(parentSceneProxy.transform);
+                }
             }
 
             DataListWindow.DataListWindow.GetInstance().UpdateSelection();

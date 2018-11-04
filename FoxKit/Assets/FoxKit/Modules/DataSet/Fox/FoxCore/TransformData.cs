@@ -139,6 +139,11 @@
                 var sceneProxy = getSceneProxy(this.Name);
                 var childSceneProxy = getSceneProxy(child.Name);
 
+                if (childSceneProxy == null)
+                {
+                    continue;
+                }
+
                 childSceneProxy.transform.SetParent(sceneProxy.transform);
             }
         }
