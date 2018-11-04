@@ -708,7 +708,7 @@
             return from type in ReflectionUtils.GetParentTypes(this.GetType(), true)
                    from field in type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
                    let attribute = field.GetCustomAttribute<PropertyInfoAttribute>()
-                   where attribute != null
+                   where attribute != null && !attribute.IsAutoProperty
                    select this.MakeWritableStaticProperty(field, attribute, getEntityAddress, convertEntityLink);
         }
 
