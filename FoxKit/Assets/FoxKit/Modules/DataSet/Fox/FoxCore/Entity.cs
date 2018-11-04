@@ -581,6 +581,7 @@
                 if (link.IsDataIdentifierEntityLink)
                 {
                     var dataIdentifier = getDataIdentifier(link.ArchivePath);
+                    if (dataIdentifier == null) continue;
                     link.SetDataIdentifier(dataIdentifier, link.NameInArchive);
                     continue;
                 }

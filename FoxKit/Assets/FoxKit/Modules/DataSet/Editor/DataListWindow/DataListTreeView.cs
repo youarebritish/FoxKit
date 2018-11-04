@@ -112,7 +112,8 @@
                 foreach (var item in selected)
                 {
                     var data = this.idToDataMap[item];
-                    this.activeDataSet.RemoveData(data.Name);
+                    var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(AssetDatabase.GUIDToAssetPath(data.DataSetGuid));
+                    dataSet.GetDataSet().RemoveData(data.Name);
                     SingletonScriptableObject<DataListWindowState>.Instance.DeleteSceneProxy(this.activeDataSet.DataSetGuid, data.Name, DataListWindowState.DestroyGameObject.Destroy);
                 }
 
