@@ -190,8 +190,7 @@
                     return;
                 }
 
-                var sceneProxyPosition = sceneProxy.transform.position;
-                SceneView.lastActiveSceneView.LookAt(sceneProxyPosition);
+                SceneView.lastActiveSceneView.FrameSelected();
             }
         }
 
