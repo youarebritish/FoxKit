@@ -8,6 +8,11 @@
 //------------------------------------------------------------------------------
 namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
 {
+    using UnityEngine;
+    using UnityEngine.Assertions;
+
+    using GameObject = FoxKit.Modules.DataSet.Fox.GameCore.GameObject;
+
     public enum StaticModel_DrawRejectionLevel : int
     {
         Level0 = 0,
@@ -45,8 +50,23 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
             }
             set
             {
+                // TODO if loaded, change model
                 this.modelFile = value;
             }
+        }
+        
+        public override void PostOnLoaded(GetSceneProxyDelegate getSceneProxy)
+        {
+            base.PostOnLoaded(getSceneProxy);
+
+            if (this.ModelFile == null)
+            {
+                return;
+            }
+
+            var model = Object.Instantiate(this.ModelFile) as UnityEngine.GameObject;
+            var sceneProxy = getSceneProxy(this.Name);
+            model.transform.SetParent(sceneProxy.transform);
         }
     }
 }

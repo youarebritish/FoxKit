@@ -42,7 +42,7 @@
 
         void Update()
         {
-            this.gameObject.SetActive(this.entity.Visibility);
+            //this.gameObject.SetActive(this.entity.Visibility);
 
             if (this.transform.parent != null)
             {
