@@ -1,11 +1,15 @@
 ﻿namespace FoxKit.Modules.DataSet
 {
+    using System;
+
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.DataSet.FoxCore;
 
     using UnityEditor;
 
     using UnityEngine;
+
+    using Object = UnityEngine.Object;
 
     /// <inheritdoc />
     /// <summary>

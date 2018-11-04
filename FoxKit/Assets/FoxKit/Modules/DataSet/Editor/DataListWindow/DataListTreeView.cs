@@ -114,7 +114,7 @@
                     var data = this.idToDataMap[item];
                     var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(AssetDatabase.GUIDToAssetPath(data.DataSetGuid));
                     dataSet.GetDataSet().RemoveData(data.Name);
-                    SingletonScriptableObject<DataListWindowState>.Instance.DeleteSceneProxy(this.activeDataSet.DataSetGuid, data.Name, DataListWindowState.DestroyGameObject.Destroy);
+                    SingletonScriptableObject<DataListWindowState>.Instance.DeleteSceneProxy(data.DataSetGuid, data.Name, DataListWindowState.DestroyGameObject.Destroy);
                 }
 
                 AssetDatabase.Refresh();

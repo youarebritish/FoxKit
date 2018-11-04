@@ -461,6 +461,12 @@
                     }
                 }
 
+                var mouseEvent = Event.current;
+                if (mouseEvent != null && mouseEvent.type == EventType.MouseDown && mouseEvent.button == 0)
+                {
+                    return;
+                }
+
                 var prefab = PrefabUtility.GetCorrespondingObjectFromSource(model.gameObject);
                 GenerateEntityNameDelegate generateName = id => $"{prefab.name}_{id:D4}";
 
@@ -475,7 +481,7 @@
                                           };
                 staticModel.Transform = transformEntity;
                 staticModel.ModelFile = prefab;
-                
+
                 var newSceneProxy = SingletonScriptableObject<DataListWindowState>.Instance.CreateSceneProxyForEntity(
                     SingletonScriptableObject<DataListWindowState>.Instance.ActiveDataSetGuid,
                     staticModel.Name);

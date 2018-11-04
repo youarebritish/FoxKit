@@ -81,7 +81,7 @@
         /// <returns>The new SceneProxy.</returns>
         public SceneProxy CreateSceneProxyForEntity(string dataSetGuid, string entityName)
         {
-            var gameObject = ObjectFactory.CreateGameObject(entityName);
+            var gameObject = new GameObject(entityName);
             gameObject.transform.position = SceneView.lastActiveSceneView.pivot;
 
             var sceneProxy = gameObject.AddComponent<SceneProxy>();
