@@ -24,7 +24,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppSystem
     public partial class TppDefaultParameter : TppDefaultParameterContainer
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 176, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.Never, null, null)]
-        private System.String groupName;
+        private System.String groupName = string.Empty;
         
     }
 }

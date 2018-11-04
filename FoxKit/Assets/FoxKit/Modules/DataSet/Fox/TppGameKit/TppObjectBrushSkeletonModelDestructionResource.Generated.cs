@@ -30,7 +30,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
         private System.UInt32 trunkCount;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 136, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String pluginName;
+        private System.String pluginName = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 128, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
         private System.UInt32 flags;

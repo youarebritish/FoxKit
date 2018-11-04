@@ -30,7 +30,7 @@ namespace FoxKit.Modules.DataSet.Fox
         private System.UInt32 stateFlag;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 312, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String uniqueId;
+        private System.String uniqueId = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 320, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.String> groupTags = new List<System.String>();

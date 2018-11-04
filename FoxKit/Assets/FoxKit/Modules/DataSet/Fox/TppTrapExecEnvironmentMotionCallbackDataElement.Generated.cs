@@ -29,9 +29,9 @@ namespace FoxKit.Modules.DataSet.Fox
         private TppTrapEnvironmentType environmentType;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 96, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String environmentTypeString;
+        private System.String environmentTypeString = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 80, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String offenseName;
+        private System.String offenseName = string.Empty;
     }
 }

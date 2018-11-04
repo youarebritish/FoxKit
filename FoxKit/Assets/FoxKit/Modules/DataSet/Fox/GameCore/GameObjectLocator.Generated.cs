@@ -24,7 +24,7 @@ namespace FoxKit.Modules.DataSet.Fox.GameCore
     public partial class GameObjectLocator : TransformData
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 304, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String typeName;
+        private System.String typeName = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 312, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.UInt32 groupId;

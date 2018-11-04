@@ -38,7 +38,7 @@ namespace FoxKit.Modules.DataSet.Fox
         private System.Single exposureBlend;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 312, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String lensFlareName;
+        private System.String lensFlareName = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityLink, 320, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<FoxKit.Modules.DataSet.FoxCore.EntityLink> shapes = new List<FoxKit.Modules.DataSet.FoxCore.EntityLink>();

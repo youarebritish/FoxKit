@@ -24,9 +24,9 @@ namespace FoxKit.Modules.DataSet.Fox.TppMarkerLocator
     public partial class TppMarker2LocatorParameter : DataElement
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 56, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String markerType;
+        private System.String markerType = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 64, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String markerId;
+        private System.String markerId = string.Empty;
     }
 }

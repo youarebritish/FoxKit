@@ -24,7 +24,7 @@ namespace FoxKit.Modules.DataSet.Fox.Demo
     public partial class PartsDesc : DataElement
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 56, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String instanceName;
+        private System.String instanceName = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 64, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Object partsFile;
@@ -33,6 +33,6 @@ namespace FoxKit.Modules.DataSet.Fox.Demo
         private UnityEngine.Object modelPath;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 96, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String partName;
+        private System.String partName = string.Empty;
     }
 }

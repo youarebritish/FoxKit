@@ -24,7 +24,7 @@ namespace FoxKit.Modules.DataSet.Fox.Sim
     public partial class SimDaemon : Entity
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 48, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String defaultViewPort;
+        private System.String defaultViewPort = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 56, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Int32 maxActiveClothNum;

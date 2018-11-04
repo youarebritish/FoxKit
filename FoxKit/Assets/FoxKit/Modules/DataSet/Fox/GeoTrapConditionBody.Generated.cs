@@ -24,7 +24,7 @@ namespace FoxKit.Modules.DataSet.Fox
     public partial class GeoTrapConditionBody : TransformDataBody
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 128, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
-        private System.String trapCategory;
+        private System.String trapCategory = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 136, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.UInt32 trapPriority;

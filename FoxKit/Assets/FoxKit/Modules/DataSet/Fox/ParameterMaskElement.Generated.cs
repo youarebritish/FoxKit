@@ -27,6 +27,6 @@ namespace FoxKit.Modules.DataSet.Fox
         private List<System.String> unitNameList = new List<System.String>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 72, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String nodeName;
+        private System.String nodeName = string.Empty;
     }
 }

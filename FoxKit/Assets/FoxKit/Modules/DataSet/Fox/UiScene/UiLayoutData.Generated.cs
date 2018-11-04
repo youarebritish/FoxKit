@@ -39,7 +39,7 @@ namespace FoxKit.Modules.DataSet.Fox.UiScene
         private FoxKit.Modules.DataSet.Fox.FoxCore.Entity connection_connectModelDataHandle;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 360, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String connection_connectModelNodeName;
+        private System.String connection_connectModelNodeName = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 368, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean useParentCamera;

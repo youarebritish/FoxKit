@@ -36,7 +36,7 @@ namespace FoxKit.Modules.DataSet.Fox
         private UnityEngine.Vector3 moverRotation;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 144, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.Never, null, null)]
-        private System.String trapName;
+        private System.String trapName = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Vector3, 160, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.Never, null, null)]
         private UnityEngine.Vector3 trapPosition;
@@ -51,7 +51,7 @@ namespace FoxKit.Modules.DataSet.Fox
         private FoxKit.Modules.DataSet.Fox.FoxCore.Entity conditionBodyHandle;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 200, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.Never, null, null)]
-        private System.String trapFlagString;
+        private System.String trapFlagString = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 208, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.Never, null, null)]
         private System.UInt32 trapFlag;

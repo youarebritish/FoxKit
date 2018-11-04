@@ -42,9 +42,9 @@ namespace FoxKit.Modules.DataSet.Fox
         private System.Single burnSpritePosition;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 376, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String damageColorCorrectionTextureName;
+        private System.String damageColorCorrectionTextureName = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 384, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String injuryColorCorrectionTextureName;
+        private System.String injuryColorCorrectionTextureName = string.Empty;
     }
 }

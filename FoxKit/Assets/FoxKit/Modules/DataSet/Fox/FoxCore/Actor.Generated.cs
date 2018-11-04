@@ -24,13 +24,13 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
     public partial class Actor : Entity
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 48, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
-        private System.String name;
+        private System.String name = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 64, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.Never, null, null)]
-        private System.String actorLevelName;
+        private System.String actorLevelName = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 80, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.Never, null, null)]
-        private System.String sceneName;
+        private System.String sceneName = string.Empty;
         
     }
 }

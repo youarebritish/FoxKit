@@ -27,9 +27,9 @@ namespace FoxKit.Modules.DataSet.Fox
         private FoxKit.Modules.DataSet.FoxCore.EntityLink materialLink;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 160, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String collisionMaterialName;
+        private System.String collisionMaterialName = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 168, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String collisionColorName;
+        private System.String collisionColorName = string.Empty;
     }
 }

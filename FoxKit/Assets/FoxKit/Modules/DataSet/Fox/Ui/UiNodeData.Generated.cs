@@ -66,6 +66,6 @@ namespace FoxKit.Modules.DataSet.Fox.Ui
         private UiNodeType type;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 288, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String nodeName;
+        private System.String nodeName = string.Empty;
     }
 }

@@ -27,7 +27,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         private List<System.UInt32> status = new List<System.UInt32>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 64, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
-        private System.String @string;
+        private System.String @string = string.Empty;
         
     }
 }

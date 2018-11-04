@@ -24,7 +24,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
     public partial class TppObjectBrushSkeletonModelReserveResource : Data
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 120, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String pluginName;
+        private System.String pluginName = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 128, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.UInt32 reserveLodLevel0;

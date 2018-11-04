@@ -30,6 +30,6 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         private ViewGroupControlCondition_Condition condition;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 128, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String identify;
+        private System.String identify = string.Empty;
     }
 }

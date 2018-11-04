@@ -23,6 +23,6 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
     public partial class TppTrapExecLostHostageCallbackDataElement : GeoTrapModuleCallbackDataElement
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 64, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String hostageName;
+        private System.String hostageName = string.Empty;
     }
 }

@@ -48,7 +48,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
         private System.Single lifeRecoveryCooldownTimer;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 152, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String partsType;
+        private System.String partsType = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt8, 160, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private Dictionary<string, System.Byte> TODO_trapTags = new Dictionary<string, System.Byte>();

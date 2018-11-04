@@ -24,6 +24,6 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
     public partial class CheckpointObserver : Entity
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 48, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
-        private System.String observerTag;
+        private System.String observerTag = string.Empty;
     }
 }

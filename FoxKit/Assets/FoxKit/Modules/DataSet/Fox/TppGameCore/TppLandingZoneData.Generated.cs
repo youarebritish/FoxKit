@@ -24,9 +24,9 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
     public partial class TppLandingZoneData : TransformData
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 304, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String approachRoute;
+        private System.String approachRoute = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 312, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String returnRoute;
+        private System.String returnRoute = string.Empty;
     }
 }

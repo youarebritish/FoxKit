@@ -24,7 +24,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
     public partial class DataIdentifier : Data
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 120, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String identifier;
+        private System.String identifier = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityLink, 128, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private Dictionary<string, FoxKit.Modules.DataSet.FoxCore.EntityLink> links = new Dictionary<string, FoxKit.Modules.DataSet.FoxCore.EntityLink>();

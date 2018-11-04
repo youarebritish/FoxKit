@@ -26,6 +26,6 @@ namespace FoxKit.Modules.DataSet.Fox.TppSystem
         private FoxKit.Modules.DataSet.FoxCore.EntityLink eventSequenceManager;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 104, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String sequenceIdToGo;
+        private System.String sequenceIdToGo = string.Empty;
     }
 }

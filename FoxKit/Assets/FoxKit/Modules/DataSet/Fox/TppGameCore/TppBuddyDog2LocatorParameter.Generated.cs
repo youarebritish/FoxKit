@@ -24,6 +24,6 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
     public partial class TppBuddyDog2LocatorParameter : DataElement
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 56, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String identifier;
+        private System.String identifier = string.Empty;
     }
 }

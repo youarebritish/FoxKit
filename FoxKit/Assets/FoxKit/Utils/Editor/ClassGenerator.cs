@@ -131,6 +131,10 @@
 
             if (containerType == Core.ContainerType.StaticArray && property.ArraySize == 1)
             {
+                if (property.Type == "String")
+                {
+                    stringBuilder.Append(" = string.Empty");
+                }
                 stringBuilder.AppendLine(";");
             }
             else

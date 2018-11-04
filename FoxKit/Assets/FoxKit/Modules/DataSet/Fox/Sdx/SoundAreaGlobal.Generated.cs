@@ -27,6 +27,6 @@ namespace FoxKit.Modules.DataSet.Fox.Sdx
         private Sdx.SoundAreaParameter parameter;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 128, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String volumeRtpc;
+        private System.String volumeRtpc = string.Empty;
     }
 }

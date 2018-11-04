@@ -24,6 +24,6 @@ namespace FoxKit.Modules.DataSet.Fox
     public partial class TppSunLightFlare : TransformData
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 304, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String flareName;
+        private System.String flareName = string.Empty;
     }
 }

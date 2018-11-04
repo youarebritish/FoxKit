@@ -33,7 +33,7 @@ namespace FoxKit.Modules.DataSet.Fox.Des
         private System.Single restitution;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 136, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, null, null)]
-        private System.String materialName;
+        private System.String materialName = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 144, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, null, typeof(ParamDataDesCondition))]
         private ParamDataDesCondition desCondition;

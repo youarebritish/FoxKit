@@ -24,9 +24,9 @@ namespace FoxKit.Modules.DataSet.Fox.EdDemo
     public partial class DemoRelativePlayParameter : DemoParameter
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 64, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String rootCharacterId;
+        private System.String rootCharacterId = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 72, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String lookAtCharacterId;
+        private System.String lookAtCharacterId = string.Empty;
     }
 }

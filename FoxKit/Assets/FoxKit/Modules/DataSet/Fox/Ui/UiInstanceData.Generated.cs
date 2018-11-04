@@ -27,6 +27,6 @@ namespace FoxKit.Modules.DataSet.Fox.Ui
         private Dictionary<string, UnityEngine.Object> createWindowParams = new Dictionary<string, UnityEngine.Object>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 168, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String windowFactoryName;
+        private System.String windowFactoryName = string.Empty;
     }
 }

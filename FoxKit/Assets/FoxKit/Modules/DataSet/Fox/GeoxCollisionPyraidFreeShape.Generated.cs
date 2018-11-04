@@ -27,7 +27,7 @@ namespace FoxKit.Modules.DataSet.Fox
         private CollisionPyraidFreeShape_Category collisionCategory;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 392, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.Never, null, null)]
-        private System.String collisionMaterial;
+        private System.String collisionMaterial = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 400, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.String> collisionAttributeNames = new List<System.String>();

@@ -26,9 +26,9 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         private Dictionary<string, System.Byte> targetTags = new Dictionary<string, System.Byte>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 368, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String enterSubtitlesFileName;
+        private System.String enterSubtitlesFileName = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 376, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String outSubtitlesFileName;
+        private System.String outSubtitlesFileName = string.Empty;
     }
 }

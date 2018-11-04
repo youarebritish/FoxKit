@@ -27,9 +27,9 @@ namespace FoxKit.Modules.DataSet.Fox.PartsBuilder
         private List<FoxKit.Modules.DataSet.FoxCore.EntityLink> depends = new List<FoxKit.Modules.DataSet.FoxCore.EntityLink>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 136, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String partName;
+        private System.String partName = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 144, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String buildType;
+        private System.String buildType = string.Empty;
     }
 }

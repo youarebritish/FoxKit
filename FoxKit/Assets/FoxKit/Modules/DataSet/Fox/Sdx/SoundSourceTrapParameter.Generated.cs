@@ -26,9 +26,9 @@ namespace FoxKit.Modules.DataSet.Fox.Sdx
         private FoxKit.Modules.DataSet.FoxCore.EntityLink source;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 104, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String enterEvent;
+        private System.String enterEvent = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 112, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String outEvent;
+        private System.String outEvent = string.Empty;
     }
 }

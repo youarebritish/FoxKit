@@ -39,6 +39,6 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         private System.Boolean isAddRelatedBlockGroupEachOther;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 160, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String prerequisiteBlockGroupName;
+        private System.String prerequisiteBlockGroupName = string.Empty;
     }
 }

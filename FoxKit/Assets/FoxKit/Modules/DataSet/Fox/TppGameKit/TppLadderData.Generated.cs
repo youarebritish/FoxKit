@@ -27,7 +27,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
         private System.UInt32 numSteps;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 312, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String tacticalActionId;
+        private System.String tacticalActionId = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityLink, 320, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<FoxKit.Modules.DataSet.FoxCore.EntityLink> entryPoints = new List<FoxKit.Modules.DataSet.FoxCore.EntityLink>();

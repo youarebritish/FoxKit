@@ -24,10 +24,10 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
     public partial class GkDefenseTargetData : GkTargetData
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 56, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String name;
+        private System.String name = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 64, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String skeletonName;
+        private System.String skeletonName = string.Empty;
         
     }
 }

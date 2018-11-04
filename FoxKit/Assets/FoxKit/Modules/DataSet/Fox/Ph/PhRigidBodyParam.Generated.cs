@@ -81,7 +81,7 @@ namespace FoxKit.Modules.DataSet.Fox.Ph
         private System.Int32 motionType;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 96, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
-        private System.String material;
+        private System.String material = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 161, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.Boolean isNoGravity;

@@ -24,6 +24,6 @@ namespace FoxKit.Modules.DataSet.Fox.Navx
     public partial class NavxNavFilterVolume : GraphxPathVolume
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 352, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String worldName;
+        private System.String worldName = string.Empty;
     }
 }

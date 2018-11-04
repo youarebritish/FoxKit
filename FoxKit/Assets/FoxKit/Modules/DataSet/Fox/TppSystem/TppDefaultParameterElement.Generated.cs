@@ -24,6 +24,6 @@ namespace FoxKit.Modules.DataSet.Fox.TppSystem
     public partial class TppDefaultParameterElement : DataElement
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 56, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.Never, null, null)]
-        private System.String paramName;
+        private System.String paramName = string.Empty;
     }
 }

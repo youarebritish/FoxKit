@@ -54,7 +54,7 @@ namespace FoxKit.Modules.DataSet.Fox.Demox
         private List<UnityEngine.Object> loadFiles = new List<UnityEngine.Object>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 608, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String demoId;
+        private System.String demoId = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityLink, 616, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private FoxKit.Modules.DataSet.FoxCore.EntityLink playingRoot;

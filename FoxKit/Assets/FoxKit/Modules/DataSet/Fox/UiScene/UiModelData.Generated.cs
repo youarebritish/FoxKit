@@ -27,7 +27,7 @@ namespace FoxKit.Modules.DataSet.Fox.UiScene
         private UnityEngine.Object data;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 328, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
-        private System.String sceneName;
+        private System.String sceneName = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 336, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Int32 priority;
@@ -51,7 +51,7 @@ namespace FoxKit.Modules.DataSet.Fox.UiScene
         private FoxKit.Modules.DataSet.Fox.FoxCore.Entity connection_connectModelDataHandle;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 392, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String connection_connectModelNodeName;
+        private System.String connection_connectModelNodeName = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Color, 400, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Color color;

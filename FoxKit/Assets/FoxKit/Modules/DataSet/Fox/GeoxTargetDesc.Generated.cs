@@ -45,7 +45,7 @@ namespace FoxKit.Modules.DataSet.Fox
         private List<System.UInt32> flagArray = new List<System.UInt32>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 232, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String categoryTag;
+        private System.String categoryTag = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 240, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.String> nameArray = new List<System.String>();

@@ -84,6 +84,6 @@ namespace FoxKit.Modules.DataSet.Fox.Ph
         private PhRigidBodyType motionType;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String material;
+        private System.String material = string.Empty;
     }
 }

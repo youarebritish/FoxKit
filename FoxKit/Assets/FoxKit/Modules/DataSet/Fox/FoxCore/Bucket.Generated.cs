@@ -27,10 +27,10 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         private FoxKit.Modules.DataSet.Fox.FoxCore.Entity collector;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 64, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.Never, null, null)]
-        private System.String name;
+        private System.String name = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 72, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.Never, null, null)]
-        private System.String sceneName;
+        private System.String sceneName = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 88, 1, Core.ContainerType.List, PropertyExport.Never, PropertyExport.Never, typeof(FoxCore.Actor), null)]
         private List<FoxCore.Actor> actors = new List<FoxCore.Actor>();

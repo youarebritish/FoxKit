@@ -24,6 +24,6 @@ namespace FoxKit.Modules.DataSet.Fox.Demo
     public partial class FxBaseLocator : TransformData
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 304, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
-        private System.String drawText;
+        private System.String drawText = string.Empty;
     }
 }

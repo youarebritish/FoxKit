@@ -24,6 +24,6 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
     public partial class TppSampleGameObjectParameter : DataElement
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 56, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String text;
+        private System.String text = string.Empty;
     }
 }

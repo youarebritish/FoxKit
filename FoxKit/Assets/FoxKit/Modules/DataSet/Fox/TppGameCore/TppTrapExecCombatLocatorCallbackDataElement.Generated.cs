@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
     public partial class TppTrapExecCombatLocatorCallbackDataElement : GeoTrapModuleCallbackDataElement
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 64, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String frontLineName;
+        private System.String frontLineName = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 72, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.String> inactiveLocators = new List<System.String>();

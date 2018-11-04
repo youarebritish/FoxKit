@@ -24,6 +24,6 @@ namespace FoxKit.Modules.DataSet.Fox
     public partial class EnvironmentGlobalBody : DataBody
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 88, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
-        private System.String tag;
+        private System.String tag = string.Empty;
     }
 }

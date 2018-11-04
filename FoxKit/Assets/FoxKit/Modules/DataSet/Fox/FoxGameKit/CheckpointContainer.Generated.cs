@@ -30,6 +30,6 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         private List<System.String> passedCheckpoints = new List<System.String>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 112, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
-        private System.String latestCheckpointTag;
+        private System.String latestCheckpointTag = string.Empty;
     }
 }

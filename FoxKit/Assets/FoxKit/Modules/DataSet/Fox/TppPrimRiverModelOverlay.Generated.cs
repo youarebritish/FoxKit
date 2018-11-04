@@ -24,7 +24,7 @@ namespace FoxKit.Modules.DataSet.Fox
     public partial class TppPrimRiverModelOverlay : Data
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 120, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String primRiverGroupName;
+        private System.String primRiverGroupName = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 128, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean visibility;
@@ -39,6 +39,6 @@ namespace FoxKit.Modules.DataSet.Fox
         private FoxKit.Modules.DataSet.FoxCore.EntityLink staticModel;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 184, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String maskTextureName;
+        private System.String maskTextureName = string.Empty;
     }
 }

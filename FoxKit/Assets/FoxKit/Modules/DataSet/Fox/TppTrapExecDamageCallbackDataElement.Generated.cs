@@ -26,6 +26,6 @@ namespace FoxKit.Modules.DataSet.Fox
         private System.Boolean onlyOnce;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 72, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String offenseName;
+        private System.String offenseName = string.Empty;
     }
 }

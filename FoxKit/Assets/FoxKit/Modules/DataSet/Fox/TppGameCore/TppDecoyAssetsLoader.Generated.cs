@@ -27,9 +27,9 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
         private List<UnityEngine.Object> decoyAssets = new List<UnityEngine.Object>();
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 136, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String playerDecoyType;
+        private System.String playerDecoyType = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 144, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String enemyDecoyType;
+        private System.String enemyDecoyType = string.Empty;
     }
 }

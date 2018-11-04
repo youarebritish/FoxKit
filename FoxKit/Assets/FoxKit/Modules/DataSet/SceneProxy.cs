@@ -67,6 +67,7 @@
             this.entity.Transform.RotQuat = this.transform.rotation;
             this.entity.Transform.Scale = this.transform.localScale;
 
+            this.transform.hasChanged = false;
             EditorUtility.SetDirty(this.asset);
         }
     }

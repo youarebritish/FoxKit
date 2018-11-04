@@ -24,6 +24,6 @@ namespace FoxKit.Modules.DataSet.Fox.Ph
     public partial class PhObjectParam : Entity
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 48, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
-        private System.String worldName;
+        private System.String worldName = string.Empty;
     }
 }

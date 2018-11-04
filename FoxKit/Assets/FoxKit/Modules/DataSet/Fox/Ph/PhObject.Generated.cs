@@ -27,6 +27,6 @@ namespace FoxKit.Modules.DataSet.Fox.Ph
         private Ph.PhObjectParam param;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String worldName;
+        private System.String worldName = string.Empty;
     }
 }

@@ -24,7 +24,7 @@ namespace FoxKit.Modules.DataSet.Fox.Sim
     public partial class SimAssociationUnitParam : Entity
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 48, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
-        private System.String boneName;
+        private System.String boneName = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 56, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.Never, null, null)]
         private System.Boolean initialized;

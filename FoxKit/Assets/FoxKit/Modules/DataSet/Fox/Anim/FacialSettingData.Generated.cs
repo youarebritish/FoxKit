@@ -33,6 +33,6 @@ namespace FoxKit.Modules.DataSet.Fox.Anim
         private FacialMaskElement lipMask;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 152, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String rootName;
+        private System.String rootName = string.Empty;
     }
 }

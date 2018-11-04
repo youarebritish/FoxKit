@@ -27,7 +27,7 @@ namespace FoxKit.Modules.DataSet.Fox.Ui
         private UnityEngine.Object uigName;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 104, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
-        private System.String uigFileName;
+        private System.String uigFileName = string.Empty;
         
     }
 }

@@ -33,7 +33,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         private System.UInt32 blockId;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 160, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, null, null)]
-        private System.String objectBrushName;
+        private System.String objectBrushName = string.Empty;
         
     }
 }

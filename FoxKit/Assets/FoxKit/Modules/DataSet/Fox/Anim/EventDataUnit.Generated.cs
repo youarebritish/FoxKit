@@ -24,7 +24,7 @@ namespace FoxKit.Modules.DataSet.Fox.Anim
     public partial class EventDataUnit : Data
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 120, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String eventName;
+        private System.String eventName = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 128, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(Anim.TimeSection), null)]
         private List<Anim.TimeSection> sections = new List<Anim.TimeSection>();

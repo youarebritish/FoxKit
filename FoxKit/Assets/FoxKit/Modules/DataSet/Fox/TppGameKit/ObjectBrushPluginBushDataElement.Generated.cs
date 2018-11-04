@@ -66,7 +66,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
         private System.Single stopEyeHeight;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 152, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
-        private System.String noiseSeType;
+        private System.String noiseSeType = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 160, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorAndGame, null, null)]
         private System.UInt32 bushFlags;

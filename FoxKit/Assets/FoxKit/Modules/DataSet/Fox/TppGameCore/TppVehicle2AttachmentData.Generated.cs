@@ -36,10 +36,10 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
         private System.Byte attachmentInstanceCount;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 160, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
-        private System.String bodyCnpName;
+        private System.String bodyCnpName = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 168, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
-        private System.String attachmentBoneName;
+        private System.String attachmentBoneName = string.Empty;
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 120, 1, Core.ContainerType.DynamicArray, PropertyExport.Never, PropertyExport.Never, typeof(TppGameCore.TppVehicle2WeaponParameter), null)]
         private List<TppGameCore.TppVehicle2WeaponParameter> weaponParams = new List<TppGameCore.TppVehicle2WeaponParameter>();
