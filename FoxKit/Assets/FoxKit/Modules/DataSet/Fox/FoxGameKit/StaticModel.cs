@@ -37,5 +37,16 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
 
     public partial class StaticModel
     {
+        public UnityEngine.Object ModelFile
+        {
+            get
+            {
+                return this.modelFile;
+            }
+            set
+            {
+                this.modelFile = value;
+            }
+        }
     }
 }

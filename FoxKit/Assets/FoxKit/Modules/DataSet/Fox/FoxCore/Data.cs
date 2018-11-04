@@ -32,9 +32,10 @@
             set
             {
                 this.name = value;
+                this.referencePath = value;
             }
         }
-
+        
         public DataSet GetDataSet()
         {
             Assert.IsNotNull(this.DataSetGuid);

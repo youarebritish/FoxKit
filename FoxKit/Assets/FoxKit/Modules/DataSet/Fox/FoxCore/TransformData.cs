@@ -26,13 +26,13 @@
         EnableInheritTransform = 4u
     }
 
-    public partial class TransformData : Data
+    public partial class TransformData
     {
         public TransformEntity Transform
         {
             get
             {
-                return this.transform as TransformEntity;
+                return this.transform;
             }
             set
             {
@@ -40,12 +40,73 @@
             }
         }
 
-        public TransformData Parent => this.parent as TransformData;
+        public bool Visibility
+        {
+            get
+            {
+                return this.flags.HasFlag(TransformData_Flags.EnableVisibility);
+            }
+
+            set
+            {
+                if (value == true)
+                {
+                    this.flags |= TransformData_Flags.EnableVisibility;
+                }
+                else
+                {
+                    this.flags &= ~TransformData_Flags.EnableVisibility;
+                }
+
+                this.visibility = value;
+            }
+        }
+
+        public bool Selection
+        {
+            get
+            {
+                return this.flags.HasFlag(TransformData_Flags.EnableSelection);
+            }
+
+            set
+            {
+                if (value == true)
+                {
+                    this.flags |= TransformData_Flags.EnableSelection;
+                }
+                else
+                {
+                    this.flags &= ~TransformData_Flags.EnableSelection;
+                }
+
+                this.selection = value;
+            }
+        }
+
+        public TransformData Parent
+        {
+            get
+            {
+                return this.parent as TransformData;
+            }
+            set
+            {
+                this.parent = value;
+            }
+        }
         
         public IEnumerable<TransformData> GetChildren()
         {
             return from child in this.children
                    select child as TransformData;
+        }
+
+        public TransformData()
+            : base()
+        {
+            this.Visibility = true;
+            this.Selection = true;
         }
 
         /// <inheritdoc />

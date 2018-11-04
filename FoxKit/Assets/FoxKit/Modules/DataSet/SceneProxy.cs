@@ -42,15 +42,26 @@
 
         void Update()
         {
-            //this.gameObject.SetActive(this.entity.Visibility);
+            this.gameObject.SetActive(this.entity.Visibility);
+
+            if (this.transform.parent != null)
+            {
+                var parentSceneProxy = this.transform.parent.GetComponent<SceneProxy>();
+                if (parentSceneProxy == null)
+                {
+                    return;
+                }
+
+                this.entity.Parent = parentSceneProxy.entity;
+            }
         }
 
         void OnDrawGizmosSelected()
         {
             // TODO Don't allow to move if read-only.
-            /*this.entity.Transform.Translation = this.transform.position;
+            this.entity.Transform.Translation = this.transform.position;
             this.entity.Transform.RotQuat = this.transform.rotation;
-            this.entity.Transform.Scale = this.transform.localScale;*/
+            this.entity.Transform.Scale = this.transform.localScale;
 
             EditorUtility.SetDirty(this.asset);
         }

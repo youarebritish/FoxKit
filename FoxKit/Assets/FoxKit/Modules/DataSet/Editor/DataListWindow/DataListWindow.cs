@@ -199,6 +199,11 @@
             return window;
         }
 
+        public void UpdateSelection()
+        {
+            this.treeView.UpdateSelection();
+        }
+
         /// <summary>
         /// When the window is loaded, initialize the TreeView.
         /// </summary>
@@ -463,12 +468,13 @@
                 var staticModel = this.AddEntity(typeof(StaticModel), generateName) as StaticModel;
                 var transformEntity = new TransformEntity
                                           {
+                                              Owner = staticModel,
                                               Translation = model.transform.position,
                                               RotQuat = model.transform.rotation,
                                               Scale = model.transform.localScale
                                           };
                 staticModel.Transform = transformEntity;
-                // TODO staticModel.ModelFile = prefab;
+                staticModel.ModelFile = prefab;
                 
                 var newSceneProxy = SingletonScriptableObject<DataListWindowState>.Instance.CreateSceneProxyForEntity(
                     SingletonScriptableObject<DataListWindowState>.Instance.ActiveDataSetGuid,

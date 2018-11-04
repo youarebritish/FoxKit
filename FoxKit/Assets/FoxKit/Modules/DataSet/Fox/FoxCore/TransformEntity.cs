@@ -12,12 +12,12 @@
         {
             get
             {
-                return Vector3.back;/*
-                return this.transform_translation;*/
+                return this.transform_translation;
             }
             set
             {
-                //this.transform_translation = value;
+                this.transform_translation = value;
+                this.translation = value;
             }
         }
 
@@ -25,11 +25,12 @@
         {
             get
             {
-                return Quaternion.identity;//this.transform_rotation_quat;
+                return this.transform_rotation_quat;
             }
             set
             {
-                //this.transform_rotation_quat = value;
+                this.transform_rotation_quat = value;
+                this.rotQuat = value;
             }
         }
 
@@ -37,11 +38,12 @@
         {
             get
             {
-                return Vector3.back;//this.transform_scale;
+                return this.transform_scale;
             }
             set
             {
-                //this.transform_scale = value;
+                this.transform_scale = value;
+                this.scale = value;
             }
         }
     }

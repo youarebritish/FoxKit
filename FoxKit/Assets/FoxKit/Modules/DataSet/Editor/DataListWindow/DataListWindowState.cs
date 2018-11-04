@@ -81,7 +81,9 @@
         /// <returns>The new SceneProxy.</returns>
         public SceneProxy CreateSceneProxyForEntity(string dataSetGuid, string entityName)
         {
-            var gameObject = new GameObject(entityName);
+            var gameObject = ObjectFactory.CreateGameObject(entityName);
+            gameObject.transform.position = SceneView.lastActiveSceneView.pivot;
+
             var sceneProxy = gameObject.AddComponent<SceneProxy>();
 
             var asset = AssetDatabase.LoadAssetAtPath<DataSetAsset>(AssetDatabase.GUIDToAssetPath(dataSetGuid));
@@ -152,7 +154,6 @@
             Dictionary<string, SceneProxy> dataSetSceneProxies;
             if (!this.sceneProxies.TryGetValue(dataSetGuid, out dataSetSceneProxies))
             {
-                Debug.LogError($"Unable to find scene proxy for entity {entityName} in DataSet {AssetDatabase.GUIDToAssetPath(dataSetGuid)}");
                 return null;
             }
 

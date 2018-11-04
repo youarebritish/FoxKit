@@ -481,35 +481,7 @@
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }
-
-        private void IntEnumListField(IList list, Core.PropertyInfoType type, Type @enum, ReorderableListFlags flags)
-        {
-            var listType = typeof(IList<>).MakeGenericType(@enum);
-            var drawerType = typeof(ReorderableListControl.ItemDrawer<>).MakeGenericType(@enum);
-            var drawEmptyType = typeof(ReorderableListControl.DrawEmpty);
-            var flagsType = typeof(ReorderableListFlags);
-            var drawListFunc = typeof(ReorderableListGUI).GetMethod(
-                nameof(ReorderableListGUI.ListField),
-                new[] { listType, drawerType, drawEmptyType, flagsType });
-
-            var drawListItemMethod = this.GetType().GetMethod(nameof(DrawEnumListItem), BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(@enum);
-            var drawer = Delegate.CreateDelegate(drawerType, this, drawListItemMethod);
-            var drawEmpty = this.GetType().GetMethod(nameof(DrawEmpty)).CreateDelegate(drawEmptyType);
-
-            drawListFunc.Invoke(null, new object[]{list, drawer, drawEmpty, flags});
-            
-            /*ReorderableListGUI.ListField(
-                list as IList<int>,
-                (position, itemValue) => DrawListItem(position, itemValue, type, @enum, null),
-                DrawEmpty,
-                flags);*/
-        }
-
-        private static T DrawEnumListItem<T>(Rect position, T itemValue)
-        {
-            return DrawListItem(position, itemValue, Core.PropertyInfoType.Int32, typeof(T), null);
-        }
-
+        
         private static T DrawListItem<T>(
             Rect position,
             T itemValue,
@@ -763,7 +735,7 @@
             return from type in ReflectionUtils.GetParentTypes(entity.GetType(), true)
                    from field in type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
                    let attribute = field.GetCustomAttribute<PropertyInfoAttribute>()
-                   where attribute != null && !attribute.IsAutoProperty
+                   where attribute != null// && !attribute.IsAutoProperty
                    select Tuple.Create(field, attribute);
         }
 
@@ -772,6 +744,11 @@
             var entity = Activator.CreateInstance(entityType) as Entity;
 
             // TODO: Refactor and fix this monstrosity
+            if (entity is DataElement)
+            {
+                (entity as DataElement).Owner = owningEntity;
+            }
+
             if (!(entity is TransformEntity))
             {
                 return entity;
@@ -783,13 +760,16 @@
             }
 
             var dataListWindowState = SingletonScriptableObject<DataListWindowState>.Instance;
-            var transformData = owningEntity as TransformData;
+            var transformData = (TransformData)owningEntity;
             var sceneProxy = dataListWindowState.CreateSceneProxyForEntity(transformData.DataSetGuid, transformData.Name);
+            (entity as TransformEntity).Translation = sceneProxy.transform.position;
 
             if (transformData.Parent != null)
             {
                 sceneProxy.transform.SetParent(dataListWindowState.FindSceneProxyForEntity(transformData.DataSetGuid, transformData.Parent.Name).transform);
             }
+
+            DataListWindow.DataListWindow.GetInstance().UpdateSelection();
 
             return entity;
         }
@@ -872,6 +852,11 @@
                 var entity = Activator.CreateInstance(entityType) as T;
                 this.list[index] = entity;
 
+                if (entity is DataElement)
+                {
+                    (entity as DataElement).Owner = entity;
+                }
+
                 // TODO: Refactor and fix this monstrosity
                 if (!entityType.IsAssignableFrom(typeof(TransformEntity)))
                 {
@@ -886,11 +871,14 @@
                 var dataListWindowState = SingletonScriptableObject<DataListWindowState>.Instance;
                 var transformData = this.owningEntity as TransformData;
                 var sceneProxy = dataListWindowState.CreateSceneProxyForEntity(transformData.DataSetGuid, transformData.Name);
+                (entity as TransformEntity).Translation = sceneProxy.transform.position;
 
                 if (transformData.Parent != null)
                 {
                     sceneProxy.transform.SetParent(dataListWindowState.FindSceneProxyForEntity(transformData.DataSetGuid, transformData.Parent.Name).transform);
                 }
+
+                DataListWindow.DataListWindow.GetInstance().UpdateSelection();
             }
         }
         
@@ -956,6 +944,11 @@
                 var entity = Activator.CreateInstance(entityType) as T;
                 this.dictionary[key] = entity;
 
+                if (entity is DataElement)
+                {
+                    (entity as DataElement).Owner = entity;
+                }
+
                 // TODO: Refactor and fix this monstrosity
                 if (!entityType.IsAssignableFrom(typeof(TransformEntity)))
                 {
@@ -970,11 +963,14 @@
                 var dataListWindowState = SingletonScriptableObject<DataListWindowState>.Instance;
                 var transformData = this.owningEntity as TransformData;
                 var sceneProxy = dataListWindowState.CreateSceneProxyForEntity(transformData.DataSetGuid, transformData.Name);
+                (entity as TransformEntity).Translation = sceneProxy.transform.position;
 
                 if (transformData.Parent != null)
                 {
                     sceneProxy.transform.SetParent(dataListWindowState.FindSceneProxyForEntity(transformData.DataSetGuid, transformData.Parent.Name).transform);
                 }
+
+                DataListWindow.DataListWindow.GetInstance().UpdateSelection();
             }
         }
     }

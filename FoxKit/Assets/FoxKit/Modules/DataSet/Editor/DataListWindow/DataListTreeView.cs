@@ -277,6 +277,11 @@
                 .Aggregate(id, (current, child) => this.AddData(asset, child, node, current));
         }
 
+        public void UpdateSelection()
+        {
+            this.SelectionChanged(this.GetSelection());
+        }
+
         protected override void SelectionChanged(IList<int> selectedIds)
         {
             // TODO handle multiple selections
