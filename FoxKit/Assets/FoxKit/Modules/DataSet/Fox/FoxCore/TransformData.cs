@@ -92,6 +92,13 @@
             }
             set
             {
+                if (this.parent != value)
+                {
+                    value.children.Add(this);
+
+                    (this.parent as TransformData)?.children.Remove(this);
+                }
+
                 this.parent = value;
             }
         }

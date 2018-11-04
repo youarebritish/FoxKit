@@ -281,6 +281,53 @@
         {
             this.SelectionChanged(this.GetSelection());
         }
+        
+        protected override bool CanStartDrag(TreeView.CanStartDragArgs args)
+        {
+            return !args.draggedItemIDs.Select(draggedID => this.idToDataMap[draggedID]).Any(data => data is DataSet);
+        }
+
+        protected override void SetupDragAndDrop(TreeView.SetupDragAndDropArgs args)
+        {
+            DragAndDrop.PrepareStartDrag();
+            DragAndDrop.paths = null;
+            DragAndDrop.objectReferences = new UnityEngine.Object[] { };
+            DragAndDrop.SetGenericData("Items", new List<int>(args.draggedItemIDs));
+            DragAndDrop.visualMode = DragAndDropVisualMode.Move;
+            DragAndDrop.StartDrag("DataListTreeView");
+        }
+
+        protected override DragAndDropVisualMode HandleDragAndDrop(TreeView.DragAndDropArgs args)
+        {
+            var target = args.parentItem;
+            if (target == null)
+            {
+                return DragAndDropVisualMode.Rejected;
+            }
+
+            var targetData = this.idToDataMap[target.id];
+
+            // Eventually handle moving to other DataSets, but not yet
+            if (!(targetData is TransformData))
+            {
+                return DragAndDropVisualMode.Rejected;
+            }
+
+            if (args.performDrop)
+            {
+                foreach (var item in DragAndDrop.GetGenericData("Items") as List<int>)
+                {
+                    var data = this.idToDataMap[item] as TransformData;
+                    data.Parent = targetData as TransformData;
+                }
+
+                this.Reload();
+                DragAndDrop.AcceptDrag();
+                return DragAndDropVisualMode.Link;
+            }
+
+            return DragAndDropVisualMode.Link;
+        }
 
         protected override void SelectionChanged(IList<int> selectedIds)
         {
