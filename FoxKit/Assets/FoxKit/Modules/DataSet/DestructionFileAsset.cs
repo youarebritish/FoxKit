@@ -3,9 +3,6 @@
 using FoxKit.Modules.DataSet.Fox.Des;
 using FoxKit.Modules.DataSet.Fox.FoxCore;
 
-using UnityEngine;
-
-[CreateAssetMenu(fileName = "New DestructionFile", menuName = "FoxKit/EntityFile/DestructionFile", order = 1)]
 public class DestructionFileAsset : EntityFileAsset
 {
     /// <inheritdoc />

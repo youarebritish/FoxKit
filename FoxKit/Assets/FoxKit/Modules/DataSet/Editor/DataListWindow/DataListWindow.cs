@@ -415,6 +415,7 @@
         private void CreateDataSet()
         {
             var dataSet = CreateInstance<DataSetAsset>();
+            dataSet.Initialize();
 
             var path = UnityFileUtils.GetUniqueAssetPathNameOrFallback("DataSet0000.asset");
             AssetDatabase.CreateAsset(dataSet, path);

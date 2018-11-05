@@ -3,9 +3,6 @@
 using FoxKit.Modules.DataSet.Fox.FoxCore;
 using FoxKit.Modules.DataSet.Fox.PartsBuilder;
 
-using UnityEngine;
-
-[CreateAssetMenu(fileName = "New PartsFile", menuName = "FoxKit/EntityFile/PartsFile", order = 1)]
 public class PartsFileAsset : EntityFileAsset
 {
     /// <inheritdoc />

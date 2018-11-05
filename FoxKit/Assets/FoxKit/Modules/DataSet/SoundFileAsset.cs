@@ -3,9 +3,6 @@
 using FoxKit.Modules.DataSet.Fox.FoxCore;
 using FoxKit.Modules.DataSet.Fox.Sdx;
 
-using UnityEngine;
-
-[CreateAssetMenu(fileName = "New SoundFile", menuName = "FoxKit/EntityFile/SoundFile", order = 1)]
 public class SoundFileAsset : EntityFileAsset
 {
     /// <inheritdoc />

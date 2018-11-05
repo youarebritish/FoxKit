@@ -2,9 +2,6 @@
 
 using FoxKit.Modules.DataSet.Fox.FoxCore;
 
-using UnityEngine;
-
-[CreateAssetMenu(fileName = "New PhysicsFile", menuName = "FoxKit/EntityFile/PhysicsFile", order = 1)]
 public class PhysicsFileAsset : EntityFileAsset
 {
     /// <inheritdoc />

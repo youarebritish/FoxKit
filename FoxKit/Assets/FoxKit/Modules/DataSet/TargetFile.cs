@@ -3,9 +3,6 @@
 using FoxKit.Modules.DataSet.Fox;
 using FoxKit.Modules.DataSet.Fox.FoxCore;
 
-using UnityEngine;
-
-[CreateAssetMenu(fileName = "New TargetFile", menuName = "FoxKit/EntityFile/TargetFile", order = 1)]
 public class TargetFileAsset : EntityFileAsset
 {
     /// <inheritdoc />

@@ -3,9 +3,6 @@
 using FoxKit.Modules.DataSet.Fox.FoxCore;
 using FoxKit.Modules.DataSet.Fox.Navx;
 
-using UnityEngine;
-
-[CreateAssetMenu(fileName = "New BounderFile", menuName = "FoxKit/EntityFile/BounderFile", order = 1)]
 public class BounderFileAsset : EntityFileAsset
 {
     /// <inheritdoc />

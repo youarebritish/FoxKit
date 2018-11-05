@@ -2,9 +2,6 @@
 
 using FoxKit.Modules.DataSet.Fox.FoxCore;
 
-using UnityEngine;
-
-[CreateAssetMenu(fileName = "New EventFile", menuName = "FoxKit/EntityFile/EventFile", order = 1)]
 public class EventFileAsset : EntityFileAsset
 {
     /// <inheritdoc />
