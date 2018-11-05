@@ -502,13 +502,13 @@
         void OnGUI()
         {
             this.classDefinitions = EditorGUILayout.ObjectField("Class Definitions", this.classDefinitions, typeof(TextAsset), false) as TextAsset;
-            this.classVersions = EditorGUILayout.ObjectField("Class Versions", this.classVersions, typeof(TextAsset), false) as TextAsset;
+            /*this.classVersions = EditorGUILayout.ObjectField("Class Versions", this.classVersions, typeof(TextAsset), false) as TextAsset;
             this.classIds = EditorGUILayout.ObjectField("Class IDs", this.classIds, typeof(TextAsset), false) as TextAsset;
             this.classCategories = EditorGUILayout.ObjectField("Class Categories", this.classCategories, typeof(TextAsset), false) as TextAsset;
 
             if (GUILayout.Button("Parse Metadata"))
             {
-                var outputPath = EditorUtility.SaveFilePanel("Select output file", null, null, "json");
+                var outputPath = EditorUtility.SaveFilePanelInProject("Select output file", null, "json", "Select output file");
                 if (outputPath.Length == 0)
                 {
                     return;
@@ -521,14 +521,19 @@
                     this.classVersions,
                     this.classCategories);
 
-                var serializer = new DataContractJsonSerializer(typeof(List<ClassGenerator.ClassDefinition>));
+                var settings = new DataContractJsonSerializerSettings { UseSimpleDictionaryFormat = true };
                 using (var stream = new FileStream(outputPath, FileMode.Create))
                 {
-                    serializer.WriteObject(stream, parsed);
+                    using (var writer = JsonReaderWriterFactory.CreateJsonWriter(stream, Encoding.UTF8, true, true, "  "))
+                    {
+                        var serializer = new DataContractJsonSerializer(typeof(List<ClassGenerator.ClassDefinition>), settings);
+                        serializer.WriteObject(writer, parsed);
+                        writer.Flush();
+                    }
                 }
 
                 return;
-            }
+            }*/
 
             if (!GUILayout.Button("Generate Classes"))
             {

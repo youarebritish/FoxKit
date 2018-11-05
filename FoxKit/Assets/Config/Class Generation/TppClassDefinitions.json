@@ -339,12 +339,12 @@
         "type": "c"
       }
     ],
-    "id": 0,
+    "id": -1,
     "name": "Entity",
     "namespace": "FoxCore",
     "parent": "",
     "properties": [ ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -370,7 +370,7 @@
         "type": "m"
       }
     ],
-    "id": 0,
+    "id": -1,
     "name": "Data",
     "namespace": "FoxCore",
     "parent": "Entity",
@@ -409,7 +409,7 @@
         "type": "String"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -431,7 +431,7 @@
         "type": "EntityHandle"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -568,7 +568,7 @@
         "type": "Matrix4"
       }
     ],
-    "version": 0
+    "version": 4
   },
   {
     "category": "",
@@ -1689,7 +1689,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 40,
     "name": "EntityPtrArrayEntity",
     "namespace": "FoxCore",
     "parent": "Entity",
@@ -2010,7 +2010,7 @@
         "type": "m"
       }
     ],
-    "id": 0,
+    "id": 232,
     "name": "DataSet",
     "namespace": "FoxCore",
     "parent": "Data",
@@ -2199,7 +2199,7 @@
         "type": "c"
       }
     ],
-    "id": 0,
+    "id": 120,
     "name": "DataIdentifier",
     "namespace": "FoxCore",
     "parent": "Data",
@@ -2252,7 +2252,7 @@
   {
     "category": "Shape",
     "functions": [ ],
-    "id": 0,
+    "id": 256,
     "name": "SphereShape",
     "namespace": "FoxCore",
     "parent": "ShapeData",
@@ -2296,7 +2296,7 @@
   {
     "category": "Shape",
     "functions": [ ],
-    "id": 0,
+    "id": 256,
     "name": "BoxShape",
     "namespace": "FoxCore",
     "parent": "ShapeData",
@@ -2504,7 +2504,7 @@
         "type": "c"
       }
     ],
-    "id": 0,
+    "id": 80,
     "name": "TransformEntity",
     "namespace": "FoxCore",
     "parent": "DataElement",
@@ -2586,7 +2586,7 @@
         "type": "c"
       }
     ],
-    "id": 0,
+    "id": 48,
     "name": "ShearTransformEntity",
     "namespace": "FoxCore",
     "parent": "DataElement",
@@ -2679,7 +2679,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "StageBlockControllerData",
     "namespace": "FoxCore",
     "parent": "Data",
@@ -3378,7 +3378,7 @@
         "type": "uint8"
       }
     ],
-    "version": 0
+    "version": 8
   },
   {
     "category": "",
@@ -3465,7 +3465,7 @@
         "type": "String"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "",
@@ -3580,7 +3580,7 @@
         "type": "EntityLink"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -3682,7 +3682,7 @@
         "type": "m"
       }
     ],
-    "id": 0,
+    "id": 120,
     "name": "Group",
     "namespace": "FoxCore",
     "parent": "Data",
@@ -3721,7 +3721,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -3814,7 +3814,7 @@
   {
     "category": "Material",
     "functions": [ ],
-    "id": 0,
+    "id": 176,
     "name": "Material",
     "namespace": "FoxCore",
     "parent": "Data",
@@ -3941,7 +3941,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 6
   },
   {
     "category": "",
@@ -5614,7 +5614,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 72,
     "name": "DataSetDifference",
     "namespace": "FoxCore",
     "parent": "Entity",
@@ -5636,7 +5636,7 @@
   {
     "category": "Data",
     "functions": [ ],
-    "id": 0,
+    "id": 416,
     "name": "DataSetReference",
     "namespace": "FoxCore",
     "parent": "TransformData",
@@ -5675,7 +5675,7 @@
         "type": "EntityPtr"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -5764,7 +5764,7 @@
   {
     "category": "Locator",
     "functions": [ ],
-    "id": 0,
+    "id": 272,
     "name": "Locator",
     "namespace": "FoxCore",
     "parent": "TransformData",
@@ -5816,7 +5816,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 112,
     "name": "FoxDataLinkCollectorData",
     "namespace": "FoxCore",
     "parent": "Data",
@@ -5871,7 +5871,7 @@
   {
     "category": "Block",
     "functions": [ ],
-    "id": 0,
+    "id": 88,
     "name": "ScriptBlockScript",
     "namespace": "FoxCore",
     "parent": "Data",
@@ -5893,7 +5893,7 @@
   {
     "category": "Block",
     "functions": [ ],
-    "id": 0,
+    "id": 88,
     "name": "ScriptBlockData",
     "namespace": "FoxCore",
     "parent": "Data",
@@ -6121,7 +6121,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 36,
     "name": "TimeSection",
     "namespace": "Anim",
     "parent": "DataElement",
@@ -6149,12 +6149,12 @@
         "type": "int32"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 136,
     "name": "EventDataUnit",
     "namespace": "Anim",
     "parent": "Data",
@@ -6215,12 +6215,12 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 56,
     "name": "ParameterMaskElement",
     "namespace": null,
     "parent": "DataElement",
@@ -6253,7 +6253,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 64,
     "name": "FacialMaskElement",
     "namespace": null,
     "parent": "DataElement",
@@ -6281,12 +6281,12 @@
         "type": "EntityPtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 104,
     "name": "FacialSettingData",
     "namespace": "Anim",
     "parent": "Data",
@@ -6336,7 +6336,7 @@
         "type": "String"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -6525,7 +6525,7 @@
         "type": "EntityHandle"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Collision",
@@ -6817,7 +6817,7 @@
     "namespace": null,
     "parent": "Entity",
     "properties": [ ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -7172,7 +7172,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "Trap",
@@ -7238,7 +7238,7 @@
         "type": "Path"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Trap",
@@ -7304,7 +7304,7 @@
         "type": "Path"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Trap",
@@ -7485,7 +7485,7 @@
   {
     "category": "Trap",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "GeoTrap",
     "namespace": null,
     "parent": "TransformData",
@@ -7513,7 +7513,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "Trap",
@@ -7553,7 +7553,7 @@
   {
     "category": "Trap",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "GeoTriggerTrap",
     "namespace": null,
     "parent": "TransformData",
@@ -7603,7 +7603,7 @@
         "type": "String"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Trap",
@@ -7623,7 +7623,7 @@
         "type": "c"
       }
     ],
-    "id": 0,
+    "id": 32,
     "name": "GeoTrapModuleCallbackDataElement",
     "namespace": null,
     "parent": "DataElement",
@@ -7699,7 +7699,7 @@
   {
     "category": "Trap",
     "functions": [ ],
-    "id": 0,
+    "id": 352,
     "name": "GeoModuleCondition",
     "namespace": null,
     "parent": "GeoTrapCondition",
@@ -7845,7 +7845,7 @@
         "type": "c"
       }
     ],
-    "id": 0,
+    "id": 64,
     "name": "GeoTrapScriptCallbackDataElement",
     "namespace": "Geo",
     "parent": "GeoTrapModuleCallbackDataElement",
@@ -7873,7 +7873,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -8150,7 +8150,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 128,
     "name": "TerrainMaterialConfigration",
     "namespace": "Gr",
     "parent": "Data",
@@ -8646,7 +8646,7 @@
     "namespace": "Gr",
     "parent": "GrRenderPlugin",
     "properties": [ ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -8661,7 +8661,7 @@
     "namespace": "Gr",
     "parent": "GrRenderPlugin",
     "properties": [ ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -9113,7 +9113,7 @@
         "type": "Vector4"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -9288,7 +9288,7 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -9298,7 +9298,7 @@
     "namespace": "Gr",
     "parent": "DataBody",
     "properties": [ ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Nav",
@@ -9735,7 +9735,7 @@
   {
     "category": "GameObject",
     "functions": [ ],
-    "id": 0,
+    "id": 88,
     "name": "GameObject",
     "namespace": "GameCore",
     "parent": "Data",
@@ -9796,7 +9796,7 @@
         "type": "EntityPtr"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -9811,7 +9811,7 @@
   {
     "category": "GameObject",
     "functions": [ ],
-    "id": 0,
+    "id": 272,
     "name": "GameObjectLocator",
     "namespace": "GameCore",
     "parent": "TransformData",
@@ -9850,7 +9850,7 @@
         "type": "EntityPtr"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -9944,7 +9944,7 @@
   {
     "category": "Light",
     "functions": [ ],
-    "id": 0,
+    "id": 416,
     "name": "PointLight",
     "namespace": "Grx",
     "parent": "TransformData",
@@ -10236,7 +10236,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 14
   },
   {
     "category": "",
@@ -10263,7 +10263,7 @@
   {
     "category": "Light",
     "functions": [ ],
-    "id": 0,
+    "id": 352,
     "name": "DirectionalLight",
     "namespace": "Grx",
     "parent": "TransformData",
@@ -10533,7 +10533,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 8
   },
   {
     "category": "",
@@ -10560,7 +10560,7 @@
   {
     "category": "Light",
     "functions": [ ],
-    "id": 0,
+    "id": 480,
     "name": "SpotLight",
     "namespace": "Grx",
     "parent": "TransformData",
@@ -10962,7 +10962,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 18
   },
   {
     "category": "",
@@ -11038,12 +11038,12 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "Light",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "LightArray",
     "namespace": "Grx",
     "parent": "TransformData",
@@ -11060,7 +11060,7 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -11110,7 +11110,7 @@
         "type": "m"
       }
     ],
-    "id": 0,
+    "id": 120,
     "name": "GrPluginSettings",
     "namespace": "Grx",
     "parent": "Data",
@@ -11391,12 +11391,12 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 25
   },
   {
     "category": "Config",
     "functions": [ ],
-    "id": 0,
+    "id": 112,
     "name": "ColorCorrectionData",
     "namespace": "Grx",
     "parent": "Data",
@@ -11468,7 +11468,7 @@
         "type": "Color"
       }
     ],
-    "version": 0
+    "version": 5
   },
   {
     "category": "",
@@ -11566,7 +11566,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -11581,7 +11581,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 80,
     "name": "GrxLineSSAOParameters",
     "namespace": "Grx",
     "parent": "Entity",
@@ -11741,12 +11741,12 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 68,
     "name": "GrxAreaSSAOParameters",
     "namespace": "Grx",
     "parent": "Entity",
@@ -11878,7 +11878,7 @@
   {
     "category": "Config",
     "functions": [ ],
-    "id": 0,
+    "id": 88,
     "name": "AmbientOcclusionSettings",
     "namespace": "Grx",
     "parent": "Data",
@@ -12099,7 +12099,7 @@
   {
     "category": "Area",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "OccluderArray",
     "namespace": "Grx",
     "parent": "TransformData",
@@ -12116,7 +12116,7 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -12141,7 +12141,7 @@
   {
     "category": "Config",
     "functions": [ ],
-    "id": 0,
+    "id": 72,
     "name": "GrReflectionSetting",
     "namespace": "Grx",
     "parent": "Data",
@@ -12424,7 +12424,7 @@
   {
     "category": "Ph",
     "functions": [ ],
-    "id": 0,
+    "id": 112,
     "name": "PhObjectDesc",
     "namespace": "Ph",
     "parent": "Data",
@@ -12468,7 +12468,7 @@
   {
     "category": "Ph",
     "functions": [ ],
-    "id": 0,
+    "id": 320,
     "name": "PhRigidBodyParam",
     "namespace": "Ph",
     "parent": "Entity",
@@ -12705,7 +12705,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 5
   },
   {
     "category": "Ph",
@@ -12947,7 +12947,7 @@
         "type": "String"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "Ph",
@@ -13051,7 +13051,7 @@
   {
     "category": "Ph",
     "functions": [ ],
-    "id": 0,
+    "id": 96,
     "name": "PhPrimitiveShapeParam",
     "namespace": "Ph",
     "parent": "PhShapeParam",
@@ -13061,7 +13061,7 @@
   {
     "category": "Ph",
     "functions": [ ],
-    "id": 0,
+    "id": 272,
     "name": "PhPrimitiveShape",
     "namespace": "Ph",
     "parent": "PhShape",
@@ -13177,7 +13177,7 @@
         "type": "Vector3"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Ph",
@@ -13232,12 +13232,12 @@
         "type": "Vector3"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Ph",
     "functions": [ ],
-    "id": 0,
+    "id": 112,
     "name": "PhBallsocketConstraintParam",
     "namespace": "Ph",
     "parent": "PhConstraintParam",
@@ -13353,7 +13353,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "Ph",
@@ -13479,7 +13479,7 @@
   {
     "category": "Ph",
     "functions": [ ],
-    "id": 0,
+    "id": 80,
     "name": "PhHingeConstraintParam",
     "namespace": "Ph",
     "parent": "PhConstraintParam",
@@ -13529,7 +13529,7 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Ph",
@@ -13683,7 +13683,7 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Ph",
@@ -13787,7 +13787,7 @@
   {
     "category": "Ph",
     "functions": [ ],
-    "id": 0,
+    "id": 112,
     "name": "PhMultiShoulderConstraintParam",
     "namespace": "Ph",
     "parent": "PhConstraintParam",
@@ -13985,7 +13985,7 @@
   {
     "category": "Ph",
     "functions": [ ],
-    "id": 0,
+    "id": 112,
     "name": "PhMultiHingeConstraintParam",
     "namespace": "Ph",
     "parent": "PhConstraintParam",
@@ -14398,7 +14398,7 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Ph",
@@ -14562,7 +14562,7 @@
     "namespace": "MotionGraph",
     "parent": "RawFile",
     "properties": [ ],
-    "version": 0
+    "version": 6
   },
   {
     "category": "",
@@ -14612,7 +14612,7 @@
     "namespace": null,
     "parent": "DataElement",
     "properties": [ ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "TacticalPoint",
@@ -14645,7 +14645,7 @@
         "type": "EntityLink"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "TacticalPoint",
@@ -14672,7 +14672,7 @@
   {
     "category": "TacticalAction",
     "functions": [ ],
-    "id": 0,
+    "id": 36,
     "name": "GkTacticalActionEdge",
     "namespace": null,
     "parent": "DataElement",
@@ -14705,7 +14705,7 @@
   {
     "category": "TacticalAction",
     "functions": [ ],
-    "id": 0,
+    "id": 48,
     "name": "GkTacticalActionWaypoint",
     "namespace": null,
     "parent": "DataElement",
@@ -14727,7 +14727,7 @@
   {
     "category": "TacticalAction",
     "functions": [ ],
-    "id": 0,
+    "id": 368,
     "name": "GkTacticalAction",
     "namespace": null,
     "parent": "TransformData",
@@ -14832,7 +14832,7 @@
         "type": "uint32"
       }
     ],
-    "version": 0
+    "version": 7
   },
   {
     "category": "TacticalAction",
@@ -15417,7 +15417,7 @@
         "type": "EntityPtr"
       }
     ],
-    "version": 0
+    "version": 6
   },
   {
     "category": "",
@@ -15526,7 +15526,7 @@
         "type": "int32"
       }
     ],
-    "version": 0
+    "version": 6
   },
   {
     "category": "Ui",
@@ -15755,7 +15755,7 @@
         "type": "String"
       }
     ],
-    "version": 0
+    "version": 4
   },
   {
     "category": "",
@@ -15770,7 +15770,7 @@
   {
     "category": "Ui",
     "functions": [ ],
-    "id": 0,
+    "id": 112,
     "name": "UiPaletteData",
     "namespace": "UiScene",
     "parent": "Data",
@@ -15824,7 +15824,7 @@
   {
     "category": "Ui",
     "functions": [ ],
-    "id": 0,
+    "id": 76,
     "name": "UiAnimWorkMemoryData",
     "namespace": "UiScene",
     "parent": "Data",
@@ -15937,7 +15937,7 @@
         "type": "m"
       }
     ],
-    "id": 0,
+    "id": 80,
     "name": "UiFontGroupData",
     "namespace": "Ui",
     "parent": "Data",
@@ -15969,7 +15969,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 128,
     "name": "UiFontDataElement",
     "namespace": "Ui",
     "parent": "DataElement",
@@ -16074,12 +16074,12 @@
         "type": "Vector4"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "Ui",
     "functions": [ ],
-    "id": 0,
+    "id": 120,
     "name": "UiInstanceData",
     "namespace": "Ui",
     "parent": "Data",
@@ -16107,12 +16107,12 @@
         "type": "String"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Ui",
     "functions": [ ],
-    "id": 0,
+    "id": 96,
     "name": "UiGraphEntry",
     "namespace": "Ui",
     "parent": "Data",
@@ -16140,7 +16140,7 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -16326,7 +16326,7 @@
         "type": "String"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -16447,7 +16447,7 @@
         "type": "int32"
       }
     ],
-    "version": 0
+    "version": 7
   },
   {
     "category": "",
@@ -16479,7 +16479,7 @@
         "type": "int32"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -16675,7 +16675,7 @@
         "type": "EntityLink"
       }
     ],
-    "version": 0
+    "version": 5
   },
   {
     "category": "",
@@ -16822,7 +16822,7 @@
   {
     "category": "Lang",
     "functions": [ ],
-    "id": 0,
+    "id": 88,
     "name": "LangData",
     "namespace": "Ui",
     "parent": "Data",
@@ -16839,7 +16839,7 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -16907,7 +16907,7 @@
         "type": "m"
       }
     ],
-    "id": 0,
+    "id": 80,
     "name": "GraphxSpatialGraphDataNode",
     "namespace": "Graphx",
     "parent": "DataElement",
@@ -16951,7 +16951,7 @@
   {
     "category": "Graphx",
     "functions": [ ],
-    "id": 0,
+    "id": 36,
     "name": "GraphxSpatialGraphDataEdge",
     "namespace": "Graphx",
     "parent": "DataElement",
@@ -16994,7 +16994,7 @@
   {
     "category": "Graphx",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "GraphxPathData",
     "namespace": "Graphx",
     "parent": "GraphxSpatialGraphData",
@@ -17066,7 +17066,7 @@
   {
     "category": "Fx",
     "functions": [ ],
-    "id": 0,
+    "id": 304,
     "name": "FxLocatorData",
     "namespace": null,
     "parent": "TransformData",
@@ -17160,7 +17160,7 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 4
   },
   {
     "category": "Fx",
@@ -17192,7 +17192,7 @@
   {
     "category": "Fx",
     "functions": [ ],
-    "id": 0,
+    "id": 272,
     "name": "FxLocatorGroup",
     "namespace": null,
     "parent": "TransformData",
@@ -17209,7 +17209,7 @@
         "type": "String"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Fx",
@@ -17224,7 +17224,7 @@
   {
     "category": "Fx",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "FxLocatorArrayData",
     "namespace": null,
     "parent": "TransformData",
@@ -17256,7 +17256,7 @@
   {
     "category": "Sound",
     "functions": [ ],
-    "id": 0,
+    "id": 96,
     "name": "SoundPackage",
     "namespace": "Sdx",
     "parent": "Data",
@@ -17284,7 +17284,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -17309,7 +17309,7 @@
   {
     "category": "Sound",
     "functions": [ ],
-    "id": 0,
+    "id": 112,
     "name": "SoundDataFileInfo",
     "namespace": "Sdx",
     "parent": "Data",
@@ -17353,7 +17353,7 @@
   {
     "category": "Sound",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "SoundSource",
     "namespace": "Sdx",
     "parent": "TransformData",
@@ -17403,7 +17403,7 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -17443,7 +17443,7 @@
   {
     "category": "Sound",
     "functions": [ ],
-    "id": 0,
+    "id": 80,
     "name": "SoundAreaGlobal",
     "namespace": "Sdx",
     "parent": "Data",
@@ -17471,7 +17471,7 @@
         "type": "String"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -17495,7 +17495,7 @@
   {
     "category": "Sound",
     "functions": [ ],
-    "id": 0,
+    "id": 112,
     "name": "SoundAreaGroup",
     "namespace": "Sdx",
     "parent": "Data",
@@ -17545,7 +17545,7 @@
         "type": "EntityLink"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "",
@@ -17573,7 +17573,7 @@
   {
     "category": "Sound",
     "functions": [ ],
-    "id": 0,
+    "id": 96,
     "name": "SoundAreaMember",
     "namespace": "Sdx",
     "parent": "Data",
@@ -17612,7 +17612,7 @@
         "type": "EntityPtr"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -17636,7 +17636,7 @@
   {
     "category": "Sound",
     "functions": [ ],
-    "id": 0,
+    "id": 104,
     "name": "SoundAreaParameter",
     "namespace": "Sdx",
     "parent": "DataElement",
@@ -17719,12 +17719,12 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 4
   },
   {
     "category": "Sound",
     "functions": [ ],
-    "id": 0,
+    "id": 136,
     "name": "SoundAreaEdge",
     "namespace": "Sdx",
     "parent": "Data",
@@ -17763,7 +17763,7 @@
         "type": "EntityLink"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -17804,7 +17804,7 @@
         "type": "uint32"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "Sound",
@@ -17853,7 +17853,7 @@
   {
     "category": "Sound",
     "functions": [ ],
-    "id": 0,
+    "id": 140,
     "name": "SoundPhysicsParameter",
     "namespace": "Sdx",
     "parent": "Data",
@@ -18068,12 +18068,12 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Phx",
     "functions": [ ],
-    "id": 0,
+    "id": 144,
     "name": "PhxAssociationUnitElement",
     "namespace": "Phx",
     "parent": "DataElement",
@@ -18134,12 +18134,12 @@
         "type": "Quat"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "Phx",
     "functions": [ ],
-    "id": 0,
+    "id": 28,
     "name": "PhAssociationParam",
     "namespace": "Phx",
     "parent": "Entity",
@@ -18161,7 +18161,7 @@
   {
     "category": "Phx",
     "functions": [ ],
-    "id": 0,
+    "id": 152,
     "name": "PhxAssociation",
     "namespace": "Phx",
     "parent": "Data",
@@ -18211,12 +18211,12 @@
         "type": "uint32"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Phx",
     "functions": [ ],
-    "id": 0,
+    "id": 72,
     "name": "PhVehicleNormalEngineParam",
     "namespace": "Phx",
     "parent": "Entity",
@@ -18260,7 +18260,7 @@
   {
     "category": "Phx",
     "functions": [ ],
-    "id": 0,
+    "id": 120,
     "name": "PhxVehicleNormalEngine",
     "namespace": "Phx",
     "parent": "Data",
@@ -18343,7 +18343,7 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Phx",
@@ -18381,7 +18381,7 @@
   {
     "category": "Phx",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "PhVehicleAxisParam",
     "namespace": "Phx",
     "parent": "Entity",
@@ -18409,12 +18409,12 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Phx",
     "functions": [ ],
-    "id": 0,
+    "id": 128,
     "name": "PhxVehicleAxis",
     "namespace": "Phx",
     "parent": "Data",
@@ -18629,12 +18629,12 @@
         "type": "String"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Phx",
     "functions": [ ],
-    "id": 0,
+    "id": 160,
     "name": "PhxWheelConstraintParam",
     "namespace": "Phx",
     "parent": "PhConstraintParam",
@@ -18783,12 +18783,12 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "Phx",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "PhxWheelAssociationUnitParam",
     "namespace": "Phx",
     "parent": "Entity",
@@ -18810,7 +18810,7 @@
   {
     "category": "Geox",
     "functions": [ ],
-    "id": 0,
+    "id": 304,
     "name": "GeoxPath",
     "namespace": null,
     "parent": "GraphxPathData",
@@ -18842,7 +18842,7 @@
   {
     "category": "Geox",
     "functions": [ ],
-    "id": 0,
+    "id": 320,
     "name": "GeoxPath2",
     "namespace": null,
     "parent": "GraphxPathData",
@@ -18881,7 +18881,7 @@
         "type": "String"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -18908,7 +18908,7 @@
   {
     "category": "Geox",
     "functions": [ ],
-    "id": 0,
+    "id": 96,
     "name": "GeoxPathNode",
     "namespace": null,
     "parent": "GraphxSpatialGraphDataNode",
@@ -18930,7 +18930,7 @@
   {
     "category": "Geox",
     "functions": [ ],
-    "id": 0,
+    "id": 56,
     "name": "GeoxPathEdge",
     "namespace": null,
     "parent": "GraphxSpatialGraphDataEdge",
@@ -18952,7 +18952,7 @@
   {
     "category": "Path",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "GeoxPathPack",
     "namespace": null,
     "parent": "TransformData",
@@ -18984,7 +18984,7 @@
   {
     "category": "Geox",
     "functions": [ ],
-    "id": 0,
+    "id": 304,
     "name": "GeoxTrapAreaPath",
     "namespace": null,
     "parent": "GraphxPathData",
@@ -19016,7 +19016,7 @@
   {
     "category": "Geox",
     "functions": [ ],
-    "id": 0,
+    "id": 104,
     "name": "GeoxTextureMaterialRegister",
     "namespace": null,
     "parent": "Data",
@@ -19164,7 +19164,7 @@
         "type": "EntityLink"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "Target",
@@ -19249,7 +19249,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Target",
@@ -19316,7 +19316,7 @@
   {
     "category": "Target",
     "functions": [ ],
-    "id": 0,
+    "id": 264,
     "name": "GeoxTargetDesc",
     "namespace": null,
     "parent": "Data",
@@ -19529,7 +19529,7 @@
         "type": "EntityHandle"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "Target",
@@ -19544,7 +19544,7 @@
   {
     "category": "Geox",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "GeoxPathWall",
     "namespace": null,
     "parent": "TransformData",
@@ -19719,7 +19719,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 80,
     "name": "GeoxBoundingVolumeFileParameter",
     "namespace": null,
     "parent": "Data",
@@ -19741,7 +19741,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 80,
     "name": "GeoxBoundingVolumeFileParameterLarge",
     "namespace": null,
     "parent": "Data",
@@ -19763,7 +19763,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 256,
     "name": "GeoxDynamicBoundingVolumeArea",
     "namespace": null,
     "parent": "TransformData",
@@ -19773,7 +19773,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "GeoxDynamicBoundingVolumeActivator",
     "namespace": null,
     "parent": "TransformData",
@@ -19915,7 +19915,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "GeoxGeomSetLoader",
     "namespace": null,
     "parent": "TransformData",
@@ -19947,7 +19947,7 @@
   {
     "category": "Geox",
     "functions": [ ],
-    "id": 0,
+    "id": 416,
     "name": "GeoxCollisionFreeShape",
     "namespace": null,
     "parent": "TransformData",
@@ -20012,7 +20012,7 @@
   {
     "category": "Geox",
     "functions": [ ],
-    "id": 0,
+    "id": 368,
     "name": "GeoxCollisionPyraidFreeShape",
     "namespace": null,
     "parent": "TransformData",
@@ -20077,7 +20077,7 @@
   {
     "category": "Navx",
     "functions": [ ],
-    "id": 0,
+    "id": 248,
     "name": "NavxNavBlock",
     "namespace": "Navx",
     "parent": "Data",
@@ -20281,7 +20281,7 @@
         "type": "uint32"
       }
     ],
-    "version": 0
+    "version": 9
   },
   {
     "category": "Navx",
@@ -20296,7 +20296,7 @@
   {
     "category": "Navx",
     "functions": [ ],
-    "id": 0,
+    "id": 60,
     "name": "NavxNavigableParameter",
     "namespace": "Navx",
     "parent": "DataElement",
@@ -20390,12 +20390,12 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 9
   },
   {
     "category": "Navx",
     "functions": [ ],
-    "id": 0,
+    "id": 400,
     "name": "NavxWorldGenerateParameter",
     "namespace": "Navx",
     "parent": "TransformData",
@@ -20643,7 +20643,7 @@
         "type": "Path"
       }
     ],
-    "version": 0
+    "version": 27
   },
   {
     "category": "Navx",
@@ -20663,7 +20663,7 @@
     "namespace": "Navx",
     "parent": "TransformData",
     "properties": [ ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Navx",
@@ -20690,7 +20690,7 @@
   {
     "category": "Navx",
     "functions": [ ],
-    "id": 0,
+    "id": 256,
     "name": "NavxSwitchBounderData",
     "namespace": "Navx",
     "parent": "NavxBounderData",
@@ -20710,7 +20710,7 @@
   {
     "category": "Navx",
     "functions": [ ],
-    "id": 0,
+    "id": 256,
     "name": "NavxSquareGraphBounderData",
     "namespace": "Navx",
     "parent": "NavxBounderData",
@@ -20730,7 +20730,7 @@
   {
     "category": "Navx",
     "functions": [ ],
-    "id": 0,
+    "id": 272,
     "name": "NavxBounderLocator",
     "namespace": "Navx",
     "parent": "TransformData",
@@ -20795,7 +20795,7 @@
   {
     "category": "Navx",
     "functions": [ ],
-    "id": 0,
+    "id": 304,
     "name": "NavxNavFileLocator",
     "namespace": "Navx",
     "parent": "TransformData",
@@ -20845,7 +20845,7 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "Navx",
@@ -20860,7 +20860,7 @@
   {
     "category": "Navx",
     "functions": [ ],
-    "id": 0,
+    "id": 272,
     "name": "NavxNavFilter",
     "namespace": "Navx",
     "parent": "TransformData",
@@ -20892,7 +20892,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 320,
     "name": "NavxNavFilterVolume",
     "namespace": "Navx",
     "parent": "GraphxPathVolume",
@@ -20924,7 +20924,7 @@
   {
     "category": "Navx",
     "functions": [ ],
-    "id": 0,
+    "id": 256,
     "name": "NavxKeepNavLocator",
     "namespace": "Navx",
     "parent": "TransformData",
@@ -20944,7 +20944,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 36,
     "name": "NavxAttributeInfo",
     "namespace": "Navx",
     "parent": "DataElement",
@@ -20977,7 +20977,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 336,
     "name": "NavxAttributePathVolume",
     "namespace": "Navx",
     "parent": "GraphxPathVolume",
@@ -21020,7 +21020,7 @@
   {
     "category": "Navx",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "NavxHoleSimplificationParameterVolume",
     "namespace": "Navx",
     "parent": "TransformData",
@@ -21103,7 +21103,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Navx",
@@ -21118,7 +21118,7 @@
   {
     "category": "Navx",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "NavxFillNavVolume",
     "namespace": "Navx",
     "parent": "TransformData",
@@ -21371,7 +21371,7 @@
   {
     "category": "Sim",
     "functions": [ ],
-    "id": 0,
+    "id": 24,
     "name": "SimObjectParam",
     "namespace": "Sim",
     "parent": "Entity",
@@ -21391,7 +21391,7 @@
   {
     "category": "Sim",
     "functions": [ ],
-    "id": 0,
+    "id": 36,
     "name": "SimEngineOnPhysicsParam",
     "namespace": "Sim",
     "parent": "SimEngineParam",
@@ -21441,7 +21441,7 @@
         "type": "int32"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "Sim",
@@ -21507,7 +21507,7 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Sim",
@@ -21551,12 +21551,12 @@
         "type": "EntityPtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Sim",
     "functions": [ ],
-    "id": 0,
+    "id": 328,
     "name": "SimOnPhysics",
     "namespace": "Sim",
     "parent": "SimObject",
@@ -21672,12 +21672,12 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "Sim",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "SimAssociationUnitParam",
     "namespace": "Sim",
     "parent": "Entity",
@@ -21705,12 +21705,12 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "Sim",
     "functions": [ ],
-    "id": 0,
+    "id": 160,
     "name": "SimAssociationUnit",
     "namespace": "Sim",
     "parent": "PhxAssociationUnitElement",
@@ -21749,7 +21749,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Sim",
@@ -21776,7 +21776,7 @@
   {
     "category": "Sim",
     "functions": [ ],
-    "id": 0,
+    "id": 56,
     "name": "SimWindControl",
     "namespace": "Sim",
     "parent": "SimControlElement",
@@ -21809,7 +21809,7 @@
   {
     "category": "Sim",
     "functions": [ ],
-    "id": 0,
+    "id": 64,
     "name": "SimGravityControl",
     "namespace": "Sim",
     "parent": "SimControlElement",
@@ -21842,7 +21842,7 @@
   {
     "category": "Sim",
     "functions": [ ],
-    "id": 0,
+    "id": 56,
     "name": "SimInertialControl",
     "namespace": "Sim",
     "parent": "SimControlElement",
@@ -21875,7 +21875,7 @@
   {
     "category": "Sim",
     "functions": [ ],
-    "id": 0,
+    "id": 56,
     "name": "SimDirectionControl",
     "namespace": "Sim",
     "parent": "SimControlElement",
@@ -21914,12 +21914,12 @@
         "type": "Quat"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Sim",
     "functions": [ ],
-    "id": 0,
+    "id": 72,
     "name": "SimClothControl",
     "namespace": "Sim",
     "parent": "SimControlElement",
@@ -21974,7 +21974,7 @@
   {
     "category": "Sim",
     "functions": [ ],
-    "id": 0,
+    "id": 40,
     "name": "SimClothControlUnit",
     "namespace": "Sim",
     "parent": "DataElement",
@@ -22051,7 +22051,7 @@
   {
     "category": "Sim",
     "functions": [ ],
-    "id": 0,
+    "id": 56,
     "name": "SimHitGroupControl",
     "namespace": "Sim",
     "parent": "SimControlElement",
@@ -22083,7 +22083,7 @@
   {
     "category": "Sim",
     "functions": [ ],
-    "id": 0,
+    "id": 28,
     "name": "SimWindControlParam",
     "namespace": "Sim",
     "parent": "SimControlParam",
@@ -22105,7 +22105,7 @@
   {
     "category": "Sim",
     "functions": [ ],
-    "id": 0,
+    "id": 48,
     "name": "SimGravityControlParam",
     "namespace": "Sim",
     "parent": "SimControlParam",
@@ -22127,7 +22127,7 @@
   {
     "category": "Sim",
     "functions": [ ],
-    "id": 0,
+    "id": 28,
     "name": "SimInertialControlParam",
     "namespace": "Sim",
     "parent": "SimControlParam",
@@ -22149,7 +22149,7 @@
   {
     "category": "Sim",
     "functions": [ ],
-    "id": 0,
+    "id": 48,
     "name": "SimDirectionControlParam",
     "namespace": "Sim",
     "parent": "SimControlParam",
@@ -22182,7 +22182,7 @@
   {
     "category": "Sim",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "SimClothControlParam",
     "namespace": "Sim",
     "parent": "SimControlParam",
@@ -22210,12 +22210,12 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Sim",
     "functions": [ ],
-    "id": 0,
+    "id": 52,
     "name": "SimClothControlUnitParam",
     "namespace": "Sim",
     "parent": "Entity",
@@ -22292,7 +22292,7 @@
   {
     "category": "Sim",
     "functions": [ ],
-    "id": 0,
+    "id": 28,
     "name": "SimHitGroupControlParam",
     "namespace": "Sim",
     "parent": "SimControlParam",
@@ -22314,7 +22314,7 @@
   {
     "category": "Sim",
     "functions": [ ],
-    "id": 0,
+    "id": 100,
     "name": "SimClothSettingData",
     "namespace": "Sim",
     "parent": "Data",
@@ -22419,7 +22419,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Des",
@@ -22447,7 +22447,7 @@
   {
     "category": "Des",
     "functions": [ ],
-    "id": 0,
+    "id": 92,
     "name": "DesParamData",
     "namespace": "Des",
     "parent": "Data",
@@ -22530,7 +22530,7 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "Des",
@@ -22618,12 +22618,12 @@
         "type": "uint32"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Des",
     "functions": [ ],
-    "id": 0,
+    "id": 80,
     "name": "DesFixData",
     "namespace": "Des",
     "parent": "Data",
@@ -22645,7 +22645,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 144,
     "name": "DemoModelDataNode",
     "namespace": "Demo",
     "parent": "Data",
@@ -22673,7 +22673,7 @@
         "type": "EntityLink"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -22728,12 +22728,12 @@
         "type": "String"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 48,
     "name": "ClipData",
     "namespace": "Demo",
     "parent": "DataElement",
@@ -22866,7 +22866,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 128,
     "name": "DemoControlCharacterDesc",
     "namespace": "Demo",
     "parent": "DataElement",
@@ -22982,7 +22982,7 @@
         "type": "Quat"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -23719,7 +23719,7 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 10
   },
   {
     "category": "",
@@ -23889,7 +23889,7 @@
   {
     "category": "Character",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "GkPathLineTarget",
     "namespace": "Character",
     "parent": "GraphxPathData",
@@ -24161,7 +24161,7 @@
   {
     "category": "Model",
     "functions": [ ],
-    "id": 0,
+    "id": 352,
     "name": "StaticModel",
     "namespace": "FoxGameKit",
     "parent": "TransformData",
@@ -24288,7 +24288,7 @@
         "type": "int32"
       }
     ],
-    "version": 0
+    "version": 9
   },
   {
     "category": "",
@@ -24337,7 +24337,7 @@
   {
     "category": "Model",
     "functions": [ ],
-    "id": 0,
+    "id": 208,
     "name": "StaticModelArray",
     "namespace": "FoxGameKit",
     "parent": "Data",
@@ -24475,7 +24475,7 @@
         "type": "uint32"
       }
     ],
-    "version": 0
+    "version": 4
   },
   {
     "category": "",
@@ -24513,7 +24513,7 @@
   {
     "category": "Model",
     "functions": [ ],
-    "id": 0,
+    "id": 72,
     "name": "StaticModelArrayLinkTarget",
     "namespace": "FoxGameKit",
     "parent": "Data",
@@ -24556,12 +24556,12 @@
   {
     "category": "Locator",
     "functions": [ ],
-    "id": 0,
+    "id": 272,
     "name": "StaticModelArrayLocator",
     "namespace": "FoxGameKit",
     "parent": "TransformData",
     "properties": [ ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -24576,7 +24576,7 @@
   {
     "category": "Model",
     "functions": [ ],
-    "id": 0,
+    "id": 80,
     "name": "StaticModelArrayPathFilter",
     "namespace": "FoxGameKit",
     "parent": "Data",
@@ -24593,7 +24593,7 @@
         "type": "Path"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Model",
@@ -24856,7 +24856,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 12
   },
   {
     "category": "",
@@ -24871,7 +24871,7 @@
   {
     "category": "Decal",
     "functions": [ ],
-    "id": 0,
+    "id": 448,
     "name": "DecalArray",
     "namespace": "FoxGameKit",
     "parent": "TransformData",
@@ -25141,7 +25141,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -25151,7 +25151,7 @@
     "namespace": "FoxGameKit",
     "parent": "TransformDataBody",
     "properties": [ ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Camouflage",
@@ -25299,7 +25299,7 @@
         "type": "m"
       }
     ],
-    "id": 0,
+    "id": 960,
     "name": "TerrainRender",
     "namespace": null,
     "parent": "TransformData",
@@ -25591,7 +25591,7 @@
         "type": "Path"
       }
     ],
-    "version": 0
+    "version": 9
   },
   {
     "category": "TerrainRender",
@@ -25641,7 +25641,7 @@
     "namespace": null,
     "parent": "TransformDataBody",
     "properties": [ ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -25850,12 +25850,12 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 14
   },
   {
     "category": "Terrain",
     "functions": [ ],
-    "id": 0,
+    "id": 272,
     "name": "LevelingTerrain",
     "namespace": null,
     "parent": "TransformData",
@@ -25929,7 +25929,7 @@
   {
     "category": "Terrain",
     "functions": [ ],
-    "id": 0,
+    "id": 384,
     "name": "TerrainDecal",
     "namespace": null,
     "parent": "TransformData",
@@ -26111,7 +26111,7 @@
         "type": "Vector3"
       }
     ],
-    "version": 0
+    "version": 9
   },
   {
     "category": "",
@@ -26126,7 +26126,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 104,
     "name": "TerrainDecalPack",
     "namespace": "FoxGameKit",
     "parent": "Data",
@@ -26179,7 +26179,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 144,
     "name": "TerrainBlock",
     "namespace": "FoxGameKit",
     "parent": "Data",
@@ -26255,7 +26255,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 352,
     "name": "ObjectBrush",
     "namespace": "FoxGameKit",
     "parent": "TransformData",
@@ -26327,7 +26327,7 @@
         "type": "uint32"
       }
     ],
-    "version": 0
+    "version": 4
   },
   {
     "category": "ObjectBrush",
@@ -26411,7 +26411,7 @@
         "type": "m"
       }
     ],
-    "id": 0,
+    "id": 128,
     "name": "ObjectBrushBlock",
     "namespace": "FoxGameKit",
     "parent": "Data",
@@ -26461,12 +26461,12 @@
         "type": "String"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 76,
     "name": "ObjectBrushPlugin",
     "namespace": "FoxGameKit",
     "parent": "Data",
@@ -26494,7 +26494,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "ObjectBrush",
@@ -26565,7 +26565,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 152,
     "name": "ObjectBrushPluginStaticModel",
     "namespace": "FoxGameKit",
     "parent": "ObjectBrushPlugin",
@@ -26659,7 +26659,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "ObjectBrush",
@@ -26674,7 +26674,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 120,
     "name": "ObjectBrushPluginClone",
     "namespace": "FoxGameKit",
     "parent": "ObjectBrushPlugin",
@@ -26735,7 +26735,7 @@
         "type": "int32"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "ObjectBrush",
@@ -26750,7 +26750,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 76,
     "name": "ViewGroupControlCondition",
     "namespace": "FoxGameKit",
     "parent": "Data",
@@ -26794,7 +26794,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 36,
     "name": "FoxTrapExecViewGroupControlCallbackDataElement",
     "namespace": "FoxGameKit",
     "parent": "GeoTrapModuleCallbackDataElement",
@@ -27089,7 +27089,7 @@
   {
     "category": "Subtitles",
     "functions": [ ],
-    "id": 0,
+    "id": 192,
     "name": "SubtitlesGenerator",
     "namespace": "FoxGameKit",
     "parent": "UiGraphEntry",
@@ -27216,7 +27216,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 5
   },
   {
     "category": "Subtitles",
@@ -27231,7 +27231,7 @@
   {
     "category": "Subtitles",
     "functions": [ ],
-    "id": 0,
+    "id": 112,
     "name": "SubtitlesPackage",
     "namespace": "FoxGameKit",
     "parent": "Data",
@@ -27270,7 +27270,7 @@
         "type": "Path"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "Subtitles",
@@ -27295,7 +27295,7 @@
   {
     "category": "Subtitles",
     "functions": [ ],
-    "id": 0,
+    "id": 88,
     "name": "SubtitlesBlockControllerData",
     "namespace": "FoxGameKit",
     "parent": "Data",
@@ -27312,7 +27312,7 @@
         "type": "String"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -27327,7 +27327,7 @@
   {
     "category": "Subtitles",
     "functions": [ ],
-    "id": 0,
+    "id": 88,
     "name": "SubtitlesOptionBlockControllerData",
     "namespace": "FoxGameKit",
     "parent": "Data",
@@ -27859,7 +27859,7 @@
         "type": "EntityLink"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "",
@@ -27897,7 +27897,7 @@
         "type": "EntityHandle"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -27919,7 +27919,7 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -27957,7 +27957,7 @@
   {
     "category": "Wind",
     "functions": [ ],
-    "id": 0,
+    "id": 72,
     "name": "WindGlobal",
     "namespace": null,
     "parent": "EnvironmentGlobal",
@@ -28007,7 +28007,7 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -28022,7 +28022,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 80,
     "name": "WindParameter",
     "namespace": null,
     "parent": "EnvironmentParameter",
@@ -28116,7 +28116,7 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 6
   },
   {
     "category": "",
@@ -28490,7 +28490,7 @@
         "type": "Path"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -28623,7 +28623,7 @@
         "type": "uint32"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -28638,7 +28638,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 112,
     "name": "StageLightFadeData",
     "namespace": "FoxGameKit",
     "parent": "Data",
@@ -28709,7 +28709,7 @@
   {
     "category": "Texture",
     "functions": [ ],
-    "id": 0,
+    "id": 72,
     "name": "TexturePackLoadConditioner",
     "namespace": "FoxGameKit",
     "parent": "Data",
@@ -28780,12 +28780,12 @@
         "type": "String"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "PartsBuilder",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "ModelDescription",
     "namespace": "PartsBuilder",
     "parent": "PartDescription",
@@ -28923,12 +28923,12 @@
         "type": "int32"
       }
     ],
-    "version": 0
+    "version": 12
   },
   {
     "category": "PartsBuilder",
     "functions": [ ],
-    "id": 0,
+    "id": 336,
     "name": "DestructionModelDescription",
     "namespace": "PartsBuilder",
     "parent": "ModelDescription",
@@ -28956,12 +28956,12 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "PartsBuilder",
     "functions": [ ],
-    "id": 0,
+    "id": 336,
     "name": "ConnectModelDescription",
     "namespace": "PartsBuilder",
     "parent": "ModelDescription",
@@ -28978,12 +28978,12 @@
         "type": "String"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "PartsBuilder",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "CoverModelDescription",
     "namespace": "PartsBuilder",
     "parent": "ModelDescription",
@@ -29026,7 +29026,7 @@
   {
     "category": "PartsBuilder",
     "functions": [ ],
-    "id": 0,
+    "id": 232,
     "name": "EffectDescription",
     "namespace": "PartsBuilder",
     "parent": "PartDescription",
@@ -29197,7 +29197,7 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 6
   },
   {
     "category": "PartsBuilder",
@@ -29224,7 +29224,7 @@
   {
     "category": "PartsBuilder",
     "functions": [ ],
-    "id": 0,
+    "id": 176,
     "name": "GeomDescription",
     "namespace": "PartsBuilder",
     "parent": "PartDescription",
@@ -29285,12 +29285,12 @@
         "type": "Vector3"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "PartsBuilder",
     "functions": [ ],
-    "id": 0,
+    "id": 112,
     "name": "GeomSkeletonDescription",
     "namespace": "PartsBuilder",
     "parent": "PartDescription",
@@ -29307,12 +29307,12 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "PartsBuilder",
     "functions": [ ],
-    "id": 0,
+    "id": 112,
     "name": "FoxTargetDescription",
     "namespace": "PartsBuilder",
     "parent": "PartDescription",
@@ -29329,12 +29329,12 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "PartsBuilder",
     "functions": [ ],
-    "id": 0,
+    "id": 112,
     "name": "PhysicsDescription",
     "namespace": "PartsBuilder",
     "parent": "PartDescription",
@@ -29356,7 +29356,7 @@
   {
     "category": "PartsBuilder",
     "functions": [ ],
-    "id": 0,
+    "id": 120,
     "name": "SimDescription",
     "namespace": "PartsBuilder",
     "parent": "PartDescription",
@@ -29384,12 +29384,12 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "PartsBuilder",
     "functions": [ ],
-    "id": 0,
+    "id": 112,
     "name": "SoundDescription",
     "namespace": "PartsBuilder",
     "parent": "PartDescription",
@@ -29411,7 +29411,7 @@
   {
     "category": "PartsBuilder",
     "functions": [ ],
-    "id": 0,
+    "id": 160,
     "name": "ClothDescription",
     "namespace": "PartsBuilder",
     "parent": "PartDescription",
@@ -29450,12 +29450,12 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "PartsBuilder",
     "functions": [ ],
-    "id": 0,
+    "id": 112,
     "name": "VehicleDescription",
     "namespace": "PartsBuilder",
     "parent": "PartDescription",
@@ -29477,7 +29477,7 @@
   {
     "category": "PartsBuilder",
     "functions": [ ],
-    "id": 0,
+    "id": 112,
     "name": "FileResourceDescription",
     "namespace": "PartsBuilder",
     "parent": "PartDescription",
@@ -29494,7 +29494,7 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -29666,12 +29666,12 @@
         "type": "Path"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 104,
     "name": "TppLocationData",
     "namespace": null,
     "parent": "Data",
@@ -29710,7 +29710,7 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "",
@@ -29774,7 +29774,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 44,
     "name": "TppRequestWeatherTagTrapExecDataElement",
     "namespace": null,
     "parent": "GeoTrapModuleCallbackDataElement",
@@ -29870,7 +29870,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 48,
     "name": "TppCheckPointTrapExecDataElement",
     "namespace": null,
     "parent": "GeoTrapModuleCallbackDataElement",
@@ -29887,7 +29887,7 @@
         "type": "EntityLink"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -29920,7 +29920,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -29978,7 +29978,7 @@
         "type": "String"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -30016,7 +30016,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 84,
     "name": "VideoPlayerMemoryBlock",
     "namespace": null,
     "parent": "Data",
@@ -30082,7 +30082,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 1264,
     "name": "DemoData",
     "namespace": "Demox",
     "parent": "TransformData",
@@ -30605,7 +30605,7 @@
         "type": "EntityLink"
       }
     ],
-    "version": 0
+    "version": 36
   },
   {
     "category": "",
@@ -30718,7 +30718,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 712,
     "name": "DemoStreamAnimation",
     "namespace": "Demox",
     "parent": "Data",
@@ -30900,7 +30900,7 @@
         "type": "EntityPtr"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "",
@@ -30915,7 +30915,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 120,
     "name": "DemoResource",
     "namespace": "Demox",
     "parent": "Data",
@@ -31031,7 +31031,7 @@
         "type": "uint32"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -31046,7 +31046,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 40,
     "name": "DemoRelativePlayParameter",
     "namespace": "EdDemo",
     "parent": "DemoParameter",
@@ -31238,7 +31238,7 @@
   {
     "category": "Sound",
     "functions": [ ],
-    "id": 0,
+    "id": 408,
     "name": "TppSoundWorld",
     "namespace": "TppSound",
     "parent": "Data",
@@ -31497,7 +31497,7 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 8
   },
   {
     "category": "",
@@ -31522,7 +31522,7 @@
   {
     "category": "Sound",
     "functions": [ ],
-    "id": 0,
+    "id": 136,
     "name": "TppAmbientParameter",
     "namespace": "TppSound",
     "parent": "Data",
@@ -31583,12 +31583,12 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Sound",
     "functions": [ ],
-    "id": 0,
+    "id": 304,
     "name": "TppAmbientSoundSource",
     "namespace": "TppSound",
     "parent": "SoundSource",
@@ -31758,7 +31758,7 @@
   {
     "category": "Sound",
     "functions": [ ],
-    "id": 0,
+    "id": 144,
     "name": "TppMusicParameter",
     "namespace": "TppSound",
     "parent": "Data",
@@ -31984,7 +31984,7 @@
         "type": "String"
       }
     ],
-    "version": 0
+    "version": 9
   },
   {
     "category": "Sound",
@@ -32043,7 +32043,7 @@
   {
     "category": "Sound",
     "functions": [ ],
-    "id": 0,
+    "id": 48,
     "name": "TppAreaEdgeParameter",
     "namespace": "TppSound",
     "parent": "SoundAreaEdgeParameter",
@@ -32717,7 +32717,7 @@
         "type": "EntityLink"
       }
     ],
-    "version": 0
+    "version": 4
   },
   {
     "category": "",
@@ -32732,7 +32732,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 96,
     "name": "TppPrimRiverModel",
     "namespace": null,
     "parent": "Data",
@@ -32798,7 +32798,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 176,
     "name": "TppPrimRiverModelParam",
     "namespace": null,
     "parent": "Data",
@@ -33024,7 +33024,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 5
   },
   {
     "category": "",
@@ -33039,7 +33039,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 120,
     "name": "TppPrimRiverModelTwoLayer",
     "namespace": null,
     "parent": "Data",
@@ -33116,7 +33116,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 224,
     "name": "TppPrimRiverModelParamTwoLayer",
     "namespace": null,
     "parent": "Data",
@@ -33485,7 +33485,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 4
   },
   {
     "category": "",
@@ -33500,7 +33500,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 120,
     "name": "TppPrimRiverModelOverlay",
     "namespace": null,
     "parent": "Data",
@@ -33577,7 +33577,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 168,
     "name": "TppPrimRiverModelParamOverlay",
     "namespace": null,
     "parent": "Data",
@@ -33781,7 +33781,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "",
@@ -33796,7 +33796,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 272,
     "name": "TppWaterBounding",
     "namespace": null,
     "parent": "TransformData",
@@ -33835,12 +33835,12 @@
         "type": "int32"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 80,
     "name": "TppWaterRippleViewport",
     "namespace": null,
     "parent": "Data",
@@ -33895,7 +33895,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 272,
     "name": "TppDemoIntelligenceObject",
     "namespace": null,
     "parent": "TransformData",
@@ -34120,7 +34120,7 @@
         "type": "Color"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -34145,7 +34145,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 96,
     "name": "TppWeatherParasiteUnitParam",
     "namespace": null,
     "parent": "Data",
@@ -34189,7 +34189,7 @@
   {
     "category": "TppEffect",
     "functions": [ ],
-    "id": 0,
+    "id": 240,
     "name": "TppWeatherSandStormData",
     "namespace": null,
     "parent": "Data",
@@ -34349,7 +34349,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "",
@@ -34373,7 +34373,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 160,
     "name": "TppHeatHaze",
     "namespace": null,
     "parent": "Data",
@@ -34643,7 +34643,7 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -34658,7 +34658,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 112,
     "name": "TppDroplets",
     "namespace": null,
     "parent": "Data",
@@ -34811,7 +34811,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 64,
     "name": "TppFireLights",
     "namespace": null,
     "parent": "Data",
@@ -34831,7 +34831,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 64,
     "name": "TppFirePropagationLights",
     "namespace": null,
     "parent": "Data",
@@ -34851,7 +34851,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 92,
     "name": "TppGrenadeShock",
     "namespace": null,
     "parent": "Data",
@@ -34934,7 +34934,7 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -34949,7 +34949,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 96,
     "name": "TppSandWind",
     "namespace": null,
     "parent": "Data",
@@ -35058,7 +35058,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 136,
     "name": "TppFourierOcean",
     "namespace": null,
     "parent": "Data",
@@ -35334,7 +35334,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 352,
     "name": "TppOcean",
     "namespace": null,
     "parent": "TransformData",
@@ -35538,12 +35538,12 @@
         "type": "EntityLink"
       }
     ],
-    "version": 0
+    "version": 12
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 112,
     "name": "TppWaterDropsOnCameraLens",
     "namespace": null,
     "parent": "Data",
@@ -35659,7 +35659,7 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -35674,7 +35674,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 208,
     "name": "TppVfxFileLoader",
     "namespace": null,
     "parent": "Data",
@@ -35713,12 +35713,12 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 160,
     "name": "TppTextureLoader",
     "namespace": null,
     "parent": "Data",
@@ -35746,12 +35746,12 @@
         "type": "Path"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 112,
     "name": "TppNvgFilterNoise",
     "namespace": null,
     "parent": "Data",
@@ -35856,12 +35856,12 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "TppEffect",
     "functions": [ ],
-    "id": 0,
+    "id": 128,
     "name": "TppModelMarkerFilterSettings",
     "namespace": null,
     "parent": "Data",
@@ -35949,7 +35949,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 336,
     "name": "TppDamageFilterParam",
     "namespace": null,
     "parent": "TransformData",
@@ -36048,7 +36048,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 88,
     "name": "TppDamageFilterExposure",
     "namespace": null,
     "parent": "Data",
@@ -36120,7 +36120,7 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -36201,7 +36201,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 112,
     "name": "TppSkyEffectControler",
     "namespace": null,
     "parent": "Data",
@@ -36251,7 +36251,7 @@
         "type": "uint32"
       }
     ],
-    "version": 0
+    "version": 5
   },
   {
     "category": "",
@@ -36266,7 +36266,7 @@
   {
     "category": "TppEffect",
     "functions": [ ],
-    "id": 0,
+    "id": 88,
     "name": "TppWeatherCloudShadowSettings",
     "namespace": null,
     "parent": "Data",
@@ -36316,12 +36316,12 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "TppEffect",
     "functions": [ ],
-    "id": 0,
+    "id": 384,
     "name": "TppStar",
     "namespace": null,
     "parent": "TransformData",
@@ -36437,7 +36437,7 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -36462,7 +36462,7 @@
   {
     "category": "TppEffect",
     "functions": [ ],
-    "id": 0,
+    "id": 200,
     "name": "TppWeatherRainData",
     "namespace": null,
     "parent": "Data",
@@ -36523,7 +36523,7 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 4
   },
   {
     "category": "",
@@ -36719,7 +36719,7 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 4
   },
   {
     "category": "",
@@ -37015,12 +37015,12 @@
         "type": "int32"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "TppEffect",
     "functions": [ ],
-    "id": 0,
+    "id": 432,
     "name": "TppSky",
     "namespace": null,
     "parent": "TransformData",
@@ -37400,7 +37400,7 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 11
   },
   {
     "category": "",
@@ -37425,7 +37425,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 64,
     "name": "TppDirtyModelData",
     "namespace": null,
     "parent": "Data",
@@ -37435,7 +37435,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 416,
     "name": "TppFootPrint",
     "namespace": null,
     "parent": "TransformData",
@@ -37507,7 +37507,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -37547,7 +37547,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 224,
     "name": "TppRainFilter",
     "namespace": null,
     "parent": "Data",
@@ -37817,7 +37817,7 @@
         "type": "Path"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -37837,7 +37837,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 208,
     "name": "TppRainFilterInterrupt",
     "namespace": null,
     "parent": "Data",
@@ -37887,7 +37887,7 @@
         "type": "uint32"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -37915,7 +37915,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 400,
     "name": "TppRainFilterInterruptTrans",
     "namespace": null,
     "parent": "TransformData",
@@ -37965,7 +37965,7 @@
         "type": "uint32"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -38028,7 +38028,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 136,
     "name": "TppFloorRainSplashData",
     "namespace": null,
     "parent": "Data",
@@ -38056,7 +38056,7 @@
         "type": "String"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -38076,7 +38076,7 @@
     "namespace": null,
     "parent": "TransformData",
     "properties": [ ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -38142,7 +38142,7 @@
         "type": "EntityLink"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "",
@@ -38157,7 +38157,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 688,
     "name": "TppHandLightLensFlareRoot",
     "namespace": null,
     "parent": "TppLensFlareRootBase",
@@ -38240,7 +38240,7 @@
         "type": "EntityLink"
       }
     ],
-    "version": 0
+    "version": 4
   },
   {
     "category": "",
@@ -38255,7 +38255,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 672,
     "name": "TppLensFlareShape",
     "namespace": null,
     "parent": "TransformData",
@@ -38580,7 +38580,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 11
   },
   {
     "category": "",
@@ -38595,7 +38595,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 768,
     "name": "TppLensFlareShapeArray",
     "namespace": null,
     "parent": "TppLensFlareShape",
@@ -38694,7 +38694,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 688,
     "name": "TppLensFlareShapeCircle",
     "namespace": null,
     "parent": "TppLensFlareShape",
@@ -38733,7 +38733,7 @@
         "type": "uint32"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -38748,7 +38748,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 208,
     "name": "TppLensFlareMaterial",
     "namespace": null,
     "parent": "Data",
@@ -38820,7 +38820,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "",
@@ -38835,7 +38835,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 144,
     "name": "TppLensFlareField",
     "namespace": null,
     "parent": "Data",
@@ -38962,12 +38962,12 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 176,
     "name": "TppLensFlareAsymmetricField",
     "namespace": null,
     "parent": "TppLensFlareField",
@@ -39044,7 +39044,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 108,
     "name": "TppLensFlareRateGraph",
     "namespace": null,
     "parent": "Data",
@@ -39186,7 +39186,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 272,
     "name": "TppSunLightFlare",
     "namespace": null,
     "parent": "TransformData",
@@ -39203,7 +39203,7 @@
         "type": "String"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -39233,7 +39233,7 @@
   {
     "category": "TppEffect",
     "functions": [ ],
-    "id": 0,
+    "id": 76,
     "name": "TppTonemap",
     "namespace": null,
     "parent": "Data",
@@ -39300,7 +39300,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 192,
     "name": "TppGlobalVolumetricFogParam",
     "namespace": null,
     "parent": "DataElement",
@@ -39493,12 +39493,12 @@
         "type": "uint32"
       }
     ],
-    "version": 0
+    "version": 17
   },
   {
     "category": "TppEffect",
     "functions": [ ],
-    "id": 0,
+    "id": 72,
     "name": "TppGlobalVolumetricFog",
     "namespace": null,
     "parent": "Data",
@@ -39515,7 +39515,7 @@
         "type": "EntityPtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -39625,7 +39625,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "TppEffect",
@@ -39749,7 +39749,7 @@
   {
     "category": "Light",
     "functions": [ ],
-    "id": 0,
+    "id": 448,
     "name": "TppLightProbe",
     "namespace": "TppEffect",
     "parent": "TransformData",
@@ -40019,7 +40019,7 @@
         "type": "int32"
       }
     ],
-    "version": 0
+    "version": 4
   },
   {
     "category": "",
@@ -40046,7 +40046,7 @@
   {
     "category": "Light",
     "functions": [ ],
-    "id": 0,
+    "id": 104,
     "name": "TppLightProbeSHCoefficients",
     "namespace": "TppEffect",
     "parent": "Data",
@@ -40074,7 +40074,7 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -40108,7 +40108,7 @@
   {
     "category": "Light",
     "functions": [ ],
-    "id": 0,
+    "id": 336,
     "name": "TppLightProbeArray",
     "namespace": "TppEffect",
     "parent": "TransformData",
@@ -40158,7 +40158,7 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -40173,7 +40173,7 @@
   {
     "category": "Light",
     "functions": [ ],
-    "id": 0,
+    "id": 432,
     "name": "TppPointLight",
     "namespace": "Tpp",
     "parent": "TransformData",
@@ -40487,7 +40487,7 @@
         "type": "Path"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -40514,7 +40514,7 @@
   {
     "category": "Light",
     "functions": [ ],
-    "id": 0,
+    "id": 496,
     "name": "TppSpotLight",
     "namespace": "Tpp",
     "parent": "TransformData",
@@ -40938,7 +40938,7 @@
         "type": "Path"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -40980,7 +40980,7 @@
         "type": "c"
       }
     ],
-    "id": 0,
+    "id": 608,
     "name": "TppAtmosphere",
     "namespace": "TppEffect",
     "parent": "Data",
@@ -41855,7 +41855,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 21
   },
   {
     "category": "",
@@ -42058,7 +42058,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 48,
     "name": "TppReflectionSettingTrapCallbackDataElement",
     "namespace": "TppEffect",
     "parent": "GeoTrapModuleCallbackDataElement",
@@ -42086,7 +42086,7 @@
         "type": "Path"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -42328,7 +42328,7 @@
         "type": "EntityLink"
       }
     ],
-    "version": 0
+    "version": 4
   },
   {
     "category": "",
@@ -42365,7 +42365,7 @@
   {
     "category": "TppEffect",
     "functions": [ ],
-    "id": 0,
+    "id": 144,
     "name": "TppOutOfMissionRangeEffect",
     "namespace": null,
     "parent": "Data",
@@ -42514,12 +42514,12 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "TppEffect",
     "functions": [ ],
-    "id": 0,
+    "id": 72,
     "name": "TppNightVision",
     "namespace": null,
     "parent": "Data",
@@ -42541,7 +42541,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 120,
     "name": "TppNightVisionParam",
     "namespace": null,
     "parent": "DataElement",
@@ -42646,7 +42646,7 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -42715,7 +42715,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 112,
     "name": "MbdvcBootData",
     "namespace": "TppUi",
     "parent": "Data",
@@ -42743,7 +42743,7 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -42758,7 +42758,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 96,
     "name": "HudBootData",
     "namespace": "TppUi",
     "parent": "Data",
@@ -42786,7 +42786,7 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -42988,7 +42988,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 72,
     "name": "TppLadderManagerData",
     "namespace": "TppGameKit",
     "parent": "Data",
@@ -43021,7 +43021,7 @@
   {
     "category": "Tpp",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "TppLadderData",
     "namespace": "TppGameKit",
     "parent": "TransformData",
@@ -43060,7 +43060,7 @@
         "type": "EntityLink"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "",
@@ -43075,7 +43075,7 @@
   {
     "category": "Tpp",
     "functions": [ ],
-    "id": 0,
+    "id": 72,
     "name": "TppLadderEntryPointData",
     "namespace": "TppGameKit",
     "parent": "Data",
@@ -43103,12 +43103,12 @@
         "type": "uint32"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Gimmick",
     "functions": [ ],
-    "id": 0,
+    "id": 240,
     "name": "TppSharedGimmickData",
     "namespace": "TppGameKit",
     "parent": "Data",
@@ -43213,12 +43213,12 @@
         "type": "uint32"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Gimmick",
     "functions": [ ],
-    "id": 0,
+    "id": 136,
     "name": "TppGimmickLightLinkSetData",
     "namespace": "TppGameKit",
     "parent": "Data",
@@ -43257,12 +43257,12 @@
         "type": "EntityLink"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Gimmick",
     "functions": [ ],
-    "id": 0,
+    "id": 104,
     "name": "TppGimmickPowerCutAreaData",
     "namespace": "TppGameKit",
     "parent": "Data",
@@ -43284,7 +43284,7 @@
   {
     "category": "Gimmick",
     "functions": [ ],
-    "id": 0,
+    "id": 176,
     "name": "TppGimmickElectricCableLinkSetData",
     "namespace": "TppGameKit",
     "parent": "Data",
@@ -43350,7 +43350,7 @@
   {
     "category": "Gimmick",
     "functions": [ ],
-    "id": 0,
+    "id": 128,
     "name": "TppGimmickBrokenElectricCableBank",
     "namespace": "TppGameKit",
     "parent": "Data",
@@ -43405,7 +43405,7 @@
   {
     "category": "Gimmick",
     "functions": [ ],
-    "id": 0,
+    "id": 160,
     "name": "TppGimmickBrokenCandleBank",
     "namespace": "TppGameKit",
     "parent": "Data",
@@ -43471,7 +43471,7 @@
   {
     "category": "Gimmick",
     "functions": [ ],
-    "id": 0,
+    "id": 144,
     "name": "TppGimmickLightGroupingLinkSetData",
     "namespace": "TppGameKit",
     "parent": "Data",
@@ -43515,7 +43515,7 @@
   {
     "category": "Gimmick",
     "functions": [ ],
-    "id": 0,
+    "id": 144,
     "name": "TppPermanentGimmickData",
     "namespace": "TppGameKit",
     "parent": "Data",
@@ -43581,7 +43581,7 @@
   {
     "category": "Gimmick",
     "functions": [ ],
-    "id": 0,
+    "id": 96,
     "name": "TppPermanentGimmickBank",
     "namespace": "TppGameKit",
     "parent": "Data",
@@ -43625,7 +43625,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 64,
     "name": "TppPermanentGimmickSearchLightParameter",
     "namespace": "TppGameKit",
     "parent": "DataElement",
@@ -43735,7 +43735,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 80,
     "name": "TppPermanentGimmickGatlingGunParameter",
     "namespace": "TppGameKit",
     "parent": "DataElement",
@@ -43856,7 +43856,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 40,
     "name": "TppPermanentGimmickImportantBreakableParameter",
     "namespace": "TppGameKit",
     "parent": "DataElement",
@@ -43895,12 +43895,12 @@
         "type": "uint32"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 88,
     "name": "TppPermanentGimmickMortarParameter",
     "namespace": "TppGameKit",
     "parent": "DataElement",
@@ -43961,12 +43961,12 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 80,
     "name": "TppPermanentGimmickMachineGunParameter",
     "namespace": "TppGameKit",
     "parent": "DataElement",
@@ -44038,12 +44038,12 @@
         "type": "uint32"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppPermanentGimmickDoorParameter",
     "namespace": "TppGameKit",
     "parent": "DataElement",
@@ -44065,7 +44065,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppPermanentGimmickInfraredSensorParameter",
     "namespace": "TppGameKit",
     "parent": "DataElement",
@@ -44109,7 +44109,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 56,
     "name": "TppPermanentGimmickEventAnimationParameter",
     "namespace": "TppGameKit",
     "parent": "DataElement",
@@ -44164,7 +44164,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppPermanentGimmickBridgeParameter",
     "namespace": "TppGameKit",
     "parent": "DataElement",
@@ -44186,7 +44186,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppPermanentGimmickWaterTowerParameter",
     "namespace": "TppGameKit",
     "parent": "DataElement",
@@ -44208,7 +44208,7 @@
   {
     "category": "Gimmick",
     "functions": [ ],
-    "id": 0,
+    "id": 68,
     "name": "TppGimmickImmediateStateData",
     "namespace": "TppGameKit",
     "parent": "Data",
@@ -44230,17 +44230,17 @@
   {
     "category": "Gimmick",
     "functions": [ ],
-    "id": 0,
+    "id": 80,
     "name": "TppPermeableStaticModel",
     "namespace": "TppGameKit",
     "parent": "StaticModelArrayPathFilter",
     "properties": [ ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "Gimmick",
     "functions": [ ],
-    "id": 0,
+    "id": 80,
     "name": "TppThermalStaticModel",
     "namespace": "TppGameKit",
     "parent": "StaticModelArrayPathFilter",
@@ -44360,7 +44360,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 224,
     "name": "ObjectBrushPluginBushDataElement",
     "namespace": "TppGameKit",
     "parent": "DataElement",
@@ -44619,12 +44619,12 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 20
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 168,
     "name": "TppObjectBrushPluginBush",
     "namespace": "TppGameKit",
     "parent": "ObjectBrushPluginClone",
@@ -44674,7 +44674,7 @@
         "type": "EntityLink"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "ObjectBrush",
@@ -44865,7 +44865,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 248,
     "name": "TppObjectBrushPluginSkeletonModel",
     "namespace": "TppGameKit",
     "parent": "ObjectBrushPlugin",
@@ -45036,7 +45036,7 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 7
   },
   {
     "category": "TppObjectBrushSkeletonModel",
@@ -45051,7 +45051,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 152,
     "name": "TppObjectBrushSkeletonModelDestructionResource",
     "namespace": "TppGameKit",
     "parent": "Data",
@@ -45139,7 +45139,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 84,
     "name": "TppObjectBrushSkeletonModelReserveResource",
     "namespace": "TppGameKit",
     "parent": "Data",
@@ -45205,7 +45205,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 72,
     "name": "TppTrapCheckIsInViewCallbackDataElement",
     "namespace": "TppGameKit",
     "parent": "GeoTrapModuleCallbackDataElement",
@@ -45233,17 +45233,17 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppTrapCheckIsInCameraCallbackDataElement",
     "namespace": "TppGameKit",
     "parent": "GeoTrapModuleCallbackDataElement",
     "properties": [ ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -45358,7 +45358,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 36,
     "name": "TppTrapCheckIsCharacterWithIdCallbackDataElement",
     "namespace": "TppGameKit",
     "parent": "GeoTrapModuleCallbackDataElement",
@@ -45380,7 +45380,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppTrapCheckIsPlayerCallbackDataElement",
     "namespace": "TppGameKit",
     "parent": "GeoTrapModuleCallbackDataElement",
@@ -45390,7 +45390,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppTrapCheckCanSaveAsCheckPointCallbackDataElement",
     "namespace": "TppGameKit",
     "parent": "GeoTrapModuleCallbackDataElement",
@@ -45405,7 +45405,7 @@
         "type": "c"
       }
     ],
-    "id": 0,
+    "id": 32,
     "name": "TppTrapCheckIsEnemyCallbackDataElement",
     "namespace": "TppGameKit",
     "parent": "GeoTrapModuleCallbackDataElement",
@@ -45420,7 +45420,7 @@
         "type": "c"
       }
     ],
-    "id": 0,
+    "id": 32,
     "name": "TppTrapCheckIsHostageCallbackDataElement",
     "namespace": "TppGameKit",
     "parent": "GeoTrapModuleCallbackDataElement",
@@ -45468,7 +45468,7 @@
         "type": "c"
       }
     ],
-    "id": 0,
+    "id": 32,
     "name": "TppTrapCheckIsPlayerAndHostCallbackDataElement",
     "namespace": "TppGameKit",
     "parent": "GeoTrapModuleCallbackDataElement",
@@ -45493,7 +45493,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 36,
     "name": "TrapCheckCharacterFilterParam",
     "namespace": null,
     "parent": "GeoTrapModuleCallbackDataElement",
@@ -45585,7 +45585,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 36,
     "name": "TrapExecChangeLodSkeletonModelParam",
     "namespace": null,
     "parent": "GeoTrapModuleCallbackDataElement",
@@ -45701,7 +45701,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 5
   },
   {
     "category": "",
@@ -45749,7 +45749,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "TppCoverPointFileTransform",
     "namespace": null,
     "parent": "TransformData",
@@ -45784,7 +45784,7 @@
         "type": "m"
       }
     ],
-    "id": 0,
+    "id": 88,
     "name": "TppCombatLocatorSetData",
     "namespace": "TppGameKit",
     "parent": "Data",
@@ -45823,7 +45823,7 @@
         "type": "EntityLink"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -45838,7 +45838,7 @@
   {
     "category": "Locator",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "TppCombatLocatorData",
     "namespace": "TppGameKit",
     "parent": "TransformData",
@@ -45921,7 +45921,7 @@
         "type": "EntityLink"
       }
     ],
-    "version": 0
+    "version": 5
   },
   {
     "category": "",
@@ -45936,7 +45936,7 @@
   {
     "category": "Locator",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "TppGuardTargetData",
     "namespace": "TppGameKit",
     "parent": "TransformData",
@@ -45975,7 +45975,7 @@
         "type": "EntityLink"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -46021,7 +46021,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 120,
     "name": "CyprusBlockControllerData",
     "namespace": "TppGameKit",
     "parent": "Data",
@@ -46170,7 +46170,7 @@
         "type": "uint32"
       }
     ],
-    "version": 0
+    "version": 5
   },
   {
     "category": "",
@@ -46185,7 +46185,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 112,
     "name": "CyprusBlockLoadFileData",
     "namespace": "TppGameKit",
     "parent": "Data",
@@ -46224,7 +46224,7 @@
         "type": "uint32"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
@@ -46239,7 +46239,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 64,
     "name": "CyprusMissionControllerData",
     "namespace": "TppGameKit",
     "parent": "Data",
@@ -46249,7 +46249,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 68,
     "name": "TppDemoParameter",
     "namespace": "EdDemo",
     "parent": "DemoParameter",
@@ -46376,12 +46376,12 @@
         "type": "int32"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 36,
     "name": "TppInGameDemoParameter",
     "namespace": "EdDemo",
     "parent": "DemoParameter",
@@ -46501,7 +46501,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppTakePictureParameter",
     "namespace": "EdDemo",
     "parent": "DemoParameter",
@@ -46511,7 +46511,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 136,
     "name": "TppObjectBrushPluginFlutteringGrass",
     "namespace": "TppGameKit",
     "parent": "ObjectBrushPluginClone",
@@ -46576,7 +46576,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 68,
     "name": "TppAdditionalSearchableLightData",
     "namespace": "TppGameKit",
     "parent": "Data",
@@ -46598,7 +46598,7 @@
   {
     "category": "TppGameKit",
     "functions": [ ],
-    "id": 0,
+    "id": 64,
     "name": "EmblemBlender",
     "namespace": "TppGameKit",
     "parent": "Data",
@@ -46608,7 +46608,7 @@
   {
     "category": "TppMotherBase",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "MotherBaseConstructData",
     "namespace": "TppMotherBaseCore",
     "parent": "TransformData",
@@ -46691,7 +46691,7 @@
         "type": "uint8"
       }
     ],
-    "version": 0
+    "version": 6
   },
   {
     "category": "TppMotherBase",
@@ -46706,7 +46706,7 @@
   {
     "category": "TppMotherBase",
     "functions": [ ],
-    "id": 0,
+    "id": 80,
     "name": "MotherBaseConstructConnectionData",
     "namespace": "TppMotherBaseCore",
     "parent": "Data",
@@ -46775,7 +46775,7 @@
   {
     "category": "TppMotherBase",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "MotherBaseConstructLocator",
     "namespace": "TppMotherBaseCore",
     "parent": "TransformData",
@@ -46836,7 +46836,7 @@
         "type": "EntityLink"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "TppMotherBase",
@@ -46851,7 +46851,7 @@
   {
     "category": "TppMotherBase",
     "functions": [ ],
-    "id": 0,
+    "id": 288,
     "name": "MotherBaseConstructDivisionLocator",
     "namespace": "TppMotherBaseCore",
     "parent": "TransformData",
@@ -46890,7 +46890,7 @@
         "type": "EntityLink"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "TppMotherBase",
@@ -46905,7 +46905,7 @@
   {
     "category": "TppMotherBase",
     "functions": [ ],
-    "id": 0,
+    "id": 272,
     "name": "MotherBaseConstructConnectLocator",
     "namespace": "TppMotherBaseCore",
     "parent": "TransformData",
@@ -46944,7 +46944,7 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "TppMotherBase",
@@ -46959,7 +46959,7 @@
   {
     "category": "TppMotherBase",
     "functions": [ ],
-    "id": 0,
+    "id": 128,
     "name": "MotherBaseReplaceTextureData",
     "namespace": "TppMotherBaseCore",
     "parent": "Data",
@@ -47046,7 +47046,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 92,
     "name": "LuxuryBlockControllerData",
     "namespace": "TppGameCore",
     "parent": "Data",
@@ -47134,7 +47134,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 184,
     "name": "TppPlayer2Parameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -47250,12 +47250,12 @@
         "type": "uint8"
       }
     ],
-    "version": 0
+    "version": 5
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 28,
     "name": "TppPlayer2LocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -47408,7 +47408,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 136,
     "name": "TppPlayer2BlockControllerData",
     "namespace": "TppGameCore",
     "parent": "Data",
@@ -47535,7 +47535,7 @@
         "type": "String"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "",
@@ -47550,7 +47550,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 104,
     "name": "TppPlayer2AdditionalMotionBlockData",
     "namespace": "TppGameCore",
     "parent": "Data",
@@ -47644,12 +47644,12 @@
         "type": "Path"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 80,
     "name": "TppPlayer2AdditionalMtarData",
     "namespace": "TppGameCore",
     "parent": "Data",
@@ -47666,12 +47666,12 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 76,
     "name": "TppPlayer2AdditionalPartsBlockData",
     "namespace": "TppGameCore",
     "parent": "Data",
@@ -47710,12 +47710,12 @@
         "type": "bool"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 192,
     "name": "TppHorse2Parameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -47787,12 +47787,12 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 4
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppHorse2LocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -47814,7 +47814,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 176,
     "name": "TppSoldier2Parameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -47875,12 +47875,12 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppSoldier2LocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -47902,7 +47902,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 176,
     "name": "TppHostage2Parameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -47963,12 +47963,12 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppHostage2LocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -47990,7 +47990,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppVehicle2Parameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -48007,22 +48007,22 @@
         "type": "uint8"
       }
     ],
-    "version": 0
+    "version": 6
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 28,
     "name": "TppVehicle2LocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
     "properties": [ ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 128,
     "name": "TppVehicle2BodyData",
     "namespace": "TppGameCore",
     "parent": "Data",
@@ -48105,12 +48105,12 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 120,
     "name": "TppVehicle2AttachmentData",
     "namespace": "TppGameCore",
     "parent": "Data",
@@ -48193,12 +48193,12 @@
         "type": "EntityPtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 128,
     "name": "TppVehicle2WeaponParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -48358,12 +48358,12 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 68,
     "name": "TppVehicle2ReliefData",
     "namespace": "TppGameCore",
     "parent": "Data",
@@ -48385,7 +48385,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 344,
     "name": "TppHeli2Parameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -48468,12 +48468,12 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 28,
     "name": "TppHeli2LocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -48483,7 +48483,7 @@
   {
     "category": "Heli",
     "functions": [ ],
-    "id": 0,
+    "id": 272,
     "name": "TppLandingZoneData",
     "namespace": "TppGameCore",
     "parent": "TransformData",
@@ -48511,7 +48511,7 @@
         "type": "String"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -48526,7 +48526,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 64,
     "name": "TppBuddy2BlockControllerData",
     "namespace": "TppGameCore",
     "parent": "Data",
@@ -48536,7 +48536,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 176,
     "name": "TppBuddyQuiet2Parameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -48602,7 +48602,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppBuddyQuiet2LocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -48624,7 +48624,7 @@
   {
     "category": "BuddyQuiet2",
     "functions": [ ],
-    "id": 0,
+    "id": 272,
     "name": "TppSnipePoint2Data",
     "namespace": "TppGameCore",
     "parent": "TransformData",
@@ -48656,7 +48656,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 176,
     "name": "TppBossQuiet2Parameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -48722,7 +48722,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppBossQuiet2LocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -48744,7 +48744,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 176,
     "name": "TppBuddyDog2Parameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -48810,7 +48810,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppBuddyDog2LocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -48832,7 +48832,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 168,
     "name": "TppBuddyPuppyParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -48893,12 +48893,12 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 28,
     "name": "TppBuddyPuppyLocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -48908,7 +48908,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 56,
     "name": "TppUavParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -48925,12 +48925,12 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppUavLocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -48952,7 +48952,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 152,
     "name": "TppSahelan2Parameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -49002,12 +49002,12 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppSahelan2LocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -49029,7 +49029,7 @@
   {
     "category": "Sahelan2",
     "functions": [ ],
-    "id": 0,
+    "id": 272,
     "name": "TppSearchMissilePointData",
     "namespace": "TppGameCore",
     "parent": "TransformData",
@@ -49061,7 +49061,7 @@
   {
     "category": "Sahelan2",
     "functions": [ ],
-    "id": 0,
+    "id": 272,
     "name": "TppHidePointData",
     "namespace": "TppGameCore",
     "parent": "TransformData",
@@ -49093,7 +49093,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 344,
     "name": "TppParasite2Parameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -49187,12 +49187,12 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 28,
     "name": "TppParasite2LocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -49202,7 +49202,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 104,
     "name": "TppLiquid2Parameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -49246,7 +49246,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppLiquid2LocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -49268,7 +49268,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 104,
     "name": "TppVolgin2Parameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -49312,7 +49312,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppVolgin2LocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -49334,7 +49334,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 104,
     "name": "TppSecurityCamera2Parameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -49367,7 +49367,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppSecurityCamera2LocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -49389,7 +49389,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 176,
     "name": "TppCorpseParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -49455,7 +49455,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 36,
     "name": "TppCorpseLocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -49488,7 +49488,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 176,
     "name": "TppMbQuietParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -49554,7 +49554,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppMbQuietLocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -49576,7 +49576,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 224,
     "name": "TppWalkerGear2Parameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -49653,7 +49653,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppWalkerGear2LocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -49675,7 +49675,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 168,
     "name": "TppAnimalParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -49736,12 +49736,12 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 40,
     "name": "TppAnimalLocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -49769,12 +49769,12 @@
         "type": "float"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 144,
     "name": "TppBirdParameter2",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -49824,12 +49824,12 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 80,
     "name": "TppBirdLocatorParameter2",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -49890,12 +49890,12 @@
         "type": "uint8"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 96,
     "name": "TppRat2Parameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -49934,12 +49934,12 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 36,
     "name": "TppRat2LocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -49961,7 +49961,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 120,
     "name": "TppWolfParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -50011,12 +50011,12 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 40,
     "name": "TppWolfLocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -50049,7 +50049,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 120,
     "name": "TppBearParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -50099,12 +50099,12 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 40,
     "name": "TppBearLocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -50137,7 +50137,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 152,
     "name": "TppHorse2forVrParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -50192,7 +50192,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppHorse2forVrLocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -50214,7 +50214,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 104,
     "name": "TppVolgin2forVrParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -50258,7 +50258,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppVolgin2forVrLocatorParameter",
     "namespace": "TppGameCore",
     "parent": "DataElement",
@@ -50280,7 +50280,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 40,
     "name": "TppPickableLocatorParameter",
     "namespace": "TppCollectible",
     "parent": "DataElement",
@@ -50346,7 +50346,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 208,
     "name": "TppCollectionLocatorArray",
     "namespace": "TppCollectible",
     "parent": "Data",
@@ -50451,12 +50451,12 @@
         "type": "uint16"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 32,
     "name": "TppPlacedLocatorParameter",
     "namespace": "TppCollectible",
     "parent": "DataElement",
@@ -50478,7 +50478,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 88,
     "name": "TppDecoyAssetsLoader",
     "namespace": "TppGameCore",
     "parent": "Data",
@@ -50522,7 +50522,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 88,
     "name": "TppNoiseArea2",
     "namespace": null,
     "parent": "Data",
@@ -50561,7 +50561,7 @@
         "type": "int16"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
@@ -50576,7 +50576,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 60,
     "name": "ChildrenIdConvertParameter",
     "namespace": "EdDemo",
     "parent": "DemoParameter",
@@ -50708,7 +50708,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 36,
     "name": "AvatarPhotoTextureLoadParameter",
     "namespace": "EdDemo",
     "parent": "DemoParameter",
@@ -50718,7 +50718,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 68,
     "name": "AvatarEditorSetupData",
     "namespace": "TppGameCore",
     "parent": "Data",
@@ -50740,7 +50740,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 136,
     "name": "TppSimpleMissionData",
     "namespace": "TppGameCore",
     "parent": "Data",
@@ -50768,12 +50768,12 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 68,
     "name": "TppSimpleMissionBlockControllerData",
     "namespace": "TppGameCore",
     "parent": "Data",
@@ -50820,7 +50820,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 28,
     "name": "TppMarker2LocatorSystemParameter",
     "namespace": "TppMarkerLocator",
     "parent": "DataElement",
@@ -50830,7 +50830,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 36,
     "name": "TppMarker2LocatorParameter",
     "namespace": "TppMarkerLocator",
     "parent": "DataElement",
@@ -51070,7 +51070,7 @@
   {
     "category": "GameKit",
     "functions": [ ],
-    "id": 0,
+    "id": 80,
     "name": "RadioData",
     "namespace": "TppRadio",
     "parent": "Data",
@@ -51087,7 +51087,7 @@
         "type": "FilePtr"
       }
     ],
-    "version": 0
+    "version": 2
   },
   {
     "category": "GameKit",
@@ -51102,7 +51102,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 28,
     "name": "TppEspionageRadioSystemParameter",
     "namespace": "TppRadio",
     "parent": "DataElement",
@@ -51112,7 +51112,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 44,
     "name": "TppEspionageRadioLocatorParameter",
     "namespace": "TppRadio",
     "parent": "DataElement",
@@ -51167,7 +51167,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 36,
     "name": "TppTrapExecLostHostageCallbackDataElement",
     "namespace": "TppGameCore",
     "parent": "GeoTrapModuleCallbackDataElement",
@@ -51189,7 +51189,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 56,
     "name": "TppTrapExecCombatLocatorCallbackDataElement",
     "namespace": "TppGameCore",
     "parent": "GeoTrapModuleCallbackDataElement",
@@ -51232,7 +51232,7 @@
   {
     "category": "TppGameCore",
     "functions": [ ],
-    "id": 0,
+    "id": 88,
     "name": "TppSpeechData",
     "namespace": "TppGameCore",
     "parent": "Data",
@@ -51265,7 +51265,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 400,
     "name": "TppMotherBaseStageBlockControllerData",
     "namespace": "TppMotherBaseStage",
     "parent": "Data",
@@ -51491,7 +51491,7 @@
         "type": "uint32"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "",
@@ -51506,7 +51506,7 @@
   {
     "category": "",
     "functions": [ ],
-    "id": 0,
+    "id": 496,
     "name": "TppMotherBaseStageClusterParameterData",
     "namespace": "TppMotherBaseStage",
     "parent": "Data",
@@ -51732,7 +51732,7 @@
         "type": "int16"
       }
     ],
-    "version": 0
+    "version": 3
   },
   {
     "category": "",
@@ -51774,7 +51774,7 @@
         "type": "Path"
       }
     ],
-    "version": 0
+    "version": 1
   },
   {
     "category": "",
