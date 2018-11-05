@@ -54,6 +54,18 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
                 this.modelFile = value;
             }
         }
+
+        public StaticModel()
+            : base()
+        {
+            this.lodFarSize = 1;
+            this.lodNearSize = 1;
+            this.lodPolygonSize = 1;
+            this.color = Color.white;
+            this.drawRejectionLevel = StaticModel_DrawRejectionLevel.Default;
+            this.drawMode = StaticModel_DrawMode.Normal;
+            this.rejectFarRangeShadowCast = StaticModel_RejectFarRangeShadowCast.Default;
+        }
         
         public override void PostOnLoaded(GetSceneProxyDelegate getSceneProxy)
         {
