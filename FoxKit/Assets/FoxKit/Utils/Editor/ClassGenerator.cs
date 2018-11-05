@@ -408,9 +408,9 @@
         [DataContract]
         public class ClassDefinition
         {
-            public const int UnknownId = int.MaxValue;
+            public const short UnknownId = short.MaxValue;
 
-            public const int UnknownVersion = int.MaxValue;
+            public const ushort UnknownVersion = 0;
 
             [DataMember(Name = "name")]
             public string Name { get; set; }
@@ -425,10 +425,10 @@
             public string Category { get; set; }
 
             [DataMember(Name = "id")]
-            public int Id { get; set; } = UnknownId;
+            public short Id { get; set; } = UnknownId;
 
             [DataMember(Name = "version")]
-            public uint Version { get; set; } = UnknownVersion;
+            public ushort Version { get; set; } = UnknownVersion;
 
             [DataMember(Name = "properties")]
             public List<PropertyDefinition> Properties { get; set; }
@@ -484,7 +484,13 @@
         private TextAsset classDefinitions;
 
         private TextAsset classNamespaces;
-        
+
+        private TextAsset classVersions;
+
+        private TextAsset classIds;
+
+        private TextAsset classCategories;
+
         [MenuItem("Window/FoxKit/Developer/Class Generator")]
         private static void Init()
         {
@@ -496,6 +502,33 @@
         void OnGUI()
         {
             this.classDefinitions = EditorGUILayout.ObjectField("Class Definitions", this.classDefinitions, typeof(TextAsset), false) as TextAsset;
+            this.classVersions = EditorGUILayout.ObjectField("Class Versions", this.classVersions, typeof(TextAsset), false) as TextAsset;
+            this.classIds = EditorGUILayout.ObjectField("Class IDs", this.classIds, typeof(TextAsset), false) as TextAsset;
+            this.classCategories = EditorGUILayout.ObjectField("Class Categories", this.classCategories, typeof(TextAsset), false) as TextAsset;
+
+            if (GUILayout.Button("Parse Metadata"))
+            {
+                var outputPath = EditorUtility.SaveFilePanel("Select output file", null, null, "json");
+                if (outputPath.Length == 0)
+                {
+                    return;
+                }
+
+                var baseDefs = ReadClassDefinitions(this.classDefinitions);
+                var parsed = ParseAndAssigMetadata(
+                    baseDefs,
+                    this.classIds,
+                    this.classVersions,
+                    this.classCategories);
+
+                var serializer = new DataContractJsonSerializer(typeof(List<ClassGenerator.ClassDefinition>));
+                using (var stream = new FileStream(outputPath, FileMode.Create))
+                {
+                    serializer.WriteObject(stream, parsed);
+                }
+
+                return;
+            }
 
             if (!GUILayout.Button("Generate Classes"))
             {
@@ -518,6 +551,33 @@
             }
 
             AssetDatabase.Refresh();
+        }
+
+        private static List<ClassGenerator.ClassDefinition> ParseAndAssigMetadata(List<ClassGenerator.ClassDefinition> definitions, TextAsset classIds, TextAsset classVersions, TextAsset classCategories)
+        {
+            var ids = ParseClassIds(classIds);
+            var versions = ParseClassVersions(classVersions);
+            var categories = ParseClassCategories(classCategories);
+
+            foreach (var definition in definitions)
+            {
+                if (ids.ContainsKey(definition.Name))
+                {
+                    definition.Id = ids[definition.Name];
+                }
+
+                if (versions.ContainsKey(definition.Name))
+                {
+                    definition.Version = versions[definition.Name];
+                }
+
+                if (categories.ContainsKey(definition.Name))
+                {
+                    definition.Category = categories[definition.Name];
+                }
+            }
+
+            return definitions;
         }
 
         private static List<ClassGenerator.ClassDefinition> ParseAndAssignNamespaces(TextAsset classDefinitions, TextAsset classNamespaces)
@@ -567,6 +627,73 @@
                 }
 
                 result.Add(className, namespaceName);
+            }
+
+            return result;
+        }
+
+        private static IDictionary<string, short> ParseClassIds(TextAsset classIds)
+        {
+            var lines = new List<string>(classIds.text.Split('\n'));
+            char[] delimiterChars = { ' ' };
+
+            var result = new Dictionary<string, short>();
+            foreach (var line in lines)
+            {
+                var splitLine = line.Split(delimiterChars);
+                Assert.IsTrue(splitLine.Length == 2);
+
+                var className = splitLine[0];
+                var id = splitLine[1];
+                
+                result.Add(className, short.Parse(id));
+            }
+
+            return result;
+        }
+
+        private static IDictionary<string, ushort> ParseClassVersions(TextAsset classIds)
+        {
+            var lines = new List<string>(classIds.text.Split('\n'));
+            char[] delimiterChars = { ' ', '\r' };
+
+            var result = new Dictionary<string, ushort>();
+            foreach (var line in lines)
+            {
+                var splitLine = line.Split(delimiterChars);
+
+                var className = splitLine[0];
+                var id = splitLine[1];
+
+                if (id == "None")
+                {
+                    continue;
+                }
+
+                result.Add(className, ushort.Parse(id));
+            }
+
+            return result;
+        }
+
+        private static IDictionary<string, string> ParseClassCategories(TextAsset categories)
+        {
+            var lines = new List<string>(categories.text.Split('\n'));
+            char[] delimiterChars = { ' ', '\r' };
+
+            var result = new Dictionary<string, string>();
+            foreach (var line in lines)
+            {
+                var splitLine = line.Split(delimiterChars);
+                var className = splitLine[0];
+                var category = splitLine[1];
+
+                if (string.IsNullOrWhiteSpace(category))
+                {
+                    category = null;
+                }
+
+                result.Add(className, category);
             }
 
             return result;

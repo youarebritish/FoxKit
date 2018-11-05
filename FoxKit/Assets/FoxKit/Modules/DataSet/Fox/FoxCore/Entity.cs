@@ -76,6 +76,11 @@
         /// Version of the class.
         /// </summary>
         public virtual ushort Version => 2;
+
+        /// <summary>
+        /// Category of the class.
+        /// </summary>
+        public virtual string Category => string.Empty;
         
         /// <summary>
         /// Initializes the Entity with data loaded from a DataSet file.
