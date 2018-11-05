@@ -88,10 +88,20 @@
                 var property = definition.Properties[i];
                 AppendFieldDeclaration(stringBuilder, property, parsePropertyType, getNamespace);
 
-                if (!(i == definition.Properties.Count - 1 && definition.Functions.Count == 0))
+                //if (!(i == definition.Properties.Count - 1 && definition.Functions.Count == 0))
                 {
                     AppendLineWithIndent(stringBuilder, string.Empty, 2);
                 }
+            }
+            
+            // Add metadata properties.
+            if (!string.IsNullOrEmpty(definition.Parent))
+            {
+                AppendLineWithIndent(stringBuilder, $"public override short ClassId => {definition.Id};", 2);
+                AppendLineWithIndent(stringBuilder, string.Empty, 2);
+                AppendLineWithIndent(stringBuilder, $"public override ushort Version => {definition.Version};", 2);
+                AppendLineWithIndent(stringBuilder, string.Empty, 2);
+                AppendLineWithIndent(stringBuilder, $"public override string Category => \"{definition.Category}\";", 2);
             }
 
             AppendLineWithIndent(stringBuilder, "}", 1);
