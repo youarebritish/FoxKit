@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.Anim
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class MtFile : GaniBaseFile
     {
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

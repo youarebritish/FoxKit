@@ -30,5 +30,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 376, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String outSubtitlesFileName = string.Empty;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Subtitles";
     }
 }

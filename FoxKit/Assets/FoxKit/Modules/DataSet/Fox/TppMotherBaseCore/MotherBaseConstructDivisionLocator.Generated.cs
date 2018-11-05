@@ -31,5 +31,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppMotherBaseCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityLink, 312, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<FoxKit.Modules.DataSet.FoxCore.EntityLink> staticModels = new List<FoxKit.Modules.DataSet.FoxCore.EntityLink>();
+        
+        public override short ClassId => 288;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "TppMotherBase";
     }
 }

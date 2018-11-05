@@ -72,5 +72,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityLink, 64, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private FoxKit.Modules.DataSet.FoxCore.EntityLink areaVolumetricFog;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 4;
+        
+        public override string Category => "";
     }
 }

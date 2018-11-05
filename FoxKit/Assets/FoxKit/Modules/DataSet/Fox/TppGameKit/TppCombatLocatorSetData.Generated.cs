@@ -32,5 +32,10 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityLink, 128, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<FoxKit.Modules.DataSet.FoxCore.EntityLink> locators = new List<FoxKit.Modules.DataSet.FoxCore.EntityLink>();
         
+        public override short ClassId => 88;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "CombatLocator";
     }
 }

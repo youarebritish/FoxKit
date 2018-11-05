@@ -94,5 +94,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Path, 200, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Object maskTexPath;
+        
+        public override short ClassId => 224;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "";
     }
 }

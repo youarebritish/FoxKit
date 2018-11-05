@@ -61,5 +61,11 @@ namespace FoxKit.Modules.DataSet.Fox.Ui
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityLink, 320, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private FoxKit.Modules.DataSet.FoxCore.EntityLink connectRealEdge;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 5;
+        
+        public override string Category => "UiG";
     }
 }

@@ -55,5 +55,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 248, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean autoLineFeed;
+        
+        public override short ClassId => 192;
+        
+        public override ushort Version => 5;
+        
+        public override string Category => "Subtitles";
     }
 }

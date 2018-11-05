@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class DataSetFile : File
     {
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

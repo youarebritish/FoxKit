@@ -55,5 +55,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 184, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.String> instanceSettings_partsTypeInitial = new List<System.String>();
+        
+        public override short ClassId => 136;
+        
+        public override ushort Version => 3;
+        
+        public override string Category => "";
     }
 }

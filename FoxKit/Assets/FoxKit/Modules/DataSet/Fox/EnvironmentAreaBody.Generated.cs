@@ -29,5 +29,10 @@ namespace FoxKit.Modules.DataSet.Fox
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityHandle, 144, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private FoxKit.Modules.DataSet.Fox.FoxCore.Entity manager;
         
+        public override short ClassId => 0;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "";
     }
 }

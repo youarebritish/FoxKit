@@ -94,5 +94,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 212, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single hazeRangeAttenuationHalfResolution;
+        
+        public override short ClassId => 160;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "";
     }
 }

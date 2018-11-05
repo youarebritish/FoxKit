@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class StaticModelArrayLocator : TransformData
     {
+        public override short ClassId => 272;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "Locator";
     }
 }

@@ -24,5 +24,11 @@ namespace FoxKit.Modules.DataSet.Fox
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 64, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single lodRate;
+        
+        public override short ClassId => 36;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

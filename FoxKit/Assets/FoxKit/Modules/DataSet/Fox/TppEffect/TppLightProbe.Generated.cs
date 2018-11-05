@@ -94,5 +94,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppEffect
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(TppLightProbe_PackingGeneration))]
         private TppLightProbe_PackingGeneration packingGeneration;
+        
+        public override short ClassId => 448;
+        
+        public override ushort Version => 4;
+        
+        public override string Category => "Light";
     }
 }

@@ -98,5 +98,10 @@ namespace FoxKit.Modules.DataSet.Fox.Grx
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean isShrinkSHBuffer;
         
+        public override short ClassId => 120;
+        
+        public override ushort Version => 25;
+        
+        public override string Category => "Config";
     }
 }

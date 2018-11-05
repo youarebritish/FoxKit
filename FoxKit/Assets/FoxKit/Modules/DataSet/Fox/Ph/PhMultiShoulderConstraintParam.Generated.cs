@@ -46,5 +46,11 @@ namespace FoxKit.Modules.DataSet.Fox.Ph
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 116, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.Boolean isPoweredFlag;
+        
+        public override short ClassId => 112;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Ph";
     }
 }

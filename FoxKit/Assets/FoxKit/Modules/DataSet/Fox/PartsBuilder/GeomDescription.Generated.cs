@@ -37,5 +37,11 @@ namespace FoxKit.Modules.DataSet.Fox.PartsBuilder
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Vector3, 192, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Vector3 offsetTranslation;
+        
+        public override short ClassId => 176;
+        
+        public override ushort Version => 3;
+        
+        public override string Category => "PartsBuilder";
     }
 }

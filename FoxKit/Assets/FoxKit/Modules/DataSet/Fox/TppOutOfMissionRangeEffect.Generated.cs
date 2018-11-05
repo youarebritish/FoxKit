@@ -61,5 +61,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 200, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single cinemaScopeShift;
+        
+        public override short ClassId => 144;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "TppEffect";
     }
 }

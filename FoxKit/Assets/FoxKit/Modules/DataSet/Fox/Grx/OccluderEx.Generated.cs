@@ -37,5 +37,11 @@ namespace FoxKit.Modules.DataSet.Fox.Grx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Vector3, 320, 7, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<UnityEngine.Vector3> positions = new List<UnityEngine.Vector3>();
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Area";
     }
 }

@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.PartsBuilder
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class CoverModelDescription : ModelDescription
     {
+        public override short ClassId => 288;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "PartsBuilder";
     }
 }

@@ -37,5 +37,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Vector3, 128, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Vector3 pos;
+        
+        public override short ClassId => 144;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

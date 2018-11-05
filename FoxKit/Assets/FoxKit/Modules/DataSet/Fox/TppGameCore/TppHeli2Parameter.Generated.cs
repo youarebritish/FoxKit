@@ -43,5 +43,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 344, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Object mtarFile;
+        
+        public override short ClassId => 344;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "";
     }
 }

@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.Sdx
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class SoundPackageBody : DataBody
     {
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

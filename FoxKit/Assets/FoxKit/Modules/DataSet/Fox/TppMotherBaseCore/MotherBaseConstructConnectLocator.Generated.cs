@@ -31,5 +31,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppMotherBaseCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 304, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean isOn;
+        
+        public override short ClassId => 272;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "TppMotherBase";
     }
 }

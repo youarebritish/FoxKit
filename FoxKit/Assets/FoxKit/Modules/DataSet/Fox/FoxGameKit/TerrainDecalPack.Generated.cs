@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityLink, 144, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<FoxKit.Modules.DataSet.FoxCore.EntityLink> materialLinks = new List<FoxKit.Modules.DataSet.FoxCore.EntityLink>();
+        
+        public override short ClassId => 104;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

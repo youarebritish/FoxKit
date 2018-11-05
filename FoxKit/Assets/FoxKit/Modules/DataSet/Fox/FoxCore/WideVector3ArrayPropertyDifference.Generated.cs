@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.WideVector3, 88, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
         private List<System.Object> values = new List<System.Object>();
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

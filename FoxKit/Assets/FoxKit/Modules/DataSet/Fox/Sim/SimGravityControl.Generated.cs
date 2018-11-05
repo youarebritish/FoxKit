@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.Sim
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 80, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single gravityCoefficient;
+        
+        public override short ClassId => 64;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Sim";
     }
 }

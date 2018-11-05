@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 304, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String groupInstanceName = string.Empty;
+        
+        public override short ClassId => 272;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "Fx";
     }
 }

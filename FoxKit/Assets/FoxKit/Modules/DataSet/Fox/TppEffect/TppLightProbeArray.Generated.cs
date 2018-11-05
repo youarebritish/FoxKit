@@ -34,5 +34,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppEffect
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 352, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Object lightArrayFile;
+        
+        public override short ClassId => 336;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "Light";
     }
 }

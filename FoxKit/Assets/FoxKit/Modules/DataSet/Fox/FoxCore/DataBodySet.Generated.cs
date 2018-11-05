@@ -26,5 +26,10 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 88, 1, Core.ContainerType.StringMap, PropertyExport.Never, PropertyExport.Never, typeof(FoxCore.DataBody), null)]
         private Dictionary<string, FoxCore.DataBody> dataBodyList = new Dictionary<string, FoxCore.DataBody>();
         
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

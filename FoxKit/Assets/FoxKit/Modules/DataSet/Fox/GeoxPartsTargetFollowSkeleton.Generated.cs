@@ -31,5 +31,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityHandle, 160, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private FoxKit.Modules.DataSet.Fox.FoxCore.Entity partsTargetUnitHandle;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "Target";
     }
 }

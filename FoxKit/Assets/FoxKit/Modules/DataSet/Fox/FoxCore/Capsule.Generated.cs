@@ -27,5 +27,6 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Vector4, 16, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
         private UnityEngine.Vector4 p1;
+        
     }
 }

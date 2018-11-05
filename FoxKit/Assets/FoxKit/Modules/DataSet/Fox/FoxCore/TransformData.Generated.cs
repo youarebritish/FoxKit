@@ -56,5 +56,10 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Matrix4, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.Never, null, null)]
         private UnityEngine.Matrix4x4 worldTransform;
         
+        public override short ClassId => 0;
+        
+        public override ushort Version => 4;
+        
+        public override string Category => "";
     }
 }

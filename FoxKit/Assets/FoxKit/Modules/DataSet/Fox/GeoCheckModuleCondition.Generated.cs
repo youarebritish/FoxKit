@@ -30,5 +30,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 344, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.Never, typeof(GeoTrapModuleCallbackDataElement), null)]
         private List<GeoTrapModuleCallbackDataElement> checkCallbackDataElements = new List<GeoTrapModuleCallbackDataElement>();
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Trap";
     }
 }

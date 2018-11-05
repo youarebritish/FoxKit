@@ -43,5 +43,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Vector3, 152, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<UnityEngine.Vector3> incidences = new List<UnityEngine.Vector3>();
+        
+        public override short ClassId => 128;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "TppEffect";
     }
 }

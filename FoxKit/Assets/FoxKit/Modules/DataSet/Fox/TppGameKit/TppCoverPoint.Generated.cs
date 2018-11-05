@@ -45,5 +45,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 407, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean isBreakEnable;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 5;
+        
+        public override string Category => "TacticalPoint";
     }
 }

@@ -61,5 +61,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 568, 1, Core.ContainerType.StringMap, PropertyExport.Never, PropertyExport.Never, null, null)]
         private Dictionary<string, System.String> noiseSeEventNames = new Dictionary<string, System.String>();
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

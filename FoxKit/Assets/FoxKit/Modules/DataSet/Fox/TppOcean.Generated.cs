@@ -76,5 +76,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityLink, 376, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<FoxKit.Modules.DataSet.FoxCore.EntityLink> collisionDatas = new List<FoxKit.Modules.DataSet.FoxCore.EntityLink>();
+        
+        public override short ClassId => 352;
+        
+        public override ushort Version => 12;
+        
+        public override string Category => "";
     }
 }

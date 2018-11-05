@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class TppPlayer2BlockControllerDataBody : DataBody
     {
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

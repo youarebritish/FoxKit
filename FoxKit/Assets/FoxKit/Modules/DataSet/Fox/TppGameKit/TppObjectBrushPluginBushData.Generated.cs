@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGamekit
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 120, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(TppGameKit.ObjectBrushPluginBushDataElement), null)]
         private TppGameKit.ObjectBrushPluginBushDataElement parameter;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

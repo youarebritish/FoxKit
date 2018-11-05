@@ -52,5 +52,11 @@ namespace FoxKit.Modules.DataSet.Fox.UiScene
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 184, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(UiCameraDataFlag))]
         private UiCameraDataFlag debug;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Ui";
     }
 }

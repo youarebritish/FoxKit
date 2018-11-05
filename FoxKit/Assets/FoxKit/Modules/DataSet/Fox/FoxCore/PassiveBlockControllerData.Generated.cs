@@ -40,5 +40,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 160, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String prerequisiteBlockGroupName = string.Empty;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 3;
+        
+        public override string Category => "";
     }
 }

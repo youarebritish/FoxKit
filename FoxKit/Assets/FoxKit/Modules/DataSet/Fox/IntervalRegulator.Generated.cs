@@ -26,5 +26,10 @@ namespace FoxKit.Modules.DataSet.Fox
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Double, 48, 1, Core.ContainerType.StringMap, PropertyExport.Never, PropertyExport.Never, null, null)]
         private Dictionary<string, System.Double> intervalTimers = new Dictionary<string, System.Double>();
         
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

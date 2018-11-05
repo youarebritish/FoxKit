@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.MotionGraph
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class MogFile : RawFile
     {
+        public override short ClassId => 0;
+        
+        public override ushort Version => 6;
+        
+        public override string Category => "";
     }
 }

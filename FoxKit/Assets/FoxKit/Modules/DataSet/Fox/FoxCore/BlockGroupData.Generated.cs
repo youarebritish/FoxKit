@@ -43,5 +43,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityLink, 168, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<FoxKit.Modules.DataSet.FoxCore.EntityLink> prerequisiteBlockGroups = new List<FoxKit.Modules.DataSet.FoxCore.EntityLink>();
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "";
     }
 }

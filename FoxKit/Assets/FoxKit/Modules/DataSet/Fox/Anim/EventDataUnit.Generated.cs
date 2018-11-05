@@ -37,5 +37,11 @@ namespace FoxKit.Modules.DataSet.Fox.Anim
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 176, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.Single> paramFloat = new List<System.Single>();
+        
+        public override short ClassId => 136;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "";
     }
 }

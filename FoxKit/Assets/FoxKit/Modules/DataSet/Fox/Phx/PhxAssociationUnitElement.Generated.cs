@@ -37,5 +37,11 @@ namespace FoxKit.Modules.DataSet.Fox.Phx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Quat, 176, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
         private UnityEngine.Quaternion offsetRot;
+        
+        public override short ClassId => 144;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "Phx";
     }
 }

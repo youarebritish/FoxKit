@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt8, 56, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.Byte maxBodyTypeCount;
+        
+        public override short ClassId => 32;
+        
+        public override ushort Version => 6;
+        
+        public override string Category => "";
     }
 }

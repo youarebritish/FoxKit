@@ -73,5 +73,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 212, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.UInt32 flags;
+        
+        public override short ClassId => 192;
+        
+        public override ushort Version => 17;
+        
+        public override string Category => "";
     }
 }

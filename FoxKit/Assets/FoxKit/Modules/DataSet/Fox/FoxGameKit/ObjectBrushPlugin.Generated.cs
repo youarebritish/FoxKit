@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 136, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean visibility;
+        
+        public override short ClassId => 76;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "";
     }
 }

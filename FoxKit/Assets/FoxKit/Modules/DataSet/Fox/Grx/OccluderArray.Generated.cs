@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.Grx
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 304, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Object occluderArrayFile;
+        
+        public override short ClassId => 288;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "Area";
     }
 }

@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.PartsBuilder
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 392, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Object desDataSetFile;
+        
+        public override short ClassId => 336;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "PartsBuilder";
     }
 }

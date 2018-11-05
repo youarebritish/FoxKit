@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 96, 1, Core.ContainerType.StringMap, PropertyExport.Never, PropertyExport.Never, null, null)]
         private Dictionary<string, FoxKit.Modules.DataSet.Fox.FoxCore.Entity> propertyDifferences = new Dictionary<string, FoxKit.Modules.DataSet.Fox.FoxCore.Entity>();
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

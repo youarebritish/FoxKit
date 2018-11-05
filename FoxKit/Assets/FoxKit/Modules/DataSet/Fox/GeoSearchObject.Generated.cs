@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class GeoSearchObject : Entity
     {
+        public override short ClassId => 0;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "";
     }
 }

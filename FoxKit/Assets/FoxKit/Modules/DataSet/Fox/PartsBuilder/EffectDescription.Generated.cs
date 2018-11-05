@@ -67,5 +67,11 @@ namespace FoxKit.Modules.DataSet.Fox.PartsBuilder
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 280, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Object effectFileFromFilePtr;
+        
+        public override short ClassId => 232;
+        
+        public override ushort Version => 6;
+        
+        public override string Category => "PartsBuilder";
     }
 }

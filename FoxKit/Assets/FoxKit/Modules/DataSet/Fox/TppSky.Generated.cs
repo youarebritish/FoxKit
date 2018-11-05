@@ -124,5 +124,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 396, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single cylDensityLayerWindInfluence;
+        
+        public override short ClassId => 432;
+        
+        public override ushort Version => 11;
+        
+        public override string Category => "TppEffect";
     }
 }

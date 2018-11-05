@@ -24,5 +24,11 @@ namespace FoxKit.Modules.DataSet.Fox
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityLink, 64, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<FoxKit.Modules.DataSet.FoxCore.EntityLink> locators = new List<FoxKit.Modules.DataSet.FoxCore.EntityLink>();
+        
+        public override short ClassId => 48;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "";
     }
 }

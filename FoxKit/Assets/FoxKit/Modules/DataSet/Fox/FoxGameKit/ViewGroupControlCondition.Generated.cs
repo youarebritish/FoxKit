@@ -31,5 +31,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 128, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String identify = string.Empty;
+        
+        public override short ClassId => 76;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

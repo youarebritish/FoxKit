@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.Sim
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Vector3, 48, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private UnityEngine.Vector3 customGravity;
+        
+        public override short ClassId => 48;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Sim";
     }
 }

@@ -55,5 +55,11 @@ namespace FoxKit.Modules.DataSet.Fox.EdDemo
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 109, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean enableInjuredChildSpecialization;
+        
+        public override short ClassId => 60;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

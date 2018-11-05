@@ -26,5 +26,10 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Path, 48, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.Never, null, null)]
         private UnityEngine.Object path;
         
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

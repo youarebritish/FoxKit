@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.Navx
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 128, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.Boolean select;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Navx";
     }
 }

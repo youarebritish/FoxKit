@@ -45,5 +45,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 96, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.Single influenceOfGlobal;
+        
+        public override short ClassId => 80;
+        
+        public override ushort Version => 6;
+        
+        public override string Category => "";
     }
 }

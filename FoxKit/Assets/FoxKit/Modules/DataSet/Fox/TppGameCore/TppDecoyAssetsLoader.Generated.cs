@@ -31,5 +31,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 144, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String enemyDecoyType = string.Empty;
+        
+        public override short ClassId => 88;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

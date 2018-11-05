@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class EmblemBlender : Data
     {
+        public override short ClassId => 64;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "TppGameKit";
     }
 }

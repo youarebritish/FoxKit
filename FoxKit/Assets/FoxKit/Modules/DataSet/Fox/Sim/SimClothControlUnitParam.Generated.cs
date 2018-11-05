@@ -40,5 +40,11 @@ namespace FoxKit.Modules.DataSet.Fox.Sim
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 68, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.Single contractionRatio;
+        
+        public override short ClassId => 52;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Sim";
     }
 }

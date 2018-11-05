@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.Sim
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Quat, 64, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private UnityEngine.Quaternion offset;
+        
+        public override short ClassId => 48;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Sim";
     }
 }

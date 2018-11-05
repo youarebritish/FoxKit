@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.Graphx
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class GraphxPathData : GraphxSpatialGraphData
     {
+        public override short ClassId => 288;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Graphx";
     }
 }

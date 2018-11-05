@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.Gr
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Vector4, 48, 2, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.Never, null, null)]
         private List<UnityEngine.Vector4> parameters = new List<UnityEngine.Vector4>();
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "";
     }
 }

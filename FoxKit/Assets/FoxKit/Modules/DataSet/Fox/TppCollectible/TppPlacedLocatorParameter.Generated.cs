@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppCollectible
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 56, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.UInt32 equipIdStrCode32;
+        
+        public override short ClassId => 32;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

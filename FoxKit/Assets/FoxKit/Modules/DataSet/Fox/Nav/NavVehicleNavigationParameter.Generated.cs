@@ -29,5 +29,10 @@ namespace FoxKit.Modules.DataSet.Fox.Nav
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 64, 1, Core.ContainerType.DynamicArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private List<System.Single> turningSpeeds = new List<System.Single>();
         
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Nav";
     }
 }

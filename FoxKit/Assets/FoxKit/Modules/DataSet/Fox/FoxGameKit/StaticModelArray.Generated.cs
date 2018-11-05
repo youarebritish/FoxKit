@@ -58,5 +58,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 216, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.UInt32> colors = new List<System.UInt32>();
+        
+        public override short ClassId => 208;
+        
+        public override ushort Version => 4;
+        
+        public override string Category => "Model";
     }
 }

@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.EvControlSubtitlesNode
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class EvControlSubtitlesNode : UiEventNode
     {
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "UiG";
     }
 }

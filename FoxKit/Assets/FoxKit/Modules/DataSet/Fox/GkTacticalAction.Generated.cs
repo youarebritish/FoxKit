@@ -49,5 +49,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 416, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
         private System.UInt32 attribute;
+        
+        public override short ClassId => 368;
+        
+        public override ushort Version => 7;
+        
+        public override string Category => "TacticalAction";
     }
 }

@@ -34,5 +34,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 416, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.UInt32> levels = new List<System.UInt32>();
+        
+        public override short ClassId => 400;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "";
     }
 }

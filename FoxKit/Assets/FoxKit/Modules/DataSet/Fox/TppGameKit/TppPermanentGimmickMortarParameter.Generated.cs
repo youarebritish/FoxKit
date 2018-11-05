@@ -37,5 +37,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 96, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Object flareShellPartsFile;
+        
+        public override short ClassId => 88;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "";
     }
 }

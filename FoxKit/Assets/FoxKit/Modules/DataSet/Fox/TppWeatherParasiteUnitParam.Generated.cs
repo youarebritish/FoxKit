@@ -31,5 +31,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 148, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single debugMistRate;
+        
+        public override short ClassId => 96;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

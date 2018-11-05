@@ -34,5 +34,11 @@ namespace FoxKit.Modules.DataSet.Fox.Navx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 328, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(NavxBounderLocatorType))]
         private NavxBounderLocatorType type;
+        
+        public override short ClassId => 272;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Navx";
     }
 }

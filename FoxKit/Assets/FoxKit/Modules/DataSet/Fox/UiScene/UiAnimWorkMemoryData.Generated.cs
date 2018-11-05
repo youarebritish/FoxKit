@@ -31,5 +31,11 @@ namespace FoxKit.Modules.DataSet.Fox.UiScene
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 128, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.UInt32 vertexAnimNum;
+        
+        public override short ClassId => 76;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Ui";
     }
 }

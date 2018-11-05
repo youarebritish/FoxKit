@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.Gr
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Color, 48, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Color clearColor;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

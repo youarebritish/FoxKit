@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.Ph
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class PhPrimitiveShapeParam : PhShapeParam
     {
+        public override short ClassId => 96;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Ph";
     }
 }

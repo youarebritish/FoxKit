@@ -44,5 +44,10 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 112, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean isAttackDirection;
         
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

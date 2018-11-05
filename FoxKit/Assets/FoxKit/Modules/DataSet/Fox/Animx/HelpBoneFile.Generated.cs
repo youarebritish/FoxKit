@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.Animx
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class HelpBoneFile : RawFile
     {
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

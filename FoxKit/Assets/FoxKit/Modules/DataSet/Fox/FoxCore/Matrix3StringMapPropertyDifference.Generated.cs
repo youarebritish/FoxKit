@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Matrix3, 120, 1, Core.ContainerType.StringMap, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
         private Dictionary<string, FoxKit.Utils.Structs.Matrix3x3> values = new Dictionary<string, FoxKit.Utils.Structs.Matrix3x3>();
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

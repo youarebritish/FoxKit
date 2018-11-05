@@ -76,5 +76,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 1032, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean isUseWorldTexture;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 14;
+        
+        public override string Category => "";
     }
 }

@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.Sdx
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 56, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.UInt32 fadeTime;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "Sound";
     }
 }

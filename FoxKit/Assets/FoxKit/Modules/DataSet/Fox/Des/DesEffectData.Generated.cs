@@ -43,5 +43,11 @@ namespace FoxKit.Modules.DataSet.Fox.Des
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 164, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, null, null)]
         private System.UInt32 randomSeed;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "Des";
     }
 }

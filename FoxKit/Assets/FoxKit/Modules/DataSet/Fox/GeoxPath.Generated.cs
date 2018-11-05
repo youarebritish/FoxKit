@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 336, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Int32 selectIndex;
+        
+        public override short ClassId => 304;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Geox";
     }
 }

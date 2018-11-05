@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.Geo
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class RailUniqueIdFile : RawFile
     {
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

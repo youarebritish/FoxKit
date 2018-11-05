@@ -34,5 +34,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 196, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean windDirYAxisFixZero;
+        
+        public override short ClassId => 136;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

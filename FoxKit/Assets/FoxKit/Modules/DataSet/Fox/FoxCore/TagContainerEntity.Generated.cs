@@ -26,5 +26,10 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt8, 48, 1, Core.ContainerType.StringMap, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
         private Dictionary<string, System.Byte> tags = new Dictionary<string, System.Byte>();
         
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

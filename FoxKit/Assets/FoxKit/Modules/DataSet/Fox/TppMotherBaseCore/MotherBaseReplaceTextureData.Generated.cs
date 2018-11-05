@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppMotherBaseCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 136, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private Dictionary<string, System.Int32> flags = new Dictionary<string, System.Int32>();
+        
+        public override short ClassId => 128;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "TppMotherBase";
     }
 }

@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Path, 168, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private Dictionary<string, UnityEngine.Object> forceLargeTextures = new Dictionary<string, UnityEngine.Object>();
+        
+        public override short ClassId => 160;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "";
     }
 }

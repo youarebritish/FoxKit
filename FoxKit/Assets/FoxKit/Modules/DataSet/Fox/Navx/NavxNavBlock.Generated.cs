@@ -76,5 +76,11 @@ namespace FoxKit.Modules.DataSet.Fox.Navx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 252, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.UInt32 holeSimplificationReduceCount;
+        
+        public override short ClassId => 248;
+        
+        public override ushort Version => 9;
+        
+        public override string Category => "Navx";
     }
 }

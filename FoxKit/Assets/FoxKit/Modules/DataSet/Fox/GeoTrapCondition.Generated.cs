@@ -35,5 +35,10 @@ namespace FoxKit.Modules.DataSet.Fox
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 317, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean isOnce;
         
+        public override short ClassId => 0;
+        
+        public override ushort Version => 3;
+        
+        public override string Category => "Trap";
     }
 }

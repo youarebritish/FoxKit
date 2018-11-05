@@ -29,5 +29,10 @@ namespace FoxKit.Modules.DataSet.Fox.TppSystem
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 128, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, typeof(TppSystem.TppDefaultParameterElement), null)]
         private Dictionary<string, TppSystem.TppDefaultParameterElement> @params = new Dictionary<string, TppSystem.TppDefaultParameterElement>();
         
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

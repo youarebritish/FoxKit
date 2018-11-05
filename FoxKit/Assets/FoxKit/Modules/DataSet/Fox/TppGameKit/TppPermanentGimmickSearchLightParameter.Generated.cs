@@ -49,5 +49,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 88, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single rangeUpDownDim;
+        
+        public override short ClassId => 64;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

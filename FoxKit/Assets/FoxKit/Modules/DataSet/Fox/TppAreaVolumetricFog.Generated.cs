@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 304, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(TppAreaVolumetricFogParam), null)]
         private TppAreaVolumetricFogParam param;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "TppEffect";
     }
 }

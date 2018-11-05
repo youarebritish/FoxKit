@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Vector3, 64, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Vector3 position;
+        
+        public override short ClassId => 48;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "TacticalAction";
     }
 }

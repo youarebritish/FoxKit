@@ -40,5 +40,11 @@ namespace FoxKit.Modules.DataSet.Fox.Grx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Color, 128, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Color colorScale;
+        
+        public override short ClassId => 112;
+        
+        public override ushort Version => 5;
+        
+        public override string Category => "Config";
     }
 }

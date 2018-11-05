@@ -34,5 +34,11 @@ namespace FoxKit.Modules.DataSet.Fox.Sdx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 332, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single playRange;
+        
+        public override short ClassId => 288;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "Sound";
     }
 }

@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 160, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.Never, typeof(FoxGameKit.CheckpointData), null)]
         private FoxGameKit.CheckpointData storage;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

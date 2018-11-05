@@ -82,5 +82,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppMotherBaseStage
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int16, 528, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.Int16> cluster07loadAreaVertices = new List<System.Int16>();
+        
+        public override short ClassId => 496;
+        
+        public override ushort Version => 3;
+        
+        public override string Category => "";
     }
 }

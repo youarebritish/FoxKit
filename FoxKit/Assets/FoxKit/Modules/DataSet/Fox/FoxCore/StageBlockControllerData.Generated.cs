@@ -211,5 +211,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt8, 359, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Byte lod1LargeBlock3Count;
+        
+        public override short ClassId => 288;
+        
+        public override ushort Version => 8;
+        
+        public override string Category => "";
     }
 }

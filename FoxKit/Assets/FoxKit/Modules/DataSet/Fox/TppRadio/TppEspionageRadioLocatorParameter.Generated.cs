@@ -34,5 +34,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppRadio
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 72, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single angle;
+        
+        public override short ClassId => 44;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

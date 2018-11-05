@@ -37,5 +37,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt8, 105, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Byte height;
+        
+        public override short ClassId => 80;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "";
     }
 }

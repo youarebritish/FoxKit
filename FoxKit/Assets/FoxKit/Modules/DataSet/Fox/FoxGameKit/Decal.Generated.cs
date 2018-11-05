@@ -79,5 +79,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean isSSDecal;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 12;
+        
+        public override string Category => "Decal";
     }
 }

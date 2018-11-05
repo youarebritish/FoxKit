@@ -31,5 +31,11 @@ namespace FoxKit.Modules.DataSet.Fox.GameCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 320, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(FoxCore.DataElement), null)]
         private FoxCore.DataElement parameters;
+        
+        public override short ClassId => 272;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "GameObject";
     }
 }

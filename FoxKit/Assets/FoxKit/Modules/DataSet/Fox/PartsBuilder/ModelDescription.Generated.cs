@@ -58,5 +58,11 @@ namespace FoxKit.Modules.DataSet.Fox.PartsBuilder
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 328, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(ModelDescription_RejectFarRangeShadowCast))]
         private ModelDescription_RejectFarRangeShadowCast rejectFarRangeShadowCast;
+        
+        public override short ClassId => 288;
+        
+        public override ushort Version => 12;
+        
+        public override string Category => "PartsBuilder";
     }
 }

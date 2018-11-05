@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class TppDirtyModelData : Data
     {
+        public override short ClassId => 64;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

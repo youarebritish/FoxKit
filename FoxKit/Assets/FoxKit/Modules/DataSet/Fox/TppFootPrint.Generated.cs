@@ -40,5 +40,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 448, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.Boolean> enable = new List<System.Boolean>();
+        
+        public override short ClassId => 416;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "";
     }
 }

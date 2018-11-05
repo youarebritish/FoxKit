@@ -43,5 +43,11 @@ namespace FoxKit.Modules.DataSet.Fox.UiScene
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 232, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.String> destNodeNames = new List<System.String>();
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 4;
+        
+        public override string Category => "Ui";
     }
 }

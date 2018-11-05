@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 304, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(SnipePointType))]
         private SnipePointType type;
+        
+        public override short ClassId => 272;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "BuddyQuiet2";
     }
 }

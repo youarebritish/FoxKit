@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 96, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, typeof(FoxCore.Bucket), null)]
         private FoxCore.Bucket mainBucket;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class EvSubtitlesNodeBody : UiEventNodeBody
     {
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

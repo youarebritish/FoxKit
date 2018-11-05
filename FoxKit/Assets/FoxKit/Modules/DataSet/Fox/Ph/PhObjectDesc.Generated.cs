@@ -31,5 +31,11 @@ namespace FoxKit.Modules.DataSet.Fox.Ph
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 152, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.Int32> bodyIndices = new List<System.Int32>();
+        
+        public override short ClassId => 112;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Ph";
     }
 }

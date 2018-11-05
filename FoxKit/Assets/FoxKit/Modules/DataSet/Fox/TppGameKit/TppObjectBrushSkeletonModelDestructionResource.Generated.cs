@@ -43,5 +43,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 192, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Object trunkPartsFile;
+        
+        public override short ClassId => 152;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

@@ -27,5 +27,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppEffect
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Path, 72, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Object reflectionTexturePathForGoOut;
+        
+        public override short ClassId => 48;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "";
     }
 }

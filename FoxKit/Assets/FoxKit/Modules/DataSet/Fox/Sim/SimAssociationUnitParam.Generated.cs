@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.Sim
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 56, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.Never, null, null)]
         private System.Boolean initialized;
+        
+        public override short ClassId => 32;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "Sim";
     }
 }

@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class TppPlayer2LocatorParameter : DataElement
     {
+        public override short ClassId => 28;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

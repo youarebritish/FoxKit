@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.Grx
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Path, 120, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Object reflectionTexturePath;
+        
+        public override short ClassId => 72;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Config";
     }
 }

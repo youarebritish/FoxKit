@@ -31,5 +31,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 124, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.UInt32 load;
+        
+        public override short ClassId => 112;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "";
     }
 }

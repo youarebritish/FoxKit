@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 144, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private Dictionary<string, UnityEngine.Object> subScripts = new Dictionary<string, UnityEngine.Object>();
+        
+        public override short ClassId => 136;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "";
     }
 }

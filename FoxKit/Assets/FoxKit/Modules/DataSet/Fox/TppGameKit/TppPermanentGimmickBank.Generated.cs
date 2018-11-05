@@ -31,5 +31,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt8, 146, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Byte instanceCount;
+        
+        public override short ClassId => 96;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Gimmick";
     }
 }

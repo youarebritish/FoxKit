@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 48, 1, Core.ContainerType.StringMap, PropertyExport.EditorOnly, PropertyExport.EditorOnly, typeof(FoxCore.Entity), null)]
         private Dictionary<string, FoxCore.Entity> stringMap = new Dictionary<string, FoxCore.Entity>();
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.Ph
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Vector3, 48, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private UnityEngine.Vector3 defaultPosition;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "Ph";
     }
 }

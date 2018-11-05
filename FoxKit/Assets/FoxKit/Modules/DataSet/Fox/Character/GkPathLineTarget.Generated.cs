@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.Character
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class GkPathLineTarget : GraphxPathData
     {
+        public override short ClassId => 288;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Character";
     }
 }

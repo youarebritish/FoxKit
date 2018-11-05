@@ -22,5 +22,10 @@ namespace FoxKit.Modules.DataSet.Fox
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class WindGlobal : EnvironmentGlobal
     {
+        public override short ClassId => 72;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Wind";
     }
 }

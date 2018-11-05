@@ -49,5 +49,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppCollectible
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt16, 248, 1, Core.ContainerType.DynamicArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private List<System.UInt16> segmentInfoCounts = new List<System.UInt16>();
+        
+        public override short ClassId => 208;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "";
     }
 }

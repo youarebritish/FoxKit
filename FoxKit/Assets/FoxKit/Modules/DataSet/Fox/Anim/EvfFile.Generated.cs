@@ -22,5 +22,10 @@ namespace FoxKit.Modules.DataSet.Fox.Anim
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class EvfFile : DataSetFile2
     {
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

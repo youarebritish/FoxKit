@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.TppMotherBaseStage
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class MotherBaseStageSetupFile : RawFile
     {
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

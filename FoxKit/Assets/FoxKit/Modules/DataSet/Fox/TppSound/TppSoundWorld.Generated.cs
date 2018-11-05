@@ -91,5 +91,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppSound
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 164, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single interferenceSlope;
+        
+        public override short ClassId => 408;
+        
+        public override ushort Version => 8;
+        
+        public override string Category => "Sound";
     }
 }

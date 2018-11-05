@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.Anim
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 60, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Int32 endFrame;
+        
+        public override short ClassId => 36;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "";
     }
 }

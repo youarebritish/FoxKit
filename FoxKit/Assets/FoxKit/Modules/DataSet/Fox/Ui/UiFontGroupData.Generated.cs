@@ -26,5 +26,10 @@ namespace FoxKit.Modules.DataSet.Fox.Ui
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 120, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(Ui.UiFontDataElement), null)]
         private List<Ui.UiFontDataElement> fonts = new List<Ui.UiFontDataElement>();
         
+        public override short ClassId => 80;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Ui";
     }
 }

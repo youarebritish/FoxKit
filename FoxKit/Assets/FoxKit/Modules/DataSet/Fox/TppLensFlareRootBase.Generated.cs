@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class TppLensFlareRootBase : TransformData
     {
+        public override short ClassId => 0;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "";
     }
 }

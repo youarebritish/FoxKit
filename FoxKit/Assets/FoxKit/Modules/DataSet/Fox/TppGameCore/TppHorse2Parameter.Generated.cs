@@ -40,5 +40,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 200, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<UnityEngine.Object> fovaFiles = new List<UnityEngine.Object>();
+        
+        public override short ClassId => 192;
+        
+        public override ushort Version => 4;
+        
+        public override string Category => "";
     }
 }

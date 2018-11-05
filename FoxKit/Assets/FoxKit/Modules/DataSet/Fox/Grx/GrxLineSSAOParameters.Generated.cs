@@ -64,5 +64,11 @@ namespace FoxKit.Modules.DataSet.Fox.Grx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 100, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single gainonRange;
+        
+        public override short ClassId => 80;
+        
+        public override ushort Version => 3;
+        
+        public override string Category => "";
     }
 }

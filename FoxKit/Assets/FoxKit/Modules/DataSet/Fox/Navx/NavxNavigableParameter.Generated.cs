@@ -46,5 +46,11 @@ namespace FoxKit.Modules.DataSet.Fox.Navx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 88, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single minArea;
+        
+        public override short ClassId => 60;
+        
+        public override ushort Version => 9;
+        
+        public override string Category => "Navx";
     }
 }

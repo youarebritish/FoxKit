@@ -37,5 +37,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 176, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(ObjectBrushPluginClone_ModelRejectionLevel))]
         private ObjectBrushPluginClone_ModelRejectionLevel modelRejectionLevel;
+        
+        public override short ClassId => 120;
+        
+        public override ushort Version => 3;
+        
+        public override string Category => "";
     }
 }

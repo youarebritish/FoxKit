@@ -34,5 +34,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 312, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.String> collisionAttributeTags = new List<System.String>();
+        
+        public override short ClassId => 288;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Geox";
     }
 }

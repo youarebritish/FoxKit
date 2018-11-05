@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 120, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(TppNightVisionParam), null)]
         private TppNightVisionParam param;
+        
+        public override short ClassId => 72;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "TppEffect";
     }
 }

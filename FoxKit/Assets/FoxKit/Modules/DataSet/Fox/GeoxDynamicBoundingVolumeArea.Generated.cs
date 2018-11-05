@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class GeoxDynamicBoundingVolumeArea : TransformData
     {
+        public override short ClassId => 256;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

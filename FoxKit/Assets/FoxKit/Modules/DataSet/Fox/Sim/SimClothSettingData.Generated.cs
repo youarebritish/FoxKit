@@ -49,5 +49,11 @@ namespace FoxKit.Modules.DataSet.Fox.Sim
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 152, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean noHitSkinMesh;
+        
+        public override short ClassId => 100;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "Sim";
     }
 }

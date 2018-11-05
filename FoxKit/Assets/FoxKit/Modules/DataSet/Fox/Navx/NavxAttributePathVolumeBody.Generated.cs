@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.Navx
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class NavxAttributePathVolumeBody : GraphxPathVolumeBody
     {
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

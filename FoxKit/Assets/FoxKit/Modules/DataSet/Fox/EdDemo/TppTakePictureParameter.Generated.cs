@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.EdDemo
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class TppTakePictureParameter : DemoParameter
     {
+        public override short ClassId => 32;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

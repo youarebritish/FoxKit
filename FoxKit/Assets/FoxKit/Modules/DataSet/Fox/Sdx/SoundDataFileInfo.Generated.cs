@@ -31,5 +31,11 @@ namespace FoxKit.Modules.DataSet.Fox.Sdx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 152, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.String> prepareEvents = new List<System.String>();
+        
+        public override short ClassId => 112;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Sound";
     }
 }

@@ -34,5 +34,11 @@ namespace FoxKit.Modules.DataSet.Fox.Anim
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 152, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String rootName = string.Empty;
+        
+        public override short ClassId => 104;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "";
     }
 }

@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.Navx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 360, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(Navx.NavxAttributeInfo), null)]
         private List<Navx.NavxAttributeInfo> attributeInfos = new List<Navx.NavxAttributeInfo>();
+        
+        public override short ClassId => 336;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

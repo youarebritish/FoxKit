@@ -88,5 +88,11 @@ namespace FoxKit.Modules.DataSet.Fox.Navx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Path, 440, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Object loadFox2FileListScriptPath;
+        
+        public override short ClassId => 400;
+        
+        public override ushort Version => 27;
+        
+        public override string Category => "Navx";
     }
 }

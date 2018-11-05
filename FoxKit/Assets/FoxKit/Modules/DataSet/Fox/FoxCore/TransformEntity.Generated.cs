@@ -41,5 +41,10 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Vector3, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Vector3 translation;
         
+        public override short ClassId => 80;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

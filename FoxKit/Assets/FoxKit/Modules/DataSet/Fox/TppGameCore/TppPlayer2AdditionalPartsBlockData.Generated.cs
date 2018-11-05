@@ -31,5 +31,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 128, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean prerequisiteToResident;
+        
+        public override short ClassId => 76;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "";
     }
 }

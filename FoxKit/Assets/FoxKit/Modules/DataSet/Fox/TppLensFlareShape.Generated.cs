@@ -109,5 +109,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 732, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean scaleOnZoom;
+        
+        public override short ClassId => 672;
+        
+        public override ushort Version => 11;
+        
+        public override string Category => "";
     }
 }

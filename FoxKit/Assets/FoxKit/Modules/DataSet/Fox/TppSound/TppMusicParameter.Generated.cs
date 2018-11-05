@@ -82,5 +82,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppSound
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 152, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String neutralSwitchEvent = string.Empty;
+        
+        public override short ClassId => 144;
+        
+        public override ushort Version => 9;
+        
+        public override string Category => "Sound";
     }
 }

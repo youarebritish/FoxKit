@@ -27,5 +27,6 @@ namespace FoxKit.Modules.DataSet.Fox.UiScene
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 16, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String connectModelNodeName = string.Empty;
+        
     }
 }

@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.TppSound
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class TppAmbientSourceBody : SoundSourceBody
     {
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

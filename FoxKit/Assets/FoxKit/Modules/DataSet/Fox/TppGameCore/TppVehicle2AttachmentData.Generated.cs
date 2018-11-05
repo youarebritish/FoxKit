@@ -43,5 +43,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 120, 1, Core.ContainerType.DynamicArray, PropertyExport.Never, PropertyExport.Never, typeof(TppGameCore.TppVehicle2WeaponParameter), null)]
         private List<TppGameCore.TppVehicle2WeaponParameter> weaponParams = new List<TppGameCore.TppVehicle2WeaponParameter>();
+        
+        public override short ClassId => 120;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "";
     }
 }

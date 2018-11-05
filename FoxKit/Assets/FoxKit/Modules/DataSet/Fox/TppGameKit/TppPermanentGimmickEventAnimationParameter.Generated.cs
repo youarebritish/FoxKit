@@ -34,5 +34,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 60, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single fadeTime;
+        
+        public override short ClassId => 56;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

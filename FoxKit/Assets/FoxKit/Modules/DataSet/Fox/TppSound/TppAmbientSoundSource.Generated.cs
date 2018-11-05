@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppSound
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt8, 344, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Byte ambientIndex;
+        
+        public override short ClassId => 304;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Sound";
     }
 }

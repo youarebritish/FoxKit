@@ -46,5 +46,11 @@ namespace FoxKit.Modules.DataSet.Fox.UiScene
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 372, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Int32 fontTableIndex;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 6;
+        
+        public override string Category => "Ui";
     }
 }

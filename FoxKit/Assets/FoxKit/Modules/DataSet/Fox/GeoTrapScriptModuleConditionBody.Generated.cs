@@ -27,5 +27,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 176, 1, Core.ContainerType.DynamicArray, PropertyExport.Never, PropertyExport.Never, typeof(FoxCore.SafeScript), null)]
         private List<FoxCore.SafeScript> execScriptArray = new List<FoxCore.SafeScript>();
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Trap";
     }
 }

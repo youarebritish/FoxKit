@@ -43,5 +43,11 @@ namespace FoxKit.Modules.DataSet.Fox.Navx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 336, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean isNotClosePassage;
+        
+        public override short ClassId => 288;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "Navx";
     }
 }

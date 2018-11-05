@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppMarkerLocator
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 64, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String markerId = string.Empty;
+        
+        public override short ClassId => 36;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

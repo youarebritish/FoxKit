@@ -49,5 +49,11 @@ namespace FoxKit.Modules.DataSet.Fox.Ui
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Vector4, 128, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Vector4 fontEdge;
+        
+        public override short ClassId => 128;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "";
     }
 }

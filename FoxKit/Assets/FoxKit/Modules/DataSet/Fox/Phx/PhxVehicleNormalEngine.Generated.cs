@@ -43,5 +43,11 @@ namespace FoxKit.Modules.DataSet.Fox.Phx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 0, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.Single> specPointBreakTorque = new List<System.Single>();
+        
+        public override short ClassId => 120;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "Phx";
     }
 }

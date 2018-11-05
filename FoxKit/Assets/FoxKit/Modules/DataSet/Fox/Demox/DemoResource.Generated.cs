@@ -52,5 +52,11 @@ namespace FoxKit.Modules.DataSet.Fox.Demox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 176, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.UInt32 demoPacketNum;
+        
+        public override short ClassId => 120;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "";
     }
 }

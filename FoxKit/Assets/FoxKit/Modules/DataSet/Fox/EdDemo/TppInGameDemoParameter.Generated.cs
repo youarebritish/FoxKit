@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.EdDemo
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class TppInGameDemoParameter : DemoParameter
     {
+        public override short ClassId => 36;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

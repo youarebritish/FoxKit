@@ -46,5 +46,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 212, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean isGeomActivity;
+        
+        public override short ClassId => 152;
+        
+        public override ushort Version => 3;
+        
+        public override string Category => "";
     }
 }

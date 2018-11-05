@@ -34,5 +34,11 @@ namespace FoxKit.Modules.DataSet.Fox.Sim
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 52, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
         private System.Int32 maxLodLevel;
+        
+        public override short ClassId => 36;
+        
+        public override ushort Version => 3;
+        
+        public override string Category => "Sim";
     }
 }

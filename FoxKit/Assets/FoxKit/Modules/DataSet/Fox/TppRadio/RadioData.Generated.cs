@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppRadio
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 120, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<UnityEngine.Object> radioDataFile = new List<UnityEngine.Object>();
+        
+        public override short ClassId => 80;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "GameKit";
     }
 }

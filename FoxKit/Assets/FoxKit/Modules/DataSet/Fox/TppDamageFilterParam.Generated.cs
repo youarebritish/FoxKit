@@ -46,5 +46,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 384, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String injuryColorCorrectionTextureName = string.Empty;
+        
+        public override short ClassId => 336;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

@@ -130,5 +130,11 @@ namespace FoxKit.Modules.DataSet.Fox.Grx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean hasSpecular;
+        
+        public override short ClassId => 480;
+        
+        public override ushort Version => 18;
+        
+        public override string Category => "Light";
     }
 }

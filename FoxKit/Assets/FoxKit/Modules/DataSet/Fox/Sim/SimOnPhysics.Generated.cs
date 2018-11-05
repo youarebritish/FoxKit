@@ -52,5 +52,11 @@ namespace FoxKit.Modules.DataSet.Fox.Sim
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean convertMoveToWind;
+        
+        public override short ClassId => 328;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "Sim";
     }
 }

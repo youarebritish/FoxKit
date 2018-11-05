@@ -35,5 +35,10 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 160, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, null, null)]
         private System.String objectBrushName = string.Empty;
         
+        public override short ClassId => 128;
+        
+        public override ushort Version => 3;
+        
+        public override string Category => "";
     }
 }

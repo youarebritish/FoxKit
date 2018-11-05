@@ -40,5 +40,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 376, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, null, null)]
         private System.UInt32 numBlocks;
+        
+        public override short ClassId => 352;
+        
+        public override ushort Version => 4;
+        
+        public override string Category => "";
     }
 }

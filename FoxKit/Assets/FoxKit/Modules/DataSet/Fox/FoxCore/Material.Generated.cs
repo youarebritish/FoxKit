@@ -55,5 +55,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 216, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean residentFlag;
+        
+        public override short ClassId => 176;
+        
+        public override ushort Version => 6;
+        
+        public override string Category => "Material";
     }
 }

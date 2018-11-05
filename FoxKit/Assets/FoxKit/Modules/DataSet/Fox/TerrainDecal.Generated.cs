@@ -70,5 +70,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Vector3, 416, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<UnityEngine.Vector3> serializedGraphNodes = new List<UnityEngine.Vector3>();
+        
+        public override short ClassId => 384;
+        
+        public override ushort Version => 9;
+        
+        public override string Category => "Terrain";
     }
 }

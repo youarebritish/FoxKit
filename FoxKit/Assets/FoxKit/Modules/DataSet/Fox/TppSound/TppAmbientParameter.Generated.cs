@@ -37,5 +37,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppSound
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 192, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single dryVolume;
+        
+        public override short ClassId => 136;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "Sound";
     }
 }

@@ -31,5 +31,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Path, 152, 1, Core.ContainerType.DynamicArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private List<UnityEngine.Object> subtitlesStreamPath = new List<UnityEngine.Object>();
+        
+        public override short ClassId => 112;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "Subtitles";
     }
 }

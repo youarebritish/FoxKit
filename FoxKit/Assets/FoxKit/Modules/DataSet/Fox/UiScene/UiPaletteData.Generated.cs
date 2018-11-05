@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.UiScene
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Color, 120, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private Dictionary<string, UnityEngine.Color> colors = new Dictionary<string, UnityEngine.Color>();
+        
+        public override short ClassId => 112;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Ui";
     }
 }

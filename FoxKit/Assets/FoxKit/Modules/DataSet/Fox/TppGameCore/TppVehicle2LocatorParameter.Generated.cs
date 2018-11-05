@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class TppVehicle2LocatorParameter : DataElement
     {
+        public override short ClassId => 28;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "";
     }
 }

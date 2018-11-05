@@ -28,5 +28,10 @@ namespace FoxKit.Modules.DataSet.Fox.Geo
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 88, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.Boolean didAddParam;
         
+        public override short ClassId => 64;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "";
     }
 }

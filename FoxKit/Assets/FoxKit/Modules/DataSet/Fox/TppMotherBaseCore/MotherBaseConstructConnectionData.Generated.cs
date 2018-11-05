@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppMotherBaseCore
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt64, 120, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.UInt64> constructConnectionList = new List<System.UInt64>();
+        
+        public override short ClassId => 80;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "TppMotherBase";
     }
 }

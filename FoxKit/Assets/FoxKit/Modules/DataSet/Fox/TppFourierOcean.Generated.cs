@@ -76,5 +76,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 188, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single foamAmount;
+        
+        public override short ClassId => 136;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

@@ -43,5 +43,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 144, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single rotationSpeed;
+        
+        public override short ClassId => 92;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "";
     }
 }

@@ -91,5 +91,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 168, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(TppSkyClouds3Param_TexColor))]
         private TppSkyClouds3Param_TexColor textureColorHandling;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 3;
+        
+        public override string Category => "TppEffect";
     }
 }

@@ -260,5 +260,10 @@ namespace FoxKit.Modules.DataSet.Fox.TppEffect
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean isSteppedMoveOfDirectionalLight;
         
+        public override short ClassId => 608;
+        
+        public override ushort Version => 21;
+        
+        public override string Category => "Light";
     }
 }

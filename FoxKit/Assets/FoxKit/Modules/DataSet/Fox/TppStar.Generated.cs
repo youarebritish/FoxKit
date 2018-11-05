@@ -52,5 +52,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 368, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.Single> scaleArray = new List<System.Single>();
+        
+        public override short ClassId => 384;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "TppEffect";
     }
 }

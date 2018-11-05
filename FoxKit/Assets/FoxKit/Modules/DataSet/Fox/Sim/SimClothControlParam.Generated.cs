@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.Sim
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 52, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.Boolean isLoop;
+        
+        public override short ClassId => 32;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "Sim";
     }
 }

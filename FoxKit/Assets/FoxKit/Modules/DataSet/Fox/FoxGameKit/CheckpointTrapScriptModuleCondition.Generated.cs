@@ -24,5 +24,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Path, 368, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<UnityEngine.Object> checkpointScriptArray = new List<UnityEngine.Object>();
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "GameKit";
     }
 }

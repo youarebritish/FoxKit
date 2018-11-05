@@ -64,5 +64,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 172, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.Single rotSpeed;
+        
+        public override short ClassId => 128;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "";
     }
 }

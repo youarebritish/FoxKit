@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.Sdx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 144, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean syncLoad;
+        
+        public override short ClassId => 96;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "Sound";
     }
 }

@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Path, 120, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<UnityEngine.Object> filterPath = new List<UnityEngine.Object>();
+        
+        public override short ClassId => 80;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "Model";
     }
 }

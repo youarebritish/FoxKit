@@ -64,5 +64,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 272, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean noiseSunLightColorMul;
+        
+        public override short ClassId => 240;
+        
+        public override ushort Version => 3;
+        
+        public override string Category => "TppEffect";
     }
 }

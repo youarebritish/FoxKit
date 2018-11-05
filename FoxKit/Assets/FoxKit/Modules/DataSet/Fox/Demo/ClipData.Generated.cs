@@ -37,5 +37,11 @@ namespace FoxKit.Modules.DataSet.Fox.Demo
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 80, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, null, null)]
         private System.Int32 offsetFrame;
+        
+        public override short ClassId => 48;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

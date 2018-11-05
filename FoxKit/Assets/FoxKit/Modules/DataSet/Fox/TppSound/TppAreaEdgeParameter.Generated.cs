@@ -34,5 +34,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppSound
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 76, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single connectedBlockedOcclusion;
+        
+        public override short ClassId => 48;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Sound";
     }
 }

@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.Sim
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class SimObjectParam : Entity
     {
+        public override short ClassId => 24;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Sim";
     }
 }

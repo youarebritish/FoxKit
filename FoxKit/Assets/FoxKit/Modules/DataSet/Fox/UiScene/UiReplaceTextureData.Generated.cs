@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.UiScene
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Path, 120, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<UnityEngine.Object> texturePath = new List<UnityEngine.Object>();
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Ui";
     }
 }

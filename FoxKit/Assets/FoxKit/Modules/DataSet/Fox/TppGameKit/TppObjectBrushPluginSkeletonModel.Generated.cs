@@ -67,5 +67,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 300, 4, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.Single> lodLengthForHighEnd = new List<System.Single>();
+        
+        public override short ClassId => 248;
+        
+        public override ushort Version => 7;
+        
+        public override string Category => "";
     }
 }

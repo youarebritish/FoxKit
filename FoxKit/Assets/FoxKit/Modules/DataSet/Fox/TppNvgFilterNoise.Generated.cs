@@ -49,5 +49,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 144, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single radialShift;
+        
+        public override short ClassId => 112;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "";
     }
 }

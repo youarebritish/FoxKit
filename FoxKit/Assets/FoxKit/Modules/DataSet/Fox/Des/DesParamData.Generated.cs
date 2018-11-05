@@ -43,5 +43,11 @@ namespace FoxKit.Modules.DataSet.Fox.Des
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 152, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, null, null)]
         private System.Single physicalCoefficient;
+        
+        public override short ClassId => 92;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "Des";
     }
 }

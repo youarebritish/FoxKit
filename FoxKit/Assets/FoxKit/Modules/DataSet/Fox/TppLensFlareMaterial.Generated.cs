@@ -40,5 +40,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 216, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean debugDrawMaskShape;
+        
+        public override short ClassId => 208;
+        
+        public override ushort Version => 3;
+        
+        public override string Category => "";
     }
 }

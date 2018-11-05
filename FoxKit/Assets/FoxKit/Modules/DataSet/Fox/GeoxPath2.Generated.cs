@@ -31,5 +31,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 344, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.String> tags = new List<System.String>();
+        
+        public override short ClassId => 320;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "Geox";
     }
 }

@@ -34,5 +34,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Vector3, 304, 5, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<UnityEngine.Vector3> points = new List<UnityEngine.Vector3>();
+        
+        public override short ClassId => 368;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Geox";
     }
 }

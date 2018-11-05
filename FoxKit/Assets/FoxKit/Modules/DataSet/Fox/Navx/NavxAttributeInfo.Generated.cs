@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.Navx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 64, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
         private System.Single simplificationThreshold;
+        
+        public override short ClassId => 36;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

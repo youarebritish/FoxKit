@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.Sim
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single inertialCoefficient;
+        
+        public override short ClassId => 56;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Sim";
     }
 }

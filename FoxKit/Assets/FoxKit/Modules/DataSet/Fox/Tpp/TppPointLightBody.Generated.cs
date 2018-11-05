@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.Tpp
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 148, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
         private System.Boolean enable;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

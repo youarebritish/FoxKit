@@ -27,5 +27,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 104, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single checkAreaSize;
+        
+        public override short ClassId => 72;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "";
     }
 }

@@ -31,5 +31,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 152, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.Single> requirdTime = new List<System.Single>();
+        
+        public override short ClassId => 112;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

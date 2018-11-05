@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.Demo
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class DemoParameter : DataElement
     {
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

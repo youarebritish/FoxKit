@@ -85,5 +85,11 @@ namespace FoxKit.Modules.DataSet.Fox.Ph
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 161, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.Boolean isNoGravity;
+        
+        public override short ClassId => 320;
+        
+        public override ushort Version => 5;
+        
+        public override string Category => "Ph";
     }
 }

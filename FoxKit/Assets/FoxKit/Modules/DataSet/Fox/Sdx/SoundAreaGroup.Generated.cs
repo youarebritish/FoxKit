@@ -34,5 +34,11 @@ namespace FoxKit.Modules.DataSet.Fox.Sdx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityLink, 152, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, null, null)]
         private List<FoxKit.Modules.DataSet.FoxCore.EntityLink> edges = new List<FoxKit.Modules.DataSet.FoxCore.EntityLink>();
+        
+        public override short ClassId => 112;
+        
+        public override ushort Version => 3;
+        
+        public override string Category => "Sound";
     }
 }

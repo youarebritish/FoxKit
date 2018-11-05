@@ -34,5 +34,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 128, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private Dictionary<string, UnityEngine.Object> vfxFiles = new Dictionary<string, UnityEngine.Object>();
+        
+        public override short ClassId => 152;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

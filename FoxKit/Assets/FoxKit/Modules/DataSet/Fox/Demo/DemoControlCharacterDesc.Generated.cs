@@ -52,5 +52,11 @@ namespace FoxKit.Modules.DataSet.Fox.Demo
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Quat, 160, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Quaternion startRotation;
+        
+        public override short ClassId => 128;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "";
     }
 }

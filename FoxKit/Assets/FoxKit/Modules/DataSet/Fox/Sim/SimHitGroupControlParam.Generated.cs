@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.Sim
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 48, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.UInt32 groupIndex;
+        
+        public override short ClassId => 28;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Sim";
     }
 }

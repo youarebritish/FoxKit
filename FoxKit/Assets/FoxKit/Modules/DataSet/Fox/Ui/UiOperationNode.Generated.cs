@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.Ui
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 280, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, typeof(UiOperationNodeKind))]
         private UiOperationNodeKind kind;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "UiG";
     }
 }

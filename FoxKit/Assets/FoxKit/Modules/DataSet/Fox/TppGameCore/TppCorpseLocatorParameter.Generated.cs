@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 64, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean isEmplaced;
+        
+        public override short ClassId => 36;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

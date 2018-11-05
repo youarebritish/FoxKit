@@ -32,5 +32,10 @@ namespace FoxKit.Modules.DataSet.Fox.Graphx
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityHandle, 96, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.Never, null, null)]
         private List<FoxKit.Modules.DataSet.Fox.FoxCore.Entity> outlinks = new List<FoxKit.Modules.DataSet.Fox.FoxCore.Entity>();
         
+        public override short ClassId => 80;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Graphx";
     }
 }

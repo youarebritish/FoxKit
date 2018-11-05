@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 304, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Object vfxlbFile;
+        
+        public override short ClassId => 288;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Fx";
     }
 }

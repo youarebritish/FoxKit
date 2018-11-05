@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class TppSimpleGameSequenceSystem : Entity
     {
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

@@ -163,5 +163,11 @@ namespace FoxKit.Modules.DataSet.Fox.Demox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityLink, 520, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private FoxKit.Modules.DataSet.FoxCore.EntityLink blockPositionSetter;
+        
+        public override short ClassId => 1264;
+        
+        public override ushort Version => 36;
+        
+        public override string Category => "";
     }
 }

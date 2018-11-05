@@ -34,5 +34,11 @@ namespace FoxKit.Modules.DataSet.Fox.Gr
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 168, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.UInt32> slot3 = new List<System.UInt32>();
+        
+        public override short ClassId => 128;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

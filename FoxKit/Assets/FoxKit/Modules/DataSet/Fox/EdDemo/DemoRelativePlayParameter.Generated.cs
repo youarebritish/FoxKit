@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.EdDemo
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 72, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String lookAtCharacterId = string.Empty;
+        
+        public override short ClassId => 40;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

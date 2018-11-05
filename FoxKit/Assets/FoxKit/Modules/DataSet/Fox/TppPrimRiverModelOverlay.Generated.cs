@@ -40,5 +40,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 184, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String maskTextureName = string.Empty;
+        
+        public override short ClassId => 120;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

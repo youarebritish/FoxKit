@@ -22,5 +22,10 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class SubtitlesTrapConditionBody : GeoTrapConditionBody
     {
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

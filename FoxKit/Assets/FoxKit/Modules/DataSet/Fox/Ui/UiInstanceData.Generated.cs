@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.Ui
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 168, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String windowFactoryName = string.Empty;
+        
+        public override short ClassId => 120;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "Ui";
     }
 }

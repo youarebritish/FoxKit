@@ -79,5 +79,11 @@ namespace FoxKit.Modules.DataSet.Fox.Phx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 0, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.String> AssignedBoneNames = new List<System.String>();
+        
+        public override short ClassId => 128;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "Phx";
     }
 }

@@ -31,5 +31,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 320, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private FoxKit.Modules.DataSet.Fox.FoxCore.Entity dataSetDifference;
+        
+        public override short ClassId => 416;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "Data";
     }
 }

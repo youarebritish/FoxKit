@@ -31,5 +31,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 308, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, typeof(TppWaterBoundingType))]
         private TppWaterBoundingType type;
+        
+        public override short ClassId => 272;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "";
     }
 }

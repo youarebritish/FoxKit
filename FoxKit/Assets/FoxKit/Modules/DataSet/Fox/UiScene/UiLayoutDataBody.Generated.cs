@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.UiScene
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class UiLayoutDataBody : TransformDataBody
     {
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Ui";
     }
 }

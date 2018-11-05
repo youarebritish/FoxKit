@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.TppMotherBaseCore
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class MotherBaseConstructConnectLocatorBody : TransformDataBody
     {
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "TppMotherBase";
     }
 }

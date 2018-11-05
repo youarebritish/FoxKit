@@ -55,5 +55,11 @@ namespace FoxKit.Modules.DataSet.Fox.Grx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 88, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single blurSceneScale;
+        
+        public override short ClassId => 68;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

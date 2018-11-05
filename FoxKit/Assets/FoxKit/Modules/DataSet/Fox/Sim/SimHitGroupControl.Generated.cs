@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.Sim
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 72, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, typeof(Sim.SimHitGroupControlParam), null)]
         private Sim.SimHitGroupControlParam controlParam;
+        
+        public override short ClassId => 56;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Sim";
     }
 }

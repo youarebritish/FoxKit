@@ -32,5 +32,10 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.Never, null, null)]
         private System.String referencePath = string.Empty;
         
+        public override short ClassId => -1;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "";
     }
 }

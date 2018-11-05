@@ -34,5 +34,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityLink, 200, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
         private FoxKit.Modules.DataSet.FoxCore.EntityLink externalGimmickParameter;
+        
+        public override short ClassId => 168;
+        
+        public override ushort Version => 3;
+        
+        public override string Category => "";
     }
 }

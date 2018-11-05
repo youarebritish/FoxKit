@@ -31,5 +31,11 @@ namespace FoxKit.Modules.DataSet.Fox.Sdx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 144, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(Sdx.SoundAreaParameter), null)]
         private Sdx.SoundAreaParameter parameter;
+        
+        public override short ClassId => 96;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "Sound";
     }
 }

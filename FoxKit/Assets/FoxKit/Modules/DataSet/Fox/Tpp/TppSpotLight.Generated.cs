@@ -136,5 +136,11 @@ namespace FoxKit.Modules.DataSet.Fox.Tpp
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Path, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Object importFilePath;
+        
+        public override short ClassId => 496;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "Light";
     }
 }

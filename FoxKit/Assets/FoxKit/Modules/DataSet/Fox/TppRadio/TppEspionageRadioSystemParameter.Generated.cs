@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.TppRadio
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class TppEspionageRadioSystemParameter : DataElement
     {
+        public override short ClassId => 28;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

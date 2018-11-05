@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class TppPermeableStaticModel : StaticModelArrayPathFilter
     {
+        public override short ClassId => 80;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "Gimmick";
     }
 }

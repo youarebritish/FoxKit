@@ -52,5 +52,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt8, 160, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private Dictionary<string, System.Byte> TODO_trapTags = new Dictionary<string, System.Byte>();
+        
+        public override short ClassId => 184;
+        
+        public override ushort Version => 5;
+        
+        public override string Category => "";
     }
 }

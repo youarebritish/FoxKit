@@ -62,5 +62,10 @@ namespace FoxKit.Modules.DataSet.Fox.UiScene
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 424, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(UiScene.UiModelNodeElement), null)]
         private List<UiScene.UiModelNodeElement> modelNodes = new List<UiScene.UiModelNodeElement>();
         
+        public override short ClassId => 0;
+        
+        public override ushort Version => 6;
+        
+        public override string Category => "Ui";
     }
 }

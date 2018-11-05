@@ -34,5 +34,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 136, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean debugView;
+        
+        public override short ClassId => 80;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

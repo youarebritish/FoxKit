@@ -37,5 +37,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt8, 232, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.Byte> cnpIndex = new List<System.Byte>();
+        
+        public override short ClassId => 176;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Gimmick";
     }
 }

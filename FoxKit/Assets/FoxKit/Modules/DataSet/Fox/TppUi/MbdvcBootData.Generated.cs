@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppUi
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 144, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Object rawFile;
+        
+        public override short ClassId => 112;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "";
     }
 }

@@ -70,5 +70,11 @@ namespace FoxKit.Modules.DataSet.Fox.Demox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 712, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(Demox.DemoFv2ResourceMemory), null)]
         private Dictionary<string, Demox.DemoFv2ResourceMemory> dynamicFv2 = new Dictionary<string, Demox.DemoFv2ResourceMemory>();
+        
+        public override short ClassId => 712;
+        
+        public override ushort Version => 3;
+        
+        public override string Category => "";
     }
 }

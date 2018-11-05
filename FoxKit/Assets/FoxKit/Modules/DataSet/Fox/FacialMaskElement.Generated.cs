@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 72, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(ParameterMaskElement), null)]
         private List<ParameterMaskElement> shaderList = new List<ParameterMaskElement>();
+        
+        public override short ClassId => 64;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "";
     }
 }

@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.Ph
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class PhMaterialManager : Entity
     {
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Ph";
     }
 }

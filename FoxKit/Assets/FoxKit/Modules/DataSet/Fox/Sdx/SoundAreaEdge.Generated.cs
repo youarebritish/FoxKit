@@ -31,5 +31,11 @@ namespace FoxKit.Modules.DataSet.Fox.Sdx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityLink, 168, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, null, null)]
         private FoxKit.Modules.DataSet.FoxCore.EntityLink nextArea;
+        
+        public override short ClassId => 136;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "Sound";
     }
 }

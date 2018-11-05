@@ -46,5 +46,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Path, 152, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Object vramFpkPath;
+        
+        public override short ClassId => 104;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "";
     }
 }

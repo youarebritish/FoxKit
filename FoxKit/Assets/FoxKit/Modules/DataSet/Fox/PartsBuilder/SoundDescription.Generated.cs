@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.PartsBuilder
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 152, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Object soundFile;
+        
+        public override short ClassId => 112;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "PartsBuilder";
     }
 }

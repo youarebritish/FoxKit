@@ -31,5 +31,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 312, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.UInt32 mixAreaRadius;
+        
+        public override short ClassId => 272;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Terrain";
     }
 }

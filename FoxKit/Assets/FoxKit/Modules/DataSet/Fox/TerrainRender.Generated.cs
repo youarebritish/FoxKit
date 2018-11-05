@@ -101,5 +101,10 @@ namespace FoxKit.Modules.DataSet.Fox
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Path, 1056, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
         private List<UnityEngine.Object> worldTextureTilePathes = new List<UnityEngine.Object>();
         
+        public override short ClassId => 960;
+        
+        public override ushort Version => 9;
+        
+        public override string Category => "";
     }
 }

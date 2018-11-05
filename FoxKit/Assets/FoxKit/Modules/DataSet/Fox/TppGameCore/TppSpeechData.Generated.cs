@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 120, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<UnityEngine.Object> files = new List<UnityEngine.Object>();
+        
+        public override short ClassId => 88;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "TppGameCore";
     }
 }

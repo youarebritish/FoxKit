@@ -27,5 +27,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 72, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.String> inactiveLocators = new List<System.String>();
+        
+        public override short ClassId => 56;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

@@ -34,5 +34,11 @@ namespace FoxKit.Modules.DataSet.Fox.Phx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.UInt32 connectType;
+        
+        public override short ClassId => 152;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "Phx";
     }
 }

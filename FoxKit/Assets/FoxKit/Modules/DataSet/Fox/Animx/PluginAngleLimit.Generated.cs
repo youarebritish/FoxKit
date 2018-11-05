@@ -33,5 +33,6 @@ namespace FoxKit.Modules.DataSet.Fox.Animx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 12, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single verLimD;
+        
     }
 }

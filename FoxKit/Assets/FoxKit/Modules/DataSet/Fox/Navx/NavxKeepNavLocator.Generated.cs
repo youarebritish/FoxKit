@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.Navx
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class NavxKeepNavLocator : TransformData
     {
+        public override short ClassId => 256;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Navx";
     }
 }

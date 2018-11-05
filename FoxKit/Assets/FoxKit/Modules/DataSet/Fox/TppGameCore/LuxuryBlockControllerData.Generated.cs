@@ -43,5 +43,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 144, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.UInt32 maxPathListCount;
+        
+        public override short ClassId => 92;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

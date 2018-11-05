@@ -61,5 +61,11 @@ namespace FoxKit.Modules.DataSet.Fox.Phx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 172, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.Single inertia;
+        
+        public override short ClassId => 160;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "Phx";
     }
 }

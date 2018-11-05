@@ -23,5 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.Gr
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class FilmicTonemapBody : DataBody
     {
+        public override short ClassId => 0;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "";
     }
 }

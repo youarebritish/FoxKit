@@ -49,5 +49,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 104, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single tonemapRange;
+        
+        public override short ClassId => 120;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "";
     }
 }

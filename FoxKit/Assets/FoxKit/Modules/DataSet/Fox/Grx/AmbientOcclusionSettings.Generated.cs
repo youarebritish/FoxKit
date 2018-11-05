@@ -34,5 +34,11 @@ namespace FoxKit.Modules.DataSet.Fox.Grx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 136, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.Never, typeof(Grx.GrxAreaSSAOParameters), null)]
         private Grx.GrxAreaSSAOParameters areaSSAOParameters;
+        
+        public override short ClassId => 88;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Config";
     }
 }

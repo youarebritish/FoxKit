@@ -43,5 +43,11 @@ namespace FoxKit.Modules.DataSet.Fox.Sdx
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 144, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Single dryVolume;
+        
+        public override short ClassId => 104;
+        
+        public override ushort Version => 4;
+        
+        public override string Category => "Sound";
     }
 }

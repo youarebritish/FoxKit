@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Path, 120, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Object texturePackPath;
+        
+        public override short ClassId => 72;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Texture";
     }
 }

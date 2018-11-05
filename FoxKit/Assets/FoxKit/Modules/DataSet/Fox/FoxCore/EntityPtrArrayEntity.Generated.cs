@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 48, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, typeof(FoxCore.Entity), null)]
         private List<FoxCore.Entity> array = new List<FoxCore.Entity>();
+        
+        public override short ClassId => 40;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

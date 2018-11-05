@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 120, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Object locaterFile;
+        
+        public override short ClassId => 104;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Gimmick";
     }
 }

@@ -29,5 +29,10 @@ namespace FoxKit.Modules.DataSet.Fox.Graphx
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 320, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, typeof(Graphx.GraphxSpatialGraphDataEdge), null)]
         private List<Graphx.GraphxSpatialGraphDataEdge> edges = new List<Graphx.GraphxSpatialGraphDataEdge>();
         
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "Graphx";
     }
 }

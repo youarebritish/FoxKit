@@ -28,5 +28,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppEffect
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 128, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, null, null)]
         private UnityEngine.Object lpshFile;
+        
+        public override short ClassId => 104;
+        
+        public override ushort Version => 1;
+        
+        public override string Category => "Light";
     }
 }

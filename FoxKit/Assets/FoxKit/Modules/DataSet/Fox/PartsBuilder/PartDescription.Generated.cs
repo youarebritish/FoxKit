@@ -31,5 +31,11 @@ namespace FoxKit.Modules.DataSet.Fox.PartsBuilder
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 144, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String buildType = string.Empty;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "PartsBuilder";
     }
 }

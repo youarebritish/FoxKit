@@ -22,5 +22,10 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class TppTrapCheckIsPlayerAliveCallbackDataElement : GeoTrapModuleCallbackDataElement
     {
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

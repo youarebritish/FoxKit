@@ -25,5 +25,11 @@ namespace FoxKit.Modules.DataSet.Fox.TppEffect
     {
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 268, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
         private System.Boolean enable;
+        
+        public override short ClassId => 0;
+        
+        public override ushort Version => 0;
+        
+        public override string Category => "";
     }
 }

@@ -31,5 +31,11 @@ namespace FoxKit.Modules.DataSet.Fox
         
         [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 216, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private Dictionary<string, UnityEngine.Object> otherFiles = new Dictionary<string, UnityEngine.Object>();
+        
+        public override short ClassId => 208;
+        
+        public override ushort Version => 2;
+        
+        public override string Category => "";
     }
 }
