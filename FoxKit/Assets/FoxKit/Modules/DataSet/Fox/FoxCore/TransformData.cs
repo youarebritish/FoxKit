@@ -112,8 +112,10 @@
         public TransformData()
             : base()
         {
+            this.inheritTransform = true;
             this.Visibility = true;
             this.Selection = true;
+            this.flags = (TransformData_Flags)7;
         }
 
         /// <inheritdoc />

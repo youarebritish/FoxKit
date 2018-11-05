@@ -35,6 +35,18 @@
                 this.referencePath = value;
             }
         }
+
+        public DataSet DataSet
+        {
+            get
+            {
+                return this.dataSet as DataSet;
+            }
+            set
+            {
+                this.dataSet = value;
+            }
+        }
         
         public DataSet GetDataSet()
         {

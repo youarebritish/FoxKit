@@ -58,9 +58,10 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         public StaticModel()
             : base()
         {
-            this.lodFarSize = 1;
-            this.lodNearSize = 1;
-            this.lodPolygonSize = 1;
+            // Default values taken from SOC. Figure out what these actually do.
+            this.lodFarSize = -1;
+            this.lodNearSize = -1;
+            this.lodPolygonSize = -1;
             this.color = Color.white;
             this.drawRejectionLevel = StaticModel_DrawRejectionLevel.Default;
             this.drawMode = StaticModel_DrawMode.Normal;

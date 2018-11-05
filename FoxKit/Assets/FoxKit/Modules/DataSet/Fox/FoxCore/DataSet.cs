@@ -65,6 +65,8 @@
             if (entity != null)
             {
                 this.dataList.Add(key, entity);
+                entity.DataSet = this;
+                entity.DataSetGuid = this.DataSetGuid;
             }
         }
         
