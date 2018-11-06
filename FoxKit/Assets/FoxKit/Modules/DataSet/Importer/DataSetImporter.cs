@@ -68,45 +68,45 @@
             var typeToCreate = typeof(DataSetAsset);
             switch (extension)
             {
-                case "fox2":
+                case ".fox2":
                     break;
-                case "bnd":
+                case ".bnd":
                     typeToCreate = typeof(BounderFileAsset);
                     break;
-                case "clo":
+                case ".clo":
                     typeToCreate = typeof(ClothSettingFileAsset);
                     break;
-                case "des":
+                case ".des":
                     typeToCreate = typeof(DestructionFileAsset);
                     break;
-                case "evf":
+                case ".evf":
                     typeToCreate = typeof(EventFileAsset);
                     break;
-                case "fsd":
+                case ".fsd":
                     typeToCreate = typeof(FacialSettingFileAsset);
                     break;
-                case "parts":
+                case ".parts":
                     typeToCreate = typeof(PartsFileAsset);
                     break;
-                case "ph":
+                case ".ph":
                     typeToCreate = typeof(PhysicsFileAsset);
                     break;
-                case "phsd":
+                case ".phsd":
                     typeToCreate = typeof(SoundFileAsset);
                     break;
-                case "sdf":
+                case ".sdf":
                     typeToCreate = typeof(SoundDataFileAsset);
                     break;
-                case "sim":
+                case ".sim":
                     typeToCreate = typeof(SimFileAsset);
                     break;
-                case "tgt":
+                case ".tgt":
                     typeToCreate = typeof(TargetFileAsset);
                     break;
-                case "veh":
+                case ".veh":
                     typeToCreate = typeof(VehicleFileAsset);
                     break;
-                case "vfxlf":
+                case ".vfxlf":
                     typeToCreate = typeof(LensFlareFileAsset);
                     break;
                 default:

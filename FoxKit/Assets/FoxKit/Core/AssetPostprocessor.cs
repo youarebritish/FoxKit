@@ -1,12 +1,10 @@
-﻿using FoxKit.Modules.DataSet.FoxCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
 
 namespace FoxKit.Core
 {
-    using System;
     using System.Linq;
 
     using FoxKit.Modules.DataSet.Fox.FoxCore;
@@ -25,11 +23,11 @@ namespace FoxKit.Core
             var assets = new Dictionary<string, UnityEngine.Object>();
 
             var dataSets =
-                (from guid in AssetDatabase.FindAssets($"t:{typeof(DataSetAsset).Name}")
+                (from guid in AssetDatabase.FindAssets($"t:{typeof(EntityFileAsset).Name}")
                  select AssetDatabase.GUIDToAssetPath(guid))
-                .ToDictionary(Path.GetFileNameWithoutExtension, path => AssetDatabase.LoadAssetAtPath<DataSetAsset>(path).GetDataSet());
+                .ToDictionary(Path.GetFileName, path => AssetDatabase.LoadAssetAtPath<EntityFileAsset>(path).GetDataSet());
 
-            List<DataIdentifier> dataIdentifiers = (from dataSet in dataSets
+            var dataIdentifiers = (from dataSet in dataSets
                                    from entity in dataSet.Value.GetDataList().Values
                                    where entity is DataIdentifier
                                    select entity as DataIdentifier).ToList();
@@ -43,13 +41,13 @@ namespace FoxKit.Core
                 var loadedAsset = AssetDatabase.LoadAssetAtPath<Object>(asset);
                 assets.Add(asset, loadedAsset);
 
-                if (!(loadedAsset is DataSetAsset))
+                if (!(loadedAsset is EntityFileAsset))
                 {
                     continue;
                 }
 
                 // Assign GUID reference.
-                var dataSet = (loadedAsset as DataSetAsset).GetDataSet();
+                var dataSet = (loadedAsset as EntityFileAsset).GetDataSet();
                 var guid = AssetDatabase.AssetPathToGUID(asset);
                 if (dataSet.DataSetGuid == guid)
                 {
@@ -59,13 +57,13 @@ namespace FoxKit.Core
                 dataSet.DataSetGuid = guid;
                 foreach (var entity in dataSet.GetDataList())
                 {
-                    ((Data)entity.Value).DataSetGuid = guid;
+                    entity.Value.DataSetGuid = guid;
                 }
             }
 
             foreach (var asset in assets.Values)
             {
-                var dataSetAsset = asset as DataSetAsset;
+                var dataSetAsset = asset as EntityFileAsset;
                 if (dataSetAsset == null)
                 {
                     continue;
@@ -78,7 +76,7 @@ namespace FoxKit.Core
             }
         }
 
-        private static TryGetAssetDelegate MakeTryGetAssetDelegate(Dictionary<string, Object> assets)
+        private static TryGetAssetDelegate MakeTryGetAssetDelegate(IDictionary<string, Object> assets)
         {
             return (string path, out Object asset) => TryGetAsset(assets, path, out asset);
         }

@@ -605,7 +605,7 @@
                 }
                 else
                 {
-                    var dataSet = getDataSet(Path.GetFileNameWithoutExtension(link.ArchivePath));
+                    var dataSet = getDataSet(Path.GetFileName(link.ArchivePath));
                     if (dataSet == null)
                     {
                         continue;
