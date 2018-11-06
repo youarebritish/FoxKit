@@ -1,5 +1,7 @@
 namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
 {
+    using FoxKit.Modules.DataSet.Fox.FoxCore;
+
     using UnityEngine;
 
     public enum StaticModel_DrawRejectionLevel : int
@@ -55,6 +57,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
             this.drawRejectionLevel = StaticModel_DrawRejectionLevel.Default;
             this.drawMode = StaticModel_DrawMode.Normal;
             this.rejectFarRangeShadowCast = StaticModel_RejectFarRangeShadowCast.Default;
+            this.Transform = new TransformEntity { Owner = this };
         }
         
         public override void PostOnLoaded(GetSceneProxyDelegate getSceneProxy)
@@ -67,9 +70,15 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
             }
 
             var model = Object.Instantiate(this.ModelFile) as UnityEngine.GameObject;
+
             var sceneProxy = getSceneProxy(this.Name);
             sceneProxy.DrawLocatorGizmo = false;
+
             model.transform.SetParent(sceneProxy.transform);
+            model.transform.localPosition = Vector3.zero;
+
+            var modelProxy = model.AddComponent<SceneProxyChild>();
+            modelProxy.Owner = sceneProxy;
         }
     }
 }

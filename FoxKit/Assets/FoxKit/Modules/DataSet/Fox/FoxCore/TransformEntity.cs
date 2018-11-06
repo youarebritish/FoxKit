@@ -47,6 +47,13 @@
             }
         }
 
+        public TransformEntity()
+            : base()
+        {
+            this.scale = new Vector3(1, 1, 1);
+            this.transform_scale = this.scale;
+        }
+
         protected override void OnPropertiesLoaded()
         {
             base.OnPropertiesLoaded();

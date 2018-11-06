@@ -489,6 +489,10 @@
                     SingletonScriptableObject<DataListWindowState>.Instance.ActiveDataSetGuid,
                     staticModel.Name);
                 model.transform.SetParent(newSceneProxy.transform, true);
+
+                var modelProxy = model.gameObject.AddComponent<SceneProxyChild>();
+                modelProxy.Owner = newSceneProxy;
+
                 this.treeView.SelectItem(staticModel);
             }
 

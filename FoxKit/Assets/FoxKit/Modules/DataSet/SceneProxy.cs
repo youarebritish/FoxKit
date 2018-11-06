@@ -2,6 +2,8 @@
 {
     using System;
 
+    using FmdlStudio.Scripts.MonoBehaviours;
+
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.DataSet.Fox.FoxGameKit;
     using FoxKit.Modules.DataSet.FoxCore;
@@ -114,6 +116,15 @@
 
         void OnDrawGizmosSelected()
         {
+            // TODO hack
+            // Sometimes their positions get out of sync somehow
+            /*var foxModel = GetComponentInChildren<FoxModel>();
+            if (foxModel != null && foxModel.transform.localPosition != Vector3.zero)
+            {
+                this.transform.position += foxModel.transform.localPosition;
+                foxModel.transform.localPosition = Vector3.zero;
+            }*/
+
             if (this.entity.Transform.Translation != this.previousEntityTranslation)
             {
                 this.transform.position = this.entity.Transform.Translation;

@@ -323,7 +323,7 @@
             foreach (var field in fields)
             {
                 var loadedProperty = properties.FirstOrDefault(property => property.Name == field.Field.Name);
-
+                
                 if (loadedProperty == null)
                 {
                     Debug.LogError("Property " + field.Field.Name + " is null.");
@@ -843,19 +843,6 @@
         public virtual List<Core.PropertyInfo> MakeWritableDynamicProperties(Func<Entity, ulong> getEntityAddress)
         {
             return new List<Core.PropertyInfo>();
-        }
-
-        /// <summary>
-        /// Initializes a property from data loaded from a DataSet file.
-        /// </summary>
-        /// <param name="propertyData">
-        /// The property data.
-        /// </param>
-        /// <param name="initFunctions">
-        /// Initialization functions.
-        /// </param>
-        protected virtual void ReadProperty(Core.PropertyInfo propertyData, EntityFactory.EntityInitializeFunctions initFunctions)
-        {
         }
         
         [ExposeMethodToLua(MethodStaticity.Instance)]

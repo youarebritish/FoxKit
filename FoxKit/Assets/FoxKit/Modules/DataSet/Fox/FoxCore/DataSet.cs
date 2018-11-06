@@ -28,7 +28,7 @@
         {
             foreach (var data in this.dataList.Values)
             {
-                data?.OnLoaded(() => createSceneProxy(((Data)data).Name));
+                data?.OnLoaded(() => createSceneProxy(data.Name));
             }
 
             foreach (var data in this.dataList.Values)
