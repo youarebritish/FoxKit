@@ -3,6 +3,7 @@
     using System;
 
     using FoxKit.Modules.DataSet.Fox.FoxCore;
+    using FoxKit.Modules.DataSet.Fox.FoxGameKit;
     using FoxKit.Modules.DataSet.FoxCore;
 
     using UnityEditor;
@@ -77,8 +78,25 @@
             Gizmos.DrawLine(this.transform.position + Vector3.left, this.transform.position + Vector3.right);
         }
 
+        private Vector3 previousEntityTranslation;
+
+        private Quaternion previousEntityRotation;
+
+        private Vector3 previousEntityScale;
+
         void OnDrawGizmosSelected()
         {
+            if (this.entity.Transform.Translation != this.previousEntityTranslation)
+            {
+                this.transform.position = this.entity.Transform.Translation;
+                this.previousEntityTranslation = this.transform.position;
+            }
+            else
+            {
+                this.entity.Transform.Translation = this.transform.position;
+                this.previousEntityTranslation = this.transform.position;
+            }
+            
             if (this.DrawLocatorGizmo)
             {
                 Gizmos.DrawLine(this.transform.position + Vector3.back, this.transform.position + Vector3.forward);
@@ -86,12 +104,6 @@
                 Gizmos.DrawLine(this.transform.position + Vector3.left, this.transform.position + Vector3.right);
             }
 
-            // TODO Don't allow to move if read-only.
-            this.entity.Transform.Translation = this.transform.position;
-            this.entity.Transform.RotQuat = this.transform.rotation;
-            this.entity.Transform.Scale = this.transform.localScale;
-
-            this.transform.hasChanged = false;
             EditorUtility.SetDirty(this.asset);
         }
     }

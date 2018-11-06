@@ -12,7 +12,7 @@
         {
             get
             {
-                return this.transform_translation;
+                return this.translation;
             }
             set
             {
@@ -25,7 +25,7 @@
         {
             get
             {
-                return this.transform_rotation_quat;
+                return this.rotQuat;
             }
             set
             {
@@ -38,7 +38,7 @@
         {
             get
             {
-                return this.transform_scale;
+                return this.scale;
             }
             set
             {

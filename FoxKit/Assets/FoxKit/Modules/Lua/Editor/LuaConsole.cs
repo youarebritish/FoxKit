@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using System.Text.RegularExpressions;
 
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.DataSet.FoxCore;
@@ -167,7 +168,22 @@
 
         private void DrawCommandPane()
         {
-            this.text = EditorGUILayout.TextArea(this.text, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true));
+            var style = EditorStyles.textArea;
+            style.richText = true;
+            this.text = EditorGUILayout.TextArea(this.text, style, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true));
+            this.text = DoLuaSyntaxHighlighting(this.text);
+        }
+
+        private static readonly string[] SyntaxLiterals = { "true", "false", "nil" };
+        private static readonly Color SyntaxLiteralColor = new Color(59.0f/255.0f, 153.0f/255.0f, 144.0f/255.0f, 1);
+        private static readonly string[] SyntaxKeywords = { "and", "break", "do", "else", "elseif", "end", "for", "goto", "if", "in", "local", "not", "or", "repeat", "return", "then", "until", "while" };
+        private static readonly Color SyntaxKeywordColor = new Color(124.0f / 255.0f, 145.0f / 255.0f, 20.0f / 255.0f, 1);
+
+        private static string DoLuaSyntaxHighlighting(string inputSource)
+        {
+            // TODO
+            var result = inputSource;
+            return result;
         }
         
         void DrawToolbar()

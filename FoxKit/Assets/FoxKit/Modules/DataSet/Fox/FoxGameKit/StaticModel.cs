@@ -56,6 +56,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
             this.drawMode = StaticModel_DrawMode.Normal;
             this.rejectFarRangeShadowCast = StaticModel_RejectFarRangeShadowCast.Default;
         }
+
+        public void Test()
+        {
+            Debug.Log(this.Transform.Translation);
+        }
         
         public override void PostOnLoaded(GetSceneProxyDelegate getSceneProxy)
         {
