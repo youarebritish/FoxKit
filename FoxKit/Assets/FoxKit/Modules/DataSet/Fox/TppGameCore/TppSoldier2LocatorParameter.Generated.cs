@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameCore
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class TppSoldier2LocatorParameter : DataElement
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 56, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 56, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String identifier = string.Empty;
         
         public override short ClassId => 32;

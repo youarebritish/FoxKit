@@ -23,10 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.Ph
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class PhPolyhedronShapeParam : PhShapeParam
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Vector3, 112, 1, Core.ContainerType.DynamicArray, PropertyExport.Never, PropertyExport.Never, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Vector3, 112, 1, Core.ContainerType.DynamicArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private List<UnityEngine.Vector3> verts = new List<UnityEngine.Vector3>();
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 128, 1, Core.ContainerType.DynamicArray, PropertyExport.Never, PropertyExport.Never, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 128, 1, Core.ContainerType.DynamicArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private List<System.UInt32> polys = new List<System.UInt32>();
         
         public override short ClassId => 0;

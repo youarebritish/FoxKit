@@ -23,10 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.Phx
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class PhVehicleAxisParam : Entity
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 48, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 48, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.Single maxBreakTorque;
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 52, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 52, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.Boolean useDifferential;
         
         public override short ClassId => 32;

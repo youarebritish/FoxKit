@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class UInt8Entity : PropertyValueEntity
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt8, 56, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt8, 56, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.Byte value;
         
         public override short ClassId => 0;

@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppRadio
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class RadioData : Data
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 120, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 120, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<UnityEngine.Object> radioDataFile = new List<UnityEngine.Object>();
         
         public override short ClassId => 80;

@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class EntityHandleArrayEntity : Entity
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityHandle, 48, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityHandle, 48, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
         private List<FoxKit.Modules.DataSet.Fox.FoxCore.Entity> array = new List<FoxKit.Modules.DataSet.Fox.FoxCore.Entity>();
         
         public override short ClassId => 0;

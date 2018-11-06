@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class DataSet : Data
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 120, 1, Core.ContainerType.StringMap, PropertyExport.Never, PropertyExport.Never, typeof(FoxCore.Data), null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 120, 1, Core.ContainerType.StringMap, PropertyExport.Never, PropertyExport.Never, typeof(FoxCore.Data), null)]
         private Dictionary<string, FoxCore.Data> dataList = new Dictionary<string, FoxCore.Data>();
         
         public override short ClassId => 232;

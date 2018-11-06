@@ -23,10 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.Navx
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class NavxAttributePathVolume : GraphxPathVolume
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 352, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 352, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String worldName = string.Empty;
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 360, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(Navx.NavxAttributeInfo), null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 360, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(Navx.NavxAttributeInfo), null)]
         private List<Navx.NavxAttributeInfo> attributeInfos = new List<Navx.NavxAttributeInfo>();
         
         public override short ClassId => 336;

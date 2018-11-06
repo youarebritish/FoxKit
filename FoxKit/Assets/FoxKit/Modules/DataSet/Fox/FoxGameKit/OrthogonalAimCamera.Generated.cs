@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class OrthogonalAimCamera : AimCamera
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 496, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Float, 496, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.Single scale;
         
         public override short ClassId => 0;

@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class SphereShapeBody : ShapeDataBody
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Vector4, 176, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Vector4, 176, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private UnityEngine.Vector4 shape_p;
         
         public override short ClassId => 0;

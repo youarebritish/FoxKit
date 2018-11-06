@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.Sim
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class SimControlElement : DataElement
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 56, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 56, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.String> bones = new List<System.String>();
         
         public override short ClassId => 0;

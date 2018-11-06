@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class WideVector3Entity : PropertyValueEntity
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.WideVector3, 64, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.WideVector3, 64, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.Object value;
         
         public override short ClassId => 0;

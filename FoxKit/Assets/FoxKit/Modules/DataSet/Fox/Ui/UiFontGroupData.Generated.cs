@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.Ui
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class UiFontGroupData : Data
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 120, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(Ui.UiFontDataElement), null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 120, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(Ui.UiFontDataElement), null)]
         private List<Ui.UiFontDataElement> fonts = new List<Ui.UiFontDataElement>();
         
         public override short ClassId => 80;

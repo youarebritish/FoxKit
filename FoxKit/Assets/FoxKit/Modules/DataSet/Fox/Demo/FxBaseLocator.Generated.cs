@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.Demo
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class FxBaseLocator : TransformData
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 304, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 304, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
         private System.String drawText = string.Empty;
         
         public override short ClassId => 0;

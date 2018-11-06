@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class UInt32ListEntity : Entity
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 48, 1, Core.ContainerType.List, PropertyExport.Never, PropertyExport.Never, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 48, 1, Core.ContainerType.List, PropertyExport.Never, PropertyExport.Never, null, null)]
         private List<System.UInt32> list = new List<System.UInt32>();
         
         public override short ClassId => 0;

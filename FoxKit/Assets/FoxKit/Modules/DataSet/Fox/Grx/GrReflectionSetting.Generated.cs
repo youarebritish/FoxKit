@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.Grx
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class GrReflectionSetting : Data
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Path, 120, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Path, 120, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Object reflectionTexturePath;
         
         public override short ClassId => 72;

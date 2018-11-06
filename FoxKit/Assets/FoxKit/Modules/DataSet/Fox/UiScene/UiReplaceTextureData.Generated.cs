@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.UiScene
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class UiReplaceTextureData : Data
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Path, 120, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Path, 120, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<UnityEngine.Object> texturePath = new List<UnityEngine.Object>();
         
         public override short ClassId => 0;

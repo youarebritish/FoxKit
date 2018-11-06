@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.Gr
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class GrSkyParameter : GrViewportParameter
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 48, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 48, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.Boolean isAtmosphereOnly;
         
         public override short ClassId => 0;

@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class DataSetFile2 : EntityFile
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.Never, typeof(FoxCore.DataSet), null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 0, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.Never, typeof(FoxCore.DataSet), null)]
         private FoxCore.DataSet dataSet;
         
         public override short ClassId => 0;

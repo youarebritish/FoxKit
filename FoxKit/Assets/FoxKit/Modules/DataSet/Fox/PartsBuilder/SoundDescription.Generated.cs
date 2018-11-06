@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.PartsBuilder
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class SoundDescription : PartDescription
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 152, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.FilePtr, 152, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Object soundFile;
         
         public override short ClassId => 112;

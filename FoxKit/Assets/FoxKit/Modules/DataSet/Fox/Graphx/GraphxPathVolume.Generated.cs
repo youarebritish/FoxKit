@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.Graphx
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class GraphxPathVolume : GraphxPathData
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Vector3, 336, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Vector3, 336, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private UnityEngine.Vector3 topPos;
         
         public override short ClassId => 0;

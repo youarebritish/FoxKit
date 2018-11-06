@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.Phx
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class PhAssociationParam : Entity
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 48, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 48, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.UInt32 connectType;
         
         public override short ClassId => 28;

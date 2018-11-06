@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppSystem
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class TppDefaultParameter : TppDefaultParameterContainer
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 176, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.Never, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 176, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.Never, null, null)]
         private System.String groupName = string.Empty;
         
         public override short ClassId => 0;

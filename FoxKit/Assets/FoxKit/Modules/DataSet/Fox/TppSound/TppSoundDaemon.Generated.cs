@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppSound
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class TppSoundDaemon : Entity
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 240, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 240, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.Boolean keepNoticeEnable;
         
         public override short ClassId => 0;

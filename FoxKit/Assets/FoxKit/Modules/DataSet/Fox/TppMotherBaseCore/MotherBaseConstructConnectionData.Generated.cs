@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppMotherBaseCore
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class MotherBaseConstructConnectionData : Data
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt64, 120, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt64, 120, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.UInt64> constructConnectionList = new List<System.UInt64>();
         
         public override short ClassId => 80;

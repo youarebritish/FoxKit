@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.Nav
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class NavEdgeHandleEntity : NavNavigationGraphHandleEntity
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 64, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, typeof(NavEdgeType))]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Int32, 64, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, typeof(NavEdgeType))]
         private NavEdgeType type;
         
         public override short ClassId => 0;

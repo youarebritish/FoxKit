@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppGamekit
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class TppObjectBrushPluginBushData : Data
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 120, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(TppGameKit.ObjectBrushPluginBushDataElement), null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 120, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, typeof(TppGameKit.ObjectBrushPluginBushDataElement), null)]
         private TppGameKit.ObjectBrushPluginBushDataElement parameter;
         
         public override short ClassId => 0;

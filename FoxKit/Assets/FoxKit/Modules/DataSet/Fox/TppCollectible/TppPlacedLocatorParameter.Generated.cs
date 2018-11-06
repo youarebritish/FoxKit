@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppCollectible
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class TppPlacedLocatorParameter : DataElement
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 56, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.UInt32, 56, 1, Core.ContainerType.StaticArray, PropertyExport.Never, PropertyExport.Never, null, null)]
         private System.UInt32 equipIdStrCode32;
         
         public override short ClassId => 32;

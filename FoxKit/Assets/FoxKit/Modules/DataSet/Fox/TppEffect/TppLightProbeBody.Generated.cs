@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppEffect
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class TppLightProbeBody : TransformDataBody
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 268, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 268, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
         private System.Boolean enable;
         
         public override short ClassId => 0;

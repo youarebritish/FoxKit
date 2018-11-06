@@ -23,10 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.Graphx
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class GraphxSpatialGraphData : TransformData
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 304, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, typeof(Graphx.GraphxSpatialGraphDataNode), null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 304, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, typeof(Graphx.GraphxSpatialGraphDataNode), null)]
         private List<Graphx.GraphxSpatialGraphDataNode> nodes = new List<Graphx.GraphxSpatialGraphDataNode>();
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 320, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, typeof(Graphx.GraphxSpatialGraphDataEdge), null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 320, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, typeof(Graphx.GraphxSpatialGraphDataEdge), null)]
         private List<Graphx.GraphxSpatialGraphDataEdge> edges = new List<Graphx.GraphxSpatialGraphDataEdge>();
         
         public override short ClassId => 0;

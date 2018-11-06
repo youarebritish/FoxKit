@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.Tpp
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class TppPointLightBody : TransformDataBody
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 148, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.Bool, 148, 1, Core.ContainerType.StaticArray, PropertyExport.EditorOnly, PropertyExport.EditorOnly, null, null)]
         private System.Boolean enable;
         
         public override short ClassId => 0;

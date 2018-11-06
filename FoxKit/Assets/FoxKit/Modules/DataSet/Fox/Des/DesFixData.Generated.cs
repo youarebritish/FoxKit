@@ -23,7 +23,7 @@ namespace FoxKit.Modules.DataSet.Fox.Des
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class DesFixData : Data
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 120, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 120, 1, Core.ContainerType.DynamicArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private List<System.String> elementNames = new List<System.String>();
         
         public override short ClassId => 80;

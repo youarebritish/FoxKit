@@ -23,10 +23,10 @@ namespace FoxKit.Modules.DataSet.Fox.TppSystem
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class TppDefaultParameterContainer : Data
     {
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 120, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.String, 120, 1, Core.ContainerType.StaticArray, PropertyExport.EditorAndGame, PropertyExport.EditorAndGame, null, null)]
         private System.String id = string.Empty;
         
-        [OdinSerializeAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 128, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, typeof(TppSystem.TppDefaultParameterElement), null)]
+        [OdinSerializeAttribute, NonSerializedAttribute, PropertyInfoAttribute(Core.PropertyInfoType.EntityPtr, 128, 1, Core.ContainerType.StringMap, PropertyExport.EditorAndGame, PropertyExport.EditorOnly, typeof(TppSystem.TppDefaultParameterElement), null)]
         private Dictionary<string, TppSystem.TppDefaultParameterElement> @params = new Dictionary<string, TppSystem.TppDefaultParameterElement>();
         
         public override short ClassId => 0;
