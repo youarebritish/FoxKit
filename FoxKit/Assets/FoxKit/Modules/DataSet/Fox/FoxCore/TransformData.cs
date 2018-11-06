@@ -44,7 +44,7 @@
         {
             get
             {
-                return this.flags.HasFlag(TransformData_Flags.EnableVisibility);
+                return this.visibility;
             }
 
             set
@@ -66,7 +66,7 @@
         {
             get
             {
-                return this.flags.HasFlag(TransformData_Flags.EnableSelection);
+                return this.selection;
             }
 
             set
@@ -116,6 +116,47 @@
             this.Visibility = true;
             this.Selection = true;
             this.flags = (TransformData_Flags)7;
+        }
+
+        protected override void OnPropertiesLoaded()
+        {
+            base.OnPropertiesLoaded();
+
+            this.visibility = this.flags.HasFlag(TransformData_Flags.EnableVisibility);
+            this.inheritTransform = this.flags.HasFlag(TransformData_Flags.EnableInheritTransform);
+            this.selection = this.flags.HasFlag(TransformData_Flags.EnableSelection);
+        }
+
+        public override void OnPreparingToExport()
+        {
+            base.OnPreparingToExport();
+
+            if (this.visibility)
+            {
+                this.flags |= TransformData_Flags.EnableVisibility;
+            }
+            else
+            {
+                this.flags &= ~TransformData_Flags.EnableVisibility;
+            }
+
+            if (this.inheritTransform)
+            {
+                this.flags |= TransformData_Flags.EnableInheritTransform;
+            }
+            else
+            {
+                this.flags &= ~TransformData_Flags.EnableInheritTransform;
+            }
+
+            if (this.selection)
+            {
+                this.flags |= TransformData_Flags.EnableSelection;
+            }
+            else
+            {
+                this.flags &= ~TransformData_Flags.EnableSelection;
+            }
         }
 
         /// <inheritdoc />

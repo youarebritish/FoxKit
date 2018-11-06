@@ -65,7 +65,6 @@
             {
                 return;
             }
-            // test
 
             var dataSetPath = AssetDatabase.GUIDToAssetPath(this.entityDataSetGuid);
             Assert.IsFalse(string.IsNullOrEmpty(dataSetPath));
@@ -78,8 +77,6 @@
 
         void Update()
         {
-            //this.gameObject.SetActive(this.entity.Visibility);
-
             if (this.transform.parent == null)
             {
                 return;
@@ -104,9 +101,9 @@
             }
 
             Gizmos.color = LocatorColor;
-            Gizmos.DrawLine(this.transform.position + Vector3.back, this.transform.position + Vector3.forward);
-            Gizmos.DrawLine(this.transform.position + Vector3.down, this.transform.position + Vector3.up);
-            Gizmos.DrawLine(this.transform.position + Vector3.left, this.transform.position + Vector3.right);
+            Gizmos.DrawLine(this.transform.position - this.transform.forward, this.transform.position + this.transform.forward);
+            Gizmos.DrawLine(this.transform.position - this.transform.up, this.transform.position + this.transform.up);
+            Gizmos.DrawLine(this.transform.position - this.transform.right, this.transform.position + this.transform.right);
         }
 
         private Vector3 previousEntityTranslation;
@@ -130,9 +127,9 @@
             
             if (this.DrawLocatorGizmo)
             {
-                Gizmos.DrawLine(this.transform.position + Vector3.back, this.transform.position + Vector3.forward);
-                Gizmos.DrawLine(this.transform.position + Vector3.down, this.transform.position + Vector3.up);
-                Gizmos.DrawLine(this.transform.position + Vector3.left, this.transform.position + Vector3.right);
+                Gizmos.DrawLine(this.transform.position - this.transform.forward, this.transform.position + this.transform.forward);
+                Gizmos.DrawLine(this.transform.position - this.transform.up, this.transform.position + this.transform.up);
+                Gizmos.DrawLine(this.transform.position - this.transform.right, this.transform.position + this.transform.right);
             }
 
             EditorUtility.SetDirty(this.asset);

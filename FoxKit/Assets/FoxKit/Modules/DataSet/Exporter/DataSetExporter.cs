@@ -61,6 +61,8 @@
 
         private static Core.Entity ConvertEntity(Entity entity, uint address, uint id, Func<Entity, ulong> getEntityAddress)
         {
+            entity.OnPreparingToExport();
+
             return new Core.Entity(
                 entity.GetType().Name,
                 address,

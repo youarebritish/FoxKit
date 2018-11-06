@@ -99,6 +99,22 @@
             {
                 Debug.LogError($"Attempted to read dynamic property in an entity of type {entityData.ClassName} but dynamic properties are not yet supported. Report this.");
             }
+
+            this.OnPropertiesLoaded();
+        }
+
+        /// <summary>
+        /// Invoked after an imported Entity's properties are loaded.
+        /// </summary>
+        protected virtual void OnPropertiesLoaded()
+        {
+        }
+
+        /// <summary>
+        /// Invoked just before an Entity's properties are exported.
+        /// </summary>
+        public virtual void OnPreparingToExport()
+        {
         }
 
         private object ExtractPropertyValue<TRaw, TConverted>(Core.PropertyInfo property, Func<TRaw, TConverted> conversionFunc, Core.ContainerType containerType, uint arraySize)
@@ -563,17 +579,7 @@
                 }
             }
         }
-
-        /// <summary>
-        /// This is called after importing of any number of assets is complete (when the Assets progress bar has reached the end).
-        /// </summary>
-        /// <param name="tryGetAsset">
-        /// Function to load a newly-imported or already existing asset.
-        /// </param>
-        public virtual void OnAssetsImported(AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
-        {
-        }
-
+        
         public void OnAssetsImported(
             AssetPostprocessor.GetDataSetDelegate getDataSet,
             AssetPostprocessor.TryGetAssetDelegate tryGetAsset,

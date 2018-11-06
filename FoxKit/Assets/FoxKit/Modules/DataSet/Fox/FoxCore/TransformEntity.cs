@@ -46,5 +46,23 @@
                 this.scale = value;
             }
         }
+
+        protected override void OnPropertiesLoaded()
+        {
+            base.OnPropertiesLoaded();
+
+            this.translation = this.transform_translation;
+            this.rotQuat = this.transform_rotation_quat;
+            this.scale = this.transform_scale;
+        }
+
+        public override void OnPreparingToExport()
+        {
+            base.OnPreparingToExport();
+
+            this.transform_translation = this.translation;
+            this.transform_rotation_quat = this.rotQuat;
+            this.transform_scale = this.scale;
+        }
     }
 }

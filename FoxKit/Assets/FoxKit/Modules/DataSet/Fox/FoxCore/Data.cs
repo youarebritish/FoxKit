@@ -47,7 +47,14 @@
                 this.dataSet = value;
             }
         }
-        
+
+        protected override void OnPropertiesLoaded()
+        {
+            base.OnPropertiesLoaded();
+
+            this.referencePath = this.name;
+        }
+
         public DataSet GetDataSet()
         {
             Assert.IsNotNull(this.DataSetGuid);
