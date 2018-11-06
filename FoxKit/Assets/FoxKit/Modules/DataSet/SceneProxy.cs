@@ -9,6 +9,7 @@
     using UnityEditor;
 
     using UnityEngine;
+    using UnityEngine.Assertions;
 
     using Object = UnityEngine.Object;
 
@@ -25,6 +26,12 @@
         [SerializeField, HideInInspector]
         private DataSetAsset asset;
 
+        [SerializeField, HideInInspector]
+        private string entityName;
+
+        [SerializeField, HideInInspector]
+        private string entityDataSetGuid;
+
         public bool DrawLocatorGizmo = true;
 
         public TransformData Entity
@@ -36,6 +43,8 @@
             set
             {
                 this.entity = value;
+                this.entityName = value.Name;
+                this.entityDataSetGuid = value.DataSetGuid;
             }
         }
 
@@ -47,20 +56,42 @@
             }
         }
 
+        /// <summary>
+        /// On serialize, Entity references become stale and must be regenerated.
+        /// </summary>
+        private void OnEnable()
+        {
+            if (string.IsNullOrEmpty(this.entityName) || string.IsNullOrEmpty(this.entityDataSetGuid))
+            {
+                return;
+            }
+            // test
+
+            var dataSetPath = AssetDatabase.GUIDToAssetPath(this.entityDataSetGuid);
+            Assert.IsFalse(string.IsNullOrEmpty(dataSetPath));
+
+            var dataSet = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(dataSetPath).GetDataSet();
+            Assert.IsNotNull(dataSet);
+
+            this.entity = dataSet.GetData(this.entityName) as TransformData;
+        }
+
         void Update()
         {
             //this.gameObject.SetActive(this.entity.Visibility);
 
-            if (this.transform.parent != null)
+            if (this.transform.parent == null)
             {
-                var parentSceneProxy = this.transform.parent.GetComponent<SceneProxy>();
-                if (parentSceneProxy == null)
-                {
-                    return;
-                }
-
-                this.entity.Parent = parentSceneProxy.entity;
+                return;
             }
+
+            var parentSceneProxy = this.transform.parent.GetComponent<SceneProxy>();
+            if (parentSceneProxy == null)
+            {
+                return;
+            }
+
+            this.entity.Parent = parentSceneProxy.entity;
         }
 
         private readonly static Color LocatorColor = new Color(67.0f/255.0f, 1.0f, 163.0f/255.0f);
