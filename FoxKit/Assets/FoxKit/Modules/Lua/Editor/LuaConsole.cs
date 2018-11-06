@@ -173,30 +173,33 @@
         void DrawToolbar()
         {
             EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
+
+            GUI.SetNextControlName("Load");
             if (GUILayout.Button("Load Script", EditorStyles.toolbarButton))
             {
-                OnMenu_Create();
-                EditorGUIUtility.ExitGUI();
+                OnMenu_Load();
+                GUI.FocusControl("Load");
             }
+
             if (GUILayout.Button("Save Script", EditorStyles.toolbarButton))
             {
-                OnMenu_Create();
-                EditorGUIUtility.ExitGUI();
+                OnMenu_Save();
             }
+
+            GUI.SetNextControlName("Clear");
             if (GUILayout.Button("Clear", EditorStyles.toolbarButton))
             {
-                OnMenu_Create();
-                EditorGUIUtility.ExitGUI();
+                OnMenu_Clear();
+                GUI.FocusControl("Clear");
             }
+
             if (GUILayout.Button("Execute", EditorStyles.toolbarButton))
             {
                 Execute();
-                EditorGUIUtility.ExitGUI();
             }
             
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
-            return;
         }
 
         void OnMenu_Create()
@@ -204,9 +207,36 @@
             // Do something!
         }
 
+        void OnMenu_Save()
+        {
+            var path = EditorUtility.SaveFilePanelInProject("Save Lua script", null, "lua", "Enter a file name for the script.");
+            if (path.Length == 0)
+            {
+                return;
+            }
+
+            System.IO.File.WriteAllText(path, this.text);
+            AssetDatabase.Refresh();
+        }
+
+        void OnMenu_Load()
+        {
+            var path = EditorUtility.OpenFilePanel("Load Lua script", "", "lua");
+            if (path.Length != 0)
+            {
+                var fileContent = System.IO.File.ReadAllText(path);
+                this.text = fileContent;
+            }
+        }
+
+        void OnMenu_Clear()
+        {
+            this.text = string.Empty;
+        }
+
         private void Execute()
         {
-            int result = luaL_loadbuffer(L, this.text, (uint)strlen(this.text), null);
+            var result = luaL_loadbuffer(L, this.text, (uint)strlen(this.text), null);
             if (result == 0)
             {
                 result = lua_pcall(L, 0, LUA_MULTRET, 0);
