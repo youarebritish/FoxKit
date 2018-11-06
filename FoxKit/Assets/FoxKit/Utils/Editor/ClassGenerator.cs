@@ -206,7 +206,7 @@
             propertyInfoStringBuilder.Append(string.IsNullOrEmpty(property.Enum) ? "null" : $"typeof({property.Enum})");
             propertyInfoStringBuilder.Append(")");
 
-            AppendLineWithIndent(stringBuilder, $"[{nameof(OdinSerializeAttribute)}, {propertyInfoStringBuilder}]", 2);
+            AppendLineWithIndent(stringBuilder, $"[{nameof(OdinSerializeAttribute)}, {nameof(NonSerializedAttribute)}, {propertyInfoStringBuilder}]", 2);
         }
 
         public static IDictionary<Core.PropertyInfoType, Type> CreateFoxToUnityTypeMapping()
