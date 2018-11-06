@@ -6,7 +6,6 @@
     using System.Linq;
 
     using FoxKit.Modules.DataSet.Fox.FoxCore;
-    using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
     using FoxLib;
@@ -35,7 +34,7 @@
         /// <inheritdoc />
         public override void OnImportAsset(AssetImportContext ctx)
         {
-            var asset = ScriptableObject.CreateInstance<DataSetAsset>();
+            var asset = CreateAsset(Path.GetExtension(ctx.assetPath));
             asset.IsReadOnly = true;
             Assert.IsNotNull(ctx.assetPath);
 
@@ -62,6 +61,61 @@
 
             ctx.AddObjectToAsset("DataSet", asset);
             ctx.SetMainObject(asset);
+        }
+
+        private static EntityFileAsset CreateAsset(string extension)
+        {
+            var typeToCreate = typeof(DataSetAsset);
+            switch (extension)
+            {
+                case "fox2":
+                    break;
+                case "bnd":
+                    typeToCreate = typeof(BounderFileAsset);
+                    break;
+                case "clo":
+                    typeToCreate = typeof(ClothSettingFileAsset);
+                    break;
+                case "des":
+                    typeToCreate = typeof(DestructionFileAsset);
+                    break;
+                case "evf":
+                    typeToCreate = typeof(EventFileAsset);
+                    break;
+                case "fsd":
+                    typeToCreate = typeof(FacialSettingFileAsset);
+                    break;
+                case "parts":
+                    typeToCreate = typeof(PartsFileAsset);
+                    break;
+                case "ph":
+                    typeToCreate = typeof(PhysicsFileAsset);
+                    break;
+                case "phsd":
+                    typeToCreate = typeof(SoundFileAsset);
+                    break;
+                case "sdf":
+                    typeToCreate = typeof(SoundDataFileAsset);
+                    break;
+                case "sim":
+                    typeToCreate = typeof(SimFileAsset);
+                    break;
+                case "tgt":
+                    typeToCreate = typeof(TargetFileAsset);
+                    break;
+                case "veh":
+                    typeToCreate = typeof(VehicleFileAsset);
+                    break;
+                case "vfxlf":
+                    typeToCreate = typeof(LensFlareFileAsset);
+                    break;
+                default:
+                    Debug.LogWarning($"Unsupported DataSetFile2 extension: {extension}");
+                    break;
+            }
+
+            var asset = ScriptableObject.CreateInstance(typeToCreate) as EntityFileAsset;
+            return asset;
         }
 
         private static DataSetFile2.ReadFunctions MakeReadFunctions(BinaryReader reader)
