@@ -193,8 +193,10 @@
         [MenuItem("FoxKit/Data List Window")]
         public static DataListWindow GetInstance()
         {
-            var window = GetWindow<DataListWindow>();
-            window.titleContent = new GUIContent("Data List");
+            EditorApplication.ExecuteMenuItem("Window/General/Hierarchy");
+            var hierarchyWindow = EditorWindow.focusedWindow;
+            Type[] desiredDockNextTo = new Type[] { hierarchyWindow.GetType() };
+            var window = GetWindow<DataListWindow>("Data List", desiredDockNextTo);
             window.Show();
             return window;
         }
