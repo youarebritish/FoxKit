@@ -204,6 +204,27 @@
             materialSelectMap.SetPixels(1, 1, 1, 1, materialSelectMapTiles[3].Cast<Color>().ToArray());
 
             ctx.AddObjectToAsset(terrainGo.name + "MaterialSelectMap", materialSelectMap);
+
+            // Create dummy debug heightmap.
+            var heightMap = new Texture2D(HEIGHTMAP_WIDTH, HEIGHTMAP_HEIGHT, TextureFormat.RFloat, true, true);
+            heightMap.name = terrainGo.name + "_DUMMYHEIGHT";
+            var colors = from height in heightTiles[0].Cast<float>()
+                         select new Color(height, height, height);
+            heightMap.SetPixels(0, 0, HalfWidth, HalfWidth, colors.ToArray());
+
+            colors = from height in heightTiles[2].Cast<float>()
+                     select new Color(height, height, height);
+            heightMap.SetPixels(HalfWidth, 0, HalfWidth, HalfWidth, colors.ToArray());
+
+            colors = from height in heightTiles[1].Cast<float>()
+                     select new Color(height, height, height);
+            heightMap.SetPixels(0, HalfWidth, HalfWidth, HalfWidth, colors.ToArray());
+
+            colors = from height in heightTiles[3].Cast<float>()
+                     select new Color(height, height, height);
+            heightMap.SetPixels(HalfWidth, HalfWidth, HalfWidth, HalfWidth, colors.ToArray());
+
+            ctx.AddObjectToAsset(terrainGo.name + "DUMMYHEIGHT", heightMap);
         }
 
         /// <summary>
