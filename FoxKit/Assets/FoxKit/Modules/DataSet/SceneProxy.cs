@@ -24,6 +24,8 @@
         [SerializeField, HideInInspector]
         private DataSetAsset asset;
 
+        public bool DrawLocatorGizmo = true;
+
         public TransformData Entity
         {
             get
@@ -60,8 +62,30 @@
             }
         }
 
+        private readonly static Color LocatorColor = new Color(67.0f/255.0f, 1.0f, 163.0f/255.0f);
+
+        void OnDrawGizmos()
+        {
+            if (!this.DrawLocatorGizmo)
+            {
+                return;
+            }
+
+            Gizmos.color = LocatorColor;
+            Gizmos.DrawLine(this.transform.position + Vector3.back, this.transform.position + Vector3.forward);
+            Gizmos.DrawLine(this.transform.position + Vector3.down, this.transform.position + Vector3.up);
+            Gizmos.DrawLine(this.transform.position + Vector3.left, this.transform.position + Vector3.right);
+        }
+
         void OnDrawGizmosSelected()
         {
+            if (this.DrawLocatorGizmo)
+            {
+                Gizmos.DrawLine(this.transform.position + Vector3.back, this.transform.position + Vector3.forward);
+                Gizmos.DrawLine(this.transform.position + Vector3.down, this.transform.position + Vector3.up);
+                Gizmos.DrawLine(this.transform.position + Vector3.left, this.transform.position + Vector3.right);
+            }
+
             // TODO Don't allow to move if read-only.
             this.entity.Transform.Translation = this.transform.position;
             this.entity.Transform.RotQuat = this.transform.rotation;
