@@ -84,7 +84,17 @@
             instance.DataSetGuid = state.ActiveDataSetGuid;
 
             this.activeDataSet.AddData(instance.Name, instance);
-            
+
+            // FIXME terrible hack
+            DataSet.CreateSceneProxyForEntityDelegate createSceneProxy = entityName => state.CreateSceneProxyForEntity(this.activeDataSet.DataSetGuid, entityName);
+
+            Entity.GetSceneProxyDelegate getSceneProxy = entityName => state.FindSceneProxyForEntity(
+                this.activeDataSet.DataSetGuid,
+                entityName);
+
+            instance.OnLoaded(() => createSceneProxy(instance.Name));
+            instance.PostOnLoaded(getSceneProxy);
+
             // TODO
             // There must be a better way of doing this
             this.treeView = new DataListTreeView(
