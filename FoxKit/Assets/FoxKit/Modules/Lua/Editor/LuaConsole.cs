@@ -91,7 +91,6 @@
             var className = type.Name;
 
             // Create a new global table for the type.
-            // TODO get if exists
             lua_pushliteral(L, className);
             lua_type(L, -1);
             lua_settop(L, -2);
@@ -110,7 +109,9 @@
             lua_setmetatable(L, -2);
 
             // TODO handle __index, __newindex
-            // TODO This leaves the Entity table on the stack
+
+            // Remove the newly-created Entity table from the stack.
+            lua_pop(L, -1);
         }
         
         private class MethodContext
@@ -218,11 +219,6 @@
             EditorGUILayout.EndHorizontal();
         }
 
-        void OnMenu_Create()
-        {
-            // Do something!
-        }
-
         void OnMenu_Save()
         {
             var path = EditorUtility.SaveFilePanelInProject("Save Lua script", null, "lua", "Enter a file name for the script.");
@@ -286,6 +282,7 @@
                 else
                 {
                     /* Do something with non-strings if you like */
+                    Debug.Log(lua_tostring(L, i));
                 }
             }
 
@@ -306,16 +303,6 @@
         private static void printError(lua_State L)
         {
             Debug.LogError(luaL_checkstring(L, -1));
-        }
-
-        void OnTools_OptimizeSelected()
-        {
-            // Do something!
-        }
-
-        void OnTools_Help()
-        {
-            Help.BrowseURL("http://example.com/product/help");
         }
 
         static bool luaL_dostring(lua_State L, CharPtr s)
