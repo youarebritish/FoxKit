@@ -28,34 +28,34 @@
         /// The Lua library.
         /// </summary>
         private static readonly luaL_Reg[] FoxmathLib =
-            {
-                new luaL_Reg("Sin", Sin),
-                new luaL_Reg("Cos", Cos),
-                new luaL_Reg("Tan", Tan),
-                new luaL_Reg("Absf", Absf),
-                new luaL_Reg("Asin", Asin),
-                new luaL_Reg("Acos", Acos),
-                new luaL_Reg("Atan2", Atan2),
-                new luaL_Reg("Atan", Atan),
-                new luaL_Reg("Exp", Exp),
-                new luaL_Reg("Floor", Floor),
-                new luaL_Reg("Ceil", Ceil),
-                new luaL_Reg("Round", Round),
-                new luaL_Reg("Mod", Mod),
-                new luaL_Reg("Log", Log),
-                new luaL_Reg("Pow", Pow),
-                new luaL_Reg("Sqrt", Sqrt),
-                new luaL_Reg("Rsqrt", Rsqrt),
-                new luaL_Reg("Saturate", Saturate),
-                new luaL_Reg("FRnd", FRnd),
-                new luaL_Reg("DegreeToRadian", DegreeToRadian),
-                new luaL_Reg("RadianToDegree", RadianToDegree),
-                new luaL_Reg("Min", Min),
-                new luaL_Reg("Max", Max),
-                new luaL_Reg("Clamp", Clamp),
-                new luaL_Reg("NormalizeRadian", NormalizeRadian),
-                new luaL_Reg(null, null)
-            };
+        {
+            new luaL_Reg("Sin", Sin),
+            new luaL_Reg("Cos", Cos),
+            new luaL_Reg("Tan", Tan),
+            new luaL_Reg("Absf", Absf),
+            new luaL_Reg("Asin", Asin),
+            new luaL_Reg("Acos", Acos),
+            new luaL_Reg("Atan2", Atan2),
+            new luaL_Reg("Atan", Atan),
+            new luaL_Reg("Exp", Exp),
+            new luaL_Reg("Floor", Floor),
+            new luaL_Reg("Ceil", Ceil),
+            new luaL_Reg("Round", Round),
+            new luaL_Reg("Mod", Mod),
+            new luaL_Reg("Log", Log),
+            new luaL_Reg("Pow", Pow),
+            new luaL_Reg("Sqrt", Sqrt),
+            new luaL_Reg("Rsqrt", Rsqrt),
+            new luaL_Reg("Saturate", Saturate),
+            new luaL_Reg("FRnd", FRnd),
+            new luaL_Reg("DegreeToRadian", DegreeToRadian),
+            new luaL_Reg("RadianToDegree", RadianToDegree),
+            new luaL_Reg("Min", Min),
+            new luaL_Reg("Max", Max),
+            new luaL_Reg("Clamp", Clamp),
+            new luaL_Reg("NormalizeRadian", NormalizeRadian),
+            new luaL_Reg(null, null)
+        };
 
         /// <summary>
         /// Define the library.

@@ -17,6 +17,8 @@
 
     using static KopiLua.Lua;
 
+    using Vector3 = UnityEngine.Vector3;
+
     public class LuaConsole : EditorWindow
     {
         [MenuItem("Window/FoxKit/Lua Console")]
@@ -45,8 +47,13 @@
 
             var luaVM = LuaVM.Create();
             this.L = luaVM.L;
-
+            
             ExposeNativeTypes(this.L);
+        }
+
+        private class TestVector
+        {
+            public float X;
         }
 
         private void ExposeNativeTypes(lua_State L)

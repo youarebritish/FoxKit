@@ -1,5 +1,7 @@
 ﻿namespace FoxKit.Modules.Lua
 {
+    using FoxLib;
+
     using KopiLua;
 
     /// <summary>
@@ -57,7 +59,13 @@
 
         private static void OpenFoxLibraries(Lua.lua_State lua)
         {
+            // TODO Implement foxde library
             Foxmath.Define(lua);
+            Fox.Define(lua);
+
+            // TODO fox math types
+            // TODO fox color type
+            // TODO fox file type
         }
         
         /// <summary>
