@@ -10,7 +10,7 @@
         /// <summary>
         /// The print() library.
         /// </summary>
-        private static readonly Lua.luaL_Reg[] PrintLib = { new Lua.luaL_Reg("print", Print), new Lua.luaL_Reg(null, null), };
+        private static readonly Lua.luaL_Reg[] PrintLib = { new Lua.luaL_Reg("print", Print), new Lua.luaL_Reg(null, null) };
 
         /// <summary>
         /// The global instance.
@@ -36,9 +36,10 @@
 
             // Overwrite default print() function to write to Debug.Log().
             Lua.lua_getglobal(lua, "_G");
-             Lua.luaL_register(lua, null, PrintLib);
+            Lua.luaL_register(lua, null, PrintLib);
 
-            // TODO Initialize libraries
+            // Open custom libraries.
+            OpenFoxLibraries(lua);
 
             // TODO expose native types
 
@@ -54,6 +55,11 @@
             return instance;
         }
 
+        private static void OpenFoxLibraries(Lua.lua_State lua)
+        {
+            Foxmath.Define(lua);
+        }
+        
         /// <summary>
         /// Lua print function.
         /// </summary>
