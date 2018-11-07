@@ -36,12 +36,15 @@
                 return;
             }
 
-            this.L = lua_open();
+            /*this.L = lua_open();
             luaL_openlibs(this.L);
 
             // Overwrite default print() function to write to Debug.Log().
             lua_getglobal(this.L, "_G");
-            luaL_register(this.L, null, printlib);
+            luaL_register(this.L, null, printlib);*/
+
+            var luaVM = LuaVM.Create();
+            this.L = luaVM.L;
 
             ExposeNativeTypes(this.L);
         }
