@@ -26,9 +26,9 @@
             new luaL_Reg("GetZ", GetZ),
             new luaL_Reg("GetLength", GetLength),
             new luaL_Reg("GetLengthSqr", GetLengthSqr),
-            new luaL_Reg("__add", GetZ),
-            new luaL_Reg("__sub", GetZ),
-            new luaL_Reg("__mul", GetZ),
+            new luaL_Reg("__add", Add),
+            new luaL_Reg("__sub", Sub),
+            new luaL_Reg("__mul", Mul),
             new luaL_Reg(null, null)
         };
 
@@ -136,6 +136,65 @@
             BoxedVector3 vector;
             GetXyz(out vector, lua, 1);
             lua_pushnumber(lua, vector.SqrMagnitude);
+            return 1;
+        }
+
+        /// <summary>
+        /// Gets the sum of two Vector3 values.
+        /// </summary>
+        /// <param name="lua">The Lua state.</param>
+        /// <returns>The result.</returns>
+        private static int Add(lua_State lua)
+        {
+            BoxedVector3 vectorA;
+            GetXyz(out vectorA, lua, 1);
+
+            BoxedVector3 vectorB;
+            GetXyz(out vectorB, lua, 2);
+            
+            LuaPushVector3(lua, vectorA.X + vectorB.X, vectorA.Y + vectorB.Y, vectorA.Z + vectorB.Z);
+            return 1;
+        }
+
+        /// <summary>
+        /// Gets the difference of two Vector3 values.
+        /// </summary>
+        /// <param name="lua">The Lua state.</param>
+        /// <returns>The result.</returns>
+        private static int Sub(lua_State lua)
+        {
+            BoxedVector3 vectorA;
+            GetXyz(out vectorA, lua, 2);
+
+            BoxedVector3 vectorB;
+            GetXyz(out vectorB, lua, 1);
+
+            LuaPushVector3(lua, vectorB.X - vectorA.X, vectorB.Y - vectorA.Y, vectorB.Z - vectorA.Z);
+            return 1;
+        }
+
+        /// <summary>
+        /// Gets the product of a Vector3 and a scalar value.
+        /// </summary>
+        /// <param name="lua">The Lua state.</param>
+        /// <returns>The result.</returns>
+        private static int Mul(lua_State lua)
+        {
+            BoxedVector3 vector;
+            int scalarIndex;
+            if (lua_isnumber(lua, 1) != 0)
+            {
+                GetXyz(out vector, lua, 2);
+                scalarIndex = 1;
+            }
+            else
+            {
+                GetXyz(out vector, lua, 1);
+                scalarIndex = 2;
+            }
+
+            var scalar = luaL_checknumber(lua, scalarIndex);
+            LuaPushVector3(lua, vector.X * scalar, vector.Y * scalar, vector.Z * scalar);
             return 1;
         }
 
