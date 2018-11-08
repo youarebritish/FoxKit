@@ -71,6 +71,7 @@
             // Assign the metatable.
             lua_setmetatable(lua, -2);
 
+            // TODO: Vector4, Quat, Matrix4, Matrix4, WideVector3, Color, File
             return 1;
         }
 

@@ -26,7 +26,7 @@
             var archiveDefinition = ScriptableObject.CreateInstance<PackageDefinition>();
             archiveDefinition.name = Path.GetFileNameWithoutExtension(ctx.assetPath);
             archiveDefinition.IsReadOnly = true;
-            Action<IEnumerable<UnityEngine.Object>> assignEntries = entries => archiveDefinition.AssignEntries(entries.ToList(), AssetDatabase.AssetPathToGUID(ctx.assetPath));
+            Action<IEnumerable<string>> assignEntries = entries => archiveDefinition.AssignDesiredFiles(entries);
 
             // TODO Read dictionaries
             switch (extension)
@@ -51,8 +51,6 @@
                     archiveDefinition.Type = PackageDefinition.PackageType.Sbp;
                     ReadArchive<SbpFile>(ctx.assetPath, assignEntries);
                     break;
-                default:
-                    break;
             }
 
             ctx.AddObjectToAsset("definition", archiveDefinition);
@@ -60,11 +58,11 @@
             
             /* TODO
              * Calling this currently triggers a (harmless?) "A default asset was created for 'blah.fpkd' because the asset importer crashed on it last time."
-             * error message. However, removing it makes it so that Unity doesn't detect the new files immediately. Figure out what to do about this. */
+             * error message. However, removing it makes it so that Unity doesn't detect the new files immediately. */
             AssetDatabase.Refresh();
         }
 
-        private static void ReadArchive<T>(string path, Action<IEnumerable<UnityEngine.Object>> assignEntries) where T : ArchiveFile, new()
+        private static void ReadArchive<T>(string path, Action<IEnumerable<string>> assignEntries) where T : ArchiveFile, new()
         {
             Assert.IsFalse(string.IsNullOrEmpty(path));
             Assert.IsNotNull(assignEntries);
@@ -85,9 +83,7 @@
                 }
             }
 
-            AssetDatabase.Refresh();
-            assignEntries(from file in files
-                          select AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(file));
+            assignEntries(files);
         }
     }
 }

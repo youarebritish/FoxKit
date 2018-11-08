@@ -1,6 +1,7 @@
 ﻿namespace FoxKit.Modules.Archive
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using UnityEditor;
 
@@ -20,23 +21,54 @@
 
         public PackageType Type = PackageType.Fpk;
 
-        public List<UnityEngine.Object> Entries = new List<Object>();
+        public List<UnityEngine.Object> Entries = new List<UnityEngine.Object>();
 
         public bool IsReadOnly;
 
-        public void AssignEntries(List<UnityEngine.Object> entries, string guid)
+        /// <summary>
+        /// File paths of assets that this package wants references to.
+        /// </summary>
+        /// <remarks>
+        /// This is a stupid workaround to the fact that when the package is imported, references to the files it imports are invalid.
+        /// </remarks>
+        [SerializeField, HideInInspector]
+        private List<string> desiredAssets;
+
+        /// <summary>
+        /// Searches for this PackageDefinition's desiredAssets and assigns their references.
+        /// </summary>
+        public void AssignEntries()
         {
-            this.Entries = entries;
-            foreach (var entry in this.Entries)
+            var guid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(this));
+
+            foreach (var entry in this.desiredAssets)
             {
-                var dataSet = entry as DataSetAsset;
-                if (dataSet == null)
+                var asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(entry);
+                if (asset == null)
                 {
                     continue;
                 }
 
-                dataSet.PackageGuid = guid;
+                this.Entries.Add(asset);
+
+                if (!(asset is EntityFileAsset))
+                {
+                    continue;
+                }
+
+                ((EntityFileAsset)asset).PackageGuid = guid;
             }
+
+            this.desiredAssets.Clear();
+        }
+
+        /// <summary>
+        /// Assign the paths to the files this PackageDefinition wants to reference. Should only be called when importing the package.
+        /// </summary>
+        /// <param name="paths">The paths of the assets to reference.</param>
+        public void AssignDesiredFiles(IEnumerable<string> paths)
+        {
+            this.desiredAssets = paths.ToList();
         }
     }
 }

@@ -22,19 +22,19 @@
     using UnityEngine;
     using UnityEngine.Assertions;
 
-    [CustomEditor(typeof(DataSetAsset))]
+    [CustomEditor(typeof(EntityFileAsset), true)]
     public class DataSetAssetEditor : Editor
     {
         public override void OnInspectorGUI()
         {
-            var asset = this.target as DataSetAsset;
+            var asset = this.target as EntityFileAsset;
             if (asset.IsReadOnly)
             {
-                FoxKitUiUtils.ReadOnlyWarningAndButton(this.target as DataSetAsset, duplicate => duplicate.IsReadOnly = false);
+                FoxKitUiUtils.ReadOnlyWarningAndButton(this.target as EntityFileAsset, duplicate => duplicate.IsReadOnly = false);
             }
 
             var entity = FoxKitEditor.InspectedEntity
-                         ?? ((DataSetAsset)this.serializedObject.targetObject).GetDataSet();
+                         ?? ((EntityFileAsset)this.serializedObject.targetObject).GetDataSet();
 
             EditorGUILayout.LabelField(entity.GetType().Name, EditorStyles.boldLabel);
 

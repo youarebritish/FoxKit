@@ -170,7 +170,7 @@
         [OnOpenAsset]
         private static bool OnOpenedAsset(int instanceId, int line = -1)
         {
-            var asset = EditorUtility.InstanceIDToObject(instanceId) as DataSetAsset;
+            var asset = EditorUtility.InstanceIDToObject(instanceId) as EntityFileAsset;
 
             if (asset == null)
             {
@@ -229,7 +229,7 @@
                 // The asset was probably deleted, so stop holding onto its GUID.
                 if (!string.IsNullOrEmpty(path))
                 {
-                    var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(path);
+                    var dataSet = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(path);
                     if (dataSet == null)
                     {
                         state.ActiveDataSetGuid = null;
@@ -299,7 +299,7 @@
         {
             Assert.IsFalse(string.IsNullOrEmpty(dataSetGuid));
 
-            var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(AssetDatabase.GUIDToAssetPath(dataSetGuid)).GetDataSet();
+            var dataSet = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(dataSetGuid)).GetDataSet();
             Assert.IsNotNull(dataSet);
 
             this.activeDataSet = dataSet;
@@ -365,7 +365,7 @@
             Assert.IsFalse(string.IsNullOrEmpty(dataSetGuid));
 
             // TODO: Clean up
-            var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(AssetDatabase.GUIDToAssetPath(dataSetGuid))?.GetDataSet();
+            var dataSet = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(dataSetGuid))?.GetDataSet();
             Assert.IsNotNull(dataSet);
 
             dataSet?.UnloadAllEntities(entityName => SingletonScriptableObject<DataListWindowState>.Instance.DeleteSceneProxy(dataSetGuid, entityName, DataListWindowState.DestroyGameObject.Destroy));
@@ -374,7 +374,7 @@
             {
                 if (this.openDataSetGuids.Count > 1)
                 {
-                    this.activeDataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(AssetDatabase.GUIDToAssetPath(this.openDataSetGuids[0])).GetDataSet();
+                    this.activeDataSet = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(this.openDataSetGuids[0])).GetDataSet();
                     this.treeView.SetActiveDataSet(this.activeDataSet);
                 }
                 else

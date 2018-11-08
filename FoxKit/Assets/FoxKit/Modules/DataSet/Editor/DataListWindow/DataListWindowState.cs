@@ -86,7 +86,7 @@
 
             var sceneProxy = gameObject.AddComponent<SceneProxy>();
 
-            var asset = AssetDatabase.LoadAssetAtPath<DataSetAsset>(AssetDatabase.GUIDToAssetPath(dataSetGuid));
+            var asset = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(dataSetGuid));
             var entity = asset.GetDataSet().GetData(entityName);
             var transformData = entity as TransformData;
 

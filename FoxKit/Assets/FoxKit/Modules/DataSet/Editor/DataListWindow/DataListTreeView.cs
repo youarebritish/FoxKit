@@ -48,7 +48,7 @@
         /// For a given tree item ID, what DataSetAsset does it belong to?
         /// </summary>
         [SerializeField]
-        private List<DataSetAsset> idToDataSetMap = new List<DataSetAsset>();
+        private List<EntityFileAsset> idToDataSetMap = new List<EntityFileAsset>();
         
         [SerializeField]
         private DataSet activeDataSet;
@@ -112,7 +112,7 @@
                 foreach (var item in selected)
                 {
                     var data = this.idToDataMap[item];
-                    var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(AssetDatabase.GUIDToAssetPath(data.DataSetGuid));
+                    var dataSet = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(data.DataSetGuid));
                     dataSet.GetDataSet().RemoveData(data.Name);
                     SingletonScriptableObject<DataListWindowState>.Instance.DeleteSceneProxy(data.DataSetGuid, data.Name, DataListWindowState.DestroyGameObject.Destroy);
                 }
@@ -221,7 +221,7 @@
             foreach (var dataSetGuid in this.openDataSetGuids)
             {
                 var path = AssetDatabase.GUIDToAssetPath(dataSetGuid);
-                var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(path);
+                var dataSet = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(path);
                 if (dataSet == null)
                 {
                     Debug.LogWarning($"DataSet {path} could not be loaded or does not exist.");
@@ -245,7 +245,7 @@
             return root;
         }
 
-        private int AddData(DataSetAsset asset, Data data, TreeViewItem parent, int id)
+        private int AddData(EntityFileAsset asset, Data data, TreeViewItem parent, int id)
         {
             // If we're adding a TransformData entity that has a valid parent, only add it to the tree under its parent.
             // TODO: Consider moving this out and checking for this case before calling AddData().
@@ -348,7 +348,7 @@
             // Lock the inspector to the selected entities so that we can edit the scene proxies without changing the Inspector.
             ActiveEditorTracker.sharedTracker.isLocked = false;
             Selection.objects = (from id in selectedIds
-                                 select AssetDatabase.LoadAssetAtPath<DataSetAsset>(AssetDatabase.GUIDToAssetPath(this.idToDataMap[id].DataSetGuid)))
+                                 select AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(this.idToDataMap[id].DataSetGuid)))
                                  .ToArray();
             ActiveEditorTracker.sharedTracker.isLocked = true;
             
@@ -361,7 +361,7 @@
 
                 if (transformData == null)
                 {
-                    var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(AssetDatabase.GUIDToAssetPath(data.DataSetGuid));
+                    var dataSet = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(data.DataSetGuid));
                     newSelection.Add(dataSet);
                     continue;
                 }

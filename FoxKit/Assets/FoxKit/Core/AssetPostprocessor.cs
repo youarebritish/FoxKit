@@ -7,6 +7,7 @@ namespace FoxKit.Core
 {
     using System.Linq;
 
+    using FoxKit.Modules.Archive;
     using FoxKit.Modules.DataSet.Fox.FoxCore;
 
     using Object = UnityEngine.Object;
@@ -16,7 +17,7 @@ namespace FoxKit.Core
         public delegate bool TryGetAssetDelegate(string filename, out Object asset);
         public delegate DataSet GetDataSetDelegate(string filename);
         public delegate DataIdentifier GetDataIdentifierDelegate(string identifier);
-
+        
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
             // TODO: Handle existing assets
@@ -25,9 +26,14 @@ namespace FoxKit.Core
             var dataSets =
                 (from guid in AssetDatabase.FindAssets($"t:{typeof(EntityFileAsset).Name}")
                  select AssetDatabase.GUIDToAssetPath(guid))
-                .ToDictionary(Path.GetFileName, path => AssetDatabase.LoadAssetAtPath<EntityFileAsset>(path).GetDataSet());
+                .ToDictionary(Path.GetFileName, path =>
+                    {
+                        var asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
+                        return (asset as EntityFileAsset).GetDataSet();
+                    });
 
             var dataIdentifiers = (from dataSet in dataSets
+                                   where dataSet.Value != null
                                    from entity in dataSet.Value.GetDataList().Values
                                    where entity is DataIdentifier
                                    select entity as DataIdentifier).ToList();
@@ -36,10 +42,13 @@ namespace FoxKit.Core
             var getDataSet = MakeGetDataSetDelegate(dataSets);
             var getDataIdentifier = MakeGetDataIdentifierDelegate(dataIdentifiers);
 
+            // TODO Please God clean up this nightmarish code
             foreach (var asset in importedAssets)
             {
                 var loadedAsset = AssetDatabase.LoadAssetAtPath<Object>(asset);
                 assets.Add(asset, loadedAsset);
+
+                (loadedAsset as PackageDefinition)?.AssignEntries();
 
                 if (!(loadedAsset is EntityFileAsset))
                 {

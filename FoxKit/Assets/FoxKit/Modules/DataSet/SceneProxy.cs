@@ -26,7 +26,7 @@
         private TransformData entity;
 
         [SerializeField, HideInInspector]
-        private DataSetAsset asset;
+        private EntityFileAsset asset;
 
         [SerializeField, HideInInspector]
         private string entityName;
@@ -50,7 +50,7 @@
             }
         }
 
-        public DataSetAsset Asset
+        public EntityFileAsset Asset
         {
             set
             {
