@@ -312,20 +312,41 @@
             {
                 return DragAndDropVisualMode.Rejected;
             }
-
-            if (args.performDrop)
+            
+            if (!args.performDrop)
             {
-                foreach (var item in DragAndDrop.GetGenericData("Items") as List<int>)
-                {
-                    var data = this.idToDataMap[item] as TransformData;
-                    data.Parent = targetData as TransformData;
-                }
-
-                this.Reload();
-                DragAndDrop.AcceptDrag();
                 return DragAndDropVisualMode.Link;
             }
 
+            foreach (var item in DragAndDrop.GetGenericData("Items") as List<int>)
+            {
+                var data = this.idToDataMap[item] as TransformData;
+
+                // Unity gets mad if we swap parent and child, so don't allow that.
+                if (data == (targetData as TransformData).Parent)
+                {
+                    return DragAndDropVisualMode.Rejected;
+                }
+
+                data.Parent = targetData as TransformData;
+
+                var sceneProxy = this.getSceneProxy(data.DataSetGuid, data.Name);
+                if (sceneProxy == null)
+                {
+                    continue;
+                }
+
+                var parentSceneProxy = this.getSceneProxy(data.Parent.DataSetGuid, data.Parent.Name);
+                if (parentSceneProxy == null)
+                {
+                    continue;
+                }
+
+                sceneProxy.transform.SetParent(parentSceneProxy.transform);
+            }
+
+            this.Reload();
+            DragAndDrop.AcceptDrag();
             return DragAndDropVisualMode.Link;
         }
 

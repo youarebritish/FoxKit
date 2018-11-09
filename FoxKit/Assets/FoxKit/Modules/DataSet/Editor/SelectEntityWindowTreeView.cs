@@ -15,7 +15,7 @@
 
     public class SelectEntityWindowTreeView : TreeView
     {
-        private readonly Dictionary<PackageDefinition, List<DataSetAsset>> packages;
+        private readonly Dictionary<PackageDefinition, List<EntityFileAsset>> packages;
 
         private readonly List<DataIdentifier> dataIdentifiers;
 
@@ -32,7 +32,7 @@
         /// </summary>
         private readonly HashSet<int> rootIds = new HashSet<int>();
         
-        public SelectEntityWindowTreeView(TreeViewState state, IReadOnlyCollection<PackageDefinition> packages, Action<Data> onEntitySelectedCallback, Action<DataIdentifier, string> onDataIdentifierEntitySelectedCallback)
+        public SelectEntityWindowTreeView(TreeViewState state, IEnumerable<PackageDefinition> packages, Action<Data> onEntitySelectedCallback, Action<DataIdentifier, string> onDataIdentifierEntitySelectedCallback)
             : base(state)
         {
             this.onEntitySelected = onEntitySelectedCallback;
@@ -41,15 +41,15 @@
             this.useScrollView = true;
             this.searchString = string.Empty;
             
-            /*this.packages = packages.ToDictionary(package => package, package => (from asset in package.Entries
-                                                                                  where asset is DataSetAsset
-                                                                                  select asset as DataSetAsset).ToList());
+            this.packages = packages.ToDictionary(package => package, package => (from asset in package.Entries
+                                                                                  where asset is EntityFileAsset
+                                                                                  select asset as EntityFileAsset).ToList());
 
             this.dataIdentifiers = (from entry in this.packages.Values
                                    from dataSet in entry
                                    from entity in dataSet.GetDataSet().GetDataList().Values
                                    where entity is DataIdentifier
-                                   select entity as DataIdentifier).ToList();*/
+                                   select entity as DataIdentifier).ToList();
 
             this.Reload();
         }
@@ -177,7 +177,7 @@
             
             var selectedData = this.idToData[selectedId];
             Assert.IsNotNull(selectedData);
-            /*
+            
             if (selectedData is DataIdentifier)
             {
                 var key = this.idToDataIdentifierLinkKeys[selectedId];
@@ -186,7 +186,7 @@
                     this.onDataIdentifierEntitySelected(selectedData as DataIdentifier, key);
                     return;
                 }
-            }*/
+            }
 
             this.onEntitySelected(selectedData);
         }

@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using UnityEngine.Assertions;
+
     /// <summary>
     /// Bit flags for TransformData.
     /// </summary>
@@ -92,11 +94,15 @@
             }
             set
             {
+                // Unity won't allow us to swap parent/child.
+                Assert.IsFalse(value?.Parent == this);
+
                 if (this.parent != value)
                 {
-                    value.children.Add(this);
+                    value?.children.Add(this);
 
-                    (this.parent as TransformData)?.children.Remove(this);
+                    var parent = this.parent as TransformData;
+                    parent?.children.Remove(this);
                 }
 
                 this.parent = value;

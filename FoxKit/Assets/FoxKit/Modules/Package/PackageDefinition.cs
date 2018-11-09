@@ -39,6 +39,11 @@
         /// </summary>
         public void AssignEntries()
         {
+            if (this.desiredAssets == null)
+            {
+                return;
+            }
+
             var guid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(this));
 
             foreach (var entry in this.desiredAssets)
