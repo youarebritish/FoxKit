@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
 
+    using FmdlStudio.Scripts.MonoBehaviours;
+
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.DataSet.FoxCore;
 
@@ -31,6 +33,12 @@
         /// </summary>
         [OdinSerialize]
         private readonly DoubleLookupDictionary<string, string, SceneProxy> sceneProxies = new DoubleLookupDictionary<string, string, SceneProxy>();
+
+        /// <summary>
+        /// Models to ignore and consider not part of any DataSet. Any models already in the scene when the first DataSet is opened will be ignored.
+        /// </summary>
+        [OdinSerialize]
+        private readonly HashSet<FoxModel> ignoredModels = new HashSet<FoxModel>();
 
         /// <summary>
         /// GUID of the active DataSet.
@@ -71,6 +79,34 @@
         {
             this.sceneProxies.Clear();
             this.ActiveDataSetGuid = null;
+            this.ClearIgnoredModels();
+        }
+
+        /// <summary>
+        /// Ignores a model. An ignored model will never have a SceneProxy created for it.
+        /// </summary>
+        /// <param name="model">The model to ignore.</param>
+        public void IgnoreModel(FoxModel model)
+        {
+            this.ignoredModels.Add(model);
+        }
+
+        /// <summary>
+        /// Empties the set of ignored models.
+        /// </summary>
+        public void ClearIgnoredModels()
+        {
+            this.ignoredModels.Clear();
+        }
+
+        /// <summary>
+        /// Returns true if the given model is ignored.
+        /// </summary>
+        /// <param name="model">The model to check.</param>
+        /// <returns>True if the given model is ignored.</returns>
+        public bool IsModelIgnored(FoxModel model)
+        {
+            return this.ignoredModels.Contains(model);
         }
 
         /// <summary>

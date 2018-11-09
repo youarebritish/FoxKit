@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
 
     using FmdlStudio.Scripts.MonoBehaviours;
@@ -299,6 +300,16 @@
         {
             Assert.IsFalse(string.IsNullOrEmpty(dataSetGuid));
 
+            // Ignore any models already in the scene when the first DataSet is opened.
+            if (this.openDataSetGuids.Count == 0)
+            {
+                var allModelsInScene = GameObject.FindObjectsOfType<FoxModel>();
+                foreach (var model in allModelsInScene)
+                {
+                    SingletonScriptableObject<DataListWindowState>.Instance.IgnoreModel(model);
+                }
+            }
+
             var dataSet = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(dataSetGuid)).GetDataSet();
             Assert.IsNotNull(dataSet);
 
@@ -363,6 +374,12 @@
         public void RemoveDataSet(string dataSetGuid)
         {
             Assert.IsFalse(string.IsNullOrEmpty(dataSetGuid));
+
+            // If we're closing the last DataSet, clear the list of ignored models.
+            if (this.openDataSetGuids.Count == 1)
+            {
+                SingletonScriptableObject<DataListWindowState>.Instance.ClearIgnoredModels();
+            }
 
             // TODO: Clean up
             var dataSet = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(dataSetGuid))?.GetDataSet();
@@ -429,7 +446,18 @@
             var dataSet = CreateInstance<DataSetAsset>();
             dataSet.Initialize();
 
-            var path = UnityFileUtils.GetUniqueAssetPathNameOrFallback("DataSet0000.asset");
+            var dataSets = (from assetGuid in AssetDatabase.FindAssets($"t:{typeof(EntityFileAsset).Name}")
+                           select Path.GetFileNameWithoutExtension(AssetDatabase.GUIDToAssetPath(assetGuid))).ToList();
+
+            var filename = "DataSet0000";
+            var index = 0;
+            while (dataSets.Contains(filename))
+            {
+                index++;
+                filename = "DataSet" + index.ToString("D4");
+            }
+
+            var path = UnityFileUtils.GetUniqueAssetPathNameOrFallback($"{filename}.asset");
             AssetDatabase.CreateAsset(dataSet, path);
 
             var guid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(dataSet));
@@ -463,6 +491,11 @@
 
             foreach (var model in allModelsInScene)
             {
+                if (SingletonScriptableObject<DataListWindowState>.Instance.IsModelIgnored(model))
+                {
+                    continue;
+                }
+
                 var parent = model.transform.parent;
 
                 if (parent != null)
