@@ -33,6 +33,11 @@
                 FoxKitUiUtils.ReadOnlyWarningAndButton(this.target as EntityFileAsset, duplicate => duplicate.IsReadOnly = false);
             }
 
+            if (string.IsNullOrEmpty(asset.PackageGuid))
+            {
+                EditorGUILayout.HelpBox("This DataSet does not belong to a package. Import or create a Package Definition and add this DataSet to it.", MessageType.Warning);
+            }
+
             var entity = FoxKitEditor.InspectedEntity
                          ?? ((EntityFileAsset)this.serializedObject.targetObject).GetDataSet();
 

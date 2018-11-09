@@ -61,7 +61,6 @@
                 return;
             }
 
-            Debug.Log(ReorderableListGUI.IndexOfChangedItem);
             var dataSet = package.Entries[ReorderableListGUI.IndexOfChangedItem] as EntityFileAsset;
             if (dataSet != null)
             {
