@@ -185,8 +185,7 @@
                 }
             }
 
-            Assert.IsTrue(false, $"Unrecognized asset type: {asset.name}");
-            return null;
+            return Path.GetExtension(AssetDatabase.GetAssetPath(asset));
         }
 
         public static EntityLink MakeEntityLink(DataSet owningDataSet, Core.EntityLink foxEntityLink, EntityFactory.EntityInitializeFunctions.GetEntityFromAddressDelegate getEntityByAddress, Func<string, Data> getEntityByName)
@@ -205,7 +204,7 @@
             // Store the archivePath for convenience later.
             if (string.IsNullOrEmpty(link.ArchivePath))
             {
-                //link.ArchivePath = AssetDatabase.GUIDToAssetPath(owningDataSet.DataSetGuid);
+                link.ArchivePath = AssetDatabase.GUIDToAssetPath(owningDataSet.DataSetGuid);
             }
 
             // If the EntityLink references an Entity inside its own DataSet, resolve it now.
