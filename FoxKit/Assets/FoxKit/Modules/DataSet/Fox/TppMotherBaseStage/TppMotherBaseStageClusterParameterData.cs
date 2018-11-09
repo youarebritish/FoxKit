@@ -2,15 +2,9 @@ namespace FoxKit.Modules.DataSet.Fox.TppMotherBaseStage
 {
     using FoxKit.Utils;
 
-    public enum MbStageBlockCreateMode : int
+    public partial class TppMotherBaseStageClusterParameterData
     {
-        NotCreate = 0,
-        Create = 1
-    }
-
-    public partial class TppMotherBaseStageBlockControllerData
-    {
-        public TppMotherBaseStageBlockControllerData()
+        public TppMotherBaseStageClusterParameterData()
             : base()
         {
             this.cluster00divisionPackageIds.Populate(12);
