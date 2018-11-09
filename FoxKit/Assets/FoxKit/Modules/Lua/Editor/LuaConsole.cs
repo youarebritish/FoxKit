@@ -17,6 +17,7 @@
 
     using static KopiLua.Lua;
 
+    using Application = FoxKit.Modules.DataSet.Fox.FoxCore.Application;
     using Vector3 = UnityEngine.Vector3;
 
     public class LuaConsole : EditorWindow
@@ -29,72 +30,88 @@
             window.Show();
         }
         
-        private static readonly luaL_Reg[] printlib = { new luaL_Reg("print", l_my_print), new luaL_Reg(null, null), };
-
         private void OnEnable()
         {
             if (this.L != null)
             {
                 return;
             }
-
-            /*this.L = lua_open();
-            luaL_openlibs(this.L);
-
-            // Overwrite default print() function to write to Debug.Log().
-            lua_getglobal(this.L, "_G");
-            luaL_register(this.L, null, printlib);*/
-
+            
             var luaVM = LuaVM.Create();
             this.L = luaVM.L;
             
             ExposeNativeTypes(this.L);
         }
-
-        private class TestVector
-        {
-            public float X;
-        }
-
+        
         private void ExposeNativeTypes(lua_State L)
         {
-            var typesToExpose =
-                from a in AppDomain.CurrentDomain.GetAssemblies()
-                from t in a.GetTypes()
-                let attributes = t.GetCustomAttributes(typeof(ExposeClassToLuaAttribute), true)
-                where attributes != null && attributes.Length > 0
-                select new
-                           {
-                               Type = t, FunctionsToExpose = from m in t.GetMethods()
-                                                             let mAttributes = m.GetCustomAttributes(typeof(ExposeMethodToLuaAttribute), true)
-                                                             where mAttributes != null && mAttributes.Length > 0
-                                                             select m
-                           };
+            var typesToExpose = from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                from type in assembly.GetTypes()
+                                let attributes = type.GetCustomAttributes(typeof(ExposeClassToLuaAttribute), true)
+                                where attributes != null && attributes.Length > 0
+                                select new
+                                           {
+                                               Type = type,
+                                               FunctionsToExpose =
+                                               from method in type.GetMethods(BindingFlags.NonPublic) // TODO get parent type methods too
+                                               let mAttributes =
+                                                   method.GetCustomAttributes(typeof(ExposeMethodToLuaAttribute), true)
+                                               where mAttributes != null && mAttributes.Length > 0
+                                               select method
+                                           };
 
             foreach (var typeToExpose in typesToExpose)
             {
                 CreateMetatableForType(L, typeToExpose.Type);
-                this.constructors.Add(typeToExpose.Type, CreateConstructor(typeToExpose.Type, typeToExpose.FunctionsToExpose));
+                //this.constructors.Add(typeToExpose.Type, CreateConstructor(typeToExpose.Type, typeToExpose.FunctionsToExpose));
+
+                lua_pushcclosure(L, TestConstructor, 0);
+                lua_setfield(L, -2, "__call");
+
+                // Define methods here
+                //ExposeInstanceMethod(L, "ToString", )
+
+                // Remove the newly-created Entity table from the stack.
+                lua_pop(L, -1);
             }
+        }
+
+        private static void LuaPushObject(lua_State L, object obj)
+        {
+            lua_pushlightuserdata(L, obj);
+        }
+
+        private int TestConstructor(lua_State l)
+        {
+            var application = new Application();
+            LuaPushObject(l, application);
+            return 1;
+        }
+
+        private int TestMethod(lua_State l)
+        {
+            lua_pushstring(l, "test");
+            return 1;
         }
 
         private static Action<lua_State> CreateConstructor(Type type, IEnumerable<MethodInfo> methods)
         {
             return L =>
                 {
-                    var newEntity = lua_newuserdata(L, typeof(Entity)) as Entity;
-                    lua_getglobal(L, "Entity");
+                    var newEntity = lua_newuserdata(L, type);
+                    lua_getglobal(L, type.Name);
                     lua_setmetatable(L, -2);
 
                     foreach (var method in methods)
                     {
                         // TODO Check for instance vs static, for now assume all are instance
+                        // TODO Get constructor, if any
                         ExposeInstanceMethod(L, method.Name, method);
                     }
                 };
         }
 
-        private Dictionary<Type, Action<lua_State>> constructors = new Dictionary<Type, Action<lua_State>>();
+        private readonly Dictionary<Type, Action<lua_State>> constructors = new Dictionary<Type, Action<lua_State>>();
 
         private static void CreateMetatableForType(lua_State L, Type type)
         {
@@ -121,7 +138,7 @@
             // TODO handle __index, __newindex
 
             // Remove the newly-created Entity table from the stack.
-            lua_pop(L, -1);
+            //lua_pop(L, -1);
         }
         
         private class MethodContext
@@ -182,19 +199,6 @@
             var style = EditorStyles.textArea;
             style.richText = true;
             this.text = EditorGUILayout.TextArea(this.text, style, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true));
-            this.text = DoLuaSyntaxHighlighting(this.text);
-        }
-
-        private static readonly string[] SyntaxLiterals = { "true", "false", "nil" };
-        private static readonly Color SyntaxLiteralColor = new Color(59.0f/255.0f, 153.0f/255.0f, 144.0f/255.0f, 1);
-        private static readonly string[] SyntaxKeywords = { "and", "break", "do", "else", "elseif", "end", "for", "goto", "if", "in", "local", "not", "or", "repeat", "return", "then", "until", "while" };
-        private static readonly Color SyntaxKeywordColor = new Color(124.0f / 255.0f, 145.0f / 255.0f, 20.0f / 255.0f, 1);
-
-        private static string DoLuaSyntaxHighlighting(string inputSource)
-        {
-            // TODO
-            var result = inputSource;
-            return result;
         }
         
         void DrawToolbar()
@@ -277,28 +281,7 @@
                 printError(L);
             }
         }
-
-        private static int l_my_print(lua_State L)
-        {
-            int nargs = lua_gettop(L);
-
-            for (var i = 1; i <= nargs; i++)
-            {
-                if (lua_isstring(L, i) == 1)
-                {
-                    /* Pop the next arg using lua_tostring(L, i) and do your print */
-                    Debug.Log(lua_tostring(L, i));
-                }
-                else
-                {
-                    /* Do something with non-strings if you like */
-                    Debug.Log(lua_tostring(L, i));
-                }
-            }
-
-            return 0;
-        }
-
+        
         private static int traceback(lua_State L)
         {
             lua_getfield(L, LUA_GLOBALSINDEX, "debug");

@@ -4,7 +4,7 @@
 
     using UnityEngine;
 
-    [CreateAssetMenu(menuName = "FoxKit/Package Definition/Fpk", fileName = "New Fpk Definition", order = 4)]
+    //[CreateAssetMenu(menuName = "FoxKit/Package Definition/Fpk", fileName = "New Fpk Definition", order = 4)]
     public class FpkPackageDefinition : PackageDefinition
     {
         /// <summary>

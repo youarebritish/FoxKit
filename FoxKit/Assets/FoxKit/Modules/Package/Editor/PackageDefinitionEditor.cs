@@ -23,7 +23,6 @@
         {
             var package = this.target as PackageDefinition;
             this.entries = package.Entries;
-            var entriesProperty = this.serializedObject.FindProperty("Entries");
 
             // Create list control and optionally pass flags into constructor.
             this.listControl = new ReorderableListControl();
@@ -32,7 +31,12 @@
             this.listControl.ItemInserted += this.OnItemInserted;
             this.listControl.ItemRemoving += this.OnItemRemoving;
 
-            this.listAdapter = new SerializedPropertyAdaptor(entriesProperty);
+            this.listAdapter = new GenericListAdaptor<UnityEngine.Object>(this.entries, this.DrawItem, 16.0f);
+        }
+
+        private Object DrawItem(Rect position, Object item)
+        {
+            return EditorGUI.ObjectField(position, item, typeof(UnityEngine.Object), false);
         }
 
         private void OnDisable()
@@ -54,12 +58,12 @@
                 return;
             }
 
-            if (!(item is DataSetAsset))
+            if (!(item is EntityFileAsset))
             {
                 return;
             }
 
-            var dataSet = item as DataSetAsset;
+            var dataSet = item as EntityFileAsset;
             dataSet.PackageGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(this.target));
         }
 
@@ -67,12 +71,12 @@
         {
             var item = this.entries[args.ItemIndex];
 
-            if (!(item is DataSetAsset))
+            if (!(item is EntityFileAsset))
             {
                 return;
             }
 
-            var dataSet = item as DataSetAsset;
+            var dataSet = item as EntityFileAsset;
             dataSet.PackageGuid = null;
         }
 
