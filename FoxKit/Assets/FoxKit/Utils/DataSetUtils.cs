@@ -5,10 +5,14 @@
     using System.IO;
     using System.Linq;
 
+    using FmdlStudio.Scripts.MonoBehaviours;
+
     using FoxKit.Modules.Archive;
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Modules.DataSet.Importer;
+    using FoxKit.Modules.Lighting.Atmosphere;
+    using FoxKit.Modules.MaterialDatabase;
 
     using FoxLib;
 
@@ -65,10 +69,124 @@
             return container.Item.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
 
+        /// <summary>
+        /// Gets the Fox Engine-formatted path for an asset.
+        /// </summary>
+        /// <param name="asset">The asset whose path to get.</param>
+        /// <returns>The path.</returns>
         public static string AssetToFoxPath(UnityEngine.Object asset)
         {
             var unityPath = AssetDatabase.GetAssetPath(asset);
-            return FoxUtils.UnityPathToFoxPath(unityPath);
+            var unityPathWithFoxExtension = Path.ChangeExtension(unityPath, $".{GetFileExtensionForAsset(asset)}");
+            return FoxUtils.UnityPathToFoxPath(unityPathWithFoxExtension);
+        }
+
+        /// <summary>
+        /// Gets the Fox Engine file extension for a given asset.
+        /// </summary>
+        /// <param name="asset">The asset.</param>
+        /// <returns>The extension.</returns>
+        private static string GetFileExtensionForAsset(UnityEngine.Object asset)
+        {
+            Assert.IsNotNull(asset);
+
+            if (asset is FoxModel)
+            {
+                return "fmdl";
+            }
+            if (asset is RouteSet)
+            {
+                return "frt";
+            }
+            if (asset is MaterialDatabase)
+            {
+                return "fmtt";
+            }
+            if (asset is Modules.PartsBuilder.FormVariation.FormVariation)
+            {
+                return "fv2";
+            }
+            if (asset is LightProbeSHCoefficients)
+            {
+                return "lpsh";
+            }
+            if (asset is PackageDefinition)
+            {
+                var package = (PackageDefinition)asset;
+                switch (package.Type)
+                {
+                    case PackageDefinition.PackageType.Fpk:
+                        return "fpk";
+                    case PackageDefinition.PackageType.Fpkd:
+                        return "fpkd";
+                    case PackageDefinition.PackageType.Dat:
+                        return "dat";
+                    case PackageDefinition.PackageType.Pftxs:
+                        return "pftxs";
+                    case PackageDefinition.PackageType.Sbp:
+                        return "sbp";
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+            if (asset is EntityFileAsset)
+            {
+                if (asset is DataSetAsset)
+                {
+                    return "fox2";
+                }
+                if (asset is BounderFileAsset)
+                {
+                    return "bnd";
+                }
+                if (asset is ClothSettingFileAsset)
+                {
+                    return "clo";
+                }
+                if (asset is DestructionFileAsset)
+                {
+                    return "des";
+                }
+                if (asset is EventFileAsset)
+                {
+                    return "evf";
+                }
+                if (asset is FacialSettingFileAsset)
+                {
+                    return "fsd";
+                }
+                if (asset is PartsFileAsset)
+                {
+                    return "parts";
+                }
+                if (asset is SoundFileAsset)
+                {
+                    return "phsd";
+                }
+                if (asset is SoundDataFileAsset)
+                {
+                    return "sdf";
+                }
+                if (asset is SimFileAsset)
+                {
+                    return "sim";
+                }
+                if (asset is TargetFileAsset)
+                {
+                    return "tgt";
+                }
+                if (asset is VehicleFileAsset)
+                {
+                    return "veh";
+                }
+                if (asset is LensFlareFileAsset)
+                {
+                    return "vfxlf";
+                }
+            }
+
+            Assert.IsTrue(false, $"Unrecognized asset type: {asset.name}");
+            return null;
         }
 
         public static EntityLink MakeEntityLink(DataSet owningDataSet, Core.EntityLink foxEntityLink, EntityFactory.EntityInitializeFunctions.GetEntityFromAddressDelegate getEntityByAddress, Func<string, Data> getEntityByName)

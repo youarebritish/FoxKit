@@ -6,8 +6,8 @@
 
     public partial class DataIdentifier
     {
-        public string Identifier => null;//this.identifier;
+        public string Identifier => this.identifier;
 
-        public Dictionary<string, EntityLink> Links => null;//this.links;
+        public Dictionary<string, EntityLink> Links => this.links;
     }
 }

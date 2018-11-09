@@ -112,7 +112,7 @@
                 foreach (var link in dataIdentifier.Links)
                 {
                     allItems.Add(new TreeViewItem { id = id, depth = 2, displayName = link.Key });
-                    //this.idToData.Add(dataIdentifier);
+                    this.idToData.Add(dataIdentifier);
                     this.idToDataIdentifierLinkKeys.Add(link.Key);
                     id++;
                 }
