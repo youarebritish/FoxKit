@@ -104,6 +104,13 @@
                 AppendLineWithIndent(stringBuilder, $"public override string Category => \"{definition.Category}\";", 2);
             }
 
+            // Add methods.
+            foreach (var function in definition.Functions)
+            {
+                AppendFunctionDeclaration(stringBuilder, function);
+                AppendLineWithIndent(stringBuilder, string.Empty, 2);
+            }
+
             AppendLineWithIndent(stringBuilder, "}", 1);
             stringBuilder.AppendLine("}");
 
@@ -111,6 +118,20 @@
             var outputFile = $"{outputDirectory}/{definition.Namespace}/{definition.Name}.Generated.cs";
 
             File.WriteAllText(outputFile, stringBuilder.ToString());
+        }
+
+        private static void AppendFunctionDeclaration(StringBuilder stringBuilder, FunctionDefinition function)
+        {
+            if (function.Type == "c")
+            {
+                AppendLineWithIndent(stringBuilder, "[ExposeMethodToLua(MethodStaticity.Class)]", 2);
+                AppendLineWithIndent(stringBuilder, $"static partial int {function.Name}(lua_State lua)", 2);
+            }
+            else
+            {
+                AppendLineWithIndent(stringBuilder, "[ExposeMethodToLua(MethodStaticity.Instance)]", 2);
+                AppendLineWithIndent(stringBuilder, $"partial int {function.Name}(lua_State lua)", 2);
+            }
         }
 
         private static void AppendFieldDeclaration(StringBuilder stringBuilder, PropertyDefinition property, Func<string, string, string> parsePropertyType, Func<string, string> getNamespace)

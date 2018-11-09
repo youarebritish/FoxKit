@@ -48,6 +48,10 @@ namespace FoxKit.Core
                 var loadedAsset = AssetDatabase.LoadAssetAtPath<Object>(asset);
                 assets.Add(asset, loadedAsset);
 
+                // Add labels
+                var labels = MakeLabelsForAsset(loadedAsset);
+                AssetDatabase.SetLabels(loadedAsset, labels.ToArray());
+
                 (loadedAsset as PackageDefinition)?.AssignEntries();
 
                 if (!(loadedAsset is EntityFileAsset))
@@ -83,6 +87,75 @@ namespace FoxKit.Core
                     entity.OnAssetsImported(getDataSet, tryGetAsset, getDataIdentifier);
                 }
             }
+        }
+
+        private static IEnumerable<string> MakeLabelsForAsset(UnityEngine.Object asset)
+        {
+            // Location labels
+            var path = AssetDatabase.GetAssetPath(asset);
+            var filename = Path.GetFileNameWithoutExtension(path);
+
+            var results = new List<string>();
+
+            if (filename.StartsWith("afgh"))
+            {
+                results.Add("afgh");
+            }
+            else if (filename.StartsWith("mafr"))
+            {
+                results.Add("mafr");
+            }
+            else if (filename.StartsWith("cypr"))
+            {
+                results.Add("cypr");
+            }
+            else if (filename.StartsWith("mtbs"))
+            {
+                results.Add("mtbs");
+            }
+            else if (filename.StartsWith("ombs"))
+            {
+                results.Add("ombs");
+            }
+            else if (filename.StartsWith("gntn"))
+            {
+                results.Add("gntn");
+            }
+
+            if (filename.Contains("terrain"))
+            {
+                results.Add("terrain");
+            }
+            if (filename.Contains("gimmick"))
+            {
+                results.Add("gimmick");
+            }
+            if (filename.Contains("light"))
+            {
+                results.Add("light");
+            }
+            if (filename.Contains("path"))
+            {
+                results.Add("path");
+            }
+            if (filename.Contains("sound"))
+            {
+                results.Add("sound");
+            }
+            if (filename.Contains("trap"))
+            {
+                results.Add("trap");
+            }
+            if (filename.Contains("tactical"))
+            {
+                results.Add("tactical");
+            }
+            if (filename.StartsWith("fx_"))
+            {
+                results.Add("fx");
+            }
+
+            return results;
         }
 
         private static TryGetAssetDelegate MakeTryGetAssetDelegate(IDictionary<string, Object> assets)

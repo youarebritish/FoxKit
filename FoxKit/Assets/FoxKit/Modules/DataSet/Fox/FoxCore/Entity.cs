@@ -52,7 +52,7 @@
                 this.Index = index;
             }
         }
-
+        
         /// <summary>
         /// Files that this Entity is looking for, along with the name of the field that wants the file.
         /// </summary>
