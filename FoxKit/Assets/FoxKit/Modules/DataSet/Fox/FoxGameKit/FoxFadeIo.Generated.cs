@@ -13,7 +13,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.Lua;
     using FoxLib;
-    using KopiLua;
+    using static KopiLua.Lua;
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
@@ -28,5 +28,38 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         public override ushort Version => 0;
         
         public override string Category => "";
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void Create(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void FadeIn(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void FadeOut(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void WhiteFadeOut(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void IsFadeProcessing(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void FadeDisregard(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void EditModeDisregard(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void SetPadReleaseMode(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void IsPadReleaseMode(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void SetFadeLock(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void ResetFadeLock(lua_State lua);
     }
 }

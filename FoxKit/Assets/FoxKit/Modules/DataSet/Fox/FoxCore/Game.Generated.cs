@@ -13,7 +13,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.Lua;
     using FoxLib;
-    using KopiLua;
+    using static KopiLua.Lua;
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
@@ -31,5 +31,41 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         public override ushort Version => 0;
         
         public override string Category => "";
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void SetName(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void CreateScene(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void DeleteScene(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void GetScene(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void CreateBucket(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void DeleteBucket(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void GetBucket(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void SetMainBucket(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void GetMainBucket(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void PostDataBodyRecreation(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void PostDataBodyReset(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void ExportDataRelationGraph(lua_State lua);
     }
 }

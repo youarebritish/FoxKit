@@ -13,7 +13,7 @@ namespace FoxKit.Modules.DataSet.Fox.Ph
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.Lua;
     using FoxLib;
-    using KopiLua;
+    using static KopiLua.Lua;
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
@@ -36,5 +36,17 @@ namespace FoxKit.Modules.DataSet.Fox.Ph
         public override ushort Version => 0;
         
         public override string Category => "Ph";
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void SetName(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void SetFriction(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void SetRestitution(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void SetDensity(lua_State lua);
     }
 }

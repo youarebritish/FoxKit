@@ -13,7 +13,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.Lua;
     using FoxLib;
-    using KopiLua;
+    using static KopiLua.Lua;
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
@@ -103,5 +103,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         public override ushort Version => 10;
         
         public override string Category => "";
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void SetTransform(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void GetTransform(lua_State lua);
     }
 }

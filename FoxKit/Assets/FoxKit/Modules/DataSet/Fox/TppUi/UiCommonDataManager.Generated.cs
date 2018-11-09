@@ -13,7 +13,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppUi
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.Lua;
     using FoxLib;
-    using KopiLua;
+    using static KopiLua.Lua;
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
@@ -28,5 +28,41 @@ namespace FoxKit.Modules.DataSet.Fox.TppUi
         public override ushort Version => 0;
         
         public override string Category => "";
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void Create(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void GetInstance(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void End(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void InitDataCreate(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void GetNclResultCommonData(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void SetTitleType(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void GzTitlePreSetting(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void GzTitleShuffle(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void SetGroundZeroesMode(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void IsGroundZeroesMode(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void SetUseMbDvcGzBlock(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void StartTitleMenu(lua_State lua);
     }
 }

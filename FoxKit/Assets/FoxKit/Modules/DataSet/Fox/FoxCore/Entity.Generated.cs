@@ -13,7 +13,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.Lua;
     using FoxLib;
-    using KopiLua;
+    using static KopiLua.Lua;
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
@@ -22,5 +22,26 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class Entity
     {
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void AddProperty(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void GetClassName(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void IsKindOf(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void IsMemberOf(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void GetPropertyList(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void GetPropertyInfo(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void DebugGetEntityCount(lua_State lua);
     }
 }

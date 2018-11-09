@@ -13,7 +13,7 @@ namespace FoxKit.Modules.DataSet.Fox.Ui
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.Lua;
     using FoxLib;
-    using KopiLua;
+    using static KopiLua.Lua;
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
@@ -31,5 +31,8 @@ namespace FoxKit.Modules.DataSet.Fox.Ui
         public override ushort Version => 0;
         
         public override string Category => "Ui";
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void SetFontDataElement(lua_State lua);
     }
 }

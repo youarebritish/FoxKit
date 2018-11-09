@@ -13,7 +13,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.Lua;
     using FoxLib;
-    using KopiLua;
+    using static KopiLua.Lua;
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
@@ -28,5 +28,44 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         public override ushort Version => 0;
         
         public override string Category => "";
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void __call(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void GetInstance(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void GetPhysicalPadNum(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void GetPad0LogicalNum(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void GetPad1LogicalNum(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void GetPad2LogicalNum(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void GetPad3LogicalNum(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void SetPad0LogicalNum(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void SetPad1LogicalNum(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void SetPad2LogicalNum(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void SetPad3LogicalNum(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void ResetPadMapping(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void Dump(lua_State lua);
     }
 }

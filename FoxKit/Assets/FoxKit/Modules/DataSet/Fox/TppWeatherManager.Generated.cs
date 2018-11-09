@@ -13,7 +13,7 @@ namespace FoxKit.Modules.DataSet.Fox
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.Lua;
     using FoxLib;
-    using KopiLua;
+    using static KopiLua.Lua;
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
@@ -28,5 +28,41 @@ namespace FoxKit.Modules.DataSet.Fox
         public override ushort Version => 0;
         
         public override string Category => "";
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void GetInstance(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void SetCurrentClock(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void RequestWeather(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void RequestTag(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void SetNewWeatherProbabilities(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void SetNewWeatherChangeRandomParameters(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void SetNewNextWeatherChangeTime(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void SetNewWeatherDefault(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void PauseNewWeatherChangeRandom(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void PauseClock(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void SwitchWeatherDesc(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void GetCurrentClock(lua_State lua);
     }
 }

@@ -13,7 +13,7 @@ namespace FoxKit.Modules.DataSet.Fox.Ui
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.Lua;
     using FoxLib;
-    using KopiLua;
+    using static KopiLua.Lua;
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
@@ -28,5 +28,65 @@ namespace FoxKit.Modules.DataSet.Fox.Ui
         public override ushort Version => 0;
         
         public override string Category => "";
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void GetInstance(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void SetButtonMap(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void SetButtonDecideMap(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void SetButtonCancelMap(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void SetPrefetchTexture(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void SetPrefetchTextureTable(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void RemovePrefetchTexture(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void CreateButtonMap(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void ResetDefaultButtonMap(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void SetKeyCodeEqual(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void CreateKeyData(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void SetDrawPriorityTable(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void ClearDrawPriorityTable(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void ReallocPlayControlPool(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void RequestToDumpUpdatedGraphNode(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void SetExecLuaFile(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void SetUiPauseTag(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void SendTrigger(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void SetFontTypeTransTable(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void GetManager(lua_State lua);
     }
 }

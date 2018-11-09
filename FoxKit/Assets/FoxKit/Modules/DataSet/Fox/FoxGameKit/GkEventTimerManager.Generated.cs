@@ -13,7 +13,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.Lua;
     using FoxLib;
-    using KopiLua;
+    using static KopiLua.Lua;
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
@@ -28,5 +28,23 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         public override ushort Version => 0;
         
         public override string Category => "GameKit";
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void Start(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void StartRaw(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void Stop(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void StopAll(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void IsTimerActive(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void SetPaused(lua_State lua);
     }
 }

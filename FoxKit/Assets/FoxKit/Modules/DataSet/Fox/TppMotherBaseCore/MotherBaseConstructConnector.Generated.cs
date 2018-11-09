@@ -13,7 +13,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppMotherBaseCore
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.Lua;
     using FoxLib;
-    using KopiLua;
+    using static KopiLua.Lua;
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
@@ -28,5 +28,32 @@ namespace FoxKit.Modules.DataSet.Fox.TppMotherBaseCore
         public override ushort Version => 0;
         
         public override string Category => "TppMotherBase";
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void GetInstance(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void Create(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void SetVariableGimmickList(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void ClearVariableGimmickList(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void GetInitialGimmickCount(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void GetContainerResourceId(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void GetPlantBridgePosRot(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void RefreshGimmicks(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void SetSahelanLodVisibility(lua_State lua);
     }
 }

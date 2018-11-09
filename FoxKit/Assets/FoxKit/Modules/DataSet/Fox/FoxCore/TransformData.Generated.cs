@@ -13,7 +13,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.Lua;
     using FoxLib;
-    using KopiLua;
+    using static KopiLua.Lua;
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
@@ -61,5 +61,8 @@ namespace FoxKit.Modules.DataSet.Fox.FoxCore
         public override ushort Version => 4;
         
         public override string Category => "";
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void GetChildren(lua_State lua);
     }
 }

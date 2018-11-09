@@ -13,7 +13,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppEffect
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.Lua;
     using FoxLib;
-    using KopiLua;
+    using static KopiLua.Lua;
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
@@ -265,5 +265,8 @@ namespace FoxKit.Modules.DataSet.Fox.TppEffect
         public override ushort Version => 21;
         
         public override string Category => "Light";
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void StartSkyCapture(lua_State lua);
     }
 }

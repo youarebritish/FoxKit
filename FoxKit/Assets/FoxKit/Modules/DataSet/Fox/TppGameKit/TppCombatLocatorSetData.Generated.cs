@@ -13,7 +13,7 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.Lua;
     using FoxLib;
-    using KopiLua;
+    using static KopiLua.Lua;
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
@@ -37,5 +37,14 @@ namespace FoxKit.Modules.DataSet.Fox.TppGameKit
         public override ushort Version => 1;
         
         public override string Category => "CombatLocator";
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void GetLocatorNum(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void GetLocatorPosition(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void GetLocatorRadius(lua_State lua);
     }
 }

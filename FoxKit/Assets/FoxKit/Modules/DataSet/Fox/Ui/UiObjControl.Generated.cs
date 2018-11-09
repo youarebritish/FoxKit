@@ -13,7 +13,7 @@ namespace FoxKit.Modules.DataSet.Fox.Ui
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.Lua;
     using FoxLib;
-    using KopiLua;
+    using static KopiLua.Lua;
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
@@ -34,5 +34,26 @@ namespace FoxKit.Modules.DataSet.Fox.Ui
         public override ushort Version => 0;
         
         public override string Category => "Ui";
+        
+        [ExposeMethodToLua(MethodStaticity.Static)]
+        static partial void Create(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void Start(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void StartWithoutInitializing(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void Stop(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void SendTrigger(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void SetVisible(lua_State lua);
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void GetWindowNameForPreview(lua_State lua);
     }
 }

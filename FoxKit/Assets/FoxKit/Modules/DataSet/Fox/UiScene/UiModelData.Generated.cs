@@ -13,7 +13,7 @@ namespace FoxKit.Modules.DataSet.Fox.UiScene
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.Lua;
     using FoxLib;
-    using KopiLua;
+    using static KopiLua.Lua;
     using OdinSerializer;
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
@@ -67,5 +67,8 @@ namespace FoxKit.Modules.DataSet.Fox.UiScene
         public override ushort Version => 6;
         
         public override string Category => "Ui";
+        
+        [ExposeMethodToLua(MethodStaticity.Instance)]
+        partial void SetModelNodeElement(lua_State lua);
     }
 }

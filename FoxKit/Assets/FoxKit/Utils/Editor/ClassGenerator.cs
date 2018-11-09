@@ -42,7 +42,7 @@
         private static readonly string[] usingNamespaces =
             {
                 "System", "System.Collections.Generic", "FoxKit.Modules.DataSet.Fox.FoxCore", "FoxKit.Modules.Lua",
-                "FoxLib", "KopiLua", "OdinSerializer", "UnityEngine", "DataSetFile2 = DataSetFile2", "TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit"
+                "FoxLib", "static KopiLua.Lua", "OdinSerializer", "UnityEngine", "DataSetFile2 = DataSetFile2", "TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit"
             };
 
         public static void GenerateClass(ClassDefinition definition, IDictionary<Core.PropertyInfoType, Type> typeMappings, Func<string, string> getNamespace, string outputDirectory)
@@ -64,24 +64,24 @@
             AppendClassDeclaration(stringBuilder, definition.Name, definition.Parent);
             AppendLineWithIndent(stringBuilder, "{", 1);
 
-            Func<string, string, string> parsePropertyType = delegate(string propertyTypeString, string ptrTypeString)
+            Func<string, string, string> parsePropertyType = delegate (string propertyTypeString, string ptrTypeString)
+            {
+                var propertyType = ParsePropertyType(propertyTypeString);
+                if (propertyType == Core.PropertyInfoType.EntityPtr && !string.IsNullOrEmpty(ptrTypeString))
                 {
-                    var propertyType = ParsePropertyType(propertyTypeString);
-                    if (propertyType == Core.PropertyInfoType.EntityPtr && !string.IsNullOrEmpty(ptrTypeString))
+                    var @namespace = getNamespace(ptrTypeString);
+                    if (string.IsNullOrEmpty(@namespace))
                     {
-                        var @namespace = getNamespace(ptrTypeString);
-                        if (string.IsNullOrEmpty(@namespace))
-                        {
-                            return ptrTypeString;
-                        }
+                        return ptrTypeString;
+                    }
 
-                        return $"{getNamespace(ptrTypeString)}.{ptrTypeString}";
-                    }
-                    else
-                    {
-                        return typeMappings[propertyType].ToString();
-                    }
-                };
+                    return $"{getNamespace(ptrTypeString)}.{ptrTypeString}";
+                }
+                else
+                {
+                    return typeMappings[propertyType].ToString();
+                }
+            };
 
             for (var i = 0; i < definition.Properties.Count; i++)
             {
@@ -93,7 +93,7 @@
                     AppendLineWithIndent(stringBuilder, string.Empty, 2);
                 }
             }
-            
+
             // Add metadata properties.
             if (!string.IsNullOrEmpty(definition.Parent))
             {
@@ -107,8 +107,14 @@
             // Add methods.
             foreach (var function in definition.Functions)
             {
-                AppendFunctionDeclaration(stringBuilder, function);
+                // Exclude constructors.
+                if (function.Name == definition.Name)
+                {
+                    continue;
+                }
+
                 AppendLineWithIndent(stringBuilder, string.Empty, 2);
+                AppendFunctionDeclaration(stringBuilder, function);
             }
 
             AppendLineWithIndent(stringBuilder, "}", 1);
@@ -124,13 +130,13 @@
         {
             if (function.Type == "c")
             {
-                AppendLineWithIndent(stringBuilder, "[ExposeMethodToLua(MethodStaticity.Class)]", 2);
-                AppendLineWithIndent(stringBuilder, $"static partial int {function.Name}(lua_State lua)", 2);
+                AppendLineWithIndent(stringBuilder, "[ExposeMethodToLua(MethodStaticity.Static)]", 2);
+                AppendLineWithIndent(stringBuilder, $"static partial void {function.Name}(lua_State lua);", 2);
             }
             else
             {
                 AppendLineWithIndent(stringBuilder, "[ExposeMethodToLua(MethodStaticity.Instance)]", 2);
-                AppendLineWithIndent(stringBuilder, $"partial int {function.Name}(lua_State lua)", 2);
+                AppendLineWithIndent(stringBuilder, $"partial void {function.Name}(lua_State lua);", 2);
             }
         }
 
@@ -646,7 +652,7 @@
         private static IDictionary<string, string> ParseClassNamespaces(TextAsset classNamespaces)
         {
             var lines = new List<string>(classNamespaces.text.Split('\n'));
-            char[] delimiterChars = { ' ', '(', ')', '\'', ','};
+            char[] delimiterChars = { ' ', '(', ')', '\'', ',' };
 
             var result = new Dictionary<string, string>();
             foreach (var line in lines)
@@ -681,7 +687,7 @@
 
                 var className = splitLine[0];
                 var id = splitLine[1];
-                
+
                 result.Add(className, short.Parse(id));
             }
 

@@ -845,11 +845,9 @@
             return new List<Core.PropertyInfo>();
         }
         
-        [ExposeMethodToLua(MethodStaticity.Instance)]
-        public int GetClassName(lua_State L)
+        partial void GetClassName(lua_State L)
         {
             lua_pushstring(L, this.GetType().Name);
-            return 1;
         }
 
         public override string ToString()
