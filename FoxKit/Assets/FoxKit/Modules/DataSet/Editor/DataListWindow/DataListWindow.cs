@@ -57,6 +57,14 @@
                     });
         }
 
+        public void RenameEntity(Data entity, string oldName, string newName)
+        {
+            entity.GetDataSet().RemoveData(oldName);
+            entity.GetDataSet().AddData(newName, entity);
+
+            this.treeView.Reload();
+        }
+
         /// <summary>
         /// Create a new Entity of a given type in the active DataSet.
         /// </summary>

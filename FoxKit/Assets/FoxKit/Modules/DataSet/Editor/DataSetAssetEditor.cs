@@ -44,7 +44,7 @@
             EditorGUILayout.LabelField(entity.GetType().Name, EditorStyles.boldLabel);
 
             var fields = GetPropertyFields(entity);
-            DrawStaticProperties(fields, entity, asset.IsReadOnly);
+            this.DrawStaticProperties(fields, entity, asset.IsReadOnly);
             this.Repaint();
 
             EditorUtility.SetDirty(this.target);
@@ -67,7 +67,7 @@
                     continue;
                 }
 
-                DrawStaticProperty(entity, field, isReadOnly);
+                this.DrawStaticProperty(entity, field, isReadOnly);
 
                 // Draw nested fields.
                 if (field.Item2.Type != Core.PropertyInfoType.EntityPtr)
@@ -81,7 +81,7 @@
                     continue;
                 }
 
-                DrawStaticProperties(GetPropertyFields(pointedEntity), pointedEntity, isReadOnly);
+                this.DrawStaticProperties(GetPropertyFields(pointedEntity), pointedEntity, isReadOnly);
             }
         }
 
@@ -91,6 +91,12 @@
             bool isReadOnly)
         {
             GUI.enabled = !isReadOnly && field.Item2.Writable != PropertyExport.Never;
+
+            // HACK for now until custom inspectors are working and we can detect changes in the name field
+            if (field.Item1.Name == "name")
+            {
+                GUI.enabled = false;
+            }
 
             var currentValue = field.Item1.GetValue(entity);
 
