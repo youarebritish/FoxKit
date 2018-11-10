@@ -53,7 +53,7 @@
 
         private RouteNodeEvent CustomListItem(Rect position, RouteNodeEvent itemValue)
         {
-            return EditorGUI.ObjectField(position, itemValue, typeof(RouteNodeEvent)) as RouteNodeEvent;
+            return EditorGUI.ObjectField(position, itemValue, typeof(RouteNodeEvent), true) as RouteNodeEvent;
         }
 
         private void DrawEmpty()
