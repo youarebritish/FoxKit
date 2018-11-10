@@ -491,6 +491,16 @@
 
             foreach (var model in allModelsInScene)
             {
+                if (this.openDataSetGuids.Count == 0)
+                {
+                    if (SingletonScriptableObject<DataListWindowState>.Instance.IsModelIgnored(model))
+                    {
+                        continue;
+                    }
+
+                    SingletonScriptableObject<DataListWindowState>.Instance.IgnoreModel(model);
+                }
+
                 if (SingletonScriptableObject<DataListWindowState>.Instance.IsModelIgnored(model))
                 {
                     continue;
@@ -528,9 +538,10 @@
                 staticModel.Transform = transformEntity;
                 staticModel.ModelFile = prefab;
 
-                var newSceneProxy = SingletonScriptableObject<DataListWindowState>.Instance.CreateSceneProxyForEntity(
-                    SingletonScriptableObject<DataListWindowState>.Instance.ActiveDataSetGuid,
-                    staticModel.Name);
+                var newSceneProxy =
+                    SingletonScriptableObject<DataListWindowState>.Instance.FindSceneProxyForEntity(
+                        staticModel.DataSetGuid,
+                        staticModel.Name);
                 model.transform.SetParent(newSceneProxy.transform, true);
 
                 var modelProxy = model.gameObject.AddComponent<SceneProxyChild>();

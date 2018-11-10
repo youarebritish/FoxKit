@@ -1,25 +1,17 @@
 ﻿namespace FoxKit.Modules.DataSet
 {
-    using System;
-
-    using FmdlStudio.Scripts.MonoBehaviours;
-
     using FoxKit.Modules.DataSet.Fox.FoxCore;
-    using FoxKit.Modules.DataSet.Fox.FoxGameKit;
-    using FoxKit.Modules.DataSet.FoxCore;
 
     using UnityEditor;
 
     using UnityEngine;
     using UnityEngine.Assertions;
 
-    using Object = UnityEngine.Object;
-
     /// <inheritdoc />
     /// <summary>
     /// A scene representation of a FoxKit Entity. Created to visualize spatial Entity data.
     /// </summary>
-    [DisallowMultipleComponent, ExecuteInEditMode]
+    [DisallowMultipleComponent, ExecuteInEditMode, SelectionBase]
     public class SceneProxy : MonoBehaviour
     {
         [SerializeField, HideInInspector]
@@ -116,15 +108,6 @@
 
         void OnDrawGizmosSelected()
         {
-            // TODO hack
-            // Sometimes their positions get out of sync somehow
-            /*var foxModel = GetComponentInChildren<FoxModel>();
-            if (foxModel != null && foxModel.transform.localPosition != Vector3.zero)
-            {
-                this.transform.position += foxModel.transform.localPosition;
-                foxModel.transform.localPosition = Vector3.zero;
-            }*/
-
             if (this.entity.Transform.Translation != this.previousEntityTranslation)
             {
                 this.transform.position = this.entity.Transform.Translation;
