@@ -546,6 +546,7 @@
 
                 var modelProxy = model.gameObject.AddComponent<SceneProxyChild>();
                 modelProxy.Owner = newSceneProxy;
+                modelProxy.SetModel(staticModel.ModelFile);
 
                 this.treeView.SelectItem(staticModel);
             }

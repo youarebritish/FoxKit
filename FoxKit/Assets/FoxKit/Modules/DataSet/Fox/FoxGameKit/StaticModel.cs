@@ -79,6 +79,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
 
             var modelProxy = model.AddComponent<SceneProxyChild>();
             modelProxy.Owner = sceneProxy;
+            modelProxy.SetModel(this.ModelFile);
         }
     }
 }
