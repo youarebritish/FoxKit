@@ -7,7 +7,7 @@
 
     using UnityEngine;
 
-    [CreateAssetMenu(menuName = "FoxKit/Package Definition", fileName = "New Package Definition", order = 4)]
+    [CreateAssetMenu(menuName = "FoxKit/Package Definition", fileName = "New Package Definition", order = 0)]
     public class PackageDefinition : ScriptableObject
     {
         public enum PackageType
