@@ -66,7 +66,7 @@
 
             this.desiredAssets.Clear();
         }
-
+        
         /// <summary>
         /// Assign the paths to the files this PackageDefinition wants to reference. Should only be called when importing the package.
         /// </summary>

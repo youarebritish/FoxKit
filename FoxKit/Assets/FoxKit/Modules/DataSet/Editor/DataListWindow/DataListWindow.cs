@@ -7,6 +7,7 @@
 
     using FmdlStudio.Scripts.MonoBehaviours;
 
+    using FoxKit.Modules.Archive;
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.DataSet.Fox.FoxGameKit;
     using FoxKit.Modules.DataSet.FoxCore;
@@ -441,29 +442,32 @@
             this.treeView.OnGUI(new Rect(0, 17, this.position.width, this.position.height - 17));
         }
 
-        private void CreateDataSet()
+        public void CreateDataSet(string name, PackageDefinition package, Type type)
         {
-            var dataSet = CreateInstance<DataSetAsset>();
+            Assert.IsFalse(string.IsNullOrEmpty(name));
+            Assert.IsNotNull(package);
+            Assert.IsNotNull(type);
+
+            var dataSet = CreateInstance(type) as EntityFileAsset;
+            Assert.IsNotNull(dataSet);
+
             dataSet.Initialize();
 
-            var dataSets = (from assetGuid in AssetDatabase.FindAssets($"t:{typeof(EntityFileAsset).Name}")
-                           select Path.GetFileNameWithoutExtension(AssetDatabase.GUIDToAssetPath(assetGuid))).ToList();
-
-            var filename = "DataSet0000";
-            var index = 0;
-            while (dataSets.Contains(filename))
-            {
-                index++;
-                filename = "DataSet" + index.ToString("D4");
-            }
-
-            var path = UnityFileUtils.GetUniqueAssetPathNameOrFallback($"{filename}.asset");
+            var path = UnityFileUtils.GetUniqueAssetPathNameOrFallback($"{name}.asset");
             AssetDatabase.CreateAsset(dataSet, path);
 
             var guid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(dataSet));
             dataSet.GetDataSet().DataSetGuid = guid;
 
+            package.Entries.Add(dataSet);
+            dataSet.PackageGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(package));
+
             this.OpenDataSet(guid);
+        }
+
+        private void CreateDataSet()
+        {
+            CreateDataSetWindow.Create();
         }
 
         private void ProcessKeyboardShortcuts()
