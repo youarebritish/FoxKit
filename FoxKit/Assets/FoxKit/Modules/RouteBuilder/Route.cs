@@ -38,6 +38,14 @@
         }
 
         /// <summary>
+        /// Context menu to add a new node to the Route.
+        /// </summary>
+        public void AddNewNode(int index)
+        {
+            CreateRouteSetEditor.CreateNewNode(this, index);
+        }
+
+        /// <summary>
         /// Rebuild the route from its representation in the Unity hierarchy.
         /// </summary>
         public void Rebuild()

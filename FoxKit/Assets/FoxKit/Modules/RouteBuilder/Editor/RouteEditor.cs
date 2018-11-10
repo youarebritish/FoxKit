@@ -15,6 +15,25 @@
     {
         private ReorderableListControl listControl;
         private IReorderableListAdaptor listAdaptor;
+        
+        private RouteNode CustomListItem(Rect position, RouteNode itemValue)
+        {
+            Rect iPos = new Rect(position.xMin, position.yMin, position.width - 33, position.height);
+            itemValue = EditorGUI.ObjectField(iPos, itemValue, typeof(RouteNode), true) as RouteNode;
+
+            GUIContent buttonContent = new GUIContent("+", "Insert new node here.");
+            Rect bPos = new Rect(position.xMax - 30, position.yMin, 30, position.height);
+            bool pressed = GUI.Button(bPos, buttonContent);
+            if (pressed)
+            {
+                Route r = this.target as Route;
+                int thisIndex = r.Nodes.IndexOf(itemValue);
+                r.AddNewNode(thisIndex + 1);
+            }
+            pressed = false;
+
+            return itemValue;
+        }
 
         void OnEnable()
         {
@@ -63,7 +82,7 @@
             GUILayout.FlexibleSpace();
 
             // Add node button
-            if (FoxKitUiUtils.ToolButton(iconAddNode, "Add a new node."))
+            if (FoxKitUiUtils.ToolButton(iconAddNode, "Add a new node to the end of the route."))
             {
                 route.AddNewNode();
             }
@@ -93,11 +112,6 @@
         {
             Rotorz.Games.Collections.ReorderableListGUI.Title("Nodes");
             listControl.Draw(listAdaptor);
-        }
-
-        private static RouteNode CustomListItem(Rect position, RouteNode itemValue)
-        {
-            return EditorGUI.ObjectField(position, itemValue, typeof(RouteNode)) as RouteNode;
         }
 
         private static void DrawEmpty()

@@ -65,8 +65,36 @@
             SceneView.lastActiveSceneView.FrameSelected();
 
             return node;
-        }        
+        }
 
+
+        /// <summary>
+        /// Create a new RouteNode.
+        /// </summary>
+        /// <param name="route">Route to own the node.</param>
+        public static RouteNode CreateNewNode(Route route, int index)
+        {
+            var go = new GameObject();
+
+            RouteNode prevNode = null;
+            if (route.Nodes.Count > 0)
+            {
+                prevNode = route.Nodes.Last();
+            }
+            go.transform.position = GenerateNewNodePosition(prevNode);
+            go.transform.SetParent(route.transform);
+            go.transform.SetSiblingIndex(index);
+            go.name = GenerateNewNodeName(route.gameObject.name, route.Nodes.Count);
+
+            var node = go.AddComponent<RouteNode>();
+            node.EdgeEvent.Type = route.GetComponentInParent<RouteSet>().DefaultEdgeEventType;
+            route.Nodes.Insert(index, node);
+
+            UnitySceneUtils.Select(go);
+            SceneView.lastActiveSceneView.FrameSelected();
+
+            return node;
+        }
         /// <summary>
         /// Generate a position for a new node.
         /// </summary>
