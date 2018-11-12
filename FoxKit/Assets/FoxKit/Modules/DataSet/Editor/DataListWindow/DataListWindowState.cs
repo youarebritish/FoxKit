@@ -124,11 +124,10 @@
 
             var asset = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(dataSetGuid));
             var entity = asset.GetDataSet().GetData(entityName);
-            var transformData = entity as TransformData;
 
-            Assert.IsNotNull(transformData);
+            Assert.IsNotNull(entity);
 
-            sceneProxy.Entity = transformData;
+            sceneProxy.Entity = entity;
             sceneProxy.Asset = asset;
             
             Dictionary<string, SceneProxy> dataSetSceneProxies;

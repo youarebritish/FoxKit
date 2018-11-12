@@ -15,7 +15,7 @@
     public class SceneProxy : MonoBehaviour
     {
         [SerializeField, HideInInspector]
-        private TransformData entity;
+        private Data entity;
 
         [SerializeField, HideInInspector]
         private EntityFileAsset asset;
@@ -28,7 +28,7 @@
 
         public bool DrawLocatorGizmo = true;
 
-        public TransformData Entity
+        public Data Entity
         {
             get
             {
@@ -82,7 +82,10 @@
                 return;
             }
 
-            this.entity.Parent = parentSceneProxy.entity;
+            if (this.entity is TransformData)
+            {
+               ((TransformData)this.entity).Parent = (TransformData)parentSceneProxy.entity;
+            }
         }
 
         private readonly static Color LocatorColor = new Color(67.0f/255.0f, 1.0f, 163.0f/255.0f);
@@ -108,14 +111,20 @@
 
         void OnDrawGizmosSelected()
         {
-            if (this.entity.Transform.Translation != this.previousEntityTranslation)
+            var transformData = this.entity as TransformData;
+            if (transformData == null)
             {
-                this.transform.position = this.entity.Transform.Translation;
+                return;
+            }
+
+            if (transformData.Transform.Translation != this.previousEntityTranslation)
+            {
+                this.transform.position = transformData.Transform.Translation;
                 this.previousEntityTranslation = this.transform.position;
             }
             else
             {
-                this.entity.Transform.Translation = this.transform.position;
+                transformData.Transform.Translation = this.transform.position;
                 this.previousEntityTranslation = this.transform.position;
             }
             

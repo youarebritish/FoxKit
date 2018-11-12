@@ -35,6 +35,14 @@
 
             const int HalfWidth = HEIGHTMAP_WIDTH / 2;
 
+
+            var asset = ScriptableObject.CreateInstance<TerrainTileAsset>();
+            asset.name = Path.GetFileNameWithoutExtension(ctx.assetPath);
+
+            ctx.AddObjectToAsset("Main", asset);
+            ctx.SetMainObject(asset);
+
+
             using (var reader = new BinaryReader(new FileStream(ctx.assetPath, FileMode.Open)))
             {
                 var version = reader.ReadUInt32();
@@ -63,7 +71,11 @@
                         for (var j = 0; j < HalfWidth; j++)
                         {
                             var height = reader.ReadSingle();
-                            heightValues[j, i] = height / TerrainPreferences.Instance.MaxHeight;
+                            heightValues[j, i] =
+                                ((TerrainPreferences.Instance.MaxHeight - TerrainPreferences.Instance.MinHeight)
+                                 * height)
+                                + TerrainPreferences.Instance
+                                    .MinHeight; //height / TerrainPreferences.Instance.MaxHeight;
                         }
                     }
                 }
@@ -133,9 +145,9 @@
                     }
                 }
             }
-                        
+
             // Create terrain asset
-            var terrainGo = new GameObject(Path.GetFileNameWithoutExtension(ctx.assetPath));
+            /*var terrainGo = new GameObject(Path.GetFileNameWithoutExtension(ctx.assetPath));
             var terrainData = new TerrainData
             {
                 heightmapResolution = HEIGHTMAP_WIDTH,
@@ -167,11 +179,13 @@
 
             ctx.AddObjectToAsset(terrainGo.name, terrainGo);
             ctx.AddObjectToAsset(terrainGo.name, terrainData);
-            ctx.SetMainObject(terrainGo);
+            ctx.SetMainObject(terrainGo);*/
+            
+            var name = Path.GetFileNameWithoutExtension(ctx.assetPath);
 
             // Create material weight map.
             var materialWeightMap =
-                new Texture2D(64, 64, TextureFormat.ARGB32, true) { name = terrainGo.name + "_MaterialWeightMap" };
+                new Texture2D(64, 64, TextureFormat.ARGB32, true) { name = name + "_MaterialWeightMap" };
 
             materialWeightMap.SetPixels(0, 0, HalfWidth, HalfWidth, materialWeightMapTiles[0].Cast<Color>().ToArray());
             materialWeightMap.SetPixels(HalfWidth, 0, HalfWidth, HalfWidth, materialWeightMapTiles[2].Cast<Color>().ToArray());
@@ -179,11 +193,11 @@
             materialWeightMap.SetPixels(0, HalfWidth, HalfWidth, HalfWidth, materialWeightMapTiles[1].Cast<Color>().ToArray());
             materialWeightMap.SetPixels(HalfWidth, HalfWidth, HalfWidth, HalfWidth, materialWeightMapTiles[3].Cast<Color>().ToArray());
 
-            ctx.AddObjectToAsset(terrainGo.name + "MaterialWeightMap", materialWeightMap);
+            ctx.AddObjectToAsset(name + "MaterialWeightMap", materialWeightMap);
 
             // Create material ID map.
             var materialIndicesMap =
-                new Texture2D(2, 2, TextureFormat.ARGB32, true) { name = terrainGo.name + "_MaterialIndicesMap" };
+                new Texture2D(2, 2, TextureFormat.ARGB32, true) { name = name + "_MaterialIndicesMap" };
 
             materialIndicesMap.SetPixels(0, 0, 1, 1, materialIdMapTiles[0].Cast<Color>().ToArray());
             materialIndicesMap.SetPixels(1, 0, 1, 1, materialIdMapTiles[2].Cast<Color>().ToArray());
@@ -191,11 +205,11 @@
             materialIndicesMap.SetPixels(0, 1, 1, 1, materialIdMapTiles[1].Cast<Color>().ToArray());
             materialIndicesMap.SetPixels(1, 1, 1, 1, materialIdMapTiles[3].Cast<Color>().ToArray());
 
-            ctx.AddObjectToAsset(terrainGo.name + "MaterialIndicesMap", materialIndicesMap);
+            ctx.AddObjectToAsset(name + "MaterialIndicesMap", materialIndicesMap);
 
             // Create material select map.
             var materialSelectMap =
-                new Texture2D(2, 2, TextureFormat.ARGB32, true) { name = terrainGo.name + "_MaterialSelectMap" };
+                new Texture2D(2, 2, TextureFormat.ARGB32, true) { name = name + "_MaterialSelectMap" };
 
             materialSelectMap.SetPixels(0, 0, 1, 1, materialSelectMapTiles[0].Cast<Color>().ToArray());
             materialSelectMap.SetPixels(1, 0, 1, 1, materialSelectMapTiles[2].Cast<Color>().ToArray());
@@ -203,11 +217,11 @@
             materialSelectMap.SetPixels(0, 1, 1, 1, materialSelectMapTiles[1].Cast<Color>().ToArray());
             materialSelectMap.SetPixels(1, 1, 1, 1, materialSelectMapTiles[3].Cast<Color>().ToArray());
 
-            ctx.AddObjectToAsset(terrainGo.name + "MaterialSelectMap", materialSelectMap);
+            ctx.AddObjectToAsset(name + "MaterialSelectMap", materialSelectMap);
 
-            // Create dummy debug heightmap.
+            // Create heightmap.
             var heightMap = new Texture2D(HEIGHTMAP_WIDTH, HEIGHTMAP_HEIGHT, TextureFormat.RFloat, true, true);
-            heightMap.name = terrainGo.name + "_DUMMYHEIGHT";
+            heightMap.name = name + "_Heightmap";
             var colors = from height in heightTiles[0].Cast<float>()
                          select new Color(height, height, height);
             heightMap.SetPixels(0, 0, HalfWidth, HalfWidth, colors.ToArray());
@@ -224,7 +238,12 @@
                      select new Color(height, height, height);
             heightMap.SetPixels(HalfWidth, HalfWidth, HalfWidth, HalfWidth, colors.ToArray());
 
-            ctx.AddObjectToAsset(terrainGo.name + "DUMMYHEIGHT", heightMap);
+            ctx.AddObjectToAsset(name + "HeightMap", heightMap);
+            
+            asset.Heightmap = heightMap;
+            asset.MaterialSelectMap = materialSelectMap;
+            asset.MaterialIndicesMap = materialIndicesMap;
+            asset.MaterialWeightMap = materialWeightMap;
         }
 
         /// <summary>
