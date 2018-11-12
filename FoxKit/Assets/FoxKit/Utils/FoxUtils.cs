@@ -24,7 +24,7 @@ namespace FoxKit.Utils
         /// <returns>The Unity vector.</returns>
         public static Vector3 FoxToUnity(Core.Vector3 foxVector)
         {
-            return new Vector3(foxVector.Z, foxVector.Y, foxVector.X);
+            return new Vector3(-foxVector.X, foxVector.Y, foxVector.Z);
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace FoxKit.Utils
         /// <returns>The Unity vector.</returns>
         public static Vector4 FoxToUnity(Core.Vector4 foxVector)
         {
-            return new Vector4(foxVector.Z, foxVector.Y, foxVector.X, foxVector.Z);
+            return new Vector4(-foxVector.X, foxVector.Y, foxVector.Z, foxVector.W);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace FoxKit.Utils
         /// <returns>The Fox Engine vector.</returns>
         public static Core.Vector3 UnityToFox(Vector3 unityVector)
         {
-            return new Core.Vector3(unityVector.z, unityVector.y, unityVector.x);
+            return new Core.Vector3(-unityVector.x, unityVector.y, unityVector.z);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace FoxKit.Utils
         /// <returns>The Fox Engine vector.</returns>
         public static Core.Vector4 UnityToFox(Vector4 unityVector)
         {
-            return new Core.Vector4(unityVector.z, unityVector.y, unityVector.x, unityVector.w);
+            return new Core.Vector4(-unityVector.x, unityVector.y, unityVector.z, unityVector.w);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace FoxKit.Utils
         /// <returns>The Fox Engine Quaternion.</returns>
         public static Core.Quaternion UnityToFox(Quaternion unityQuaternion)
         {
-            return new Core.Quaternion(-unityQuaternion.z, -unityQuaternion.y, -unityQuaternion.x, unityQuaternion.w);
+            return new Core.Quaternion(-unityQuaternion.x, unityQuaternion.y, unityQuaternion.z, unityQuaternion.w);
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace FoxKit.Utils
         /// <returns>The Unity Quaternion.</returns>
         public static Quaternion FoxToUnity(Core.Quaternion foxQuat)
         {
-            return new Quaternion(-foxQuat.Z, -foxQuat.Y, -foxQuat.X, foxQuat.W);
+            return new Quaternion(-foxQuat.X, foxQuat.Y, foxQuat.Z, foxQuat.W);
         }
 
         /// <summary>
@@ -105,9 +105,9 @@ namespace FoxKit.Utils
         {
             // TODO: Are thees conversions correct?
             var result = new Matrix3x3();
-            result.SetColumn(0, new Vector3(foxMatrix.Col0[2], foxMatrix.Col0[1], foxMatrix.Col0[0]));
-            result.SetColumn(1, new Vector3(foxMatrix.Col1[2], foxMatrix.Col1[1], foxMatrix.Col1[0]));
-            result.SetColumn(2, new Vector3(foxMatrix.Col2[2], foxMatrix.Col2[1], foxMatrix.Col2[0]));
+            result.SetColumn(0, new Vector3(-foxMatrix.Col0[0], foxMatrix.Col0[1], foxMatrix.Col0[2]));
+            result.SetColumn(1, new Vector3(-foxMatrix.Col1[0], foxMatrix.Col1[1], foxMatrix.Col1[2]));
+            result.SetColumn(2, new Vector3(-foxMatrix.Col2[0], foxMatrix.Col2[1], foxMatrix.Col2[2]));
             return result;
         }
 
@@ -119,21 +119,21 @@ namespace FoxKit.Utils
         public static Core.Matrix4 UnityToFox(Matrix4x4 unityMatrix)
         {
             return Core.Matrix4.Create(
-                unityMatrix.m02,
+                -unityMatrix.m00,
                 unityMatrix.m01,
-                unityMatrix.m00,
+                unityMatrix.m02,
                 unityMatrix.m03,
-                unityMatrix.m12,
+                -unityMatrix.m10,
                 unityMatrix.m11,
-                unityMatrix.m10,
+                unityMatrix.m12,
                 unityMatrix.m13,
-                unityMatrix.m22,
+                -unityMatrix.m20,
                 unityMatrix.m21,
-                unityMatrix.m20,
+                unityMatrix.m22,
                 unityMatrix.m23,
-                unityMatrix.m32,
+                -unityMatrix.m30,
                 unityMatrix.m31,
-                unityMatrix.m30,
+                unityMatrix.m32,
                 unityMatrix.m33);
         }
 
@@ -146,10 +146,10 @@ namespace FoxKit.Utils
         {
             // TODO: Are thees conversions correct?
             var result = new Matrix4x4();
-            result.SetColumn(0, new Vector4(foxMatrix.Col0[2], foxMatrix.Col0[1], foxMatrix.Col0[0], foxMatrix.Col0[3]));
-            result.SetColumn(1, new Vector4(foxMatrix.Col1[2], foxMatrix.Col1[1], foxMatrix.Col1[0], foxMatrix.Col1[3]));
-            result.SetColumn(2, new Vector4(foxMatrix.Col2[2], foxMatrix.Col2[1], foxMatrix.Col2[0], foxMatrix.Col2[3]));
-            result.SetColumn(3, new Vector4(foxMatrix.Col2[2], foxMatrix.Col2[1], foxMatrix.Col2[0], foxMatrix.Col3[3]));
+            result.SetColumn(0, new Vector4(-foxMatrix.Col0[0], foxMatrix.Col0[1], foxMatrix.Col0[2], foxMatrix.Col0[3]));
+            result.SetColumn(1, new Vector4(-foxMatrix.Col1[0], foxMatrix.Col1[1], foxMatrix.Col1[2], foxMatrix.Col1[3]));
+            result.SetColumn(2, new Vector4(-foxMatrix.Col2[0], foxMatrix.Col2[1], foxMatrix.Col2[2], foxMatrix.Col2[3]));
+            result.SetColumn(3, new Vector4(-foxMatrix.Col2[0], foxMatrix.Col2[1], foxMatrix.Col2[2], foxMatrix.Col3[3]));
             return result;
         }
 
