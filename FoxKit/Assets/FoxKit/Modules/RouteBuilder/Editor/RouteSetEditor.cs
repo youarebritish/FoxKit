@@ -45,7 +45,7 @@
             
             listControl = new ReorderableListControl();
             listControl.ItemRemoving += this.OnItemRemoving;
-            listAdaptor = new GenericListAdaptor<Route>(routeset.Routes, CustomListItem, ReorderableListGUI.DefaultItemHeight);
+            listAdaptor = new GenericListAdaptor<Route>(filteredRoutes, CustomListItem, ReorderableListGUI.DefaultItemHeight);
         }
 
         private void OnDisable()
