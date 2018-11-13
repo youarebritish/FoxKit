@@ -42,7 +42,6 @@
             ctx.AddObjectToAsset("Main", asset);
             ctx.SetMainObject(asset);
 
-
             using (var reader = new BinaryReader(new FileStream(ctx.assetPath, FileMode.Open)))
             {
                 var version = reader.ReadUInt32();
@@ -61,6 +60,7 @@
                 }
 
                 // Read heightmap
+                var prefs = TerrainPreferences.Instance;
                 for (var tile = 0; tile < 4; tile++)
                 {
                     var heightValues = new float[HEIGHTMAP_WIDTH / 2, HEIGHTMAP_HEIGHT / 2];
@@ -71,11 +71,7 @@
                         for (var j = 0; j < HalfWidth; j++)
                         {
                             var height = reader.ReadSingle();
-                            heightValues[j, i] =
-                                ((TerrainPreferences.Instance.MaxHeight - TerrainPreferences.Instance.MinHeight)
-                                 * height)
-                                + TerrainPreferences.Instance
-                                    .MinHeight; //height / TerrainPreferences.Instance.MaxHeight;
+                            heightValues[j, i] = (height - prefs.MinHeight) / (prefs.MaxHeight - prefs.MinHeight);
                         }
                     }
                 }
@@ -186,6 +182,7 @@
             // Create material weight map.
             var materialWeightMap =
                 new Texture2D(64, 64, TextureFormat.ARGB32, true) { name = name + "_MaterialWeightMap" };
+            materialWeightMap.wrapMode = TextureWrapMode.Clamp;
 
             materialWeightMap.SetPixels(0, 0, HalfWidth, HalfWidth, materialWeightMapTiles[0].Cast<Color>().ToArray());
             materialWeightMap.SetPixels(HalfWidth, 0, HalfWidth, HalfWidth, materialWeightMapTiles[2].Cast<Color>().ToArray());
@@ -198,6 +195,7 @@
             // Create material ID map.
             var materialIndicesMap =
                 new Texture2D(2, 2, TextureFormat.ARGB32, true) { name = name + "_MaterialIndicesMap" };
+            materialIndicesMap.wrapMode = TextureWrapMode.Clamp;
 
             materialIndicesMap.SetPixels(0, 0, 1, 1, materialIdMapTiles[0].Cast<Color>().ToArray());
             materialIndicesMap.SetPixels(1, 0, 1, 1, materialIdMapTiles[2].Cast<Color>().ToArray());
@@ -210,6 +208,7 @@
             // Create material select map.
             var materialSelectMap =
                 new Texture2D(2, 2, TextureFormat.ARGB32, true) { name = name + "_MaterialSelectMap" };
+            materialSelectMap.wrapMode = TextureWrapMode.Clamp;
 
             materialSelectMap.SetPixels(0, 0, 1, 1, materialSelectMapTiles[0].Cast<Color>().ToArray());
             materialSelectMap.SetPixels(1, 0, 1, 1, materialSelectMapTiles[2].Cast<Color>().ToArray());
@@ -222,6 +221,9 @@
             // Create heightmap.
             var heightMap = new Texture2D(HEIGHTMAP_WIDTH, HEIGHTMAP_HEIGHT, TextureFormat.RFloat, true, true);
             heightMap.name = name + "_Heightmap";
+            heightMap.wrapMode = TextureWrapMode.Clamp;
+            heightMap.filterMode = FilterMode.Bilinear;
+
             var colors = from height in heightTiles[0].Cast<float>()
                          select new Color(height, height, height);
             heightMap.SetPixels(0, 0, HalfWidth, HalfWidth, colors.ToArray());

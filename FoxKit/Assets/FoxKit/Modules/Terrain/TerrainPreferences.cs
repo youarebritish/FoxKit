@@ -16,9 +16,26 @@
         private static readonly float defaultMaxHeight = MAX_HEIGHT_AFGH;
 
         /// <summary>
+        /// Default minimum height value.
+        /// </summary>
+        private static readonly float defaultMinHeight = MIN_HEIGHT_AFGH;
+
+        /// <summary>
         /// Maximum height value for a terrain.
         /// </summary>
         public float MaxHeight = defaultMaxHeight;
+
+        /// <summary>
+        /// Minimum height value for a terrain.
+        /// </summary>
+        public float MinHeight = defaultMinHeight;
+
+        /// <summary>
+        /// Mesh to use for terrain tiles.
+        /// </summary>
+        public Mesh TerrainTileMesh;
+
+        public Material TerrainTileMaterial;
 
         public const float MAX_HEIGHT_AFGH = 755.0121f;
         public const float MAX_HEIGHT_MAFR = 234.2403f;
@@ -29,5 +46,7 @@
         public const float MAX_HEIGHT_AFC0 = 200f;
         public const float MAX_HEIGHT_AFC1 = 200f;
         public const float MAX_HEIGHT_SVA0 = 234.2403f;
+
+        public const float MIN_HEIGHT_AFGH = 188.4435f;
     }
 }
