@@ -1,5 +1,6 @@
 ﻿namespace FoxKit.Modules.Terrain.Importer
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -38,6 +39,12 @@
 
         private const long HeightRangeMinOffset = 252;
 
+        private const long ComboTextureBytesOffset = 272;
+
+        private const long MaterialIdsBytesOffset = 432;
+
+        private const long ConfigrationIdsBytesOffset = 480;
+
         private const long DistanceHeightmapWidthOffset = 676;
 
         private const long DistanceHeightmapHeightOffset = 680;
@@ -45,27 +52,26 @@
         private const long HeightmapsOffset = 704;
 
         /// <summary>
-        /// Import a .htre file.
+        /// Import a .tre2 file.
         /// </summary>
         /// <param name="ctx"></param>
         public override void OnImportAsset(AssetImportContext ctx)
         {
+            // TODO FIXME
+            // Currently the textures come in with incorrect orientation; they should be rotated 90 degrees counterclockwise.
             var asset = ScriptableObject.CreateInstance<TerrainAsset>();
             asset.name = Path.GetFileNameWithoutExtension(ctx.assetPath);
 
             ctx.AddObjectToAsset("Main", asset);
             ctx.SetMainObject(asset);
-
-            var heightTiles = new List<float[,]>(4);
-            var materialWeightMapTiles = new List<Color[,]>(4);
-            var materialIdMapTiles = new List<Color[,]>(4);
-            var materialSelectMapTiles = new List<Color[,]>(4);
-
-            const int HalfWidth = HEIGHTMAP_WIDTH / 2;
-
+            
             using (var reader = new BinaryReader(new FileStream(ctx.assetPath, FileMode.Open)))
             {
                 var version = reader.ReadUInt32();
+
+                uint comboTextureBytes;
+                uint materialIdsBytes;
+                uint configrationIdsBytes;
 
                 if (version == 4)
                 {
@@ -95,6 +101,15 @@
 
                     reader.BaseStream.Seek(HeightRangeMinOffset, SeekOrigin.Begin);
                     asset.HeightRangeMin = reader.ReadSingle();
+
+                    reader.BaseStream.Seek(ComboTextureBytesOffset, SeekOrigin.Begin);
+                    comboTextureBytes = reader.ReadUInt32();
+
+                    reader.BaseStream.Seek(MaterialIdsBytesOffset, SeekOrigin.Begin);
+                    materialIdsBytes = reader.ReadUInt32();
+
+                    reader.BaseStream.Seek(ConfigrationIdsBytesOffset, SeekOrigin.Begin);
+                    configrationIdsBytes = reader.ReadUInt32();
 
                     reader.BaseStream.Seek(DistanceHeightmapWidthOffset, SeekOrigin.Begin);
                     asset.DistanceHeightmapWidth = reader.ReadUInt32();
@@ -152,10 +167,10 @@
 
                     ctx.AddObjectToAsset(heightmap.name, heightmap);
                 }
-
+                
                 // Read combo texture.
                 {
-                    var resolution = 256;
+                    var resolution = Mathf.FloorToInt(Mathf.Sqrt(comboTextureBytes / 4));
                     var vals = new Color32[resolution, resolution];
 
                     for (var x = 0; x < resolution; x++)
@@ -186,7 +201,7 @@
 
                 // Read material IDs.
                 {
-                    var resolution = 128;
+                    var resolution = Mathf.FloorToInt(Mathf.Sqrt(materialIdsBytes / 4));
                     var vals = new Color32[resolution, resolution];
 
                     for (var x = 0; x < resolution; x++)
@@ -217,7 +232,7 @@
 
                 // Read configration IDs.
                 {
-                    var resolution = 128;
+                    var resolution = Mathf.FloorToInt(Mathf.Sqrt(configrationIdsBytes / 4));
                     var vals = new Color32[resolution, resolution];
 
                     for (var x = 0; x < resolution; x++)
