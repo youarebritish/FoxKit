@@ -1,5 +1,6 @@
 ﻿namespace FoxKit.Utils
 {
+    using UnityEditor;
     using UnityEngine;
 
     /// <summary>
@@ -38,8 +39,8 @@
                     
                     if (objs.Length == 0)
                     {
-                        Debug.LogError("No asset of type \"" + typeof(T).Name + "\" has been found in loaded resources.");
-                        return null;
+                        Debug.LogError("No asset of type \"" + typeof(T).Name + "\" has been found in loaded resources. Attempting to create it.");
+                        return CreateScriptableObject.CreateAsset<T>();
                     }
                     
                     else if (objs.Length > 1)
