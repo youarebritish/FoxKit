@@ -15,7 +15,7 @@
         public string TPPPath = "";
 
         /// <summary>
-        /// Path to SnakeBite executable.
+        /// Path to SnakeBite folder.
         /// </summary>
         public string SnakeBitePath = "";
     }
