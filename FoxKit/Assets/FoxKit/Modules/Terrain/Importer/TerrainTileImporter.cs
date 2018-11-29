@@ -219,7 +219,7 @@
             ctx.AddObjectToAsset(name + "MaterialSelectMap", materialSelectMap);
 
             // Create heightmap.
-            var heightMap = new Texture2D(HEIGHTMAP_WIDTH, HEIGHTMAP_HEIGHT, TextureFormat.RFloat, true, true);
+            var heightMap = new Texture2D(HEIGHTMAP_WIDTH, HEIGHTMAP_HEIGHT, TextureFormat.RGBAFloat, true, true);
             heightMap.name = name + "_Heightmap";
             heightMap.wrapMode = TextureWrapMode.Clamp;
             heightMap.filterMode = FilterMode.Bilinear;

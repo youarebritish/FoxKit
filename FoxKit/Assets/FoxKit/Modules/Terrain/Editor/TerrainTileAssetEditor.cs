@@ -3,8 +3,6 @@ using UnityEngine;
 
 namespace FoxKit.Modules.Terrain.Editor
 {
-    using System;
-
     [CanEditMultipleObjects]
     [CustomEditor(typeof(TerrainTileAsset))]
     public class TerrainTileAssetEditor : UnityEditor.Editor
