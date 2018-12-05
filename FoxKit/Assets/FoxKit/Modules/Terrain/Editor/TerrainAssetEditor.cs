@@ -77,7 +77,32 @@ namespace FoxKit.Modules.Terrain.Editor
                     rotatedHeightmap);
             }
 
-            return atlas;
+            // Not sure why but it winds up flipped horizontally and vertically. Let's fix that.
+            var atlasFlippedHorizontal = new Texture2D(atlasWidth, atlasHeight, TextureFormat.RGBAFloat, false);
+            var xN = atlasFlippedHorizontal.width;
+            var yN = atlasFlippedHorizontal.height;
+            
+            for (var i = 0; i < xN; i++)
+            {
+                for (var j = 0; j < yN; j++)
+                {
+                    atlasFlippedHorizontal.SetPixel(j, xN - i - 1, atlas.GetPixel(j, i));
+                }
+            }
+
+            atlasFlippedHorizontal.Apply();
+
+            var atlasFlippedVertical = new Texture2D(atlasWidth, atlasHeight, TextureFormat.RGBAFloat, false);
+            for (var i = 0; i < xN; i++)
+            {
+                for (var j = 0; j < yN; j++)
+                {
+                    atlasFlippedVertical.SetPixel(xN - i - 1, j, atlasFlippedHorizontal.GetPixel(i, j));
+                }
+            }
+
+            atlasFlippedVertical.Apply();
+            return atlasFlippedVertical;
         }
 
         private IEnumerable<TerrainTileAsset> GetTerrainTiles()
