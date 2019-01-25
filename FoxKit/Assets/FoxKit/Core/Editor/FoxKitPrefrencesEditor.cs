@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FoxKit.Modules.RouteBuilder.Editor
+namespace FoxKit.Core.Editor
 {
     using FoxKit.Modules.RouteBuilder;
     using System;
@@ -35,7 +35,7 @@ namespace FoxKit.Modules.RouteBuilder.Editor
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField("Snakebite .exe path");
+                EditorGUILayout.LabelField("Snakebite folder path");
                 prefs.SnakeBitePath = EditorGUILayout.TextField(prefs.SnakeBitePath);
             EditorGUILayout.EndHorizontal();
         }
