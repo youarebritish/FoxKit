@@ -39,6 +39,7 @@ Kill
 move
 Move
 MoveFast
+MoveVeryFast
 MoveNormal
 MoveSlow
 None
@@ -46,6 +47,7 @@ Normal
 OnBaseRoute
 OnTheHill
 OpenDoor
+PermitGettingOff
 PickUpHoneyBee
 PileBunker
 PutHostageInVehicle
@@ -74,6 +76,7 @@ StandSearch
 SupineSnipe
 SwitchRoute
 SyncRoute
+TakeHostageOutOfVehicle
 UseFlashLight
 UseSearchLight
 PutDownHoneyBee
