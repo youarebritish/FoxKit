@@ -26,7 +26,6 @@
             RouteNodeEventType.Unknown2343446301,
             RouteNodeEventType.Unknown2358641809,
             RouteNodeEventType.Unknown2440322811,
-            RouteNodeEventType.Unknown2481191805,
             RouteNodeEventType.Unknown2617377844,
             RouteNodeEventType.Unknown2674482002,
             RouteNodeEventType.Unknown2795470991,

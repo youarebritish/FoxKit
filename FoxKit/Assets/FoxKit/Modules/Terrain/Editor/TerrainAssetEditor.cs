@@ -17,11 +17,11 @@ namespace FoxKit.Modules.Terrain.Editor
         public override void OnInspectorGUI()
         {
             GUI.enabled = true;
-
+            
+            var asset = this.target as TerrainAsset;
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Stitch terrain tiles"))
             {
-                var asset = this.target as TerrainAsset;
                 var path = EditorUtility.SaveFilePanelInProject(
                     "Save terrain atlas",
                     asset.name + "_atlas",
@@ -37,8 +37,20 @@ namespace FoxKit.Modules.Terrain.Editor
 
                 AssetDatabase.CreateAsset(atlas, path);
                 AssetDatabase.Refresh();
+            }
+            else if (GUILayout.Button("Add to scene"))
+            {
+                var plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
+                plane.transform.position = Vector3.zero;
+                plane.transform.localScale = new Vector3(asset.Width * asset.GridDistance / 10.0f, 1.0f, asset.Height * asset.GridDistance / 10.0f);
+                plane.name = asset.name;
 
-                asset.SetHeightmapAtlas(atlas);
+                var material = new Material(TerrainPreferences.Instance.TerrainShader);
+                material.SetFloat("_ParallaxStrengthMin", asset.HeightRangeMin);
+                material.SetFloat("_ParallaxStrengthMax", asset.HeightRangeMax);
+                // TODO Set heightmap
+
+                plane.GetComponent<Renderer>().material = material;
             }
 
             EditorGUILayout.EndHorizontal();

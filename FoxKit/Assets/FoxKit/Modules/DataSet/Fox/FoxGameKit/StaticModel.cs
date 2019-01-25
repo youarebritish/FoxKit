@@ -74,6 +74,11 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
             var sceneProxy = getSceneProxy(this.Name);
             sceneProxy.DrawLocatorGizmo = false;
 
+            if (model == null)
+            {
+                Debug.Log("!");
+            }
+
             model.transform.SetParent(sceneProxy.transform);
             model.transform.localPosition = Vector3.zero;
 

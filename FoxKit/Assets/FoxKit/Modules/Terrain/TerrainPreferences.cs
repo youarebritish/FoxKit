@@ -35,7 +35,15 @@
         /// </summary>
         public Mesh TerrainTileMesh;
 
+        /// <summary>
+        /// Material to use for terrain tiles.
+        /// </summary>
         public Material TerrainTileMaterial;
+
+        /// <summary>
+        /// Shader to use for terrain.
+        /// </summary>
+        public Shader TerrainShader;
 
         public const float MAX_HEIGHT_AFGH = 755.0121f;
         public const float MAX_HEIGHT_MAFR = 234.2403f;
