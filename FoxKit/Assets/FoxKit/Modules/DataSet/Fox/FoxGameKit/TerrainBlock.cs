@@ -14,7 +14,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
         public override void OnLoaded(CreateSceneProxyDelegate createSceneProxy)
         {
             base.OnLoaded(createSceneProxy);
-            this.CreateSceneProxy(createSceneProxy);
+            //this.CreateSceneProxy(createSceneProxy);
         }
 
         /// <inheritdoc />
@@ -24,7 +24,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
             this.DestroySceneProxy(destroySceneProxy);
         }
 
-        protected virtual void CreateSceneProxy(CreateSceneProxyDelegate createSceneProxy)
+        /*protected virtual void CreateSceneProxy(CreateSceneProxyDelegate createSceneProxy)
         {
             var sceneProxy = createSceneProxy();
             sceneProxy.transform.position = this.pos;
@@ -38,7 +38,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
 
             var prefs = TerrainPreferences.Instance;
             terrainTileSceneProxy.Initialize(prefs.TerrainTileMesh, prefs.TerrainTileMaterial, htreAsset.Heightmap, htreAsset.MaterialWeightMap);
-        }
+        }*/
 
         protected virtual void DestroySceneProxy(DestroySceneProxyDelegate destroySceneProxy)
         {
