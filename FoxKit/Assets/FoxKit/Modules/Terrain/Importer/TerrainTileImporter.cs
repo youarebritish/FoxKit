@@ -1,5 +1,6 @@
 ﻿namespace FoxKit.Modules.Terrain.Importer
 {
+    using FoxKit.Utils;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -28,14 +29,27 @@
         /// <param name="ctx"></param>
         public override void OnImportAsset(AssetImportContext ctx)
         {
+            // Get the corresponding TerrainAsset.
+            var baseName = Path.GetFileNameWithoutExtension(ctx.assetPath).Substring(0, 4);
+            var terrainAssets = (from tile in UnityFileUtils.GetAllAssetsOfType<TerrainAsset>()
+                                where tile.name.StartsWith(baseName)
+                                select tile).ToArray();
+
+            if (terrainAssets.Length == 0)
+            {
+                ctx.LogImportError("Corresponding TerrainAsset could not be found for " + ctx.assetPath + ". Did you forget to import its .tre2 file?");
+                return;
+            }
+
+            var terrainAsset = terrainAssets[0];
+
             var heightTiles = new List<float[,]>(4);
             var materialWeightMapTiles = new List<Color[,]>(4);
             var materialIdMapTiles = new List<Color[,]>(4);
             var materialSelectMapTiles = new List<Color[,]>(4);
 
             const int HalfWidth = HEIGHTMAP_WIDTH / 2;
-
-
+            
             var asset = ScriptableObject.CreateInstance<TerrainTileAsset>();
             asset.name = Path.GetFileNameWithoutExtension(ctx.assetPath);
 
@@ -60,7 +74,6 @@
                 }
 
                 // Read heightmap
-                var prefs = TerrainPreferences.Instance;
                 for (var tile = 0; tile < 4; tile++)
                 {
                     var heightValues = new float[HEIGHTMAP_WIDTH / 2, HEIGHTMAP_HEIGHT / 2];
@@ -71,7 +84,7 @@
                         for (var j = 0; j < HalfWidth; j++)
                         {
                             var height = reader.ReadSingle();
-                            heightValues[j, i] = (height - prefs.MinHeight) / (prefs.MaxHeight - prefs.MinHeight);
+                            heightValues[j, i] = (height - terrainAsset.HeightRangeMin) / (terrainAsset.HeightRangeMax - terrainAsset.HeightRangeMin);
                         }
                     }
                 }
@@ -142,41 +155,6 @@
                 }
             }
 
-            // Create terrain asset
-            /*var terrainGo = new GameObject(Path.GetFileNameWithoutExtension(ctx.assetPath));
-            var terrainData = new TerrainData
-            {
-                heightmapResolution = HEIGHTMAP_WIDTH,
-                size = new Vector3(128.0f, TerrainPreferences.Instance.MaxHeight, 128.0f)
-            };            
-
-            terrainData.SetHeights(0, 0, heightTiles[0]);
-            terrainData.SetHeights(HalfWidth, 0, heightTiles[2]);
-
-            terrainData.SetHeights(0, HalfWidth, heightTiles[1]);
-            terrainData.SetHeights(HalfWidth, HalfWidth, heightTiles[3]);
-
-            var terrainCollider = terrainGo.AddComponent<TerrainCollider>();
-            var terrain = terrainGo.AddComponent<Terrain>();
-
-            terrainCollider.terrainData = terrainData;
-            terrain.terrainData = terrainData;
-
-            // Parse name and position based on name
-            var xIndex = int.Parse(terrainGo.name.Substring(5, 3)) - 101;            
-            var zIndex = int.Parse(terrainGo.name.Substring(9, 3)) - 101;
-
-            var tileComponent = terrainGo.AddComponent<TerrainTile>();
-            tileComponent.Level = terrainGo.name.Substring(0, 4);
-            tileComponent.IndexX = xIndex + 101;
-            tileComponent.IndexZ = zIndex + 101;
-
-            terrainGo.transform.position = new Vector3(-4096 + (128 * zIndex), 0, -4096 + (128 * xIndex));
-
-            ctx.AddObjectToAsset(terrainGo.name, terrainGo);
-            ctx.AddObjectToAsset(terrainGo.name, terrainData);
-            ctx.SetMainObject(terrainGo);*/
-            
             var name = Path.GetFileNameWithoutExtension(ctx.assetPath);
 
             // Create material weight map.

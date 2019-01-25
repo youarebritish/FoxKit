@@ -15,3 +15,4 @@ MonoBehaviour:
   MinHeight: 188.4435
   TerrainTileMesh: {fileID: 4300000, guid: 56bc92b457362e6478f2b6d6eafbd723, type: 2}
   TerrainTileMaterial: {fileID: 2100000, guid: d273bc1e77a46f748a0f3fcf31653389, type: 2}
+  TerrainShader: {fileID: 4800000, guid: 772b23460c7184c4cb34ad822094f53f, type: 3}

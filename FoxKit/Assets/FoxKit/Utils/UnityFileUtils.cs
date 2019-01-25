@@ -1,5 +1,8 @@
 ﻿namespace FoxKit.Utils
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     using UnityEditor;
 
     /// <summary>
@@ -27,6 +30,23 @@
                 path = AssetDatabase.GenerateUniqueAssetPath("Assets/" + filename);
             }
             return path;
+        }
+
+        /// <summary>
+        /// Get all assets of a given type.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of asset to get.
+        /// </typeparam>
+        /// <returns>
+        /// All assets of the given type..
+        /// </returns>
+        public static IEnumerable<T> GetAllAssetsOfType<T>() where T : UnityEngine.Object
+        {
+            return AssetDatabase.FindAssets($"t:{typeof(T)}")
+                .Select(AssetDatabase.GUIDToAssetPath)
+                .Select(AssetDatabase.LoadAssetAtPath<T>)
+                .Where(asset => asset != null).ToList();
         }
     }
 }

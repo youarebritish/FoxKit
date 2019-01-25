@@ -3,6 +3,7 @@
 namespace FoxKit.Modules.Terrain.Editor
 {
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
 
     using FoxKit.Utils;
@@ -23,35 +24,44 @@ namespace FoxKit.Modules.Terrain.Editor
             if (GUILayout.Button("Stitch terrain tiles"))
             {
                 var path = EditorUtility.SaveFilePanelInProject(
-                    "Save terrain atlas",
-                    asset.name + "_atlas",
-                    "asset",
-                    "Enter a file name to save the terrain atlas to.");
+                    "Save terrain prefab",
+                    asset.name,
+                    "prefab",
+                    "Enter a file name to save the stitched terrain prefab to.");
                 if (string.IsNullOrEmpty(path))
                 {
                     return;
                 }
 
+                // Stitch heightmap.
                 var tiles = this.GetTerrainTiles();
                 var atlas = StitchTerrainTiles((int)(asset.Width - 1), (int)(asset.Height - 1), tiles);
+                AssetDatabase.CreateAsset(atlas, Path.GetDirectoryName(path) + "/" + asset.name + ".asset");
 
-                AssetDatabase.CreateAsset(atlas, path);
-                AssetDatabase.Refresh();
-            }
-            else if (GUILayout.Button("Add to scene"))
-            {
+                // Create GameObject.
                 var plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
                 plane.transform.position = Vector3.zero;
                 plane.transform.localScale = new Vector3(asset.Width * asset.GridDistance / 10.0f, 1.0f, asset.Height * asset.GridDistance / 10.0f);
                 plane.name = asset.name;
 
+                // Create Material.
                 var material = new Material(TerrainPreferences.Instance.TerrainShader);
+                material.name = asset.name;
                 material.SetFloat("_ParallaxStrengthMin", asset.HeightRangeMin);
                 material.SetFloat("_ParallaxStrengthMax", asset.HeightRangeMax);
-                // TODO Set heightmap
+                material.SetTexture("_ParallaxMap", atlas);
 
+                AssetDatabase.CreateAsset(material, Path.GetDirectoryName(path) + "/" + material.name + ".mat");
                 plane.GetComponent<Renderer>().material = material;
-            }
+
+                // Save prefab.
+                var prefab = PrefabUtility.CreatePrefab(path, plane);
+                PrefabUtility.ConnectGameObjectToPrefab(plane, prefab);
+
+                //AssetDatabase.AddObjectToAsset(material, prefab);
+                //AssetDatabase.AddObjectToAsset(atlas, prefab);
+                //AssetDatabase.Refresh();
+            }            
 
             EditorGUILayout.EndHorizontal();
 
