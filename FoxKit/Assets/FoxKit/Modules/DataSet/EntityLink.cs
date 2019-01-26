@@ -1,9 +1,6 @@
 ﻿namespace FoxKit.Modules.DataSet.FoxCore
 {
     using System;
-    using System.Configuration;
-
-    using FoxKit.Core;
     using FoxKit.Modules.DataSet.Fox.FoxCore;
 
     using OdinSerializer;
@@ -32,7 +29,6 @@
         }
         
         public string NameInArchive => this.nameInArchive;
-
         public ulong Address => this.address;
 
         public Data Entity
@@ -45,6 +41,7 @@
             set
             {
                 this.referencedEntity = value;
+                this.address = this.referencedEntity.Address;
                 this.dataIdentifier = null;
 
                 // TODO Set packagePath, archivePath, address
@@ -64,7 +61,7 @@
 
             this.dataIdentifier = dataIdentifier;
             this.Entity = dataIdentifier.Links[key].Entity;
-
+            this.address = this.Entity.Address;
             this.packagePath = "DATA_IDENTIFIER";
             this.archivePath = dataIdentifier.Identifier;
             this.nameInArchive = key;
@@ -143,65 +140,5 @@
         /// Is this EntityLink referencing a DataIdentifier?
         /// </summary>
         public bool IsDataIdentifierEntityLink => this.packagePath == "DATA_IDENTIFIER";
-
-        /// <summary>
-        /// Search for the referenced Entity.
-        /// </summary>
-        /// <param name="tryGetAsset">
-        /// Function to load another asset.
-        /// </param>
-        /// <returns>
-        /// True if the referenced Entity was found, else false.
-        /// </returns>
-        public bool ResolveReference(AssetPostprocessor.TryGetAssetDelegate tryGetAsset)
-        {
-            // TODO 
-            return false;
-            /*
-            // If all fields are empty, not really much we can do. It's not really looking for an Entity.
-            if (string.IsNullOrEmpty(this.packagePath)
-                && string.IsNullOrEmpty(this.archivePath)
-                && string.IsNullOrEmpty(this.nameInArchive)
-                && this.address == 0)
-            {
-                return true;
-            }
-            
-            // For now, just ignore DataIdentifiers.
-            if (this.IsDataIdentifierEntityLink)
-            {
-                this.referencedEntity = null;
-                return false;
-            }
-
-            // If ArchivePath is empty, get the DataSet it belongs to.
-            DataSet referencedDataSet = null;
-            if (string.IsNullOrEmpty(this.archivePath))
-            {
-                referencedDataSet = this.owningDataSet;
-            }
-            else
-            {
-                tryGetAsset(this.archivePath, out referencedDataSet);
-            }
-
-            var dataSet = referencedDataSet as DataSet;
-            if (dataSet == null)
-            {
-                this.referencedEntity = null;
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(this.nameInArchive))
-            {
-                this.referencedEntity = null; // TODO dataSet[this.address];
-            }
-            else
-            {
-                this.referencedEntity = dataSet.GetData(this.nameInArchive);
-            }
-
-            return this.referencedEntity != null;*/
-        }
     }
 }

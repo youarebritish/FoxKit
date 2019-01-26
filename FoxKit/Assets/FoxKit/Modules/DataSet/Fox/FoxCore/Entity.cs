@@ -63,6 +63,12 @@
         private List<EntityLink> entityLinks = new List<EntityLink>();
 
         /// <summary>
+        /// The address of the Entity in its owning DataSet.
+        /// </summary>
+        [OdinSerialize]
+        private uint address;
+
+        /// <summary>
         /// The icon to use in the Data List window.
         /// </summary>
         public virtual Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(GameObject)).image as Texture2D;
@@ -81,6 +87,21 @@
         /// Category of the class.
         /// </summary>
         public virtual string Category => string.Empty;
+
+        /// <summary>
+        /// Gets or sets the address of the Entity in its owning DataSet.
+        /// </summary>
+        public uint Address
+        {
+            get
+            {
+                return this.address;
+            }
+            set
+            {
+                this.address = value;
+            }
+        }
         
         /// <summary>
         /// Initializes the Entity with data loaded from a DataSet file.

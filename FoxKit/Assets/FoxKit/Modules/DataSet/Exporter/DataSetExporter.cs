@@ -21,18 +21,17 @@
     public static class DataSetExporter
     {
         // TODO Refactor out
-        private static Dictionary<Entity, Tuple<uint, uint>> entityAddressesAndIds = new Dictionary<Entity, Tuple<uint, uint>>();
+        private static Dictionary<Entity, uint> entityIds = new Dictionary<Entity, uint>();
 
         public static void ExportDataSet(List<Entity> entities, string exportPath)
         {
             Assert.IsNotNull(exportPath, "exportPath must not be null.");
 
-            Func<Tuple<uint, uint>> generateAddressAndId = new ClassAddressAndIdGenerator().Next;
-
-            entityAddressesAndIds = new Dictionary<Entity, Tuple<uint, uint>>();
+            Func<uint> generateId = new IdGenerator().Next;
+            entityIds = new Dictionary<Entity, uint>();
             foreach (var entity in entities)
             {
-                entityAddressesAndIds.Add(entity, generateAddressAndId());
+                entityIds.Add(entity, generateId());
             }
             
             var convertedEntities = ConvertEntities(entities, GetEntityAddressAndId).ToList();
@@ -49,8 +48,9 @@
                 return Tuple.Create(0u, 0u);
             }
 
-            Tuple<uint, uint> record;
-            return entityAddressesAndIds.TryGetValue(entity, out record) ? record : Tuple.Create(0u, 0u);
+            uint id;
+            entityIds.TryGetValue(entity, out id);
+            return Tuple.Create(entity.Address, id);
         }
 
         private static IEnumerable<Core.Entity> ConvertEntities(IEnumerable<Entity> entities, Func<Entity, Tuple<uint, uint>> getEntityAddressAndId)
@@ -112,17 +112,14 @@
             writer.Write(zeroes);
         }
 
-        private class ClassAddressAndIdGenerator
+        private class IdGenerator
         {
-            private uint previousAddress = 0x10000000u;
             private uint previousId = 0u;
 
-            public Tuple<uint, uint> Next()
+            public uint Next()
             {
-                this.previousAddress += 0x70;
                 this.previousId++;
-
-                return Tuple.Create(this.previousAddress, this.previousId);
+                return this.previousId;
             }
         }
     }

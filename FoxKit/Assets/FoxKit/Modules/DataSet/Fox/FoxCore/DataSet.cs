@@ -1,10 +1,9 @@
 ﻿namespace FoxKit.Modules.DataSet.Fox.FoxCore
 {
+    using OdinSerializer;
     using System.Collections.Generic;
     using System.Linq;
-
-    using UnityEditor;
-
+    
     using UnityEngine;
 
     public partial class DataSet
@@ -20,6 +19,12 @@
         public delegate SceneProxy CreateSceneProxyForEntityDelegate(string entityName);
 
         public delegate void DestroySceneProxyForEntityDelegate(string entityName);
+
+        /// <summary>
+        /// Generates addresses for new Entities.
+        /// </summary>
+        [OdinSerialize]
+        private readonly AddressGenerator addressGenerator = new AddressGenerator();
 
         /// <summary>
         /// Loads all owned Entities.
@@ -67,6 +72,7 @@
                 this.dataList.Add(key, entity);
                 entity.DataSet = this;
                 entity.DataSetGuid = this.DataSetGuid;
+                entity.Address = this.addressGenerator.Next();
             }
         }
         
@@ -127,6 +133,24 @@
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Generates addresses for Entities.
+        /// </summary>
+        private class AddressGenerator
+        {
+            private uint previousAddress = 0x10000000u;
+
+            /// <summary>
+            /// Generates a new unique address.
+            /// </summary>
+            /// <returns>The new address.</returns>
+            public uint Next()
+            {
+                this.previousAddress += 0x70;
+                return this.previousAddress;
+            }
         }
     }
 }

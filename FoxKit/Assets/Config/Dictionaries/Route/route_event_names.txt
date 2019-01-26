@@ -69,6 +69,7 @@ SaluteGreeting
 SearchMissile
 SendMessage
 SetTargetSpeed
+SitInChair
 Snipe
 StairsDown
 StandIdle
