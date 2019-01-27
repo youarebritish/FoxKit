@@ -4,7 +4,7 @@
     using FoxKit.Utils;
 
     /// <summary>
-    /// Route Builder preferences.
+    /// FoxKit general preferences.
     /// </summary>
     [CreateAssetMenu(menuName = "FoxKit/Preferences/General Preferences", order = 6)]
     public class FoxKitPreferences : SingletonScriptableObject<FoxKitPreferences>
@@ -18,5 +18,10 @@
         /// Path to SnakeBite folder.
         /// </summary>
         public string SnakeBitePath = "";
+
+        /// <summary>
+        /// Path to MakeBite folder.
+        /// </summary>
+        public string MakeBitePath = "";
     }
 }

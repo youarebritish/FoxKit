@@ -2,6 +2,7 @@
 {
     using FoxKit.Modules.RouteBuilder;
     using System;
+    using System.Diagnostics;
     using UnityEditor;
 
     using UnityEngine;
@@ -12,59 +13,48 @@
     public class FoxKitBuild
     {
         /// <summary>
-        /// Build the current project into a .mgsv file
+        /// Runs the SnakeBite executable.
         /// </summary>
-        [MenuItem("FoxKit/Build")]
-        public static void Build()
+        [MenuItem("FoxKit/Launch/SnakeBite")]
+        public static void LaunchSnakeBite()
         {
-            bool debugMode = true; //TODO: have this point to a foxkit preference
+            Process tppProcess = new Process();
+            tppProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            tppProcess.StartInfo.CreateNoWindow = true;
+            tppProcess.StartInfo.UseShellExecute = false;
 
-            char argChar;
-            if (debugMode)
-            {
-                argChar = 'k';
-            }
-            else
-            {
-                argChar = 'C';
-            }
-
-            string strCmdText;
-            string makeBitePath = FoxKitPreferences.Instance.SnakeBitePath + "/makebite.exe";
-            string projectFolder = "todo"; //TODO: Make this point to wherever we're exporting to
-
-            strCmdText = "/" + argChar + " \"" + makeBitePath + "\" " + projectFolder;
-
-            if (debugMode)
-            {
-                Debug.Log(strCmdText);
-            }
-            System.Diagnostics.Process.Start("CMD.exe", strCmdText);
+            tppProcess.StartInfo.FileName = FoxKitPreferences.Instance.SnakeBitePath;
+            tppProcess.Start();
         }
 
         /// <summary>
-        /// Runs the MGSV executable
+        /// Runs the MakeBite executable.
         /// </summary>
-        [MenuItem("FoxKit/Run TPP")]
-        public static void Run()
+        [MenuItem("FoxKit/Launch/MakeBite")]
+        public static void LaunchMakeBite()
         {
-            bool debugMode = true; //TODO: have this point to a foxkit preference
+            Process tppProcess = new Process();
+            tppProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            tppProcess.StartInfo.CreateNoWindow = true;
+            tppProcess.StartInfo.UseShellExecute = false;
 
-            char argChar;
-            if (debugMode)
-            {
-                argChar = 'k';
-            }
-            else
-            {
-                argChar = 'C';
-            }
-            string strCmdText;
-            string TPPPath = FoxKitPreferences.Instance.TPPPath;
+            tppProcess.StartInfo.FileName = FoxKitPreferences.Instance.MakeBitePath;
+            tppProcess.Start();
+        }
 
-            strCmdText = "/" + argChar + " \"" + TPPPath + "\""; //TODO: Fix this call so that it doesn't error out on a space?
-            Debug.Log(strCmdText);
-            System.Diagnostics.Process.Start("CMD.exe", strCmdText);
+        /// <summary>
+        /// Runs the MGSV executable.
+        /// </summary>
+        [MenuItem("FoxKit/Launch/TPP")]
+        public static void LaunchTpp()
+        {
+            Process tppProcess = new Process();
+            tppProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            tppProcess.StartInfo.CreateNoWindow = true;
+            tppProcess.StartInfo.UseShellExecute = false;
+
+            tppProcess.StartInfo.FileName = FoxKitPreferences.Instance.TPPPath;
+            tppProcess.Start();
         }
     }
 }

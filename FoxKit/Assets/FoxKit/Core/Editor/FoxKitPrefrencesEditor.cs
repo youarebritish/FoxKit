@@ -28,15 +28,36 @@ namespace FoxKit.Core.Editor
         {
             var prefs = FoxKitPreferences.Instance;
 
-            EditorGUILayout.LabelField("Gizmos", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Executables", EditorStyles.boldLabel);
+
             EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField("TPP .exe Path");
-                prefs.TPPPath = EditorGUILayout.TextField(prefs.TPPPath);
+            EditorGUILayout.LabelField("TPP");
+            prefs.TPPPath = EditorGUILayout.TextField(prefs.TPPPath);
+            if (GUILayout.Button("Select"))
+            {
+                prefs.TPPPath = EditorUtility.OpenFilePanel("Select TPP .exe path", string.Empty, "exe");
+            }
+
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField("Snakebite folder path");
-                prefs.SnakeBitePath = EditorGUILayout.TextField(prefs.SnakeBitePath);
+            EditorGUILayout.LabelField("SnakeBite");
+            prefs.TPPPath = EditorGUILayout.TextField(prefs.TPPPath);
+            if (GUILayout.Button("Select"))
+            {
+                prefs.SnakeBitePath = EditorUtility.OpenFilePanel("Select SnakeBite .exe path", string.Empty, "exe");
+            }
+
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("MakeBite");
+            prefs.TPPPath = EditorGUILayout.TextField(prefs.TPPPath);
+            if (GUILayout.Button("Select"))
+            {
+                prefs.MakeBitePath = EditorUtility.OpenFilePanel("Select MakeBite .exe path", string.Empty, "exe");
+            }
+
             EditorGUILayout.EndHorizontal();
         }
     }
