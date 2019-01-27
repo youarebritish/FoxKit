@@ -42,7 +42,7 @@ namespace FoxKit.Core.Editor
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("SnakeBite");
-            prefs.TPPPath = EditorGUILayout.TextField(prefs.TPPPath);
+            prefs.SnakeBitePath = EditorGUILayout.TextField(prefs.SnakeBitePath);
             if (GUILayout.Button("Select"))
             {
                 prefs.SnakeBitePath = EditorUtility.OpenFilePanel("Select SnakeBite .exe path", string.Empty, "exe");
@@ -52,7 +52,7 @@ namespace FoxKit.Core.Editor
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("MakeBite");
-            prefs.TPPPath = EditorGUILayout.TextField(prefs.TPPPath);
+            prefs.MakeBitePath = EditorGUILayout.TextField(prefs.MakeBitePath);
             if (GUILayout.Button("Select"))
             {
                 prefs.MakeBitePath = EditorUtility.OpenFilePanel("Select MakeBite .exe path", string.Empty, "exe");
