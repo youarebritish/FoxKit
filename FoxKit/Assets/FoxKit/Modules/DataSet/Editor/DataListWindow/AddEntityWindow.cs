@@ -86,22 +86,16 @@
                     continue;
                 }
 
-                //var buttonRect = EditorGUILayout.GetControlRect(true, 20f, _styles.componentButton);
-                /*if (!GUI.Button(buttonRect, type.Name, _styles.componentButton))
-                {
-                    continue;
-                }*/
-
                 if (!GUILayout.Button(type.Name, _styles.componentButton))
                 {
                     continue;
                 }
 
-                /*if (DataListWindow.GetInstance().ActiveDataSet == null)
+                if (DataListWindow.GetInstance().ActiveDataSet == null)
                 {
-                    Debug.LogError("Can't create an Entity without an active DataSet.");
+                    EditorUtility.DisplayDialog("Error", "Can't create an Entity without an active DataSet.", "OK", "");
                     return;
-                }*/
+                }
 
                 this.onTypeSelected(type);
 

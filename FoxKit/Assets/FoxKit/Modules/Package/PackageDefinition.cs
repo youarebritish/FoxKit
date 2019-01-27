@@ -19,7 +19,7 @@
             Sbp
         }
 
-        public PackageType Type = PackageType.Fpk;
+        public PackageType Type = PackageType.Fpkd;
 
         public List<UnityEngine.Object> Entries = new List<UnityEngine.Object>();
 

@@ -10,7 +10,6 @@
     using FoxKit.Modules.Archive;
     using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.DataSet.Fox.FoxGameKit;
-    using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
     using UnityEditor;
@@ -25,6 +24,7 @@
         private const string PreferenceKeyOpenDataSets = "FoxKit.DataListWindow.OpenDataSets";
         
         public static bool IsOpen { get; private set; }
+        public DataSet ActiveDataSet => this.activeDataSet;
 
         /// <summary>
         /// DataSets currently open in the window.
