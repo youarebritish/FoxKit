@@ -74,7 +74,9 @@ namespace FoxKit.Utils
         /// <returns>The Unity Quaternion.</returns>
         public static Quaternion FoxToUnity(Core.Quaternion foxQuat)
         {
-            return new Quaternion(-foxQuat.X, foxQuat.Y, foxQuat.Z, foxQuat.W);
+            //return new Quaternion(1, 1, 1, 1);
+            return new Quaternion(foxQuat.X, -foxQuat.Y, foxQuat.Z, foxQuat.W);
+            //return new Quaternion(foxQuat.X, -foxQuat.Y, foxQuat.Z, -foxQuat.W);
         }
 
         /// <summary>

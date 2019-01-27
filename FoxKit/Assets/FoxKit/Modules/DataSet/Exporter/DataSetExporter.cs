@@ -41,11 +41,11 @@
             }
         }
 
-        private static Tuple<uint, uint> GetEntityAddressAndId(Entity entity)
+        private static Tuple<ulong, uint> GetEntityAddressAndId(Entity entity)
         {
             if (entity == null)
             {
-                return Tuple.Create(0u, 0u);
+                return Tuple.Create(0ul, 0u);
             }
 
             uint id;
@@ -53,19 +53,19 @@
             return Tuple.Create(entity.Address, id);
         }
 
-        private static IEnumerable<Core.Entity> ConvertEntities(IEnumerable<Entity> entities, Func<Entity, Tuple<uint, uint>> getEntityAddressAndId)
+        private static IEnumerable<Core.Entity> ConvertEntities(IEnumerable<Entity> entities, Func<Entity, Tuple<ulong, uint>> getEntityAddressAndId)
         {
             return from entity in entities
                    select ConvertEntity(entity, getEntityAddressAndId(entity).Item1, getEntityAddressAndId(entity).Item2, entity1 => getEntityAddressAndId(entity1).Item1);
         }
 
-        private static Core.Entity ConvertEntity(Entity entity, uint address, uint id, Func<Entity, ulong> getEntityAddress)
+        private static Core.Entity ConvertEntity(Entity entity, ulong address, uint id, Func<Entity, ulong> getEntityAddress)
         {
             entity.OnPreparingToExport();
 
             return new Core.Entity(
                 entity.GetType().Name,
-                address,
+                (uint)address,
                 id,
                 entity.ClassId,
                 entity.Version,

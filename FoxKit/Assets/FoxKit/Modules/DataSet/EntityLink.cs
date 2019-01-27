@@ -41,7 +41,7 @@
             set
             {
                 this.referencedEntity = value;
-                this.address = this.referencedEntity.Address;
+                this.address = this.referencedEntity != null ? this.referencedEntity.Address : 0;
                 this.dataIdentifier = null;
 
                 // TODO Set packagePath, archivePath, address

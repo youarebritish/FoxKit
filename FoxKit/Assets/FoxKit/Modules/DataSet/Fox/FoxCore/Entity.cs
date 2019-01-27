@@ -66,7 +66,7 @@
         /// The address of the Entity in its owning DataSet.
         /// </summary>
         [OdinSerialize]
-        private uint address;
+        private ulong address;
 
         /// <summary>
         /// The icon to use in the Data List window.
@@ -91,7 +91,7 @@
         /// <summary>
         /// Gets or sets the address of the Entity in its owning DataSet.
         /// </summary>
-        public uint Address
+        public ulong Address
         {
             get
             {

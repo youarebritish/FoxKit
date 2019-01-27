@@ -60,6 +60,7 @@
 
             this.translation = this.transform_translation;
             this.rotQuat = this.transform_rotation_quat;
+            this.transform_scale.x *= -1;
             this.scale = this.transform_scale;
         }
 

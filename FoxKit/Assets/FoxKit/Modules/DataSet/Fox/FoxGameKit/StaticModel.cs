@@ -81,6 +81,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
 
             model.transform.SetParent(sceneProxy.transform);
             model.transform.localPosition = Vector3.zero;
+            model.transform.localRotation = Quaternion.identity;
 
             var modelProxy = model.AddComponent<SceneProxyChild>();
             modelProxy.Owner = sceneProxy;

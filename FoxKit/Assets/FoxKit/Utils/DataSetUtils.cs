@@ -253,15 +253,11 @@
             var archivePath = AssetToFoxPath(dataSetAsset);
             var nameInArchive = unityEntityLink.Entity.Name;
 
-            /* It's going to be kind of a pain to implement a system for getting addresses, so for now let's just pray that we only need the nameInArchive.
-             * If this causes problems ingame, we'll fix it then. */
-            const ulong Address = 0UL;
-
             return new Core.EntityLink(
                 packagePath,
                 archivePath,
                 nameInArchive,
-                Address);
+                unityEntityLink.Address);
         }
 
         /// <summary>
