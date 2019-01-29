@@ -31,22 +31,29 @@
             return window;
         }
 
+        public void OnInspectorUpdate()
+        {
+            Repaint();
+        }
+
         private void OnGUI()
         {
             var entity = FoxKitEditor.InspectedEntity as Data;
             var entityTypeName = entity?.GetType().Name ?? string.Empty;
             EditorGUILayout.LabelField(entityTypeName, EditorStyles.boldLabel);
 
-            if (entity != null)
+            if (entity == null)
             {
-                var fields = GetPropertyFields(entity);
-
-                var asset = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(entity.DataSetGuid));
-                this.DrawStaticProperties(fields, entity, asset.IsReadOnly);
-                this.Repaint();
-
-                EditorUtility.SetDirty(asset);
+                return;
             }
+
+            var fields = GetPropertyFields(entity);
+
+            var asset = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(entity.DataSetGuid));
+            this.DrawStaticProperties(fields, entity, asset.IsReadOnly);
+            this.Repaint();
+
+            EditorUtility.SetDirty(asset);
         }
 
         private void DrawStaticProperties(

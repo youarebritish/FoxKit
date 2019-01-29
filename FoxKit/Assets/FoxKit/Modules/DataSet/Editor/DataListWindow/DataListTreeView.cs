@@ -351,7 +351,6 @@
 
         protected override void SelectionChanged(IList<int> selectedIds)
         {
-            //Debug.Log("duh");
             // TODO handle multiple selections
             var selected = (from id in selectedIds select this.idToDataMap[id]).ToArray();
             
@@ -369,11 +368,11 @@
             //return;
             
             // Lock the inspector to the selected entities so that we can edit the scene proxies without changing the Inspector.
-            ActiveEditorTracker.sharedTracker.isLocked = false;
+            /*ActiveEditorTracker.sharedTracker.isLocked = false;
             Selection.objects = (from id in selectedIds
                                  select AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(this.idToDataMap[id].DataSetGuid)))
                                  .ToArray();
-            ActiveEditorTracker.sharedTracker.isLocked = true;
+            ActiveEditorTracker.sharedTracker.isLocked = true;*/
             //return;
             
             // For each TransformData selected, select its scene proxy.
@@ -385,8 +384,6 @@
 
                 if (transformData == null)
                 {
-                    var dataSet = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(data.DataSetGuid));
-                    newSelection.Add(dataSet);
                     continue;
                 }
 
@@ -397,7 +394,7 @@
                 }
             }
 
-            //Selection.objects = newSelection.ToArray();
+            Selection.objects = newSelection.ToArray();
         }
 
         protected override void ContextClickedItem(int id)
