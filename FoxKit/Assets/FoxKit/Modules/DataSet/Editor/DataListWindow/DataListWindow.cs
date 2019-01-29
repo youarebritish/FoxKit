@@ -568,27 +568,15 @@
 
         private void OnSelectionChange()
         {
-            // When selecting a FoxModel, if it belongs to an Entity, select it in the Data List window.
+            // When selecting a SceneProxy, if it belongs to an Entity, select it in the Data List window.
             foreach (var selection in Selection.gameObjects)
             {
-                var foxModel = selection.GetComponent<FoxModel>();
-                if (foxModel == null)
-                {
-                    continue;
-                }
-
-                var parent = foxModel.transform.parent;
-                if (parent == null)
-                {
-                    continue;
-                }
-
-                var sceneProxy = parent.GetComponent<SceneProxy>();
+                var sceneProxy = selection.GetComponent<SceneProxy>();
                 if (sceneProxy == null)
                 {
                     continue;
                 }
-
+                
                 var entity = sceneProxy.Entity;
                 this.treeView.SelectItem(entity);
             }

@@ -82,7 +82,6 @@
             }
 
             this.SetSelection(new[]{id}, TreeViewSelectionOptions.FireSelectionChanged | TreeViewSelectionOptions.RevealAndFrame);
-
             this.Repaint();
         }
 
@@ -352,6 +351,7 @@
 
         protected override void SelectionChanged(IList<int> selectedIds)
         {
+            //Debug.Log("duh");
             // TODO handle multiple selections
             var selected = (from id in selectedIds select this.idToDataMap[id]).ToArray();
             
@@ -363,8 +363,10 @@
 
             FoxKitEditor.InspectedEntity = selected[0];
 
-            var dataSets = (from id in selectedIds select this.idToDataSetMap[id]).ToArray();
-            Selection.objects = dataSets;
+            //var dataSets = (from id in selectedIds select this.idToDataSetMap[id]).ToArray();
+            //Selection.objects = dataSets;
+            //Selection.activeGameObject = null;// new Transform[] { };
+            //return;
             
             // Lock the inspector to the selected entities so that we can edit the scene proxies without changing the Inspector.
             ActiveEditorTracker.sharedTracker.isLocked = false;
@@ -372,6 +374,7 @@
                                  select AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(this.idToDataMap[id].DataSetGuid)))
                                  .ToArray();
             ActiveEditorTracker.sharedTracker.isLocked = true;
+            //return;
             
             // For each TransformData selected, select its scene proxy.
             var newSelection = new List<UnityEngine.Object>();
@@ -394,7 +397,7 @@
                 }
             }
 
-            Selection.objects = newSelection.ToArray();
+            //Selection.objects = newSelection.ToArray();
         }
 
         protected override void ContextClickedItem(int id)
