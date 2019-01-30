@@ -48,7 +48,7 @@
 
         private void OnGUI()
         {
-            var entity = FoxKitEditor.InspectedEntity as Data;
+            var entity = FoxKitEditor.InspectedEntity;
             var entityTypeName = entity?.GetType().Name ?? string.Empty;
             EditorGUILayout.LabelField(entityTypeName, EditorStyles.boldLabel);
 
@@ -59,7 +59,21 @@
 
             var fields = GetPropertyFields(entity);
 
-            var asset = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(entity.DataSetGuid));
+            Data owningData = null;
+            if (entity is Data)
+            {
+                owningData = entity as Data;
+            }
+            else if (entity is DataElement)
+            {
+                owningData = (entity as DataElement).Owner as Data;
+            }
+            else
+            {
+                Assert.IsNotNull(null, $"Unexpected Entity type {entity.GetType().Name}");
+            }
+
+            var asset = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(owningData.DataSetGuid));
             if (asset == null)
             {
                 return;
@@ -894,7 +908,7 @@
 
                 if (entity is DataElement)
                 {
-                    (entity as DataElement).Owner = entity;
+                    (entity as DataElement).Owner = FoxKitEditor.InspectedEntity;
                 }
 
                 // TODO: Refactor and fix this monstrosity
@@ -986,7 +1000,7 @@
 
                 if (entity is DataElement)
                 {
-                    (entity as DataElement).Owner = entity;
+                    (entity as DataElement).Owner = FoxKitEditor.InspectedEntity;
                 }
 
                 // TODO: Refactor and fix this monstrosity
