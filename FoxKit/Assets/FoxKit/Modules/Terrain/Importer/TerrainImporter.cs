@@ -12,7 +12,7 @@
     /// <summary>
     /// ScriptedImporter to handle importing tre2 files.
     /// </summary>
-    [ScriptedImporter(1, "tre2")]
+    [ScriptedImporter(1, "tre2", 2)]
     public class TerrainImporter : ScriptedImporter
     {
         const int HEIGHTMAP_OFFSET_VERSION4 = 672;

@@ -12,7 +12,7 @@
     /// <summary>
     /// ScriptedImporter to handle importing htre files. Currently only imports heightmap data.
     /// </summary>
-    [ScriptedImporter(1, "htre")]
+    [ScriptedImporter(1, "htre", 3)]
     public class TerrainTileImporter : ScriptedImporter
     {
         const int HEIGHTMAP_OFFSET_VERSION4 = 672;
