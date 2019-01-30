@@ -44,7 +44,7 @@
         /// Tree view widget.
         /// </summary>
         private DataListTreeView treeView;
-        
+                
         public DataListWindowItemContextMenuFactory.ShowItemContextMenuDelegate MakeShowItemContextMenuDelegate()
         {
             return DataListWindowItemContextMenuFactory.Create(
@@ -231,6 +231,10 @@
         /// </summary>
         private void OnEnable()
         {
+            var icon = AssetDatabase.LoadAssetAtPath<Texture>("Assets/Gizmos/DataSet/Icons/Editor/DataListWindowIcon.png");
+            var titleContent = new GUIContent(" Data List", icon);
+            this.titleContent = titleContent;
+
             var state = SingletonScriptableObject<DataListWindowState>.Instance;
             if (!string.IsNullOrEmpty(state.ActiveDataSetGuid))
             {

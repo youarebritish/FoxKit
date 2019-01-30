@@ -36,6 +36,13 @@
             Repaint();
         }
 
+        private void OnEnable()
+        {
+            var icon = AssetDatabase.LoadAssetAtPath<Texture>("Assets/Gizmos/DataSet/Icons/Editor/EntityWindowIcon.png");
+            var titleContent = new GUIContent(" Entity", icon);
+            this.titleContent = titleContent;
+        }
+
         private void OnGUI()
         {
             var entity = FoxKitEditor.InspectedEntity as Data;
