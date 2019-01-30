@@ -50,6 +50,11 @@
             var fields = GetPropertyFields(entity);
 
             var asset = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(entity.DataSetGuid));
+            if (asset == null)
+            {
+                return;
+            }
+
             this.DrawStaticProperties(fields, entity, asset.IsReadOnly);
             this.Repaint();
 

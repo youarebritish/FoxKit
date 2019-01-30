@@ -362,19 +362,6 @@
 
             FoxKitEditor.InspectedEntity = selected[0];
 
-            //var dataSets = (from id in selectedIds select this.idToDataSetMap[id]).ToArray();
-            //Selection.objects = dataSets;
-            //Selection.activeGameObject = null;// new Transform[] { };
-            //return;
-            
-            // Lock the inspector to the selected entities so that we can edit the scene proxies without changing the Inspector.
-            /*ActiveEditorTracker.sharedTracker.isLocked = false;
-            Selection.objects = (from id in selectedIds
-                                 select AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(this.idToDataMap[id].DataSetGuid)))
-                                 .ToArray();
-            ActiveEditorTracker.sharedTracker.isLocked = true;*/
-            //return;
-            
             // For each TransformData selected, select its scene proxy.
             var newSelection = new List<UnityEngine.Object>();
             foreach (var id in selectedIds)
@@ -382,7 +369,13 @@
                 var data = this.idToDataMap[id];
                 var transformData = data as TransformData;
 
-                if (transformData == null)
+                if (data is DataSet)
+                {
+                    var dataSetAsset = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(data.DataSetGuid));
+                    newSelection.Add(dataSetAsset);
+                    continue;
+                }
+                else if (transformData == null)
                 {
                     continue;
                 }
@@ -405,8 +398,11 @@
                                    where this.dataSetTreeIds.Contains(treeId)
                                    select this.idToDataMap[treeId] as DataSet;
 
-
             var clickedDataSet = this.idToDataMap[id] as DataSet;
+            if (clickedDataSet == null)
+            {
+                return;
+            }
 
             DataListWindow.GetInstance()
                 .MakeShowItemContextMenuDelegate()(clickedDataSet, selectedDataSets.ToList());
@@ -419,12 +415,7 @@
         }
         
         public void RemoveDataSet(object id)
-        {
-            // TODO: Does this actually do anything?
-            /*var dataSetId = (int)id;
-            var dataSet = this.idToDataMap[dataSetId] as DataSet;
-            Assert.IsNotNull(dataSet);*/
-            
+        {            
             this.Reload();
         }
 

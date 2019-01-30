@@ -76,9 +76,10 @@
             DataSetExporter.ExportDataSet(entities, path);
         }
 
-        private static void SelectDataSetAsset(object dataSetPath)
+        private static void SelectDataSetAsset(object dataSet)
         {
-            var dataSetPathString = dataSetPath as string;
+            var dataSetEntity = dataSet as DataSet;
+            var dataSetPathString = AssetDatabase.GUIDToAssetPath(dataSetEntity.DataSetGuid);
             Assert.IsFalse(string.IsNullOrEmpty(dataSetPathString));
 
             var dataSetAsset = AssetDatabase.LoadAssetAtPath<DataSetAsset>(dataSetPathString);

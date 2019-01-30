@@ -384,10 +384,10 @@
         {
             Assert.IsFalse(string.IsNullOrEmpty(dataSetGuid));
 
-            // If we're closing the last DataSet, clear the list of ignored models.
             if (this.openDataSetGuids.Count == 1)
             {
                 SingletonScriptableObject<DataListWindowState>.Instance.ClearIgnoredModels();
+                this.activeDataSet = null;
             }
 
             // TODO: Clean up
@@ -402,10 +402,6 @@
                 {
                     this.activeDataSet = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(this.openDataSetGuids[0])).GetDataSet();
                     this.treeView.SetActiveDataSet(this.activeDataSet);
-                }
-                else
-                {
-                    this.activeDataSet = null;
                 }
             }
             
