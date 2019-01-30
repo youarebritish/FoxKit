@@ -29,8 +29,7 @@ InterpolatorsVertex MyVertexProgram (VertexData v) {
 	UNITY_SETUP_INSTANCE_ID(v);
 	UNITY_TRANSFER_INSTANCE_ID(v, i);
 
-	i.uv.xy = TRANSFORM_TEX(v.uv, _MainTex);
-	i.uv.zw = TRANSFORM_TEX(v.uv, _DetailTex);
+	i.uv.xy = TRANSFORM_TEX(v.uv, _AlbedoTexture);
 
 	#if VERTEX_DISPLACEMENT
 		float displacement = tex2Dlod(_DisplacementMap, float4(i.uv.xy, 0, 0)).g;
@@ -38,18 +37,18 @@ InterpolatorsVertex MyVertexProgram (VertexData v) {
 		
 		v.vertex.y += displacement;
 		
-		float texelSize = 1.0f / 4096.0f;////0.0001f;
+		float texelSize = 1.0f / 2048.0f;
 		float4 h;
-		h[0] = tex2Dlod(_DisplacementMap, i.uv + float4(texelSize * float2(0, -1), 0, 0)).r;
-		h[1] = tex2Dlod(_DisplacementMap, i.uv + float4(texelSize * float2(-1, 0), 0, 0)).r;
-		h[2] = tex2Dlod(_DisplacementMap, i.uv + float4(texelSize * float2(1, 0), 0, 0)).r;
-		h[3] = tex2Dlod(_DisplacementMap, i.uv + float4(texelSize * float2(0, 1), 0, 0)).r;
+		h.x = tex2Dlod(_DisplacementMap, i.uv + float4(texelSize * float2(0, -1), 0, 0)).r;
+		h.y = tex2Dlod(_DisplacementMap, i.uv + float4(texelSize * float2(-1, 0), 0, 0)).r;
+		h.z = tex2Dlod(_DisplacementMap, i.uv + float4(texelSize * float2(1, 0), 0, 0)).r;
+		h.w = tex2Dlod(_DisplacementMap, i.uv + float4(texelSize * float2(0, 1), 0, 0)).r;
 
-		v.normal.x = h[0] - h[3];
-		v.normal.y = h[1] - h[2];
-		v.normal.z = 2;
-
-		v.normal = normalize(v.normal);
+		v.normal.z = h.x - h.w;
+		v.normal.x = h.y - h.z;
+		v.normal.y = 2;
+		
+		v.normal = normalize(v.normal).rbg;
 	#endif
 
 	i.pos = UnityObjectToClipPos(v.vertex);
@@ -282,11 +281,15 @@ UnityIndirect CreateIndirectLight (Interpolators i, float3 viewDir) {
 	return indirectLight;
 }
 
+float GetParallaxHeight(float2 uv) {
+	return tex2D(_ParallaxMap, uv).g;
+}
+
 void InitializeFragmentNormal(inout Interpolators i) {
 	float3 tangentSpaceNormal = GetTangentSpaceNormal(i);
+
 	#if defined(BINORMAL_PER_FRAGMENT)
-		float3 binormal =
-			CreateBinormal(i.normal, i.tangent.xyz, i.tangent.w);
+		float3 binormal = CreateBinormal(i.normal, i.tangent.xyz, i.tangent.w);
 	#else
 		float3 binormal = i.binormal;
 	#endif
@@ -312,10 +315,6 @@ float4 ApplyFog (float4 color, Interpolators i) {
 		color.rgb = lerp(fogColor, color.rgb, saturate(unityFogFactor));
 	#endif
 	return color;
-}
-
-float GetParallaxHeight (float2 uv) {
-	return tex2D(_ParallaxMap, uv).g;
 }
 
 float2 ParallaxOffset (float2 uv, float2 viewDir) {
@@ -397,7 +396,7 @@ void ApplyParallax (inout Interpolators i) {
 		#endif
 		float2 uvOffset = PARALLAX_FUNCTION(i.uv.xy, i.tangentViewDir.xy);
 		i.uv.xy += uvOffset;
-		i.uv.zw += uvOffset * (_DetailTex_ST.xy / _MainTex_ST.xy);
+		i.uv.zw += uvOffset * (_DetailTex_ST.xy / _AlbedoTexture_ST.xy);
 	#endif
 }
 
@@ -415,6 +414,91 @@ struct FragmentOutput {
 		float4 color : SV_Target;
 	#endif
 };
+
+float _Tiling;
+
+sampler2D _NormalTexture;
+sampler2D _SrmTexture;
+
+sampler2D _MaterialSelectMapTexture;
+sampler2D _MaterialWeightMapTexture;
+sampler2D _MaterialIndicesTexture;
+
+inline void NSelectMaterials(float2 physicalUv, out half4 outMaterialIndex, out half4 outMaterialWeight, out half outTopMaterialIndex)
+{
+	half4 materialLists = floor(tex2D(_MaterialSelectMapTexture, physicalUv) * 255.4h);
+	half4 materialWeights = tex2D(_MaterialWeightMapTexture, physicalUv);
+	float4 materialAndWeight = (float4(materialLists * 1.0h / 256.0h) + float4(floor(materialWeights * 256.0h)));
+
+	materialAndWeight.xy = materialAndWeight.x > materialAndWeight.y ? materialAndWeight.xy : materialAndWeight.yx;
+	materialAndWeight.zw = materialAndWeight.z > materialAndWeight.w ? materialAndWeight.zw : materialAndWeight.wz;
+
+	materialAndWeight.xz = materialAndWeight.x > materialAndWeight.z ? materialAndWeight.xz : materialAndWeight.zx;
+	materialAndWeight.yw = materialAndWeight.y > materialAndWeight.w ? materialAndWeight.yw : materialAndWeight.wy;
+
+	materialAndWeight.yz = materialAndWeight.y > materialAndWeight.z ? materialAndWeight.yz : materialAndWeight.zy;
+
+	outMaterialIndex = (half4)frac(materialAndWeight) * 256.0h;
+	outMaterialWeight = (half4)floor(materialAndWeight) / 256.0h;
+
+	half2 materialSelectTableUvParam = half2(1.0h / 16.0h, 0.5h / 16.0h);
+	half2 materialSelectTableUv = half2(outMaterialIndex.x * materialSelectTableUvParam.x + materialSelectTableUvParam.y, 0);
+	outTopMaterialIndex = (half)tex2D(_MaterialIndicesTexture, materialSelectTableUv).x;
+
+	outMaterialWeight.x += 0.001h;
+
+	half totalWeight = outMaterialWeight.x + outMaterialWeight.y;
+	outMaterialWeight.xy = outMaterialWeight.xy / totalWeight;
+}
+
+#define MATERIAL_TEXTURE_RESOLUTION	(960.0f)
+#define AVAILABLE_MIP_LEVEL_FOR_SIMPLE_MIPMAP	(5.0)	// 1024x1024 => 32x32
+
+inline void NFetchTerrainMaterial2(float2 inVirtualUv, half4 inMaterialIndex, half4 inAlpha, out half4 outAlbedoColor, out half3 outNormalColor, out half2 outSrmColor)
+{
+	float2 texcoord = inVirtualUv.xy;
+
+	half2 materialDdx = (half2)ddx(texcoord.xy);
+	half2 materialDdy = (half2)ddy(texcoord.xy);
+	half2 baseTexcoord = (half2)frac(texcoord);
+	half maxDifferential = max(dot(materialDdx, materialDdx), dot(materialDdy, materialDdy));
+
+	const half AVAILABLE_MIP_LEVEL = AVAILABLE_MIP_LEVEL_FOR_SIMPLE_MIPMAP;
+	half materialLod = (half) min(max(0, log2(maxDifferential * MATERIAL_TEXTURE_RESOLUTION*MATERIAL_TEXTURE_RESOLUTION) * 0.5), AVAILABLE_MIP_LEVEL);
+
+	half layer = 0;
+
+	half atlasOffsetTop = 0;
+	half atlasSize = 1.0 / 4.0;
+	half atlasOffset = 32.0 / 1024.0 * atlasSize + atlasOffsetTop;
+	half atlasScale = 960.0 / 1024.0 * atlasSize;
+
+	half2 materialIndexHigh = (half2) floor(inMaterialIndex.xy / 4.0h);
+	half2 materialIndexLow = inMaterialIndex.xy - materialIndexHigh * 4.0h;
+	half4 materialIndex = half4(materialIndexLow, materialIndexHigh);
+	float4 materialOffset = materialIndex * atlasSize + atlasOffset;
+	half2 scaledTexcoord = baseTexcoord * atlasScale;
+	float4 materialTexcoord = scaledTexcoord.xxyy + materialOffset;
+
+	float4 texcoord0 = half4(materialTexcoord.xz, layer, materialLod);
+	float4 texcoord1 = half4(materialTexcoord.yw, layer, materialLod);
+
+	half4 fetchAlbedoColor = tex2D(_AlbedoTexture, texcoord0) * inAlpha.x;
+	half4 rawNormal = tex2D(_NormalTexture, texcoord0);
+	//half3 fetchNormalColor = UnpackNormal(half4(rawNormal.r, 1.0 - rawNormal.g, 1.0, 1.0) * inAlpha.x);
+	half3 fetchNormalColor = UnpackNormal(half4(rawNormal.agb, 1.0)) * inAlpha.x;
+	half2 fetchSrmColor = tex2D(_SrmTexture, texcoord0).xy * inAlpha.x;
+
+	fetchAlbedoColor += tex2D(_AlbedoTexture, texcoord1) * inAlpha.y;
+	half4 rawNormal2 = tex2D(_NormalTexture, texcoord1);
+	//fetchNormalColor += UnpackNormal(half4(rawNormal2.r, 1.0 - rawNormal2.g, 1.0, 1.0)) * inAlpha.y;
+	fetchNormalColor += UnpackNormal(half4(rawNormal2.agb, 1.0)) * inAlpha.y;
+	fetchSrmColor += tex2D(_SrmTexture, texcoord1).xy * inAlpha.y;
+
+	outAlbedoColor.xyzw = fetchAlbedoColor;
+	outNormalColor.xyz = fetchNormalColor.xyz;
+	outSrmColor.xy = fetchSrmColor.xy;
+}
 
 FragmentOutput MyFragmentProgram (Interpolators i) {
 	UNITY_SETUP_INSTANCE_ID(i);
@@ -435,13 +519,25 @@ FragmentOutput MyFragmentProgram (Interpolators i) {
 
 	float3 specularTint;
 	float oneMinusReflectivity;
+
+	//float3 baseColor = float3(0.5, 0.5, 0.5);
+
+	// Select materials.
+	float2 physicalUv = i.uv.xy;
+
+	half4 outMaterialIndex;
+	half4 outMaterialWeight;
+	half outTopMaterialIndex;
+	NSelectMaterials(physicalUv, outMaterialIndex, outMaterialWeight, outTopMaterialIndex);
+
+	half4 outAlbedo;
+	half3 outNormal;
+	half2 outSrm;
+	NFetchTerrainMaterial2(physicalUv, outMaterialIndex, outMaterialWeight, outAlbedo, outNormal, outSrm);
+
 	float3 albedo = DiffuseAndSpecularFromMetallic(
-		ALBEDO_FUNCTION(i), GetMetallic(i), specularTint, oneMinusReflectivity
+		outAlbedo, GetMetallic(i), specularTint, oneMinusReflectivity
 	);
-	#if defined(_RENDERING_TRANSPARENT)
-		albedo *= alpha;
-		alpha = 1 - oneMinusReflectivity + alpha * oneMinusReflectivity;
-	#endif
 
 	float4 color = UNITY_BRDF_PBS(
 		albedo, specularTint,
@@ -476,11 +572,11 @@ FragmentOutput MyFragmentProgram (Interpolators i) {
 		#endif
 	#else
 		output.color = ApplyFog(color, i);
+
+		// NORMAL HACK
+		//output.color.rgb = i.normal;
 	#endif
-
-	// NORMAL HACK
-	//output.color.rgb = i.normal;
-
+		
 	return output;
 }
 

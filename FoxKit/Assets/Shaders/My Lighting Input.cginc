@@ -41,27 +41,14 @@ UNITY_INSTANCING_BUFFER_START(InstanceProperties)
 #define _Color_arr InstanceProperties
 UNITY_INSTANCING_BUFFER_END(InstanceProperties)
 
-sampler2D _MainTex, _DetailTex, _DetailMask;
-float4 _MainTex_ST, _DetailTex_ST;
+sampler2D _AlbedoTexture;
+float4 _AlbedoTexture_ST;
 
-sampler2D _NormalMap, _DetailNormalMap;
-float _BumpScale, _DetailBumpScale;
-
-sampler2D _MetallicMap;
-float _Metallic;
-float _Smoothness;
+sampler2D _NormalMap;
 
 sampler2D _ParallaxMap;
 float _ParallaxStrengthMin;
 float _ParallaxStrengthMax;
-
-sampler2D _OcclusionMap;
-float _OcclusionStrength;
-
-sampler2D _EmissionMap;
-float3 _Emission;
-
-float _Cutoff;
 
 struct VertexData {
 	UNITY_VERTEX_INPUT_INSTANCE_ID
@@ -158,17 +145,9 @@ struct Interpolators {
 	#endif
 };
 
-float GetDetailMask (Interpolators i) {
-	#if defined (_DETAIL_MASK)
-		return tex2D(_DetailMask, i.uv.xy).a;
-	#else
-		return 1;
-	#endif
-}
-
 float3 GetAlbedo (Interpolators i) {
 	float3 albedo =
-		tex2D(_MainTex, i.uv.xy).rgb * UNITY_ACCESS_INSTANCED_PROP(_Color_arr, _Color).rgb;
+		tex2D(_AlbedoTexture, i.uv.xy).rgb * UNITY_ACCESS_INSTANCED_PROP(_Color_arr, _Color).rgb;
 	#if defined (_DETAIL_ALBEDO_MAP)
 		float3 details = tex2D(_DetailTex, i.uv.zw) * unity_ColorSpaceDouble;
 		albedo = lerp(albedo, albedo * details, GetDetailMask(i));
@@ -177,11 +156,7 @@ float3 GetAlbedo (Interpolators i) {
 }
 
 float GetAlpha (Interpolators i) {
-	float alpha = UNITY_ACCESS_INSTANCED_PROP(_Color_arr, _Color).a;
-	#if !defined(_SMOOTHNESS_ALBEDO)
-		alpha *= tex2D(_MainTex, i.uv.xy).a;
-	#endif
-	return alpha;
+	return 1;
 }
 
 float3 GetTangentSpaceNormal (Interpolators i) {
@@ -201,41 +176,19 @@ float3 GetTangentSpaceNormal (Interpolators i) {
 }
 
 float GetMetallic (Interpolators i) {
-	#if defined(_METALLIC_MAP)
-		return tex2D(_MetallicMap, i.uv.xy).r;
-	#else
-		return _Metallic;
-	#endif
+	return 0;
 }
 
 float GetSmoothness (Interpolators i) {
-	float smoothness = 1;
-	#if defined(_SMOOTHNESS_ALBEDO)
-		smoothness = tex2D(_MainTex, i.uv.xy).a;
-	#elif defined(_SMOOTHNESS_METALLIC) && defined(_METALLIC_MAP)
-		smoothness = tex2D(_MetallicMap, i.uv.xy).a;
-	#endif
-	return smoothness * _Smoothness;
+	return 0;
 }
 
 float GetOcclusion (Interpolators i) {
-	#if defined(_OCCLUSION_MAP)
-		return lerp(1, tex2D(_OcclusionMap, i.uv.xy).g, _OcclusionStrength);
-	#else
-		return 1;
-	#endif
+	return 1;
 }
 
 float3 GetEmission (Interpolators i) {
-	#if defined(FORWARD_BASE_PASS) || defined(DEFERRED_PASS)
-		#if defined(_EMISSION_MAP)
-			return tex2D(_EmissionMap, i.uv.xy) * _Emission;
-		#else
-			return _Emission;
-		#endif
-	#else
-		return 0;
-	#endif
+	return 0;
 }
 
 #endif

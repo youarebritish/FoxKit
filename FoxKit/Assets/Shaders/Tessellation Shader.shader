@@ -1,33 +1,22 @@
 ﻿Shader "Custom/Tessellation" {
 
-	Properties {
-		_Color ("Tint", Color) = (0.5, 0.5, 0.5, 1)
-		_MainTex ("Albedo", 2D) = "white" {}
+	Properties{
+		_Color("Tint", Color) = (0.5, 0.5, 0.5, 1)
+		_Tiling("Tiling", Float) = 10
 
 		[NoScaleOffset] _NormalMap ("Normals", 2D) = "bump" {}
-		_BumpScale ("Bump Scale", Float) = 1
-
-		[NoScaleOffset] _MetallicMap ("Metallic", 2D) = "white" {}
-		[Gamma] _Metallic ("Metallic", Range(0, 1)) = 0
-		_Smoothness ("Smoothness", Range(0, 1)) = 0
+		
+		_AlbedoTexture("Albedo Atlas", 2D) = "white" {}
+		_NormalTexture("Normal Atlas", 2D) = "bump" {}
+		_SrmTexture("SRM Atlas", 2D) = "white" {}
+		_MaterialSelectMapTexture("Material Select Map", 2D) = "white" {}
+		_MaterialWeightMapTexture("Material Weight Map", 2D) = "white" {}
+		_MaterialIndicesTexture("Material Indices", 2D) = "white" {}
 
 		[NoScaleOffset] _ParallaxMap ("Parallax", 2D) = "black" {}
 		_ParallaxStrengthMin ("Minimum Height", Range(0, 1000)) = 188.4435
 		_ParallaxStrengthMax ("Maximum Height", Range(0, 1000)) = 755.0121
-
-		[NoScaleOffset] _OcclusionMap ("Occlusion", 2D) = "white" {}
-		_OcclusionStrength ("Occlusion Strength", Range(0, 1)) = 1
-
-		[NoScaleOffset] _EmissionMap ("Emission", 2D) = "black" {}
-		_Emission ("Emission", Color) = (0, 0, 0)
-
-		[NoScaleOffset] _DetailMask ("Detail Mask", 2D) = "white" {}
-		_DetailTex ("Detail Albedo", 2D) = "gray" {}
-		[NoScaleOffset] _DetailNormalMap ("Detail Normals", 2D) = "bump" {}
-		_DetailBumpScale ("Detail Bump Scale", Float) = 1
-
-		_Cutoff ("Alpha Cutoff", Range(0, 1)) = 0.5
-
+			
 		_TessellationUniform ("Tessellation Uniform", Range(1, 64)) = 1
 		_TessellationEdgeLength ("Tessellation Edge Length", Range(1, 100)) = 25
 
@@ -220,5 +209,5 @@
 		}
 	}
 
-	CustomEditor "MyLightingShaderGUI"
+	//CustomEditor "MyLightingShaderGUI"
 }

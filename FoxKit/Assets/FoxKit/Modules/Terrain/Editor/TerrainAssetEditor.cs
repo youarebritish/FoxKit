@@ -35,8 +35,20 @@ namespace FoxKit.Modules.Terrain.Editor
 
                 // Stitch heightmap.
                 var tiles = this.GetTerrainTiles();
-                var atlas = StitchTerrainTiles((int)(asset.Width - 1), (int)(asset.Height - 1), tiles);
-                AssetDatabase.CreateAsset(atlas, Path.GetDirectoryName(path) + "/" + asset.name + ".asset");
+                var heightMapAtlas = StitchTextureTiles((int)(asset.Width - 1), (int)(asset.Height - 1), TextureFormat.RGBAFloat, from tile in tiles select tile.Heightmap);
+                AssetDatabase.CreateAsset(heightMapAtlas, Path.GetDirectoryName(path) + "/" + asset.name + "_heightMap.asset");
+
+                // Stitch material weight map.
+                var weightMapAtlas = StitchTextureTiles((int)(asset.Width - 1), (int)(asset.Height - 1), TextureFormat.ARGB32, from tile in tiles select tile.MaterialWeightMap);
+                AssetDatabase.CreateAsset(weightMapAtlas, Path.GetDirectoryName(path) + "/" + asset.name + "_materialWeightMap.asset");
+
+                // Stitch material select map.
+                var materialSelectAtlas = StitchTextureTiles((int)(asset.Width - 1)/32, (int)(asset.Height - 1)/32, TextureFormat.ARGB32, from tile in tiles select tile.MaterialSelectMap);
+                AssetDatabase.CreateAsset(materialSelectAtlas, Path.GetDirectoryName(path) + "/" + asset.name + "_materialSelectMap.asset");
+
+                // Stitch material indices map.
+                var materialIndicesAtlas = StitchTextureTiles((int)(asset.Width - 1) / 32, (int)(asset.Height - 1) / 32, TextureFormat.ARGB32, from tile in tiles select tile.MaterialIndicesMap);
+                AssetDatabase.CreateAsset(materialIndicesAtlas, Path.GetDirectoryName(path) + "/" + asset.name + "_materialIndicesMap.asset");
 
                 // Create GameObject.
                 var plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
@@ -49,7 +61,7 @@ namespace FoxKit.Modules.Terrain.Editor
                 material.name = asset.name;
                 material.SetFloat("_ParallaxStrengthMin", asset.HeightRangeMin);
                 material.SetFloat("_ParallaxStrengthMax", asset.HeightRangeMax);
-                material.SetTexture("_ParallaxMap", atlas);
+                material.SetTexture("_ParallaxMap", heightMapAtlas);
 
                 AssetDatabase.CreateAsset(material, Path.GetDirectoryName(path) + "/" + material.name + ".mat");
                 plane.GetComponent<Renderer>().material = material;
@@ -57,15 +69,67 @@ namespace FoxKit.Modules.Terrain.Editor
                 // Save prefab.
                 var prefab = PrefabUtility.CreatePrefab(path, plane);
                 PrefabUtility.ConnectGameObjectToPrefab(plane, prefab);
-
-                //AssetDatabase.AddObjectToAsset(material, prefab);
-                //AssetDatabase.AddObjectToAsset(atlas, prefab);
-                //AssetDatabase.Refresh();
             }            
 
             EditorGUILayout.EndHorizontal();
 
             this.DrawDefaultInspector();
+        }
+
+        private static Texture2D StitchTextureTiles(int atlasWidth, int atlasHeight, TextureFormat textureFormat, IEnumerable<Texture2D> textures)
+        {
+            var atlas = new Texture2D(atlasWidth, atlasHeight, TextureFormat.RGBAFloat, false);
+            foreach (var texture in textures)
+            {
+                var xIndex = int.Parse(texture.name.Substring(5, 3)) - 101;
+                var yIndex = int.Parse(texture.name.Substring(9, 3)) - 101;
+
+                // FIXME
+                // Currently, htre textures come in rotated, so unrotate them.
+                var heightmapPixels = texture.GetPixels();
+                var rotatedTexture = new Color[texture.width * texture.height];
+                for (var i = 0; i < texture.width; ++i)
+                {
+                    for (var j = 0; j < texture.height; ++j)
+                    {
+                        rotatedTexture[i * texture.width + j] = heightmapPixels[(texture.width - j - 1) * texture.width + i];
+                    }
+                }
+
+                atlas.SetPixels(
+                    atlasWidth - ((xIndex + 1) * texture.width),
+                    yIndex * texture.height,
+                    texture.width,
+                    texture.height,
+                    rotatedTexture);
+            }
+
+            // Not sure why but it winds up flipped horizontally and vertically. Let's fix that.
+            var atlasFlippedHorizontal = new Texture2D(atlasWidth, atlasHeight, textureFormat, false);
+            var xN = atlasFlippedHorizontal.width;
+            var yN = atlasFlippedHorizontal.height;
+
+            for (var i = 0; i < xN; i++)
+            {
+                for (var j = 0; j < yN; j++)
+                {
+                    atlasFlippedHorizontal.SetPixel(j, xN - i - 1, atlas.GetPixel(j, i));
+                }
+            }
+
+            atlasFlippedHorizontal.Apply();
+
+            var atlasFlippedVertical = new Texture2D(atlasWidth, atlasHeight, textureFormat, false);
+            for (var i = 0; i < xN; i++)
+            {
+                for (var j = 0; j < yN; j++)
+                {
+                    atlasFlippedVertical.SetPixel(xN - i - 1, j, atlasFlippedHorizontal.GetPixel(i, j));
+                }
+            }
+
+            atlasFlippedVertical.Apply();
+            return atlasFlippedVertical;
         }
 
         private static Texture2D StitchTerrainTiles(int atlasWidth, int atlasHeight, IEnumerable<TerrainTileAsset> tiles)
