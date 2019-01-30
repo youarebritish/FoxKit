@@ -23,6 +23,9 @@
 
     public class EntityWindow : EditorWindow
     {
+        [SerializeField]
+        private Vector2 scrollPos;
+
         [MenuItem("FoxKit/Entity Window")]
         public static EntityWindow GetInstance()
         {
@@ -62,7 +65,10 @@
                 return;
             }
 
+            this.scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
             this.DrawStaticProperties(fields, entity, asset.IsReadOnly);
+            EditorGUILayout.EndScrollView();
+
             this.Repaint();
 
             EditorUtility.SetDirty(asset);
