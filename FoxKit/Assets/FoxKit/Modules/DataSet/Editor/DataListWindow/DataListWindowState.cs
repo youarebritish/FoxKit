@@ -41,6 +41,12 @@
         private readonly HashSet<FoxModel> ignoredModels = new HashSet<FoxModel>();
 
         /// <summary>
+        /// The Entity currently open in the Entity tab.
+        /// </summary>
+        [OdinSerialize]
+        private Entity inspectedEntity;
+
+        /// <summary>
         /// GUID of the active DataSet.
         /// </summary>
         public string ActiveDataSetGuid
@@ -53,6 +59,21 @@
             set
             {
                 this.activeDataSetGuid = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the Entity selected in the Entity window.
+        /// </summary>
+        public Entity InspectedEntity
+        {
+            get
+            {
+                return this.inspectedEntity;
+            }
+            set
+            {
+                this.inspectedEntity = value;
             }
         }
 

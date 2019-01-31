@@ -226,7 +226,7 @@ namespace FoxKit.Utils
             {
                 if (GUI.Button(position, $"Edit ({value.GetType().Name})", EditorStyles.miniButton))
                 {
-                    FoxKitEditor.InspectedEntity = value as Entity;
+                    SingletonScriptableObject<DataListWindowState>.Instance.InspectedEntity = value as Entity;
                 }
             }
             

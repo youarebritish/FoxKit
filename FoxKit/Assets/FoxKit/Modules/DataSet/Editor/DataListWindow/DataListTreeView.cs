@@ -1,5 +1,6 @@
 ﻿namespace FoxKit.Modules.DataSet.Editor.DataListWindow
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -104,7 +105,7 @@
         public void HandleDelete()
         {
             var selected = this.GetSelection();
-
+            
             // Only remove a DataSet if all selected are DataSets. Otherwise, delete the selected Entities.
             if (selected.Any(item => !(this.idToDataMap[item] is DataSet)))
             {
@@ -113,7 +114,14 @@
                     var data = this.idToDataMap[item];
                     var dataSet = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(data.DataSetGuid));
                     dataSet.GetDataSet().RemoveData(data.Name);
-                    SingletonScriptableObject<DataListWindowState>.Instance.DeleteSceneProxy(data.DataSetGuid, data.Name, DataListWindowState.DestroyGameObject.Destroy);
+
+                    var dataListWindowState = SingletonScriptableObject<DataListWindowState>.Instance;
+                    dataListWindowState.DeleteSceneProxy(data.DataSetGuid, data.Name, DataListWindowState.DestroyGameObject.Destroy);
+
+                    if (dataListWindowState.InspectedEntity == data)
+                    {
+                        dataListWindowState.InspectedEntity = null;
+                    }
                 }
 
                 AssetDatabase.Refresh();
@@ -356,11 +364,12 @@
             
             if (selected.Length == 0)
             {
-                FoxKitEditor.InspectedEntity = null;
+                SingletonScriptableObject<DataListWindowState>.Instance.InspectedEntity = null;
+                //FoxKitEditor.InspectedEntity = null;
                 return;
             }
 
-            FoxKitEditor.InspectedEntity = selected[0];
+            SingletonScriptableObject<DataListWindowState>.Instance.InspectedEntity = selected[0];
 
             // For each TransformData selected, select its scene proxy.
             var newSelection = new List<UnityEngine.Object>();
@@ -415,7 +424,12 @@
         }
         
         public void RemoveDataSet(object id)
-        {            
+        {
+            var dataListWindowState = SingletonScriptableObject<DataListWindowState>.Instance;
+            if (dataListWindowState.InspectedEntity == id as DataSet)
+            {
+                dataListWindowState.InspectedEntity = null;
+            }
             this.Reload();
         }
 

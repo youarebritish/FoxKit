@@ -30,6 +30,11 @@
         public static EntityWindow GetInstance()
         {
             var window = GetWindow<EntityWindow>("Entity");
+
+            var icon = AssetDatabase.LoadAssetAtPath<Texture>("Assets/Gizmos/DataSet/Icons/Editor/EntityWindowIcon.png");
+            var titleContent = new GUIContent(" Entity", icon);
+            window.titleContent = titleContent;
+
             window.Show();
             return window;
         }
@@ -39,18 +44,9 @@
             Repaint();
         }
 
-        private void OnEnable()
-        {
-            var icon = AssetDatabase.LoadAssetAtPath<Texture>("Assets/Gizmos/DataSet/Icons/Editor/EntityWindowIcon.png");
-            var titleContent = new GUIContent(" Entity", icon);
-            this.titleContent = titleContent;
-        }
-
         private void OnGUI()
         {
-            var entity = FoxKitEditor.InspectedEntity;
-            var entityTypeName = entity?.GetType().Name ?? string.Empty;
-            EditorGUILayout.LabelField(entityTypeName, EditorStyles.boldLabel);
+            var entity = SingletonScriptableObject<DataListWindowState>.Instance.InspectedEntity;
 
             if (entity == null)
             {
@@ -68,6 +64,10 @@
             {
                 owningData = (entity as DataElement).Owner as Data;
             }
+            else if (entity.GetType() == typeof(Entity))
+            {
+                return;
+            }
             else
             {
                 Assert.IsNotNull(null, $"Unexpected Entity type {entity.GetType().Name}");
@@ -80,6 +80,10 @@
             }
 
             this.scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+
+            var entityTypeName = entity?.GetType().Name ?? string.Empty;
+            EditorGUILayout.LabelField(entityTypeName, EditorStyles.boldLabel);
+
             this.DrawStaticProperties(fields, entity, asset.IsReadOnly);
             EditorGUILayout.EndScrollView();
 
@@ -908,7 +912,7 @@
 
                 if (entity is DataElement)
                 {
-                    (entity as DataElement).Owner = FoxKitEditor.InspectedEntity;
+                    (entity as DataElement).Owner = SingletonScriptableObject<DataListWindowState>.Instance.InspectedEntity;
                 }
 
                 // TODO: Refactor and fix this monstrosity
@@ -1000,7 +1004,7 @@
 
                 if (entity is DataElement)
                 {
-                    (entity as DataElement).Owner = FoxKitEditor.InspectedEntity;
+                    (entity as DataElement).Owner = SingletonScriptableObject<DataListWindowState>.Instance.InspectedEntity;
                 }
 
                 // TODO: Refactor and fix this monstrosity
