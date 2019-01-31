@@ -217,6 +217,11 @@
             var hierarchyWindow = EditorWindow.focusedWindow;
             Type[] desiredDockNextTo = new Type[] { hierarchyWindow.GetType() };
             var window = GetWindow<DataListWindow>("Data List", desiredDockNextTo);
+
+            var icon = AssetDatabase.LoadAssetAtPath<Texture>("Assets/Gizmos/DataSet/Icons/Editor/DataListWindowIcon.png");
+            var titleContent = new GUIContent(" Data List", icon);
+            window.titleContent = titleContent;
+
             window.Show();
             return window;
         }
@@ -231,10 +236,6 @@
         /// </summary>
         private void OnEnable()
         {
-            var icon = AssetDatabase.LoadAssetAtPath<Texture>("Assets/Gizmos/DataSet/Icons/Editor/DataListWindowIcon.png");
-            var titleContent = new GUIContent(" Data List", icon);
-            this.titleContent = titleContent;
-
             var state = SingletonScriptableObject<DataListWindowState>.Instance;
             if (!string.IsNullOrEmpty(state.ActiveDataSetGuid))
             {
