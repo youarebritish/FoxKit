@@ -420,13 +420,15 @@ float _Tiling;
 sampler2D _NormalTexture;
 sampler2D _SrmTexture;
 
-sampler2D _MaterialSelectMapTexture;
+Texture2D _MaterialSelectMapTexture;
 sampler2D _MaterialWeightMapTexture;
-sampler2D _MaterialIndicesTexture;
+Texture2D _MaterialIndicesTexture;
+
+SamplerState PointClampSampler;
 
 inline void NSelectMaterials(float2 physicalUv, out half4 outMaterialIndex, out half4 outMaterialWeight, out half outTopMaterialIndex)
 {
-	half4 materialLists = floor(tex2D(_MaterialSelectMapTexture, physicalUv) * 255.4h);
+	half4 materialLists = floor(_MaterialSelectMapTexture.Sample(PointClampSampler, physicalUv) * 255.4h);
 	half4 materialWeights = tex2D(_MaterialWeightMapTexture, physicalUv);
 	float4 materialAndWeight = (float4(materialLists * 1.0h / 256.0h) + float4(floor(materialWeights * 256.0h)));
 
@@ -443,7 +445,7 @@ inline void NSelectMaterials(float2 physicalUv, out half4 outMaterialIndex, out 
 
 	half2 materialSelectTableUvParam = half2(1.0h / 16.0h, 0.5h / 16.0h);
 	half2 materialSelectTableUv = half2(outMaterialIndex.x * materialSelectTableUvParam.x + materialSelectTableUvParam.y, 0);
-	outTopMaterialIndex = (half)tex2D(_MaterialIndicesTexture, materialSelectTableUv).x;
+	outTopMaterialIndex = (half)_MaterialIndicesTexture.Sample(PointClampSampler, materialSelectTableUv).x; //(half)tex2D(_MaterialIndicesTexture, materialSelectTableUv).x;
 
 	outMaterialWeight.x += 0.001h;
 
@@ -456,7 +458,7 @@ inline void NSelectMaterials(float2 physicalUv, out half4 outMaterialIndex, out 
 
 inline void NFetchTerrainMaterial2(float2 inVirtualUv, half4 inMaterialIndex, half4 inAlpha, out half4 outAlbedoColor, out half3 outNormalColor, out half2 outSrmColor)
 {
-	float2 texcoord = inVirtualUv.xy;
+	float2 texcoord = inVirtualUv.xy * _Tiling;
 
 	half2 materialDdx = (half2)ddx(texcoord.xy);
 	half2 materialDdy = (half2)ddy(texcoord.xy);

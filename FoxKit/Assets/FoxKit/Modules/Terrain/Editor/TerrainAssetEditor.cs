@@ -62,6 +62,9 @@ namespace FoxKit.Modules.Terrain.Editor
                 material.SetFloat("_ParallaxStrengthMin", asset.HeightRangeMin);
                 material.SetFloat("_ParallaxStrengthMax", asset.HeightRangeMax);
                 material.SetTexture("_ParallaxMap", heightMapAtlas);
+                material.SetTexture("_MaterialSelectMapTexture", materialSelectAtlas);
+                material.SetTexture("_MaterialWeightMapTexture", weightMapAtlas);
+                material.SetTexture("_MaterialIndicesTexture", materialIndicesAtlas);
 
                 AssetDatabase.CreateAsset(material, Path.GetDirectoryName(path) + "/" + material.name + ".mat");
                 plane.GetComponent<Renderer>().material = material;
