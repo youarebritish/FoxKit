@@ -1,5 +1,6 @@
 ﻿namespace FoxKit.Modules.Lighting.Atmosphere
 {
+    using FoxKit.Modules.Lighting.LightProbes;
     using System;
     using System.Collections.Generic;
 
@@ -7,11 +8,11 @@
 
     using UnityEngine;
 
-    [CustomEditor(typeof(LightProbeSHCoefficients))]
+    [CustomEditor(typeof(LightProbeSHCoefficientsAsset))]
     public class LightProbeSHCoefficientsEditor : Editor
     {
         PreviewRenderUtility previewUtility;
-        LightProbeSHCoefficients previewObject;
+        LightProbeSHCoefficientsAsset previewObject;
 
         private Material material;
 
@@ -32,7 +33,7 @@
             previewUtility.camera.transform.position = new Vector3(0, 0, 2);
             previewUtility.camera.transform.LookAt(Vector3.up);
 
-            this.previewObject = (LightProbeSHCoefficients)this.target;
+            this.previewObject = (LightProbeSHCoefficientsAsset)this.target;
         }
 
         void Awake()
@@ -53,13 +54,13 @@
 
         public override bool HasPreviewGUI()
         {
-            return this.previewObject.Coefficients.Count > 0;
+            return this.previewObject.LightProbes.Count > 0;
         }
 
         public override void OnPreviewGUI(Rect r, GUIStyle background)
         {
             if (this.material != null)
-            {
+            {/*
                 this.material.SetFloat("_Exposure", this.previewExposure);
                 this.material.SetMatrixArray(
                     "_ParamSH",
@@ -67,7 +68,7 @@
                         {
                             this.previewObject.Coefficients[previewCoefficientSetIndex].TermR, this.previewObject.Coefficients[previewCoefficientSetIndex].TermG,
                             this.previewObject.Coefficients[previewCoefficientSetIndex].TermB, this.previewObject.Coefficients[previewCoefficientSetIndex].SkyOcclusion
-                        });
+                        });*/
             }
 
             this.previewUtility.BeginPreview(r, background);
@@ -86,7 +87,7 @@
             GUILayout.Box(s_ExposureLow, s_PreLabel, GUILayout.MaxWidth(20));
             GUI.changed = false;
             this.previewExposure = GUILayout.HorizontalSlider(this.previewExposure, 0f, 1f, GUILayout.MaxWidth(100));
-            this.previewCoefficientSetIndex = Mathf.RoundToInt(GUILayout.HorizontalSlider(this.previewCoefficientSetIndex, 0, this.previewObject.Coefficients.Count - 1, GUILayout.MaxWidth(100)));
+            //this.previewCoefficientSetIndex = Mathf.RoundToInt(GUILayout.HorizontalSlider(this.previewCoefficientSetIndex, 0, this.previewObject.Coefficients.Count - 1, GUILayout.MaxWidth(100)));
         }
 
         static GUIContent s_MipMapLow;

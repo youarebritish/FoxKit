@@ -12,6 +12,7 @@
     using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Modules.DataSet.Importer;
     using FoxKit.Modules.Lighting.Atmosphere;
+    using FoxKit.Modules.Lighting.LightProbes;
     using FoxKit.Modules.MaterialDatabase;
 
     using FoxLib;
@@ -106,7 +107,7 @@
             {
                 return "fv2";
             }
-            if (asset is LightProbeSHCoefficients)
+            if (asset is LightProbeSHCoefficientsAsset)
             {
                 return "lpsh";
             }

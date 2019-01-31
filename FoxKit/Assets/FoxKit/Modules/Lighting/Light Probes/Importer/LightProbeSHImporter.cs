@@ -9,9 +9,10 @@
 
     using UnityEngine;
     using UnityEngine.Assertions;
+    using FoxKit.Modules.Lighting.LightProbes;
 
     /// <summary>
-    /// ScriptedImporter to handle importing atsh files.
+    /// ScriptedImporter to handle importing lpsh files.
     /// </summary>
     [ScriptedImporter(1, "lpsh")]
     public class LightProbeSHImporter : ScriptedImporter
@@ -30,8 +31,9 @@
         public override void OnImportAsset(AssetImportContext ctx)
         {
             // Note: Doesn't seem to always load coefficients? Look at avr_stage.lpsh.
+            var asset = ScriptableObject.CreateInstance<LightProbeSHCoefficientsAsset>();
+            asset.name = Path.GetFileNameWithoutExtension(ctx.assetPath);
 
-            var asset = new GameObject { name = Path.GetFileNameWithoutExtension(ctx.assetPath) };
             ctx.AddObjectToAsset(asset.name, asset);
             ctx.SetMainObject(asset);
 
@@ -52,20 +54,23 @@
                 var numDivs = reader.ReadUInt32();
 
                 reader.BaseStream.Seek(208L, SeekOrigin.Begin);
-                reader.BaseStream.Seek(numDivs * sizeof(uint), SeekOrigin.Current);
+                for(var i = 0; i < numDivs; i++)
+                {
+                    asset.TimeValues.Add(reader.ReadUInt32());
+                }
 
                 AlignRead(reader.BaseStream, 16);
 
                 var lpMetadata = new List<LightProbeMetadata>();
-
                 for (var i = 0; i < numLightProbes; i++)
                 {
                     lpMetadata.Add(new LightProbeMetadata(reader.ReadUInt32(), reader.ReadUInt32(), reader.ReadUInt32()));
                 }
-                
-                var lightProbes = new List<LightProbeSHCoefficients>();
-                foreach (var metadata in lpMetadata)
+
+                var shSets = new List<LightProbeSHCoefficientsAsset.LightProbe.ShCoefficientsSet>();
+                for (var i = 0; i < lpMetadata.Count; i++)
                 {
+                    var metadata = lpMetadata[i];
                     reader.BaseStream.Seek(metadata.NameAddress, SeekOrigin.Begin);
 
                     var nameBuilder = new StringBuilder();
@@ -75,23 +80,29 @@
                         nameBuilder.Append(nextChar);
                         nextChar = reader.ReadChar();
                     }
-                    
-                    var gameObject = new GameObject(nameBuilder.ToString());
-                    var lightProbe = gameObject.AddComponent<LightProbeSHCoefficients>();
-                    lightProbes.Add(lightProbe);
+
+                    var lightProbe = new LightProbeSHCoefficientsAsset.LightProbe
+                    {
+                        Name = nameBuilder.ToString()
+                    };
+
+                    var shSet = new LightProbeSHCoefficientsAsset.LightProbe.ShCoefficientsSet();
+                    lightProbe.CoefficientsSets.Add(shSet);
+
+                    asset.LightProbes.Add(lightProbe);
+                    shSets.Add(shSet);
                 }
 
-                for (var i = 0; i < lightProbes.Count; i++)
+                for (var i = 0; i < shSets.Count; i++)
                 {
                     var metadata = lpMetadata[i];
                     reader.BaseStream.Seek(metadata.ShDataAddress, SeekOrigin.Begin);
 
-                    var lightProbe = lightProbes[i];
+                    var shSet = shSets[i];
 
-                    var isLastProbe = i == lightProbes.Count - 1;
+                    var isLastProbe = i == shSets.Count - 1;
                     while (isLastProbe || reader.BaseStream.Position < lpMetadata[i + 1].ShDataAddress)
                     {
-                        var sh = new LightProbeSHCoefficientSet();
                         for (var coefficientIndex = 0; coefficientIndex < 9; coefficientIndex++)
                         {
                             Func<float> readHalf = () => Half.ToHalf(reader.ReadUInt16());
@@ -100,22 +111,17 @@
                             var b = readHalf();
                             var skyOcclusion = readHalf();
                             
-                            SetMatrixValue(ref sh.TermR, 15 - coefficientIndex, r);
-                            SetMatrixValue(ref sh.TermG, 15 - coefficientIndex, g);
-                            SetMatrixValue(ref sh.TermB, 15 - coefficientIndex, b);
-                            SetMatrixValue(ref sh.SkyOcclusion, 15 - coefficientIndex, skyOcclusion);
+                            SetMatrixValue(ref shSet.TermR, 15 - coefficientIndex, r);
+                            SetMatrixValue(ref shSet.TermG, 15 - coefficientIndex, g);
+                            SetMatrixValue(ref shSet.TermB, 15 - coefficientIndex, b);
+                            SetMatrixValue(ref shSet.SkyOcclusion, 15 - coefficientIndex, skyOcclusion);
                         }
-
-                        lightProbe.Coefficients.Add(sh);
-
+                        
                         if (reader.BaseStream.Position + 32L > fileSize)
                         {
                             break;
                         }
                     }
-
-                    lightProbe.transform.SetParent(asset.transform);
-                    ctx.AddObjectToAsset(lightProbe.name, lightProbe);
                 }
             }
         }

@@ -436,7 +436,7 @@
                 menu.ShowAsContext();
             }
 
-            if (GUILayout.Button("DEBUG RESET", EditorStyles.toolbarDropDown))
+            if (GUILayout.Button("Clear", EditorStyles.toolbarButton))
             {
                 this.activeDataSet = null;
                 this.openDataSetGuids.Clear();
