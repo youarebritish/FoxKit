@@ -33,10 +33,7 @@
             // Note: Doesn't seem to always load coefficients? Look at avr_stage.lpsh.
             var asset = ScriptableObject.CreateInstance<LightProbeSHCoefficientsAsset>();
             asset.name = Path.GetFileNameWithoutExtension(ctx.assetPath);
-
-            ctx.AddObjectToAsset(asset.name, asset);
-            ctx.SetMainObject(asset);
-
+            
             using (var reader = new BinaryReader(new FileStream(ctx.assetPath, FileMode.Open), Encoding.ASCII))
             {
                 var version = reader.ReadUInt32();
@@ -124,6 +121,9 @@
                     }
                 }
             }
+
+            ctx.AddObjectToAsset(asset.name, asset);
+            ctx.SetMainObject(asset);
         }
 
         private static void SetMatrixValue(ref Matrix4x4 matrix, int index, float value)

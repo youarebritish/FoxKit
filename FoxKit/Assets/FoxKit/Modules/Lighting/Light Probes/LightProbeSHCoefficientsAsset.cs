@@ -7,8 +7,11 @@
         
     public class LightProbeSHCoefficientsAsset : ScriptableObject
     {
-        public readonly List<LightProbe> LightProbes = new List<LightProbe>();
-        public readonly List<uint> TimeValues = new List<uint>();
+        [SerializeField]
+        public List<LightProbe> LightProbes = new List<LightProbe>();
+
+        [SerializeField]
+        public List<uint> TimeValues = new List<uint>();
 
         [Serializable]
         public class LightProbe
@@ -18,7 +21,8 @@
             /// </summary>
             public string Name;
 
-            public readonly List<ShCoefficientsSet> CoefficientsSets = new List<ShCoefficientsSet>();
+            [SerializeField]
+            public List<ShCoefficientsSet> CoefficientsSets = new List<ShCoefficientsSet>();
 
             [Serializable]
             public class ShCoefficientsSet

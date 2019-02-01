@@ -1,3 +1,6 @@
+using UnityEditor;
+using UnityEngine;
+
 namespace FoxKit.Modules.DataSet.Fox
 {
     public enum CollisionPyraidFreeShape_Category : int
@@ -9,5 +12,6 @@ namespace FoxKit.Modules.DataSet.Fox
 
     public partial class GeoxCollisionPyraidFreeShape
     {
+        public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(MeshCollider)).image as Texture2D;
     }
 }

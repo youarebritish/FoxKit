@@ -3,7 +3,7 @@
     using OdinSerializer;
     using System.Collections.Generic;
     using System.Linq;
-    
+    using UnityEditor;
     using UnityEngine;
 
     public partial class DataSet
@@ -11,7 +11,7 @@
         public string OwningDataSetName;
         
         /// <inheritdoc />
-        //public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(BoxCollider)).image as Texture2D;
+        public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(BoxCollider)).image as Texture2D;
 
         /// <inheritdoc />
         //public override short ClassId => 232;

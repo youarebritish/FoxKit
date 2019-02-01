@@ -1,19 +1,14 @@
 ﻿namespace FoxKit.Modules.DataSet.Editor.DataListWindow
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using FoxKit.Core;
     using FoxKit.Modules.DataSet.Fox.FoxCore;
-    using FoxKit.Modules.DataSet.FoxCore;
     using FoxKit.Utils;
 
     using UnityEditor;
     using UnityEditor.IMGUI.Controls;
 
     using UnityEngine;
-    using UnityEngine.Assertions;
 
     public class DataListTreeView : TreeView
     {

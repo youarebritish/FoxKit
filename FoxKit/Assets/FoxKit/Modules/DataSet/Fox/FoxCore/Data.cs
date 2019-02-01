@@ -13,10 +13,13 @@
     using UnityEditor;
 
     using UnityEngine;
+    using UnityEngine.Analytics;
     using UnityEngine.Assertions;
 
     public partial class Data
     {
+        public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(Animator)).image as Texture2D;
+
         /// <summary>
         /// Since we can't store a reference to the owning DataSet (recursive reference), we store its GUID instead.
         /// </summary>

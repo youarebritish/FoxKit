@@ -1,7 +1,7 @@
 namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
 {
     using FoxKit.Modules.DataSet.Fox.FoxCore;
-
+    using UnityEditor;
     using UnityEngine;
 
     public enum StaticModel_DrawRejectionLevel : int
@@ -33,6 +33,8 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
 
     public partial class StaticModel
     {
+        public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(MeshFilter)).image as Texture2D;
+
         public UnityEngine.Object ModelFile
         {
             get
@@ -73,11 +75,7 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
 
             var sceneProxy = getSceneProxy(this.Name);
             sceneProxy.DrawLocatorGizmo = false;
-
-            if (model == null)
-            {
-                Debug.Log("!");
-            }
+            sceneProxy.gameObject.isStatic = true;
 
             model.transform.SetParent(sceneProxy.transform);
             model.transform.localPosition = Vector3.zero;

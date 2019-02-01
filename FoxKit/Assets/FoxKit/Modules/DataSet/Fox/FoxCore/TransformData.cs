@@ -3,7 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    using UnityEditor;
+    using UnityEngine;
     using UnityEngine.Assertions;
 
     /// <summary>
@@ -30,6 +31,8 @@
 
     public partial class TransformData
     {
+        public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(GameObject)).image as Texture2D;
+
         public TransformEntity Transform
         {
             get
