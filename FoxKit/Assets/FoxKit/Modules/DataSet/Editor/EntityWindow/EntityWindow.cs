@@ -81,8 +81,13 @@
 
             this.scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
 
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label(entity.Icon, GUILayout.Width(18), GUILayout.Height(18));
+
+            GUILayout.Space(-5);
             var entityTypeName = entity?.GetType().Name ?? string.Empty;
             EditorGUILayout.LabelField(entityTypeName, EditorStyles.boldLabel);
+            EditorGUILayout.EndHorizontal();
 
             this.DrawStaticProperties(fields, entity, asset.IsReadOnly);
             EditorGUILayout.EndScrollView();
