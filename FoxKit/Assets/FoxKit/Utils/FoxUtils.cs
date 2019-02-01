@@ -151,7 +151,7 @@ namespace FoxKit.Utils
             result.SetColumn(0, new Vector4(-foxMatrix.Col0[0], foxMatrix.Col0[1], foxMatrix.Col0[2], foxMatrix.Col0[3]));
             result.SetColumn(1, new Vector4(-foxMatrix.Col1[0], foxMatrix.Col1[1], foxMatrix.Col1[2], foxMatrix.Col1[3]));
             result.SetColumn(2, new Vector4(-foxMatrix.Col2[0], foxMatrix.Col2[1], foxMatrix.Col2[2], foxMatrix.Col2[3]));
-            result.SetColumn(3, new Vector4(-foxMatrix.Col2[0], foxMatrix.Col2[1], foxMatrix.Col2[2], foxMatrix.Col3[3]));
+            result.SetColumn(3, new Vector4(-foxMatrix.Col3[0], foxMatrix.Col3[1], foxMatrix.Col3[2], foxMatrix.Col3[3]));
             return result;
         }
 
