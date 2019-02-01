@@ -63,7 +63,7 @@
         {
             entity.OnPreparingToExport();
 
-            return new Core.Entity(
+            var convertedEntity = new Core.Entity(
                 entity.GetType().Name,
                 (uint)address,
                 id,
@@ -71,6 +71,10 @@
                 entity.Version,
                 entity.MakeWritableStaticProperties(getEntityAddress, DataSetUtils.MakeEntityLink).ToArray(),
                 entity.MakeWritableDynamicProperties(getEntityAddress).ToArray());
+
+            entity.OnFinishedExporting();
+
+            return convertedEntity;
         }
 
         private static DataSetFile2.WriteFunctions CreateWriteFunctions(BinaryWriter writer)

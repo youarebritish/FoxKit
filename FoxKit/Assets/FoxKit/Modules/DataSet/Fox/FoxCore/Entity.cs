@@ -138,6 +138,13 @@
         {
         }
 
+        /// <summary>
+        /// Invoked just after an Entity's properties are exported.
+        /// </summary>
+        public virtual void OnFinishedExporting()
+        {
+        }
+
         private object ExtractPropertyValue<TRaw, TConverted>(Core.PropertyInfo property, Func<TRaw, TConverted> conversionFunc, Core.ContainerType containerType, uint arraySize)
         {
             // Non-array
