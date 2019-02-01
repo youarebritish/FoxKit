@@ -58,7 +58,21 @@ namespace FoxKit.Modules.DataSet.Fox.FoxGameKit
                 var instanceProxy = new GameObject($"{this.Name}_{index.ToString("0000")}");
                 instanceProxy.transform.SetParent(sceneProxy.transform);
                 instanceProxy.transform.position = transform.GetColumn(3);
-                instanceProxy.transform.rotation = transform.rotation;
+                instanceProxy.transform.position = new Vector3(-instanceProxy.transform.position.x, instanceProxy.transform.position.y, instanceProxy.transform.position.z);
+
+                // Extract rotation.
+                Vector3 forward;
+                forward.x = transform.m02;
+                forward.y = transform.m12;
+                forward.z = transform.m22;
+
+                Vector3 upwards;
+                upwards.x = transform.m01;
+                upwards.y = transform.m11;
+                upwards.z = transform.m21;
+
+                instanceProxy.transform.rotation = Quaternion.LookRotation(forward, upwards);
+                instanceProxy.transform.rotation = new Quaternion(instanceProxy.transform.rotation.x, -instanceProxy.transform.rotation.y, instanceProxy.transform.rotation.z, instanceProxy.transform.rotation.w);
 
                 var model = Object.Instantiate(this.modelFile) as GameObject;
                 model.transform.SetParent(instanceProxy.transform);

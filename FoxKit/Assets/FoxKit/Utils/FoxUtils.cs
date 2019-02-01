@@ -64,7 +64,7 @@ namespace FoxKit.Utils
         /// <returns>The Fox Engine Quaternion.</returns>
         public static Core.Quaternion UnityToFox(Quaternion unityQuaternion)
         {
-            return new Core.Quaternion(-unityQuaternion.x, unityQuaternion.y, unityQuaternion.z, unityQuaternion.w);
+            return new Core.Quaternion(unityQuaternion.x, -unityQuaternion.y, unityQuaternion.z, unityQuaternion.w);
         }
 
         /// <summary>
@@ -74,9 +74,7 @@ namespace FoxKit.Utils
         /// <returns>The Unity Quaternion.</returns>
         public static Quaternion FoxToUnity(Core.Quaternion foxQuat)
         {
-            //return new Quaternion(1, 1, 1, 1);
             return new Quaternion(foxQuat.X, -foxQuat.Y, foxQuat.Z, foxQuat.W);
-            //return new Quaternion(foxQuat.X, -foxQuat.Y, foxQuat.Z, -foxQuat.W);
         }
 
         /// <summary>

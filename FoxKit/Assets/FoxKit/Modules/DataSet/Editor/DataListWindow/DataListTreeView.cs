@@ -239,6 +239,7 @@
                 index++;
                 
                 index = dataSet.GetDataSet().GetDataList().Values
+                    .Where(data => data != null)
                     .Aggregate(index, (current, data) => this.AddData(dataSet, data, dataSetNode, current));
             }
 
