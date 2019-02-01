@@ -1,6 +1,7 @@
 using FoxKit.Modules.Lighting.LightProbes;
 using System;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -47,6 +48,8 @@ namespace FoxKit.Modules.DataSet.Fox.TppEffect
 
     public partial class TppLightProbe
     {
+        public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(LightProbeGroup)).image as Texture2D;
+
         public override void PostOnLoaded(GetSceneProxyDelegate getSceneProxy)
         {
             base.PostOnLoaded(getSceneProxy);

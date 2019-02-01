@@ -1,3 +1,7 @@
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.AI;
+
 namespace FoxKit.Modules.DataSet.Fox
 {
     public enum Face_Mode : int
@@ -9,5 +13,6 @@ namespace FoxKit.Modules.DataSet.Fox
 
     public partial class GeoxPathWall
     {
+        public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(NavMeshObstacle)).image as Texture2D;
     }
 }

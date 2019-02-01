@@ -1,3 +1,6 @@
+using UnityEditor;
+using UnityEngine;
+
 namespace FoxKit.Modules.DataSet.Fox.TppEffect
 {
     public enum TppLightProbeArray_DrawRejectionLevel : int
@@ -14,5 +17,6 @@ namespace FoxKit.Modules.DataSet.Fox.TppEffect
 
     public partial class TppLightProbeArray
     {
+        public override Texture2D Icon => EditorGUIUtility.ObjectContent(null, typeof(LightProbeProxyVolume)).image as Texture2D;
     }
 }
