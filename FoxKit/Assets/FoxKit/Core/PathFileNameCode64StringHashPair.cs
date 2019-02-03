@@ -7,11 +7,11 @@ namespace FoxKit.Core
         public ulong Hash => System.Convert.ToUInt64(_hash);/*_hash;*/ //Unity is dumb and their PropertyFields don't support ulongs
         public IsStringOrHash IsUnhashed => _isUnhashed;
 
-        [UnityEngine.SerializeField, OneLine.Width(200)]
+
         private string _string;
-        [UnityEngine.SerializeField, OneLine.Width(200)]
+
         private /*ulong*/string _hash;
-        [UnityEngine.SerializeField, OneLine.Width(50)]
+
         private IsStringOrHash _isUnhashed;
 
         public PathFileNameCode64StringPair(string /*@string*/name, IsStringOrHash hashState) //This should be avoidable

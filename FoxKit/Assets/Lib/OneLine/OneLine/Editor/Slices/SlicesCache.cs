@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+using OneLine.Settings;
+
 namespace OneLine {
 	internal class SlicesCache {
 
@@ -20,12 +22,18 @@ namespace OneLine {
 
 		public Slices this[SerializedProperty property] {
 			get {
+				if (!SettingsMenu.Value.CacheOptimization) {
+					var slices = new SlicesImpl();
+					calculate(property, slices);
+					return slices;
+				}
+
 				lastId = GetId(property);
 				if (cache.ContainsKey(lastId)){
 					return cache[lastId];
 				}
 				else {
-					var slices = new Slices();
+					var slices = new SlicesImpl();
 					calculate(property, slices);
 					cache.Add(lastId, slices);
 					IsDirty = true;
@@ -38,8 +46,17 @@ namespace OneLine {
 			return property.propertyPath;
 		}
 
-		public void InvalidateLastUsedId(){
-			cache.Remove(lastId);
+		public void InvalidateLastUsedId(SerializedProperty property){
+			var id = GetId(property);
+			var list = new List<string>();
+			foreach (var key in cache.Keys) {
+				if (id.StartsWith(key + ".")) {
+					list.Add(key);
+				}
+			}
+			foreach(var key in list) {
+				cache.Remove(key);
+			}
 		}
 
 	}

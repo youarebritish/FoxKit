@@ -1,6 +1,7 @@
 namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
 
     using UnityEngine;
@@ -16,301 +17,142 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
     /// <summary>
     /// Custom editor for FormVariations.
     /// </summary>
-    [CustomEditor(typeof(FormVariationImporter))]
-    public class FormVariationEditor : ScriptedImporterEditor
+    [CustomEditor(typeof(FormVariation))]
+    public class FormVariationEditor : Editor
     {
-        private GUIStyle operationHeaderGUIStyle = new GUIStyle();
+        private static FormVariation myTarget;
 
-        //Hidden mesh groups
-        private static bool hiddenMeshGroupFoldoutStatus;
-        private static bool[] subHiddenMeshGroupFoldoutStatus = new bool[255];
+        private readonly string[] toolbarTitles = new string[] { "Mesh Groups", "Texture Swaps", "Attachments" };
+        private int toolbarStatus = 0;
 
-        //Shown mesh groups
-        private static bool shownMeshGroupFoldoutStatus;
-        private static bool[] subShownMeshGroupFoldoutStatus = new bool[255];
-
-        //Texture swaps
-        private static bool textureSwapFoldoutStatus;
-        private static bool[] subTextureSwapFoldoutStatus = new bool[255];
-
-        //Bone attachments
-        private static bool boneAttachmentFoldoutStatus;
-        private static bool[] subBoneAttachmentFoldoutStatus = new bool[255];
-
-        //CNP attachments
-        private static bool CNPAttachmentFoldoutStatus;
-        private static bool[] subCNPAttachmentFoldoutStatus = new bool[255];
+        public void OnEnable()
+        {
+            myTarget = this.target as FormVariation;
+        }
 
         public override void OnInspectorGUI()
         {
-            operationHeaderGUIStyle.alignment = TextAnchor.MiddleCenter;
-            
-            var importer = (FormVariationImporter)this.target;
+            Header();
 
-            var myTarget = AssetDatabase.LoadAssetAtPath<FormVariation>(importer.assetPath);
+            DrawExportButton();
 
-            if (myTarget.IsReadOnly)
+            DrawToolbar();
+
+            // Begin change check
+            EditorGUI.BeginChangeCheck();
+
+            switch (toolbarStatus)
             {
-                FoxKitUiUtils.ReadOnlyWarningAndButton(myTarget, asset => asset.IsReadOnly = false);
+                case 0:
+                    break;
+                case 1:
+                    DrawTextureSwaps();
+                    break;
+                default:
+                    break;
             }
 
+            // End change check
+            ChangeCheck();
+        }
+
+        private void Header()
+        {
+            EditorGUILayout.Space();
+        }
+
+        private void DrawExportButton()
+        {
             if (GUILayout.Button("Export fv2"))
             {
                 var exportPath = EditorUtility.SaveFilePanel(
                     "Export fv2",
                     string.Empty,
-                    this.target.name + ".fv2",
+                    base.target.name + ".fv2",
                     "fv2");
 
                 if (string.IsNullOrEmpty(exportPath))
                 {
                     return;
                 }
-                FormVariationExporter.ExportFormVariation(myTarget as FormVariation, exportPath);
+                FormVariationExporter.ExportFormVariation(myTarget, exportPath);
             }
+        }
 
-            EditorGUI.BeginChangeCheck();
+        private void DrawToolbar()
+        {
+            toolbarStatus = GUILayout.Toolbar(toolbarStatus, toolbarTitles);
+        }
 
-            #region HiddenMeshGroups
-
-            EditorGUILayout.Space();
-
-            EditorGUILayout.BeginHorizontal();
-
-            hiddenMeshGroupFoldoutStatus = EditorGUILayout.Foldout(hiddenMeshGroupFoldoutStatus, "Hidden Mesh Groups");
-
-            drawTools(myTarget.HiddenMeshGroups, this);
-
-            EditorGUILayout.EndHorizontal();
-
-            if (hiddenMeshGroupFoldoutStatus)
+        private void DrawTextureSwaps()
+        {
+            var properties = serializedObject.FindProperty("TextureSwaps");
+            if (properties.arraySize > 0)
             {
-                EditorGUI.indentLevel++;
-
+                for (var i = 0; i < properties.arraySize; i++)
                 {
-                    var hiddenMeshGroups = serializedObject.FindProperty("HiddenMeshGroups");
-
-                    if (hiddenMeshGroups.arraySize > 0)
-                    {
-                        drawProperty(hiddenMeshGroups, myTarget.HiddenMeshGroups, drawMeshGroups, subHiddenMeshGroupFoldoutStatus);
-                    }
+                    DrawTextureSwap(properties.GetArrayElementAtIndex(i), myTarget.TextureSwaps[i].MaterialInstance);
                 }
-
-                EditorGUI.indentLevel--;
             }
-            #endregion
-
-            #region ShownMeshGroups
-
-            EditorGUILayout.Space();
-
-            EditorGUILayout.BeginHorizontal();
-
-            shownMeshGroupFoldoutStatus = EditorGUILayout.Foldout(shownMeshGroupFoldoutStatus, "Shown Mesh Groups");
-
-            drawTools(myTarget.ShownMeshGroups, this);
-
-            EditorGUILayout.EndHorizontal();
-
-            if (shownMeshGroupFoldoutStatus)
+            else
             {
-                EditorGUI.indentLevel++;
+                EditorGUILayout.LabelField("Array empty!");
 
+                if (GUILayout.Button("  +  "))
                 {
-                    var shownMeshGroups = serializedObject.FindProperty("ShownMeshGroups");
-
-                    if (shownMeshGroups.arraySize > 0)
-                    {
-                        drawProperty(shownMeshGroups, myTarget.ShownMeshGroups, drawMeshGroups, subShownMeshGroupFoldoutStatus);
-                    }
+                    (myTarget).TextureSwaps.Add(new TextureSwap());
                 }
-
-                EditorGUI.indentLevel--;
             }
-            #endregion
+        }
 
-            #region TextureSwaps
-
-            EditorGUILayout.Space();
-
-            EditorGUILayout.BeginHorizontal();
-
-            textureSwapFoldoutStatus = EditorGUILayout.Foldout(textureSwapFoldoutStatus, "Texture Swaps");
-
-            drawTools(myTarget.TextureSwaps, this);
-
-            EditorGUILayout.EndHorizontal();
-
-            if (textureSwapFoldoutStatus)
+        private void DrawTextureSwap(SerializedProperty textureSwapProperty, Material material)
+        {
+            var materialProperty = textureSwapProperty.FindPropertyRelative("MaterialInstance");
+            EditorGUILayout.PropertyField(materialProperty);
+            if (material == null)
             {
-                EditorGUI.indentLevel++;
-
-                {
-                    var textureSwaps = serializedObject.FindProperty("TextureSwaps");
-
-                    if (textureSwaps.arraySize > 0)
-                    {
-                        drawProperty(textureSwaps, myTarget.TextureSwaps, drawTextureSwaps, subTextureSwapFoldoutStatus);
-                    }
-                }
-
-
-                EditorGUI.indentLevel--;
+                EditorGUILayout.Popup(0, new string[] { "" });
             }
-
-            #endregion
-
-            #region BoneAttachments
-
-            EditorGUILayout.Space();
-
-            EditorGUILayout.BeginHorizontal();
-
-            boneAttachmentFoldoutStatus = EditorGUILayout.Foldout(boneAttachmentFoldoutStatus, "Bone Attachments");
-
-            drawTools(myTarget.BoneAttachments, this);
-
-            EditorGUILayout.EndHorizontal();
-
-            if (boneAttachmentFoldoutStatus)
+            else
             {
-                EditorGUI.indentLevel++;
-
-                {
-                    var boneAttachments = serializedObject.FindProperty("BoneAttachments");
-
-                    if (boneAttachments.arraySize > 0)
-                    {
-                        drawProperty(boneAttachments, myTarget.BoneAttachments, drawBoneAttachments, subBoneAttachmentFoldoutStatus);
-                    }
-                }
-
-                EditorGUI.indentLevel--;
+                GUI.enabled = false;
+                EditorGUILayout.Popup(0, ParseTextureList(material));
+                GUI.enabled = true;
             }
-            #endregion
+        }
 
-            #region CNPAttachments
+        private static string[] ParseTextureList(Material material)
+        {
+            var shader = material.shader;
 
-            EditorGUILayout.Space();
-
-            EditorGUILayout.BeginHorizontal();
-
-            CNPAttachmentFoldoutStatus = EditorGUILayout.Foldout(CNPAttachmentFoldoutStatus, "CNP Attachments");
-
-            drawTools(myTarget.CNPAttachments, this);
-
-            EditorGUILayout.EndHorizontal();
-
-            if (CNPAttachmentFoldoutStatus)
+            var propertyCount = ShaderUtil.GetPropertyCount(shader);
+            List<string> properties = new List<string>();
+            for (int i = 0; i < propertyCount; i++)
             {
-                EditorGUI.indentLevel++;
-
+                var property = ShaderUtil.GetPropertyType(shader, i);
+                if (property == ShaderUtil.ShaderPropertyType.TexEnv)
                 {
-                    var CNPAttachments = serializedObject.FindProperty("CNPAttachments");
-
-                    if (CNPAttachments.arraySize > 0)
-                    {
-                        drawProperty(CNPAttachments, myTarget.CNPAttachments, drawCNPAttachments, subCNPAttachmentFoldoutStatus);
-                    }
+                    properties.Add(ShaderUtil.GetPropertyName(shader, i));
                 }
-
-                EditorGUI.indentLevel--;
             }
-            #endregion
 
+            return properties.ToArray();
+        }
+
+        private void ChangeCheck()
+        {
             if (EditorGUI.EndChangeCheck())
             {
-                Debug.Log("Change made.");
+                Debug.Log("Changes detected!");
 
                 serializedObject.Update();
                 serializedObject.ApplyModifiedProperties();
 
-                base.Apply();
+                //base.Apply();
 
                 AssetDatabase.SaveAssets();
 
                 AssetDatabase.Refresh();
-            }
-        }
-
-        private static void drawTools<TProperty>(List<TProperty> property, FormVariationEditor editor) where TProperty : new()
-        {
-            if (property.Count < 255)
-            {
-                if (GUILayout.Button("Add"))
-                {
-                    property.Add(new TProperty());
-                    editor.Repaint();
-                }
-            }
-
-            if (property.Count > 0)
-            {
-                if (GUILayout.Button("Remove"))
-                {
-                    property.RemoveAt(property.Count - 1);
-                    editor.Repaint();
-                }
-            }
-        }
-
-        private static void drawProperty<TProperty>(SerializedProperty serializedProperty, List<TProperty> property, Action<SerializedProperty, bool, int> drawFunc, bool[] status)
-        {
-            for (int i = 0; i < serializedProperty.arraySize; i++)
-            {
-                EditorGUILayout.BeginHorizontal();
-
-                status[i] = EditorGUILayout.Foldout(status[i], "Element " + i);
-
-                if (GUILayout.Button("Remove"))
-                {
-                    property.RemoveAt(i);
-                }
-
-                serializedProperty.serializedObject.ApplyModifiedProperties();
-
-                EditorGUILayout.EndHorizontal();
-
-                drawFunc(serializedProperty, status[i], i);
-            }
-        }
-
-        private static void drawMeshGroups(SerializedProperty serializedProperty, bool status, int index)
-        {
-            if (status)
-            {
-                EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(index).FindPropertyRelative("MeshGroupName"), true);
-            }
-        }
-
-        private static void drawTextureSwaps(SerializedProperty serializedProperty, bool status, int index)
-        {
-            if (status)
-            {
-                EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(index).FindPropertyRelative("MaterialInstanceName"), true);
-                EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(index).FindPropertyRelative("TextureTypeName"), true);
-                EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(index).FindPropertyRelative("TextureFileName"), true);
-            }
-        }
-
-        private static void drawBoneAttachments(SerializedProperty serializedProperty, bool status, int index)
-        {
-            if (status)
-            {
-                EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(index).FindPropertyRelative("ModelFileName"), true);
-                EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(index).FindPropertyRelative("FrdvFileName"), true);
-                EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(index).FindPropertyRelative("SimFileName"), true);
-            }
-        }
-
-        private static void drawCNPAttachments(SerializedProperty serializedProperty, bool status, int index)
-        {
-            if (status)
-            {
-                EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(index).FindPropertyRelative("CNPName"), true);
-                EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(index).FindPropertyRelative("ModelFileName"), true);
-                EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(index).FindPropertyRelative("FrdvFileName"), true);
-                EditorGUILayout.PropertyField(serializedProperty.GetArrayElementAtIndex(index).FindPropertyRelative("SimFileName"), true);
             }
         }
     }

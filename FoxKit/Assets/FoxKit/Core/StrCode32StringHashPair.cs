@@ -7,11 +7,10 @@ namespace FoxKit.Core
         public uint Hash => _hash;
         public IsStringOrHash IsUnhashed => _isUnhashed;
 
-        [UnityEngine.SerializeField, OneLine.Width(200)]
         private string _string;
-        [UnityEngine.SerializeField, OneLine.Width(200)]
+
         private uint _hash;
-        [UnityEngine.SerializeField, OneLine.Width(50)]
+
         private IsStringOrHash _isUnhashed;
 
         public StrCode32StringPair(string @string)
