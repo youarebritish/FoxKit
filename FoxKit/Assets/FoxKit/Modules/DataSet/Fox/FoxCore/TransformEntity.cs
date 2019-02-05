@@ -71,6 +71,15 @@
             this.transform_translation = this.translation;
             this.transform_rotation_quat = this.rotQuat;
             this.transform_scale = this.scale;
+
+            this.Scale = new Vector3(-this.Scale.x, this.Scale.y, this.Scale.z);
+        }
+
+        public override void OnFinishedExporting()
+        {
+            base.OnFinishedExporting();
+
+            this.Scale = new Vector3(-this.Scale.x, this.Scale.y, this.Scale.z);
         }
     }
 }

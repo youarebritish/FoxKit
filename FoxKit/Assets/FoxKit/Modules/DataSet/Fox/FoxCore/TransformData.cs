@@ -139,9 +139,7 @@
         public override void OnPreparingToExport()
         {
             base.OnPreparingToExport();
-
-            this.transform.Translation = new Vector3(-this.transform.Translation.x, this.transform.Translation.y, this.transform.Translation.z);
-
+            
             if (this.visibility)
             {
                 this.flags |= TransformData_Flags.EnableVisibility;
@@ -168,12 +166,6 @@
             {
                 this.flags &= ~TransformData_Flags.EnableSelection;
             }
-        }
-
-        public override void OnFinishedExporting()
-        {
-            base.OnFinishedExporting();
-            this.transform.Translation = new Vector3(-this.transform.Translation.x, this.transform.Translation.y, this.transform.Translation.z);
         }
 
         /// <inheritdoc />

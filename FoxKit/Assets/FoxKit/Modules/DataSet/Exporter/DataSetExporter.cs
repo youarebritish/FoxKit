@@ -50,13 +50,35 @@
 
             uint id;
             entityIds.TryGetValue(entity, out id);
-            return Tuple.Create(entity.Address, id);
+            
+            // FIXME HACK
+            var address = entity.Address;
+            if (address == 0)
+            {
+                if (entity is DataElement)
+                {
+                    address = ((entity as DataElement).Owner as Data).DataSet.RequestNewAddress();
+                    entity.Address = address;
+                }
+                else if (entity is DataSet)
+                {
+                    address = (entity as DataSet).RequestNewAddress();
+                    entity.Address = address;
+                }
+                else
+                {
+                    Assert.IsTrue(false, "Unexpected Entity type with no address.");
+                }
+            }
+
+            return Tuple.Create(address, id);
         }
 
         private static IEnumerable<Core.Entity> ConvertEntities(IEnumerable<Entity> entities, Func<Entity, Tuple<ulong, uint>> getEntityAddressAndId)
         {
             return from entity in entities
-                   select ConvertEntity(entity, getEntityAddressAndId(entity).Item1, getEntityAddressAndId(entity).Item2, entity1 => getEntityAddressAndId(entity1).Item1);
+                   let addressAndId = getEntityAddressAndId(entity)
+                   select ConvertEntity(entity, addressAndId.Item1, addressAndId.Item2, entity1 => getEntityAddressAndId(entity1).Item1);
         }
 
         private static Core.Entity ConvertEntity(Entity entity, ulong address, uint id, Func<Entity, ulong> getEntityAddress)

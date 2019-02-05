@@ -48,6 +48,7 @@
             set
             {
                 this.dataSet = value;
+                this.DataSetGuid = value.DataSetGuid;
             }
         }
 

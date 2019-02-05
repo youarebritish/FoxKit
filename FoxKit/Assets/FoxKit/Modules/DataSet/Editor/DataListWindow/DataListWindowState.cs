@@ -5,7 +5,6 @@
     using FmdlStudio.Scripts.MonoBehaviours;
 
     using FoxKit.Modules.DataSet.Fox.FoxCore;
-    using FoxKit.Modules.DataSet.FoxCore;
 
     using OdinSerializer;
     using OdinSerializer.Utilities;
@@ -21,7 +20,6 @@
     [CreateAssetMenu(menuName = "FoxKit/Config/Data List Window State", order = 6)]
     public class DataListWindowState : SerializedScriptableObject
     {
-
         /// <summary>
         /// GUID of the active DataSet.
         /// </summary>
