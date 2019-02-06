@@ -1,6 +1,7 @@
 ﻿namespace FoxKit.Modules.DataSet.Fox.FoxCore
 {
     using OdinSerializer;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using UnityEditor;
@@ -144,8 +145,10 @@
         /// <summary>
         /// Generates addresses for Entities.
         /// </summary>
+        [Serializable]
         private class AddressGenerator
         {
+            [SerializeField]
             private uint previousAddress = 0x10000000u;
 
             /// <summary>
