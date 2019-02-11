@@ -5,11 +5,16 @@ namespace FoxKit.Utils
     using System;
 
     using FoxKit.Core;
+    using FoxKit.Modules.DataSet.Editor;
+    using FoxKit.Modules.DataSet.Editor.DataListWindow;
+    using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.DataSet.FoxCore;
 
     using UnityEditor;
 
     using UnityEngine.Assertions;
+
+    using Object = UnityEngine.Object;
 
     /// <summary>
     /// Helper functions for FoxKit UI.
@@ -20,6 +25,41 @@ namespace FoxKit.Utils
         /// Height and width of FoxKit buttons.
         /// </summary>
         public const float BUTTON_DIMENSION = 32.0f;
+
+        /// <summary>
+        /// Display the read-only asset warning and provide the user with a button to create an editable copy of the asset.
+        /// </summary>
+        /// <typeparam name="T">Type of the asset.</typeparam>
+        /// <param name="asset">The original, read-only asset.</param>
+        /// <param name="setNotReadOnly">Function to set an asset of type T to not read-only.</param>
+        public static void ReadOnlyWarningAndButton<T>(T asset, Action<T> setNotReadOnly) where T : UnityEngine.Object
+        {
+            GUI.enabled = true;
+            EditorGUILayout.HelpBox(
+                "Unity marks imported assets as read-only. To make changes to this asset, create an editable copy.",
+                MessageType.Warning);
+            if (GUILayout.Button("Create Editable Copy", GUILayout.Width(200)))
+            {
+                var duplicate = Object.Instantiate(asset);
+                setNotReadOnly(duplicate);
+
+                var path = EditorUtility.SaveFilePanelInProject(
+                    "Create editable copy",
+                    $"{asset.name}_copy",
+                    "asset",
+                    "Create editable copy");
+
+                if (!string.IsNullOrEmpty(path))
+                {
+                    EditorUtility.SetDirty(duplicate);
+                    AssetDatabase.CreateAsset(duplicate, path);
+                    AssetDatabase.SaveAssets();
+                }
+            }
+
+            EditorGUILayout.Separator();
+            GUI.enabled = false;
+        }
 
         /// <summary>
         /// Draw a FoxKit tool button.
@@ -133,7 +173,7 @@ namespace FoxKit.Utils
             var rawValue = EditorGUI.Vector3Field(position, string.Empty, euler);
             return Quaternion.Euler(rawValue);
         }
-
+        
         public static object EntityPtrField(string label, object value, Type type, Action createNewEntityCallback, Action<Entity> deleteEntityCallback, bool allowSceneObjects = false)
         {
             Assert.IsNotNull(type);
@@ -186,7 +226,7 @@ namespace FoxKit.Utils
             {
                 if (GUI.Button(position, $"Edit ({value.GetType().Name})", EditorStyles.miniButton))
                 {
-                    FoxKitEditor.InspectedEntity = value as Entity;
+                    SingletonScriptableObject<DataListWindowState>.Instance.InspectedEntity = value as Entity;
                 }
             }
             
@@ -201,7 +241,13 @@ namespace FoxKit.Utils
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel(new GUIContent(label));
 
-            var text = value?.GetType().Name ?? $"Null ({type.Name})";
+            var text = $"Null ({type.Name})";
+            if (value != null)
+            {
+                var data = value as Data;
+                text = data != null ? data.Name : value.ToString();
+            }
+
             EditorGUILayout.LabelField(new GUIContent(text), EditorStyles.objectField);
 
             EditorGUILayout.EndHorizontal();
@@ -216,10 +262,123 @@ namespace FoxKit.Utils
             // TODO Select on click
             EditorGUILayout.BeginHorizontal();
 
-            var text = value?.GetType().Name ?? $"Null ({type.Name})";
+            var text = $"Null ({type.Name})";
+            if (value != null)
+            {
+                var data = value as Data;
+                text = data != null ? data.Name : value.ToString();
+            }
+
             EditorGUI.LabelField(position, new GUIContent(text), EditorStyles.objectField);
 
             EditorGUILayout.EndHorizontal();
+
+            return value;
+        }
+
+        public static EntityLink EntityLinkField(string label, EntityLink value, Action<Data> entitySelectedCallback, Action<DataIdentifier, string> onDataIdentifierEntitySelectedCallback)
+        {
+            if (value == null)
+            {
+                value = new EntityLink();
+            }
+            
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PrefixLabel(label);
+
+            // TODO Icon
+            var labelText = "None (EntityLink)";
+            if (value.IsDataIdentifierEntityLink)
+            {
+                labelText = $"{value.NameInArchive} (EntityLink)";
+            }
+            else if (value.Entity != null)
+            {
+                labelText = $"{value.Entity.Name} (EntityLink)";
+            }
+
+            var textFieldStyle = EditorStyles.textField;
+            textFieldStyle.clipping = TextClipping.Clip;
+            if (GUILayout.Button(labelText, textFieldStyle, GUILayout.ExpandWidth(true), GUILayout.MinWidth(0)))
+            {
+                if (value.IsDataIdentifierEntityLink)
+                {
+                    if (value.DataIdentifier != null)
+                    {
+                        //DataListWindow.GetInstance().OpenDataSet(value.DataIdentifier.DataSetGuid, value.DataIdentifier.Name);
+                    }
+                }
+                else
+                {
+                    if (value.Entity != null)
+                    {
+                        DataListWindow.GetInstance().OpenDataSet(value.Entity.DataSetGuid, value.Entity.Name);
+                    }
+                }
+            }
+
+            var editorSkin = EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
+            if (GUILayout.Button(string.Empty, editorSkin.GetStyle("IN ObjectField"), GUILayout.Width(14f)))
+            {
+                SelectEntityWindow.Create(entitySelectedCallback, onDataIdentifierEntitySelectedCallback);
+            }
+
+            EditorGUILayout.EndHorizontal();
+            GUILayout.Space(3);
+            return value;
+        }
+
+        public static EntityLink EntityLinkField(Rect rect, EntityLink value, Action<Data> entitySelectedCallback, Action<DataIdentifier, string> onDataIdentifierEntitySelectedCallback)
+        {
+            if (value == null)
+            {
+                value = new EntityLink();
+            }
+            
+            // TODO Icon
+            var labelText = "None (EntityLink)";
+            if (value.IsDataIdentifierEntityLink)
+            {
+                labelText = $"{value.NameInArchive} (EntityLink)";
+            }
+            else if (value.Entity != null)
+            {
+                labelText = $"{value.Entity.Name} (EntityLink)";
+            }
+
+            var textFieldStyle = EditorStyles.textField;
+            textFieldStyle.clipping = TextClipping.Clip;
+
+            var mainButtonRect = rect;
+            mainButtonRect.width -= 18;
+            if (GUI.Button(mainButtonRect, labelText, textFieldStyle))
+            {
+                if (value.IsDataIdentifierEntityLink)
+                {
+                    if (value.DataIdentifier != null)
+                    {
+                        //DataListWindow.GetInstance().OpenDataSet(value.DataIdentifier.DataSetGuid, value.DataIdentifier.Name);
+                    }
+                }
+                else
+                {
+                    if (value.Entity != null)
+                    {
+                        DataListWindow.GetInstance().OpenDataSet(value.Entity.DataSetGuid, value.Entity.Name);
+                    }
+                }
+            }
+
+            var editorSkin = EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
+            var openButtonRect = rect;
+            openButtonRect.width = 14;
+            openButtonRect.position = new Vector2(
+                mainButtonRect.position.x + mainButtonRect.width + 4,
+                mainButtonRect.position.y);
+            if (GUI.Button(openButtonRect, string.Empty, editorSkin.GetStyle("IN ObjectField")))
+            {
+                SelectEntityWindow.Create(entitySelectedCallback, onDataIdentifierEntitySelectedCallback);
+            }
 
             return value;
         }

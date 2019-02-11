@@ -24,6 +24,26 @@
         public List<RouteNodeEvent> Events = new List<RouteNodeEvent>();
 
         /// <summary>
+        /// Rebuild the route node from its representation in the Unity hierarchy.
+        /// </summary>
+        public void Rebuild()
+        {
+            List<RouteNodeEvent> rebuiltNodeList = new List<RouteNodeEvent>();
+
+            var node = this;
+            for (int c = 0; c < node.transform.childCount; c++)
+            {
+                GameObject childObject = node.transform.GetChild(c).gameObject;
+                if (childObject.GetComponent<RouteNodeEvent>() != null)
+                {
+                    rebuiltNodeList.Add(childObject.GetComponent<RouteNodeEvent>());
+                }
+            }
+
+            node.Events = rebuiltNodeList;
+        }
+
+        /// <summary>
         /// Context menu to add a new node to the Route.
         /// </summary>
         public void AddNewNode()

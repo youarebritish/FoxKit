@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -12,3 +12,7 @@ MonoBehaviour:
   m_Name: TerrainPreferences
   m_EditorClassIdentifier: 
   MaxHeight: 755.0121
+  MinHeight: 188.4435
+  TerrainTileMesh: {fileID: 4300000, guid: 56bc92b457362e6478f2b6d6eafbd723, type: 2}
+  TerrainTileMaterial: {fileID: 2100000, guid: d273bc1e77a46f748a0f3fcf31653389, type: 2}
+  TerrainShader: {fileID: 4800000, guid: 772b23460c7184c4cb34ad822094f53f, type: 3}

@@ -1,5 +1,6 @@
 ﻿namespace FoxKit.Modules.Terrain.Importer
 {
+    using FoxKit.Utils;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -11,7 +12,7 @@
     /// <summary>
     /// ScriptedImporter to handle importing htre files. Currently only imports heightmap data.
     /// </summary>
-    [ScriptedImporter(1, "htre")]
+    [ScriptedImporter(1, "htre", 3)]
     public class TerrainTileImporter : ScriptedImporter
     {
         const int HEIGHTMAP_OFFSET_VERSION4 = 672;
@@ -28,12 +29,32 @@
         /// <param name="ctx"></param>
         public override void OnImportAsset(AssetImportContext ctx)
         {
+            // Get the corresponding TerrainAsset.
+            var baseName = Path.GetFileNameWithoutExtension(ctx.assetPath).Substring(0, 4);
+            var terrainAssets = (from tile in UnityFileUtils.GetAllAssetsOfType<TerrainAsset>()
+                                where tile.name.StartsWith(baseName)
+                                select tile).ToArray();
+
+            if (terrainAssets.Length == 0)
+            {
+                ctx.LogImportError("Corresponding TerrainAsset could not be found for " + ctx.assetPath + ". Did you forget to import its .tre2 file?");
+                return;
+            }
+
+            var terrainAsset = terrainAssets[0];
+
             var heightTiles = new List<float[,]>(4);
             var materialWeightMapTiles = new List<Color[,]>(4);
             var materialIdMapTiles = new List<Color[,]>(4);
             var materialSelectMapTiles = new List<Color[,]>(4);
 
             const int HalfWidth = HEIGHTMAP_WIDTH / 2;
+            
+            var asset = ScriptableObject.CreateInstance<TerrainTileAsset>();
+            asset.name = Path.GetFileNameWithoutExtension(ctx.assetPath);
+
+            ctx.AddObjectToAsset("Main", asset);
+            ctx.SetMainObject(asset);
 
             using (var reader = new BinaryReader(new FileStream(ctx.assetPath, FileMode.Open)))
             {
@@ -63,7 +84,7 @@
                         for (var j = 0; j < HalfWidth; j++)
                         {
                             var height = reader.ReadSingle();
-                            heightValues[j, i] = height / TerrainPreferences.Instance.MaxHeight;
+                            heightValues[j, i] = (height - terrainAsset.HeightRangeMin) / (terrainAsset.HeightRangeMax - terrainAsset.HeightRangeMin);
                         }
                     }
                 }
@@ -133,45 +154,13 @@
                     }
                 }
             }
-                        
-            // Create terrain asset
-            var terrainGo = new GameObject(Path.GetFileNameWithoutExtension(ctx.assetPath));
-            var terrainData = new TerrainData
-            {
-                heightmapResolution = HEIGHTMAP_WIDTH,
-                size = new Vector3(128.0f, TerrainPreferences.Instance.MaxHeight, 128.0f)
-            };            
 
-            terrainData.SetHeights(0, 0, heightTiles[0]);
-            terrainData.SetHeights(HalfWidth, 0, heightTiles[2]);
-
-            terrainData.SetHeights(0, HalfWidth, heightTiles[1]);
-            terrainData.SetHeights(HalfWidth, HalfWidth, heightTiles[3]);
-
-            var terrainCollider = terrainGo.AddComponent<TerrainCollider>();
-            var terrain = terrainGo.AddComponent<Terrain>();
-
-            terrainCollider.terrainData = terrainData;
-            terrain.terrainData = terrainData;
-
-            // Parse name and position based on name
-            var xIndex = int.Parse(terrainGo.name.Substring(5, 3)) - 101;            
-            var zIndex = int.Parse(terrainGo.name.Substring(9, 3)) - 101;
-
-            var tileComponent = terrainGo.AddComponent<TerrainTile>();
-            tileComponent.Level = terrainGo.name.Substring(0, 4);
-            tileComponent.IndexX = xIndex + 101;
-            tileComponent.IndexZ = zIndex + 101;
-
-            terrainGo.transform.position = new Vector3(-4096 + (128 * zIndex), 0, -4096 + (128 * xIndex));
-
-            ctx.AddObjectToAsset(terrainGo.name, terrainGo);
-            ctx.AddObjectToAsset(terrainGo.name, terrainData);
-            ctx.SetMainObject(terrainGo);
+            var name = Path.GetFileNameWithoutExtension(ctx.assetPath);
 
             // Create material weight map.
             var materialWeightMap =
-                new Texture2D(64, 64, TextureFormat.ARGB32, true) { name = terrainGo.name + "_MaterialWeightMap" };
+                new Texture2D(64, 64, TextureFormat.ARGB32, true) { name = name + "_MaterialWeightMap" };
+            materialWeightMap.wrapMode = TextureWrapMode.Clamp;
 
             materialWeightMap.SetPixels(0, 0, HalfWidth, HalfWidth, materialWeightMapTiles[0].Cast<Color>().ToArray());
             materialWeightMap.SetPixels(HalfWidth, 0, HalfWidth, HalfWidth, materialWeightMapTiles[2].Cast<Color>().ToArray());
@@ -179,11 +168,12 @@
             materialWeightMap.SetPixels(0, HalfWidth, HalfWidth, HalfWidth, materialWeightMapTiles[1].Cast<Color>().ToArray());
             materialWeightMap.SetPixels(HalfWidth, HalfWidth, HalfWidth, HalfWidth, materialWeightMapTiles[3].Cast<Color>().ToArray());
 
-            ctx.AddObjectToAsset(terrainGo.name + "MaterialWeightMap", materialWeightMap);
+            ctx.AddObjectToAsset(name + "MaterialWeightMap", materialWeightMap);
 
             // Create material ID map.
             var materialIndicesMap =
-                new Texture2D(2, 2, TextureFormat.ARGB32, true) { name = terrainGo.name + "_MaterialIndicesMap" };
+                new Texture2D(2, 2, TextureFormat.ARGB32, true) { name = name + "_MaterialIndicesMap" };
+            materialIndicesMap.wrapMode = TextureWrapMode.Clamp;
 
             materialIndicesMap.SetPixels(0, 0, 1, 1, materialIdMapTiles[0].Cast<Color>().ToArray());
             materialIndicesMap.SetPixels(1, 0, 1, 1, materialIdMapTiles[2].Cast<Color>().ToArray());
@@ -191,11 +181,12 @@
             materialIndicesMap.SetPixels(0, 1, 1, 1, materialIdMapTiles[1].Cast<Color>().ToArray());
             materialIndicesMap.SetPixels(1, 1, 1, 1, materialIdMapTiles[3].Cast<Color>().ToArray());
 
-            ctx.AddObjectToAsset(terrainGo.name + "MaterialIndicesMap", materialIndicesMap);
+            ctx.AddObjectToAsset(name + "MaterialIndicesMap", materialIndicesMap);
 
             // Create material select map.
             var materialSelectMap =
-                new Texture2D(2, 2, TextureFormat.ARGB32, true) { name = terrainGo.name + "_MaterialSelectMap" };
+                new Texture2D(2, 2, TextureFormat.ARGB32, true) { name = name + "_MaterialSelectMap" };
+            materialSelectMap.wrapMode = TextureWrapMode.Clamp;
 
             materialSelectMap.SetPixels(0, 0, 1, 1, materialSelectMapTiles[0].Cast<Color>().ToArray());
             materialSelectMap.SetPixels(1, 0, 1, 1, materialSelectMapTiles[2].Cast<Color>().ToArray());
@@ -203,7 +194,36 @@
             materialSelectMap.SetPixels(0, 1, 1, 1, materialSelectMapTiles[1].Cast<Color>().ToArray());
             materialSelectMap.SetPixels(1, 1, 1, 1, materialSelectMapTiles[3].Cast<Color>().ToArray());
 
-            ctx.AddObjectToAsset(terrainGo.name + "MaterialSelectMap", materialSelectMap);
+            ctx.AddObjectToAsset(name + "MaterialSelectMap", materialSelectMap);
+
+            // Create heightmap.
+            var heightMap = new Texture2D(HEIGHTMAP_WIDTH, HEIGHTMAP_HEIGHT, TextureFormat.RGBAFloat, true, true);
+            heightMap.name = name + "_Heightmap";
+            heightMap.wrapMode = TextureWrapMode.Clamp;
+            heightMap.filterMode = FilterMode.Bilinear;
+
+            var colors = from height in heightTiles[0].Cast<float>()
+                         select new Color(height, height, height);
+            heightMap.SetPixels(0, 0, HalfWidth, HalfWidth, colors.ToArray());
+
+            colors = from height in heightTiles[2].Cast<float>()
+                     select new Color(height, height, height);
+            heightMap.SetPixels(HalfWidth, 0, HalfWidth, HalfWidth, colors.ToArray());
+
+            colors = from height in heightTiles[1].Cast<float>()
+                     select new Color(height, height, height);
+            heightMap.SetPixels(0, HalfWidth, HalfWidth, HalfWidth, colors.ToArray());
+
+            colors = from height in heightTiles[3].Cast<float>()
+                     select new Color(height, height, height);
+            heightMap.SetPixels(HalfWidth, HalfWidth, HalfWidth, HalfWidth, colors.ToArray());
+
+            ctx.AddObjectToAsset(name + "HeightMap", heightMap);
+            
+            asset.Heightmap = heightMap;
+            asset.MaterialSelectMap = materialSelectMap;
+            asset.MaterialIndicesMap = materialIndicesMap;
+            asset.MaterialWeightMap = materialWeightMap;
         }
 
         /// <summary>

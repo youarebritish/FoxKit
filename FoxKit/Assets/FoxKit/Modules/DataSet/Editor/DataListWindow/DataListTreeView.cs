@@ -2,15 +2,13 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using FoxKit.Modules.DataSet.Fox.FoxCore;
+    using FoxKit.Utils;
 
-    using FoxKit.Core;
-    using FoxKit.Modules.DataSet.FoxCore;
-    
     using UnityEditor;
     using UnityEditor.IMGUI.Controls;
 
     using UnityEngine;
-    using UnityEngine.Assertions;
 
     public class DataListTreeView : TreeView
     {
@@ -46,7 +44,7 @@
         /// For a given tree item ID, what DataSetAsset does it belong to?
         /// </summary>
         [SerializeField]
-        private List<DataSetAsset> idToDataSetMap = new List<DataSetAsset>();
+        private List<EntityFileAsset> idToDataSetMap = new List<EntityFileAsset>();
         
         [SerializeField]
         private DataSet activeDataSet;
@@ -71,22 +69,54 @@
 
         public void SelectItem(Data item)
         {
-            // TODO Scroll to this item
-            var id = this.idToDataMap.IndexOf(item);
+            int id;
+            var foundItem = this.TryGetSelectedIdFromData(item, out id);
+
+            if (!foundItem)
+            {
+                return;
+            }
+
             this.SetSelection(new[]{id}, TreeViewSelectionOptions.FireSelectionChanged | TreeViewSelectionOptions.RevealAndFrame);
+            this.Repaint();
+        }
+
+        private bool TryGetSelectedIdFromData(Data item, out int id)
+        {
+            id = 0;
+            foreach (var entry in this.idToDataMap)
+            {
+                if (entry != null && entry.DataSetGuid == item.DataSetGuid && entry.Name == item.Name)
+                {
+                    return true;
+                }
+
+                id++;
+            }
+
+            return false;
         }
 
         public void HandleDelete()
         {
             var selected = this.GetSelection();
-
+            
             // Only remove a DataSet if all selected are DataSets. Otherwise, delete the selected Entities.
             if (selected.Any(item => !(this.idToDataMap[item] is DataSet)))
             {
                 foreach (var item in selected)
                 {
                     var data = this.idToDataMap[item];
-                    this.activeDataSet.RemoveData(data.Name);
+                    var dataSet = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(data.DataSetGuid));
+                    dataSet.GetDataSet().RemoveData(data.Name);
+
+                    var dataListWindowState = SingletonScriptableObject<DataListWindowState>.Instance;
+                    dataListWindowState.DeleteSceneProxy(data.DataSetGuid, data.Name, DataListWindowState.DestroyGameObject.Destroy);
+
+                    if (dataListWindowState.InspectedEntity == data)
+                    {
+                        dataListWindowState.InspectedEntity = null;
+                    }
                 }
 
                 AssetDatabase.Refresh();
@@ -157,8 +187,12 @@
                 var transformData = this.idToDataMap[id] as TransformData;
                 var sceneProxy = this.getSceneProxy(transformData.DataSetGuid, transformData.Name);
 
-                var sceneProxyPosition = sceneProxy.transform.position;
-                SceneView.lastActiveSceneView.LookAt(sceneProxyPosition);
+                if (sceneProxy == null)
+                {
+                    return;
+                }
+
+                SceneView.lastActiveSceneView.FrameSelected();
             }
         }
 
@@ -189,7 +223,7 @@
             foreach (var dataSetGuid in this.openDataSetGuids)
             {
                 var path = AssetDatabase.GUIDToAssetPath(dataSetGuid);
-                var dataSet = AssetDatabase.LoadAssetAtPath<DataSetAsset>(path);
+                var dataSet = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(path);
                 if (dataSet == null)
                 {
                     Debug.LogWarning($"DataSet {path} could not be loaded or does not exist.");
@@ -205,6 +239,7 @@
                 index++;
                 
                 index = dataSet.GetDataSet().GetDataList().Values
+                    .Where(data => data != null)
                     .Aggregate(index, (current, data) => this.AddData(dataSet, data, dataSetNode, current));
             }
 
@@ -213,7 +248,7 @@
             return root;
         }
 
-        private int AddData(DataSetAsset asset, Data data, TreeViewItem parent, int id)
+        private int AddData(EntityFileAsset asset, Data data, TreeViewItem parent, int id)
         {
             // If we're adding a TransformData entity that has a valid parent, only add it to the tree under its parent.
             // TODO: Consider moving this out and checking for this case before calling AddData().
@@ -245,59 +280,137 @@
                 .Aggregate(id, (current, child) => this.AddData(asset, child, node, current));
         }
 
+        public void UpdateSelection()
+        {
+            this.SelectionChanged(this.GetSelection());
+        }
+        
+        protected override bool CanStartDrag(TreeView.CanStartDragArgs args)
+        {
+            return !args.draggedItemIDs.Select(draggedID => this.idToDataMap[draggedID]).Any(data => data is DataSet);
+        }
+
+        protected override void SetupDragAndDrop(TreeView.SetupDragAndDropArgs args)
+        {
+            DragAndDrop.PrepareStartDrag();
+            DragAndDrop.paths = null;
+            DragAndDrop.objectReferences = new UnityEngine.Object[] { };
+            DragAndDrop.SetGenericData("Items", new List<int>(args.draggedItemIDs));
+            DragAndDrop.visualMode = DragAndDropVisualMode.Move;
+            DragAndDrop.StartDrag("DataListTreeView");
+        }
+
+        protected override DragAndDropVisualMode HandleDragAndDrop(TreeView.DragAndDropArgs args)
+        {
+            var target = args.parentItem;
+            if (target == null)
+            {
+                return DragAndDropVisualMode.Rejected;
+            }
+
+            var targetData = this.idToDataMap[target.id];
+
+            // Eventually handle moving to other DataSets, but not yet
+            if (!(targetData is TransformData))
+            {
+                return DragAndDropVisualMode.Rejected;
+            }
+            
+            if (!args.performDrop)
+            {
+                return DragAndDropVisualMode.Link;
+            }
+
+            foreach (var item in DragAndDrop.GetGenericData("Items") as List<int>)
+            {
+                var data = this.idToDataMap[item] as TransformData;
+
+                // Unity gets mad if we swap parent and child, so don't allow that.
+                if (data == (targetData as TransformData).Parent)
+                {
+                    return DragAndDropVisualMode.Rejected;
+                }
+
+                data.Parent = targetData as TransformData;
+
+                var sceneProxy = this.getSceneProxy(data.DataSetGuid, data.Name);
+                if (sceneProxy == null)
+                {
+                    continue;
+                }
+
+                var parentSceneProxy = this.getSceneProxy(data.Parent.DataSetGuid, data.Parent.Name);
+                if (parentSceneProxy == null)
+                {
+                    continue;
+                }
+
+                sceneProxy.transform.SetParent(parentSceneProxy.transform);
+            }
+
+            this.Reload();
+            DragAndDrop.AcceptDrag();
+            return DragAndDropVisualMode.Link;
+        }
+
         protected override void SelectionChanged(IList<int> selectedIds)
         {
             // TODO handle multiple selections
             var selected = (from id in selectedIds select this.idToDataMap[id]).ToArray();
+            
             if (selected.Length == 0)
             {
-                FoxKitEditor.InspectedEntity = null;
+                SingletonScriptableObject<DataListWindowState>.Instance.InspectedEntity = null;
+                //FoxKitEditor.InspectedEntity = null;
+                return;
             }
 
-            FoxKitEditor.InspectedEntity = selected[0];
-            Selection.objects = (from id in selectedIds select this.idToDataSetMap[id]).ToArray();
+            SingletonScriptableObject<DataListWindowState>.Instance.InspectedEntity = selected[0];
 
-            // TODO refresh inspector somehow
+            // For each TransformData selected, select its scene proxy.
+            var newSelection = new List<UnityEngine.Object>();
+            foreach (var id in selectedIds)
+            {
+                var data = this.idToDataMap[id];
+                var transformData = data as TransformData;
 
-            // TODO 
-            // Lock the inspector to the selected entities so that we can edit the scene proxies without changing the Inspector.
-            /*ActiveEditorTracker.sharedTracker.isLocked = false;
-            Selection.objects = (from id in selectedIds select this.idToDataMap[id]).ToArray();
-            ActiveEditorTracker.sharedTracker.isLocked = true;*/
+                if (data is DataSet)
+                {
+                    var dataSetAsset = AssetDatabase.LoadAssetAtPath<EntityFileAsset>(AssetDatabase.GUIDToAssetPath(data.DataSetGuid));
+                    newSelection.Add(dataSetAsset);
+                    continue;
+                }
+                else if (transformData == null)
+                {
+                    continue;
+                }
 
-            // Replace any selection of TransformDatas with their scene proxies.
-            // TODO: Handle null transforms
-            /*Selection.objects =
-                (from obj in Selection.objects
-                 select (obj as TransformData)?.SceneProxyTransform.gameObject ?? obj)
-                 .ToArray();*/
+                var sceneProxy = this.getSceneProxy(data.DataSetGuid, data.Name);
+                if (sceneProxy != null)
+                {
+                    newSelection.Add(sceneProxy.gameObject);
+                }
+            }
+
+            Selection.objects = newSelection.ToArray();
         }
 
         protected override void ContextClickedItem(int id)
         {
             // For the time being, we only care about right clicking on the DataSet, not its children.
             // So, don't open the menu if the user didn't right click on a DataSet.
-            if (!this.dataSetTreeIds.Contains(id))
+            var selectedDataSets = from treeId in this.GetSelection()
+                                   where this.dataSetTreeIds.Contains(treeId)
+                                   select this.idToDataMap[treeId] as DataSet;
+
+            var clickedDataSet = this.idToDataMap[id] as DataSet;
+            if (clickedDataSet == null)
             {
                 return;
             }
 
-            var dataSet = this.idToDataMap[id] as DataSet;
-
-            /*foreach (var guid in AssetDatabase.FindAssets($"t:{typeof(DataSetAsset).Name}"))
-            {
-                var assetPath = AssetDatabase.GUIDToAssetPath(guid);
-                var asset = AssetDatabase.LoadAssetAtPath(assetPath, typeof(DataSetAsset));
-                if (asset.name != dataSet.OwningDataSetName)
-                {
-                    continue;
-                }
-
-                DataListWindow.GetInstance().MakeShowItemContextMenuDelegate()(guid, dataSet);
-                return;
-            }*/
-
-            DataListWindow.GetInstance().MakeShowItemContextMenuDelegate()(dataSet.DataSetGuid, dataSet);
+            DataListWindow.GetInstance()
+                .MakeShowItemContextMenuDelegate()(clickedDataSet, selectedDataSets.ToList());
         }
         
         public void SelectDataSet(DataSet dataSet)
@@ -308,11 +421,11 @@
         
         public void RemoveDataSet(object id)
         {
-            // TODO: Does this actually do anything?
-            /*var dataSetId = (int)id;
-            var dataSet = this.idToDataMap[dataSetId] as DataSet;
-            Assert.IsNotNull(dataSet);*/
-            
+            var dataListWindowState = SingletonScriptableObject<DataListWindowState>.Instance;
+            if (dataListWindowState.InspectedEntity == id as DataSet)
+            {
+                dataListWindowState.InspectedEntity = null;
+            }
             this.Reload();
         }
 

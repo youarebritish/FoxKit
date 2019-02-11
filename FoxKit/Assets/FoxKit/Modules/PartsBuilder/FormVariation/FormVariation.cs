@@ -16,6 +16,9 @@
         [NonSerialized, OdinSerialize]
         public List<FormVariationOptionSet> Types = new List<FormVariationOptionSet>();
 
+        [HideInInspector]
+        public bool IsReadOnly;
+
         /// <summary>
         /// Makes a FoxKit FormVariation from a FoxLib FormVariation.
         /// </summary>

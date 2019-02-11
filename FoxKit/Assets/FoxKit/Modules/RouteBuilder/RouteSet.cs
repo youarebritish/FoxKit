@@ -26,6 +26,9 @@ public class RouteSet : MonoBehaviour
     /// All of the Routes contained within this RouteSet.
     /// </summary>
     public List<Route> Routes = new List<Route>();
+
+    [HideInInspector]
+    public bool IsReadOnly;
          
     /// <summary>
     /// Registers a RouteNodeEvent instance.

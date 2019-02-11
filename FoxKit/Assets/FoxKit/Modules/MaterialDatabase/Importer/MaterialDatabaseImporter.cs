@@ -28,6 +28,7 @@
 
             var materialDatabase = UnityEngine.ScriptableObject.CreateInstance<MaterialDatabase>();
 
+            materialDatabase.IsReadOnly = true;
             materialDatabase.materialPresets = (from preset in materialPresets select new MaterialPreset(preset)).ToArray();
 
             ctx.AddObjectToAsset("fmtt", materialDatabase);

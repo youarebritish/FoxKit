@@ -20,8 +20,6 @@
         private static readonly List<RouteEdgeEventType> HashedEventNames = new List<RouteEdgeEventType>()
         {
             RouteEdgeEventType.Unknown41204288,
-            RouteEdgeEventType.Unknown4125130163,
-            RouteEdgeEventType.Unknown728879063,
         };
 
         /// <summary>

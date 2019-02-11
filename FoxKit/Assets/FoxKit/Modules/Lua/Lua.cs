@@ -3,7 +3,6 @@
 ** Lua stand-alone interpreter
 ** See Copyright Notice in lua.h
 */
-
 namespace KopiLua
 {
     using System;

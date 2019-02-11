@@ -32,10 +32,11 @@
             unityTexture.anisoLevel = 0;
             unityTexture.wrapMode = UnityEngine.TextureWrapMode.Clamp;
 
-            SkyParameters skyParameters = UnityEngine.ScriptableObject.CreateInstance<SkyParameters>();
+            var skyParameters = UnityEngine.ScriptableObject.CreateInstance<SkyParameters>();
 
             skyParameters.precomputedSkyParameters = unityTexture;
             skyParameters.name = Path.GetFileNameWithoutExtension(assetPath);
+            skyParameters.IsReadOnly = true;
 
             ctx.AddObjectToAsset("pcsp", skyParameters);
             ctx.SetMainObject(skyParameters);

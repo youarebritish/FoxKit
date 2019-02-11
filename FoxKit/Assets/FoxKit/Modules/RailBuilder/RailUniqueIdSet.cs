@@ -9,5 +9,8 @@
     public class RailUniqueIdSet : ScriptableObject
     {
         public uint[] Ids = new uint[0];
+
+        [HideInInspector]
+        public bool IsReadOnly;
     }
 }

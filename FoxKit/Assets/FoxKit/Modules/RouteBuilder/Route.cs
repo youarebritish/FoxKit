@@ -38,6 +38,34 @@
         }
 
         /// <summary>
+        /// Context menu to add a new node to the Route.
+        /// </summary>
+        public void AddNewNode(int index)
+        {
+            CreateRouteSetEditor.CreateNewNode(this, index);
+        }
+
+        /// <summary>
+        /// Rebuild the route from its representation in the Unity hierarchy.
+        /// </summary>
+        public void Rebuild()
+        {
+            List<RouteNode> rebuiltNodeList = new List<RouteNode>();
+
+            var route = this;
+            for (int c = 0; c < route.transform.childCount; c++)
+            {
+                GameObject childObject = route.transform.GetChild(c).gameObject;
+                if (childObject.GetComponent<RouteNode>() != null)
+                {
+                    rebuiltNodeList.Add(childObject.GetComponent<RouteNode>());
+                }
+            }
+
+            route.Nodes = rebuiltNodeList;
+        }
+
+        /// <summary>
         /// Draw the Route's gizmos in the scene view.
         /// </summary>
         void OnDrawGizmos()
@@ -100,7 +128,16 @@
             {
                 return true;
             }
-            return Nodes.Any(node => Selection.Contains(node.gameObject));
+            try
+            {
+                return Nodes.Any(node => Selection.Contains(node.gameObject));
+            }
+            catch (MissingReferenceException)
+            {
+                Debug.LogWarning("One or more nodes in this route is missing. Rebuilding, then trying again.");
+                this.Rebuild();
+                return Nodes.Any(node => Selection.Contains(node.gameObject));
+            }
         }
     }
 }

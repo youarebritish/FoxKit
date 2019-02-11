@@ -1,26 +1,16 @@
-﻿using System;
+﻿using System.Collections.Generic;
 
-using FoxKit.Modules.DataSet.FoxCore;
+using FoxKit.Modules.DataSet.Fox.FoxCore;
+using FoxKit.Modules.DataSet.Fox.FoxGameKit;
 
-using OdinSerializer;
-
-using UnityEngine;
-
-[CreateAssetMenu(fileName = "New DataSet", menuName = "FoxKit/DataSet", order = 1)]
-public class DataSetAsset : SerializedScriptableObject
+public class DataSetAsset : EntityFileAsset
 {
-    [OdinSerialize, NonSerialized]
-    private DataSet DataSet = new DataSet();
-    
-    public bool IsReadOnly;
+    /// <inheritdoc />
+    public override string Extension => "fox2";
 
-    public DataSet GetDataSet()
+    protected override IEnumerable<Data> MakeInitialEntities()
     {
-        return this.DataSet;
-    }
-
-    public void SetDataSet(DataSet dataSet)
-    {
-        this.DataSet = dataSet;
+        var texturePackLoadConditioner = new TexturePackLoadConditioner { Name = "TexturePackLoadConditioner0000" };
+        return new[] { texturePackLoadConditioner };
     }
 }

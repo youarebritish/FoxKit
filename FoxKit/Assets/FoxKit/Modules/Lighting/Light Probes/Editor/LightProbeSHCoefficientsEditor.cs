@@ -1,19 +1,21 @@
 ﻿namespace FoxKit.Modules.Lighting.Atmosphere
 {
+    using FoxKit.Modules.Lighting.LightProbes;
     using System;
     using System.Collections.Generic;
-
+    using System.Linq;
     using UnityEditor;
 
     using UnityEngine;
 
-    [CustomEditor(typeof(LightProbeSHCoefficients))]
+    [CustomEditor(typeof(LightProbeSHCoefficientsAsset))]
     public class LightProbeSHCoefficientsEditor : Editor
     {
         PreviewRenderUtility previewUtility;
-        LightProbeSHCoefficients previewObject;
+        LightProbeSHCoefficientsAsset previewObject;
 
         private Material material;
+        private int selectedProbeIndex;
 
         static Mesh s_SphereMesh;
 
@@ -32,7 +34,15 @@
             previewUtility.camera.transform.position = new Vector3(0, 0, 2);
             previewUtility.camera.transform.LookAt(Vector3.up);
 
-            this.previewObject = (LightProbeSHCoefficients)this.target;
+            this.previewObject = (LightProbeSHCoefficientsAsset)this.target;
+        }
+
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+
+            GUI.enabled = true;
+            this.selectedProbeIndex = EditorGUILayout.Popup("Preview", this.selectedProbeIndex, (from probe in this.previewObject.LightProbes select probe.Name).ToArray());
         }
 
         void Awake()
@@ -53,7 +63,7 @@
 
         public override bool HasPreviewGUI()
         {
-            return this.previewObject.Coefficients.Count > 0;
+            return this.previewObject.LightProbes.Count > 0;
         }
 
         public override void OnPreviewGUI(Rect r, GUIStyle background)
@@ -65,8 +75,8 @@
                     "_ParamSH",
                     new[]
                         {
-                            this.previewObject.Coefficients[previewCoefficientSetIndex].TermR, this.previewObject.Coefficients[previewCoefficientSetIndex].TermG,
-                            this.previewObject.Coefficients[previewCoefficientSetIndex].TermB, this.previewObject.Coefficients[previewCoefficientSetIndex].SkyOcclusion
+                            this.previewObject.LightProbes[this.selectedProbeIndex].CoefficientsSets[previewCoefficientSetIndex].TermR, this.previewObject.LightProbes[this.selectedProbeIndex].CoefficientsSets[previewCoefficientSetIndex].TermG,
+                            this.previewObject.LightProbes[this.selectedProbeIndex].CoefficientsSets[previewCoefficientSetIndex].TermB, this.previewObject.LightProbes[this.selectedProbeIndex].CoefficientsSets[previewCoefficientSetIndex].SkyOcclusion
                         });
             }
 
@@ -86,7 +96,7 @@
             GUILayout.Box(s_ExposureLow, s_PreLabel, GUILayout.MaxWidth(20));
             GUI.changed = false;
             this.previewExposure = GUILayout.HorizontalSlider(this.previewExposure, 0f, 1f, GUILayout.MaxWidth(100));
-            this.previewCoefficientSetIndex = Mathf.RoundToInt(GUILayout.HorizontalSlider(this.previewCoefficientSetIndex, 0, this.previewObject.Coefficients.Count - 1, GUILayout.MaxWidth(100)));
+            this.previewCoefficientSetIndex = Mathf.RoundToInt(GUILayout.HorizontalSlider(this.previewCoefficientSetIndex, 0, this.previewObject.LightProbes[this.selectedProbeIndex].CoefficientsSets.Count - 1, GUILayout.MaxWidth(100)));
         }
 
         static GUIContent s_MipMapLow;

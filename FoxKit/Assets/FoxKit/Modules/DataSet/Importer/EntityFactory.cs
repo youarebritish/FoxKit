@@ -2,6 +2,7 @@
 {
     using System;
 
+    using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.DataSet.FoxCore;
 
     using FoxLib;
@@ -101,7 +102,7 @@
             /// <returns>
             /// The Entity with the given address.
             /// </returns>
-            public delegate Entity GetEntityFromAddressDelegate(ulong address);
+            public delegate dynamic GetEntityFromAddressDelegate(ulong address);
 
             /// <summary>
             /// Gets the function to get an Entity from its address.

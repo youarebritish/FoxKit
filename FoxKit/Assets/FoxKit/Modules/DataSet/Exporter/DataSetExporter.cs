@@ -2,15 +2,18 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
 
-    using FoxKit.Modules.DataSet.FoxCore;
+    using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Utils;
 
     using FoxLib;
 
     using UnityEngine.Assertions;
+
+    using Debug = UnityEngine.Debug;
 
     /// <summary>
     /// Collection of helper functions for exporting Entities to DataSetFile2 format.
@@ -18,55 +21,60 @@
     public static class DataSetExporter
     {
         // TODO Refactor out
-        private static Dictionary<Entity, Tuple<uint, uint>> entityAddressesAndIds = new Dictionary<Entity, Tuple<uint, uint>>();
+        private static Dictionary<Entity, uint> entityIds = new Dictionary<Entity, uint>();
 
         public static void ExportDataSet(List<Entity> entities, string exportPath)
         {
             Assert.IsNotNull(exportPath, "exportPath must not be null.");
 
-            Func<Tuple<uint, uint>> generateAddressAndId = new ClassAddressAndIdGenerator().Next;
-
-            entityAddressesAndIds = new Dictionary<Entity, Tuple<uint, uint>>();
+            Func<uint> generateId = new IdGenerator().Next;
+            entityIds = new Dictionary<Entity, uint>();
             foreach (var entity in entities)
             {
-                entityAddressesAndIds.Add(entity, generateAddressAndId());
+                entityIds.Add(entity, generateId());
             }
             
             var convertedEntities = ConvertEntities(entities, GetEntityAddressAndId).ToList();
-
             using (var writer = new BinaryWriter(new FileStream(exportPath, FileMode.Create)))
             {
                 DataSetFile2.Write(convertedEntities, CreateWriteFunctions(writer));
             }
         }
 
-        private static Tuple<uint, uint> GetEntityAddressAndId(Entity entity)
+        private static Tuple<ulong, uint> GetEntityAddressAndId(Entity entity)
         {
             if (entity == null)
             {
-                return Tuple.Create(0u, 0u);
+                return Tuple.Create(0ul, 0u);
             }
 
-            Tuple<uint, uint> record;
-            return entityAddressesAndIds.TryGetValue(entity, out record) ? record : Tuple.Create(0u, 0u);
+            uint id;
+            entityIds.TryGetValue(entity, out id);
+            return Tuple.Create(entity.Address, id);
         }
 
-        private static IEnumerable<Core.Entity> ConvertEntities(IEnumerable<Entity> entities, Func<Entity, Tuple<uint, uint>> getEntityAddressAndId)
+        private static IEnumerable<Core.Entity> ConvertEntities(IEnumerable<Entity> entities, Func<Entity, Tuple<ulong, uint>> getEntityAddressAndId)
         {
             return from entity in entities
                    select ConvertEntity(entity, getEntityAddressAndId(entity).Item1, getEntityAddressAndId(entity).Item2, entity1 => getEntityAddressAndId(entity1).Item1);
         }
 
-        private static Core.Entity ConvertEntity(Entity entity, uint address, uint id, Func<Entity, ulong> getEntityAddress)
+        private static Core.Entity ConvertEntity(Entity entity, ulong address, uint id, Func<Entity, ulong> getEntityAddress)
         {
-            return new Core.Entity(
+            entity.OnPreparingToExport();
+
+            var convertedEntity = new Core.Entity(
                 entity.GetType().Name,
-                address,
+                (uint)address,
                 id,
                 entity.ClassId,
                 entity.Version,
                 entity.MakeWritableStaticProperties(getEntityAddress, DataSetUtils.MakeEntityLink).ToArray(),
                 entity.MakeWritableDynamicProperties(getEntityAddress).ToArray());
+
+            entity.OnFinishedExporting();
+
+            return convertedEntity;
         }
 
         private static DataSetFile2.WriteFunctions CreateWriteFunctions(BinaryWriter writer)
@@ -108,17 +116,14 @@
             writer.Write(zeroes);
         }
 
-        private class ClassAddressAndIdGenerator
+        private class IdGenerator
         {
-            private uint previousAddress = 0x10000000u;
             private uint previousId = 0u;
 
-            public Tuple<uint, uint> Next()
+            public uint Next()
             {
-                this.previousAddress += 0x70;
                 this.previousId++;
-
-                return Tuple.Create(this.previousAddress, this.previousId);
+                return this.previousId;
             }
         }
     }

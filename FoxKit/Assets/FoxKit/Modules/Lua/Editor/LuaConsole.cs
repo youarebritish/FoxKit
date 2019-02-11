@@ -4,7 +4,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using System.Text.RegularExpressions;
 
+    using FoxKit.Modules.DataSet.Fox.FoxCore;
     using FoxKit.Modules.DataSet.FoxCore;
 
     using FoxLib;
@@ -14,6 +16,9 @@
     using UnityEngine;
 
     using static KopiLua.Lua;
+
+    using Application = FoxKit.Modules.DataSet.Fox.FoxCore.Application;
+    using Vector3 = UnityEngine.Vector3;
 
     public class LuaConsole : EditorWindow
     {
@@ -25,71 +30,94 @@
             window.Show();
         }
         
-        private static readonly luaL_Reg[] printlib = { new luaL_Reg("print", l_my_print), new luaL_Reg(null, null), };
-
         private void OnEnable()
         {
             if (this.L != null)
             {
                 return;
             }
-
-            this.L = lua_open();
-            luaL_openlibs(this.L);
-
-            // Overwrite default print() function to write to Debug.Log().
-            lua_getglobal(this.L, "_G");
-            luaL_register(this.L, null, printlib);
-
+            
+            var luaVM = LuaVM.Create();
+            this.L = luaVM.L;
+            
             ExposeNativeTypes(this.L);
         }
-
+        
         private void ExposeNativeTypes(lua_State L)
         {
-            var typesToExpose =
-                from a in AppDomain.CurrentDomain.GetAssemblies()
-                from t in a.GetTypes()
-                let attributes = t.GetCustomAttributes(typeof(ExposeClassToLuaAttribute), true)
-                where attributes != null && attributes.Length > 0
-                select new
-                           {
-                               Type = t, FunctionsToExpose = from m in t.GetMethods()
-                                                             let mAttributes = m.GetCustomAttributes(typeof(ExposeMethodToLuaAttribute), true)
-                                                             where mAttributes != null && mAttributes.Length > 0
-                                                             select m
-                           };
+            var typesToExpose = from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                from type in assembly.GetTypes()
+                                let attributes = type.GetCustomAttributes(typeof(ExposeClassToLuaAttribute), true)
+                                where attributes != null && attributes.Length > 0
+                                select new
+                                           {
+                                               Type = type,
+                                               FunctionsToExpose =
+                                               from method in type.GetMethods(BindingFlags.NonPublic) // TODO get parent type methods too
+                                               let mAttributes =
+                                                   method.GetCustomAttributes(typeof(ExposeMethodToLuaAttribute), true)
+                                               where mAttributes != null && mAttributes.Length > 0
+                                               select method
+                                           };
 
             foreach (var typeToExpose in typesToExpose)
             {
                 CreateMetatableForType(L, typeToExpose.Type);
-                this.constructors.Add(typeToExpose.Type, CreateConstructor(typeToExpose.Type, typeToExpose.FunctionsToExpose));
+                //this.constructors.Add(typeToExpose.Type, CreateConstructor(typeToExpose.Type, typeToExpose.FunctionsToExpose));
+
+                lua_pushcclosure(L, TestConstructor, 0);
+                lua_setfield(L, -2, "__call");
+
+                // Define methods here
+                //ExposeInstanceMethod(L, "ToString", )
+
+                // Remove the newly-created Entity table from the stack.
+                lua_pop(L, -1);
             }
+        }
+
+        private static void LuaPushObject(lua_State L, object obj)
+        {
+            lua_pushlightuserdata(L, obj);
+        }
+
+        private int TestConstructor(lua_State l)
+        {
+            var application = new Application();
+            LuaPushObject(l, application);
+            return 1;
+        }
+
+        private int TestMethod(lua_State l)
+        {
+            lua_pushstring(l, "test");
+            return 1;
         }
 
         private static Action<lua_State> CreateConstructor(Type type, IEnumerable<MethodInfo> methods)
         {
             return L =>
                 {
-                    var newEntity = lua_newuserdata(L, typeof(Entity)) as Entity;
-                    lua_getglobal(L, "Entity");
+                    var newEntity = lua_newuserdata(L, type);
+                    lua_getglobal(L, type.Name);
                     lua_setmetatable(L, -2);
 
                     foreach (var method in methods)
                     {
                         // TODO Check for instance vs static, for now assume all are instance
+                        // TODO Get constructor, if any
                         ExposeInstanceMethod(L, method.Name, method);
                     }
                 };
         }
 
-        private Dictionary<Type, Action<lua_State>> constructors = new Dictionary<Type, Action<lua_State>>();
+        private readonly Dictionary<Type, Action<lua_State>> constructors = new Dictionary<Type, Action<lua_State>>();
 
         private static void CreateMetatableForType(lua_State L, Type type)
         {
             var className = type.Name;
 
             // Create a new global table for the type.
-            // TODO get if exists
             lua_pushliteral(L, className);
             lua_type(L, -1);
             lua_settop(L, -2);
@@ -108,7 +136,9 @@
             lua_setmetatable(L, -2);
 
             // TODO handle __index, __newindex
-            // TODO This leaves the Entity table on the stack
+
+            // Remove the newly-created Entity table from the stack.
+            //lua_pop(L, -1);
         }
         
         private class MethodContext
@@ -166,46 +196,73 @@
 
         private void DrawCommandPane()
         {
-            this.text = EditorGUILayout.TextArea(this.text, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true));
+            var style = EditorStyles.textArea;
+            style.richText = true;
+            this.text = EditorGUILayout.TextArea(this.text, style, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true));
         }
         
         void DrawToolbar()
         {
             EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
+
+            GUI.SetNextControlName("Load");
             if (GUILayout.Button("Load Script", EditorStyles.toolbarButton))
             {
-                OnMenu_Create();
-                EditorGUIUtility.ExitGUI();
+                OnMenu_Load();
+                GUI.FocusControl("Load");
             }
+
             if (GUILayout.Button("Save Script", EditorStyles.toolbarButton))
             {
-                OnMenu_Create();
-                EditorGUIUtility.ExitGUI();
+                OnMenu_Save();
             }
+
+            GUI.SetNextControlName("Clear");
             if (GUILayout.Button("Clear", EditorStyles.toolbarButton))
             {
-                OnMenu_Create();
-                EditorGUIUtility.ExitGUI();
+                OnMenu_Clear();
+                GUI.FocusControl("Clear");
             }
+
             if (GUILayout.Button("Execute", EditorStyles.toolbarButton))
             {
                 Execute();
-                EditorGUIUtility.ExitGUI();
             }
             
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
-            return;
         }
 
-        void OnMenu_Create()
+        void OnMenu_Save()
         {
-            // Do something!
+            var path = EditorUtility.SaveFilePanelInProject("Save Lua script", null, "lua", "Enter a file name for the script.");
+            if (path.Length == 0)
+            {
+                return;
+            }
+
+            System.IO.File.WriteAllText(path, this.text);
+            AssetDatabase.Refresh();
+        }
+
+        void OnMenu_Load()
+        {
+            var path = EditorUtility.OpenFilePanel("Load Lua script", "", "lua");
+            if (path.Length != 0)
+            {
+                var fileContent = System.IO.File.ReadAllText(path);
+                this.text = fileContent;
+            }
+        }
+
+        void OnMenu_Clear()
+        {
+            this.text = string.Empty;
         }
 
         private void Execute()
         {
-            int result = luaL_loadbuffer(L, this.text, (uint)strlen(this.text), null);
+            var result = luaL_loadbuffer(L, this.text, (uint)strlen(this.text), null);
             if (result == 0)
             {
                 result = lua_pcall(L, 0, LUA_MULTRET, 0);
@@ -224,27 +281,7 @@
                 printError(L);
             }
         }
-
-        private static int l_my_print(lua_State L)
-        {
-            int nargs = lua_gettop(L);
-
-            for (var i = 1; i <= nargs; i++)
-            {
-                if (lua_isstring(L, i) == 1)
-                {
-                    /* Pop the next arg using lua_tostring(L, i) and do your print */
-                    Debug.Log(lua_tostring(L, i));
-                }
-                else
-                {
-                    /* Do something with non-strings if you like */
-                }
-            }
-
-            return 0;
-        }
-
+        
         private static int traceback(lua_State L)
         {
             lua_getfield(L, LUA_GLOBALSINDEX, "debug");
@@ -259,16 +296,6 @@
         private static void printError(lua_State L)
         {
             Debug.LogError(luaL_checkstring(L, -1));
-        }
-
-        void OnTools_OptimizeSelected()
-        {
-            // Do something!
-        }
-
-        void OnTools_Help()
-        {
-            Help.BrowseURL("http://example.com/product/help");
         }
 
         static bool luaL_dostring(lua_State L, CharPtr s)
