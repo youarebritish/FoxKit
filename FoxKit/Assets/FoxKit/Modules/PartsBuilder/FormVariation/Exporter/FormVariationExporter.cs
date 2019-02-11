@@ -4,8 +4,6 @@
 
     using UnityEngine.Assertions;
 
-    using FoxKit.Core;
-
     public static class FormVariationExporter
     {
         /// <summary>
@@ -17,11 +15,7 @@
         {
             Assert.IsNotNull(exportPath, "exportPath must not be null.");
 
-            StrCode32HashManager nameHashManager = new StrCode32HashManager();
-
-            PathFileNameCode64HashManager fileHashManager = new PathFileNameCode64HashManager();
-
-            FoxLib.FormVariation.FormVariation foxLibFormVariation = FormVariation.MakeFoxLibFormVariation(foxKitFormVariation, nameHashManager, fileHashManager);
+            FoxLib.FormVariation.FormVariation foxLibFormVariation = foxKitFormVariation.Convert();
 
             using (var writer = new BinaryWriter(new FileStream(exportPath, FileMode.Create)))
             {
