@@ -537,6 +537,11 @@
                 }
 
                 var prefab = PrefabUtility.GetCorrespondingObjectFromSource(model.gameObject);
+                if (prefab == null)
+                {
+                    return;
+                }
+
                 GenerateEntityNameDelegate generateName = id => $"{prefab.name}_{id:D4}";
 
                 // New model was added to the scene. Add it to the active DataSet.
