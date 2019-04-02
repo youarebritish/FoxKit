@@ -112,6 +112,7 @@
         /// </param>
         public void Initialize(Core.Entity entityData, EntityFactory.EntityInitializeFunctions initFunctions)
         {
+            this.Address = entityData.Address;
             this.ReadStaticProperties(entityData.StaticProperties, initFunctions);
 
             foreach (var unused in entityData.DynamicProperties)

@@ -64,7 +64,13 @@ namespace FoxKit.Utils
         /// <returns>The Fox Engine Quaternion.</returns>
         public static Core.Quaternion UnityToFox(Quaternion unityQuaternion)
         {
-            return new Core.Quaternion(unityQuaternion.x, -unityQuaternion.y, unityQuaternion.z, unityQuaternion.w);
+            var angle = 0.0f;
+            var axis = Vector3.zero;
+            unityQuaternion.ToAngleAxis(out angle, out axis);
+            axis.x = -axis.x;
+
+            var newQuat = Quaternion.AngleAxis(-angle, axis);
+            return new Core.Quaternion(newQuat.x, newQuat.y, newQuat.z, newQuat.w);
         }
 
         /// <summary>
@@ -74,7 +80,14 @@ namespace FoxKit.Utils
         /// <returns>The Unity Quaternion.</returns>
         public static Quaternion FoxToUnity(Core.Quaternion foxQuat)
         {
-            return new Quaternion(foxQuat.X, -foxQuat.Y, foxQuat.Z, foxQuat.W);
+            var angle = 0.0f;
+            var axis = Vector3.zero;
+            var unityQuaternion = new Quaternion(foxQuat.X, foxQuat.Y, foxQuat.Z, foxQuat.W);
+            unityQuaternion.ToAngleAxis(out angle, out axis);
+            axis.x = -axis.x;
+
+            var newQuat = Quaternion.AngleAxis(-angle, axis);
+            return new Quaternion(newQuat.x, newQuat.y, newQuat.z, newQuat.w);
         }
 
         /// <summary>
