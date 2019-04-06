@@ -16,6 +16,7 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
     using UnityEditor.Experimental.AssetImporters;
 
     using Rotorz.Games.Collections;
+    using FoxKit.Core.WIP;
 
     /// <summary>
     /// Custom editor for FormVariations.
@@ -25,12 +26,25 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
     {
         #region Properties
         private FormVariation myTarget;
+        private FormVariationCategory currentCategory = FormVariationCategory.STATIC;
+        private FormVariationOptionSet currentOptionSet;
+        private FormVariationOptionSetOption currentOption;
+        private int optionIndex = 0;
         private int toolbarStatus = 0;
+        private static GUIStyle categoryIndexFieldStyle;
+        private static GUIStyle categoryMaxLabelStyle;
         #endregion
 
         public void OnEnable()
         {
             myTarget = this.target as FormVariation;
+            currentOptionSet = myTarget.Options[currentCategory];
+            currentOption = currentOptionSet.Options[optionIndex];
+
+            categoryIndexFieldStyle = EditorStyles.textField;
+            categoryIndexFieldStyle.alignment = TextAnchor.MiddleRight;
+            categoryMaxLabelStyle = EditorStyles.label;
+            categoryMaxLabelStyle.alignment = TextAnchor.MiddleLeft;
         }
 
         public override void OnInspectorGUI()
@@ -39,9 +53,12 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
 
             EditorGUILayout.Space();
 
-            EditorGUILayout.Popup(0, new string[] { "Eye Colour", "Skin Colour", "Static" });
+            DrawCategory();
 
             EditorGUILayout.Space();
+
+            if (currentCategory != FormVariationCategory.STATIC)
+                DrawOptionSelector(EditorGUILayout.GetControlRect(false, 40));
 
             DrawToolbar();
 
@@ -52,16 +69,16 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
             {
                 case 0:
                     //EditorGUILayout.BeginHorizontal();
-                    DrawProperties("Hide", myTarget.HiddenMeshGroups, DrawMeshGroup);
-                    DrawProperties("Show", myTarget.ShownMeshGroups, DrawMeshGroup);
+                    DrawProperties("Hide", currentOption.HiddenMeshGroups, DrawMeshGroup);
+                    DrawProperties("Show", currentOption.ShownMeshGroups, DrawMeshGroup);
                     //EditorGUILayout.EndHorizontal();
                     break;
                 case 1:
-                    DrawProperties("Texture Swaps", myTarget.TextureSwaps, DrawTextureSwap);
+                    DrawProperties("Texture Swaps", currentOption.TextureSwaps, DrawTextureSwap);
                     break;
                 default:
-                    DrawProperties("Bone Attachments", myTarget.BoneAttachments, DrawBoneAttachment);
-                    DrawProperties("CNP Attachments", myTarget.CNPAttachments, DrawCNPAttachment);
+                    DrawProperties("Bone Attachments", currentOption.BoneAttachments, DrawBoneAttachment);
+                    DrawProperties("CNP Attachments", currentOption.CNPAttachments, DrawCNPAttachment);
                     break;
             }
 
@@ -88,12 +105,58 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
             }
         }
 
+        private void DrawCategory()
+        {
+            UpdateCurrentCategory((FormVariationCategory)EditorGUILayout.EnumPopup(currentCategory));
+        }
+
         private void DrawToolbar()
         {
             EditorGUILayout.Space();
 
-            var toolbarTitles = new string[] { $"Visibility ({myTarget.HiddenMeshGroups.Count + myTarget.ShownMeshGroups.Count})", $"Texture Swaps ({myTarget.TextureSwaps.Count})", $"Attachments ({myTarget.BoneAttachments.Count + myTarget.CNPAttachments.Count})" };
+            var toolbarTitles = new string[] { $"Visibility ({currentOption.HiddenMeshGroups.Count + currentOption.ShownMeshGroups.Count})", $"Texture Swaps ({currentOption.TextureSwaps.Count})", $"Attachments ({currentOption.BoneAttachments.Count + currentOption.CNPAttachments.Count})" };
             toolbarStatus = GUILayout.Toolbar(toolbarStatus, toolbarTitles);
+        }
+
+        private void DrawOptionSelector(Rect rect)
+        {
+            Rect previousRect = rect;
+            previousRect.width = previousRect.height;
+            if (GUI.Button(previousRect, "<<") && optionIndex > 0)
+            {
+                UpdateCurrentOption(optionIndex - 1);
+            }
+
+            Rect optionIndexRect = previousRect;
+            optionIndexRect.x += optionIndexRect.width + 4.0f;
+            optionIndex = EditorGUI.IntField(optionIndexRect, optionIndex + 1, categoryIndexFieldStyle) - 1;
+
+            Rect optionIndexMaxRect = optionIndexRect;
+            optionIndexMaxRect.x += optionIndexMaxRect.width;
+            EditorGUI.LabelField(optionIndexMaxRect, $"of {currentOptionSet.Options.Count}", categoryMaxLabelStyle);
+
+            Rect nextRect = optionIndexMaxRect;
+            nextRect.x += nextRect.width + 4.0f;
+            if (GUI.Button(nextRect, ">>") && optionIndex != currentOptionSet.Options.Count - 1)
+            {
+                UpdateCurrentOption(optionIndex + 1);
+            }
+
+            Rect removeRect = nextRect;
+            removeRect.x += removeRect.width + 4.0f;
+            if (GUI.Button(removeRect, "-") && currentOptionSet.Options.Count > 1)
+            {
+                currentOptionSet.Options.RemoveAt(optionIndex);
+                UpdateCurrentOption(optionIndex - 1);
+            }
+
+            Rect addRect = removeRect;
+            addRect.x += addRect.width + 4.0f;
+            if (GUI.Button(addRect, "+"))
+            {
+                currentOptionSet.Options.Add(new FormVariationOptionSetOption());
+                UpdateCurrentOptionLast();
+            }
         }
 
         private void DrawProperties<T>(string title, List<T> properties, Func<Rect, T, T> draw) where T : new()
@@ -106,6 +169,28 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
                 (rect, property) => draw(rect, property),
                 () => EditorGUILayout.LabelField("Nothing")
             );
+        }
+        #endregion
+
+        #region Helpers
+        private void UpdateCurrentCategory(FormVariationCategory category)
+        {
+            currentCategory = category;
+            currentOptionSet = myTarget.Options[currentCategory];
+            if (optionIndex > currentOptionSet.Options.Count - 1)
+                UpdateCurrentOptionLast();
+        }
+
+        private void UpdateCurrentOptionLast()
+        {
+            optionIndex = currentOptionSet.Options.Count - 1;
+            currentOption = currentOptionSet.Options[optionIndex];
+        }
+
+        private void UpdateCurrentOption(int index)
+        {
+            optionIndex = index;
+            currentOption = currentOptionSet.Options[optionIndex];
         }
 
         private void ChangeCheck()
@@ -148,7 +233,8 @@ namespace FoxKit.Modules.PartsBuilder.FormVariation.Editor
             float offset = 0;
             firstPropertyRect.y += firstPropertyRect.height * 0.09f;
             firstPropertyRect.width = firstPropertyRect.width * (2.0f / 6.0f);
-            textureSwap.MaterialInstanceName = FormVariationEditorUtils.ObjectStringField<Material>((FoxStringRef)textureSwap.MaterialInstanceName, firstPropertyRect, ParseTextureList)[0];
+            
+            textureSwap.MaterialInstanceName = (string)FormVariationEditorUtils.ObjectStringField<Material>((string)textureSwap.MaterialInstanceName, firstPropertyRect, ParseTextureList);
             //textureSwap.MaterialInstance = (Material)EditorGUI.ObjectField(firstPropertyRect, textureSwap.MaterialInstance, typeof(Material), false);
 
             offset += firstPropertyRect.width + padding;

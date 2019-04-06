@@ -18,7 +18,6 @@ namespace FoxKit.Modules.DataSet.Fox.Animx
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
     using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
-    using FoxCore;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class HelpBoneFile : RawFile

@@ -18,7 +18,6 @@ namespace FoxKit.Modules.DataSet.Fox.TppUi
     using UnityEngine;
     using DataSetFile2 = DataSetFile2;
     using TppGameKit = FoxKit.Modules.DataSet.Fox.TppGameKit;
-    using FoxCore;
     
     [SerializableAttribute, ExposeClassToLuaAttribute]
     public partial class SetSoldierlistReceive : Entity

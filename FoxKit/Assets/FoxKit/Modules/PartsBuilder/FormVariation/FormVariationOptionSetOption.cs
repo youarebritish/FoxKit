@@ -26,13 +26,20 @@
         public List<CNPAttachment> CNPAttachments = new List<CNPAttachment>();
 
         /// <summary>
+        /// Default FormVariationOptionSetOption constructor.
+        /// </summary>
+        public FormVariationOptionSetOption()
+        {
+        }
+
+        /// <summary>
         /// Makes a FoxKit FormVariation from a FoxLib FormVariation.
         /// </summary>
         /// <param name="formVariation">The FoxLib FormVariation to convert.</param>
         /// <param name="nameHashManager">An StrCode32 hash manager used for hashing and unhashing names.</param>
         /// <param name="fileHashManager">An PathFileNameCode64 hash manager used for hashing and unhashing file names.</param>
         /// <returns>The FoxKit FormVariation.</returns>
-        public static FormVariationOptionSetOption MakeFoxKitFormVariationOptionSetOption(FoxLib.FormVariation.VariableFormVariationEntryOption entryOption, Func<uint, string> str32DictFunc, Func<ulong, string> str64DictFunc)
+        public static FormVariationOptionSetOption Convert(FoxLib.FormVariation.VariableFormVariationEntryOption entryOption, Func<uint, string> str32DictFunc, Func<ulong, string> str64DictFunc)
         {
             var option = new FormVariationOptionSetOption
             {
@@ -52,7 +59,7 @@
         /// <param name="str32DictFunc">An StrCode32 dictionary funtion used unhashing names.</param>
         /// <param name="str64DictFunc">An PathFileNameCode64 dictionary funtion used unhashing file names.</param>
         /// <returns>The FoxKit FormVariationOptionSetOption.</returns>
-        public static FormVariationOptionSetOption MakeFoxKitFormVariationOptionSetOption(FoxLib.FormVariation.FormVariation formVariation, Func<uint, string> str32DictFunc, Func<ulong, string> str64DictFunc)
+        public static FormVariationOptionSetOption Convert(FoxLib.FormVariation.FormVariation formVariation, Func<uint, string> str32DictFunc, Func<ulong, string> str64DictFunc)
         {
             return new FormVariationOptionSetOption
             {

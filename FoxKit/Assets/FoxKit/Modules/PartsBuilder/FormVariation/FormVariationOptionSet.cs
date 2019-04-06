@@ -9,7 +9,7 @@
 
     public enum FormVariationCategory
     {
-        STATIC = 0x100, //(0xFF + 0x1)#: STATIC
+        STATIC = 0x0, //(none)#: STATIC
         BodyMesh = 0x1,   //0x1: Body meshes.
         HandMesh = 0x2,   //0x2: Hand meshes.
         LegMesh = 0x3,   //0x3: Leg meshes.
@@ -44,49 +44,41 @@
     public class FormVariationOptionSet
     {
         [NonSerialized, OdinSerialize]
-        public FormVariationCategory Category; 
-
-        [NonSerialized, OdinSerialize]
         public List<FormVariationOptionSetOption> Options = new List<FormVariationOptionSetOption>();
 
         /// <summary>
-        /// Makes a FoxKit FormVariation from a FoxLib FormVariation.
+        /// Default FormVariationOptionSet constructor.
         /// </summary>
-        /// <param name="formVariation">The FoxLib FormVariation to convert.</param>
-        /// <param name="nameHashManager">An StrCode32 hash manager used for hashing and unhashing names.</param>
-        /// <param name="fileHashManager">An PathFileNameCode64 hash manager used for hashing and unhashing file names.</param>
-        /// <returns>The FoxKit FormVariation.</returns>
-        public static FormVariation MakeFoxKitFormVariationType(FoxLib.FormVariation.FormVariation formVariation, Func<uint, string> str32DictFunc, Func<ulong, string> str64DictFunc)
+        public FormVariationOptionSet()
         {
-            var newFormVariation = CreateInstance<FormVariation>();
-
-            newFormVariation.HiddenMeshGroups = (from hiddenMeshGroup in formVariation.HiddenMeshGroups select MeshGroup.Convert(hiddenMeshGroup, str32DictFunc)).ToList();
-            newFormVariation.ShownMeshGroups = (from shownMeshGroup in formVariation.ShownMeshGroups select MeshGroup.Convert(shownMeshGroup, str32DictFunc)).ToList();
-            newFormVariation.TextureSwaps = (from textureSwap in formVariation.TextureSwaps select TextureSwap.Convert(textureSwap, str32DictFunc, str64DictFunc)).ToList();
-            newFormVariation.BoneAttachments = (from boneAttachment in formVariation.BoneAttachments select BoneAttachment.Convert(boneAttachment, str64DictFunc)).ToList();
-            newFormVariation.CNPAttachments = (from cNPAttachment in formVariation.CNPAttachments select CNPAttachment.Convert(cNPAttachment, str32DictFunc, str64DictFunc)).ToList();
-
-            return newFormVariation;
         }
 
         /// <summary>
-        /// Makes a FoxLib FormVariation from a FoxKit FormVariation.
+        /// Makes a FoxKit FormVariationOptionSet from a FoxLib VariableFormVariationEntry.
         /// </summary>
-        /// <param name="formVariation">The FoxKit FormVariation to convert.</param>
-        /// <returns>The FoxLib FormVariation.</returns>
-        public FoxLib.FormVariation.FormVariation Convert()
+        /// <param name="variableFormVariationEntry">The FoxLib VariableFormVariationEntry to convert.</param>
+        /// <param name="str32DictFunc">An StrCode32 dictionary funtion used unhashing names.</param>
+        /// <param name="str64DictFunc">An PathFileNameCode64 dictionary funtion used unhashing file names.</param>
+        /// <returns>The FoxKit FormVariationOptionSet.</returns>
+        public static FormVariationOptionSet Convert(FoxLib.FormVariation.VariableFormVariationEntry variableFormVariationEntry, Func<uint, string> str32DictFunc, Func<ulong, string> str64DictFunc)
         {
-            var hiddenMeshGroups = (from meshGroup in this.HiddenMeshGroups select (uint)meshGroup.MeshGroupName).ToArray();
+            var optionSet = new FormVariationOptionSet
+            {
+                Options = (from entry in variableFormVariationEntry.Options select FormVariationOptionSetOption.Convert(entry, str32DictFunc, str64DictFunc)).ToList()
+            };
 
-            var shownMeshGroups = (from meshGroup in this.ShownMeshGroups select (uint)meshGroup.MeshGroupName).ToArray();
+            return optionSet;
+        }
 
-            var textureSwaps = (from textureSwap in this.TextureSwaps select textureSwap.Convert()).ToArray();
+        /// <summary>
+        /// Makes a FoxLib VariableFormVariationEntry from a FoxKit FormVariationOptionSet.
+        /// </summary>
+        /// <returns>The FoxLib VariableFormVariationEntry.</returns>
+        public FoxLib.FormVariation.VariableFormVariationEntry Convert(FormVariationCategory category)
+        {
+            var entries = (from entry in this.Options select entry.Convert()).ToArray();
 
-            var boneAttachments = (from boneAttachment in this.BoneAttachments select boneAttachment.Convert()).ToArray();
-
-            var CNPAttachments = (from cNPAttachment in this.CNPAttachments select cNPAttachment.Convert()).ToArray();
-
-            return new FoxLib.FormVariation.FormVariation(hiddenMeshGroups, shownMeshGroups, textureSwaps, CNPAttachments, boneAttachments);
+            return new FoxLib.FormVariation.VariableFormVariationEntry((byte)category, entries);
         }
     }
 }

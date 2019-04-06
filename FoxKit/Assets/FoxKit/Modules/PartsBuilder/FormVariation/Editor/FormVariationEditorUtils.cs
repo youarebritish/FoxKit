@@ -3,19 +3,19 @@
     using System;
     using UnityEngine;
     using UnityEditor;
-    using FoxKit.Core;
+    using FoxKit.Core.WIP;
 
     public class StringSelectPopup : EditorWindow
     {
         private string searchString;
         public string Result { get; private set; }
 
-        private string[] result;
+        private FoxStringRef result;
 
         private Vector2 scrollPosition;
 
         //[MenuItem("Window/Example Popup %e")]
-        public void InitPopup(Rect rect, string[] search, string[] output)
+        public void InitPopup(Rect rect, string[] search, FoxStringRef output)
         {
             result = output;
             var screenPoints = GUIUtility.GUIToScreenPoint(new Vector2(rect.x, rect.y));
@@ -55,20 +55,20 @@
             //}
             if (GUILayout.Button("Test"))
             {
-                result[0] = "Hello";
+                result = "Hello";
                 this.Close();
             }
             GUILayout.EndScrollView();
         }
     }
 
-
     /// <summary>
     /// #NEW#
     /// </summary
     public static class FormVariationEditorUtils
     {
-        public static string[] ObjectStringField<T>(FoxStringRef current, Rect rect, Func<T, string[]> getListFunc) where T : UnityEngine.Object
+        #region ObjectStringField Helpers
+        public static FoxStringRef ObjectStringField<T>(FoxStringRef current, Rect rect, Func<T, string[]> getListFunc) where T : UnityEngine.Object
         {
             return ObjectStringField(current, rect, FireAndForgetObjectField<T>(rect), getListFunc);
         }
@@ -78,7 +78,7 @@
             return (T)EditorGUI.ObjectField(rect, null, typeof(T), allowSceneObjects: false);
         }
 
-        public static string[] ObjectStringField<T>(string[] current, Rect rect, T source, Func<T, string[]> getListFunc) where T : UnityEngine.Object
+        public static FoxStringRef ObjectStringField<T>(FoxStringRef current, Rect rect, T source, Func<T, string[]> getListFunc) where T : UnityEngine.Object
         {
             if (source != null)
             {
@@ -88,5 +88,6 @@
 
             return current;
         }
+        #endregion
     }
 }
