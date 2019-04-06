@@ -103,10 +103,10 @@
             {
                 return "fmtt";
             }
-            if (asset is Modules.PartsBuilder.FormVariation.FormVariation)
+            /*if (asset is Modules.PartsBuilder.FormVariation.FormVariation)
             {
                 return "fv2";
-            }
+            }*/
             if (asset is LightProbeSHCoefficientsAsset)
             {
                 return "lpsh";
