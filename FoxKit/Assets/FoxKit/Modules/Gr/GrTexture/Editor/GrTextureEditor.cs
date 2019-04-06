@@ -15,7 +15,7 @@ namespace FoxKit.Modules.Gr.GrTexture.Editor
     /// <summary>
     /// Custom editor for Texture2Ds.
     /// </summary>
-    //[CustomEditor(typeof(Texture2D))]
+    [CustomEditor(typeof(Texture2D))]
     public class GrTexture2DEditor : Editor
     {
         GrTextureUserData textureData;
@@ -71,7 +71,6 @@ namespace FoxKit.Modules.Gr.GrTexture.Editor
                     inspectorType = InspectorType.DDS;
                     break;
                 default:
-                    defaultEditor = Editor.CreateEditor(target);
                     inspectorType = InspectorType.Default;
                     break;
             }
@@ -101,7 +100,7 @@ namespace FoxKit.Modules.Gr.GrTexture.Editor
             switch (inspectorType)
             {
                 case InspectorType.Default:
-                    defaultEditor.OnInspectorGUI();
+                    this.DrawDefaultInspector();
                     return;
                 default:
                     return;
@@ -113,7 +112,6 @@ namespace FoxKit.Modules.Gr.GrTexture.Editor
             switch (inspectorType)
             {
                 case InspectorType.Default:
-                    return defaultEditor.HasPreviewGUI();
                 default:
                     return true;
             }
@@ -124,7 +122,6 @@ namespace FoxKit.Modules.Gr.GrTexture.Editor
             switch (inspectorType)
             {
                 case InspectorType.Default:
-                    defaultEditor.OnPreviewSettings();
                     break;
                 default:
                     var target = (Texture2D)base.target;
@@ -185,7 +182,6 @@ namespace FoxKit.Modules.Gr.GrTexture.Editor
             switch (inspectorType)
             {
                 case InspectorType.Default:
-                    defaultEditor.OnPreviewGUI(r, background);
                     break;
                 default:
                     var target = (Texture2D)base.target;

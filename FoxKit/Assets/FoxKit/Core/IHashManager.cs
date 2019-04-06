@@ -29,35 +29,35 @@ namespace FoxKit.Core
             });
         }
 
-        public static UStringPair TryUnhash<THash, UStringPair>(this IHashManager<THash> hashManager, THash hash, System.Func<THash, UStringPair> makeHashPair, System.Func<string, UStringPair> makeStringPair)
-            where THash : struct 
-            where UStringPair : IStringHashPair<THash>
-        {
-            string outString;
+        //public static UStringPair TryUnhash<THash, UStringPair>(this IHashManager<THash> hashManager, THash hash, System.Func<THash, UStringPair> makeHashPair, System.Func<string, UStringPair> makeStringPair)
+        //    where THash : struct 
+        //    where UStringPair : IStringHashPair<THash>
+        //{
+        //    string outString;
 
-            if (hashManager.TryGetStringFromHash(hash, out outString) == true)
-            {
-                return makeStringPair(outString);
-            }
-            else
-            {
-                return makeHashPair(hash);
-            }
-        }
+        //    if (hashManager.TryGetStringFromHash(hash, out outString) == true)
+        //    {
+        //        return makeStringPair(outString);
+        //    }
+        //    else
+        //    {
+        //        return makeHashPair(hash);
+        //    }
+        //}
 
-        public static UHash RetrieveHashFromStringPair<TStringPair, UHash>(this IHashManager<UHash> hashManager, TStringPair stringPair)
-            where TStringPair : IStringHashPair<UHash>
-            where UHash : struct
-        {
-            if (stringPair.IsUnhashed == 0)
-            {
-                return hashManager.GetHash(stringPair.String);
-            }
-            else
-            {
-                return stringPair.Hash;
-            }
-        }
+        //public static UHash RetrieveHashFromStringPair<TStringPair, UHash>(this IHashManager<UHash> hashManager, TStringPair stringPair)
+        //    where TStringPair : IStringHashPair<UHash>
+        //    where UHash : struct
+        //{
+        //    if (stringPair.IsUnhashed == 0)
+        //    {
+        //        return hashManager.GetHash(stringPair.String);
+        //    }
+        //    else
+        //    {
+        //        return stringPair.Hash;
+        //    }
+        //}
 
         public class TryUnhashResult<THash> where THash : struct
         {

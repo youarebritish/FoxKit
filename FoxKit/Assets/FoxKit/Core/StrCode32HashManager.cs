@@ -35,7 +35,7 @@
             return HashString(input);
         }
 
-        private static uint HashString(string input)
+        public static uint HashString(string input)
         {
             Assert.IsNotNull(input, "Hash input must not be null.");
 
@@ -43,24 +43,31 @@
             return hash;
         }
 
-        /// <summary>
-        /// Attempts to unhash a hash. If said attempt succeeds, the returned StringPair is set to string mode, if not, the returned StringPair is set to hash mode.
-        /// </summary>
-        /// <param name="hash">The hash to attempt to unhash.</param>
-        /// <returns>The StringPair derived from the unhash attempt.</returns>
-        public StrCode32StringPair GetStringPairFromUnhashAttempt(uint hash)
+        public string UnhashString(uint hash)
         {
-            return this.TryUnhash(hash, hashValue => new StrCode32StringPair(hashValue), unhashedString => new StrCode32StringPair(unhashedString));
+            string output;
+            this.lookUpTable.TryGetValue(hash, out output);
+            return output;
         }
 
-        /// <summary>
-        /// Gets a hash from a string pair.
-        /// </summary>
-        /// <param name="stringPair">String pair.</param>
-        /// <returns>The hash from string pair.</returns>s
-        public uint GetHashFromStringPair(StrCode32StringPair stringPair)
-        {
-            return this.RetrieveHashFromStringPair(stringPair);
-        }
+        ///// <summary>
+        ///// Attempts to unhash a hash. If said attempt succeeds, the returned StringPair is set to string mode, if not, the returned StringPair is set to hash mode.
+        ///// </summary>
+        ///// <param name="hash">The hash to attempt to unhash.</param>
+        ///// <returns>The StringPair derived from the unhash attempt.</returns>
+        //public StrCode32StringPair GetStringPairFromUnhashAttempt(uint hash)
+        //{
+        //    return this.TryUnhash(hash, hashValue => new StrCode32StringPair(hashValue), unhashedString => new StrCode32StringPair(unhashedString));
+        //}
+
+        ///// <summary>
+        ///// Gets a hash from a string pair.
+        ///// </summary>
+        ///// <param name="stringPair">String pair.</param>
+        ///// <returns>The hash from string pair.</returns>s
+        //public uint GetHashFromStringPair(StrCode32StringPair stringPair)
+        //{
+        //    return this.RetrieveHashFromStringPair(stringPair);
+        //}
     }
 }
