@@ -4,11 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
-// TODO: may not need serialized componenets here if arclength and tangentmagnitude can just be calculated.
-// won't need them until the extra sections get figured out, that is
 
-[Serializable]
-public class FoxRails : MonoBehaviour
+public class FoxRailExport : MonoBehaviour
 {
 	[MenuItem("FoxKit/Rail/Export FoxRail")]
 	private static void OnExportRail()
@@ -17,7 +14,7 @@ public class FoxRails : MonoBehaviour
 		if (objs.Length < 1)
 			return;
 
-		var frldPath = EditorUtility.SaveFilePanel("Export .frld Rail Data (found in .fpkd, optional)", "", "", "frld");
+		var frldPath = EditorUtility.SaveFilePanel("Export .frld (found in .fpkd, optional)", "", "", "frld");
 		if (!string.IsNullOrEmpty(frldPath))
 			using (BinaryWriter writer = new BinaryWriter(new FileStream(frldPath, FileMode.Create)))
 			{
@@ -74,7 +71,7 @@ public class FoxRails : MonoBehaviour
 			List<long> WriteLater_offsetToSec2 = new List<long>();
 			List<long> WriteLater_offsetToSec3 = new List<long>();
 
-			int index = 0;
+			int railIndex = 0;
 			long nextRailPos = 0;
 			int railCount = 0;
 			foreach (GameObject rail in objs)
@@ -87,7 +84,7 @@ public class FoxRails : MonoBehaviour
 					return;
 
 				BezierSpline spline = rail.GetComponent<BezierSpline>();
-				writer.BaseStream.Position = 0x10 + (0x30 * index);
+				writer.BaseStream.Position = 0x10 + (0x30 * railIndex);
 
 				Vector3 boundMin = spline[0].position;
 				Vector3 boundMax = spline[0].position;
@@ -125,16 +122,21 @@ public class FoxRails : MonoBehaviour
 				long startOfRail = writer.BaseStream.Position;
 				if (nextRailPos > 0)
 					startOfRail = nextRailPos;
-				writer.BaseStream.Position = WriteLater_offsetToStartOfRailNodes[index];
+				writer.BaseStream.Position = WriteLater_offsetToStartOfRailNodes[railIndex];
 				writer.Write((int)startOfRail);
 				writer.BaseStream.Position = startOfRail;
 
-				float railLength = 0.0f;
+				//arcLength has to be the length of the entire rail so far
+				float arcLength = 0.0f;
 
 				int jndex = 0;
 				foreach (BezierPoint seg in spline)
 				{
 					BezierPoint bezierPoint = seg.gameObject.GetComponent<BezierPoint>();
+
+					//Arc Length:
+					float segArcLength = 0.0f; //arcLength has to be the length of the entire rail so far
+					//Joey's Arc Length calculation:
 					Vector3 f_prime(Vector3 p0, Vector3 v0, Vector3 v1, Vector3 p1, float t)
 					{
 						return v0 + t * (6 * (p1 - p0) - 4 * v0 - 2 * v1) + t * t * (-6 * (p1 - p0) + 3 * v1 + 3 * v0);
@@ -147,7 +149,6 @@ public class FoxRails : MonoBehaviour
 					  new Vector2( -0.90617985f, 0.23692688f ),
 					  new Vector2( 0.90617985f, 0.23692688f ),
 					};
-					float segArcLength = 0.0f;
 					BezierPoint prevPoint = bezierPoint;
 					if (bezierPoint.previousPoint != null)
 						prevPoint = bezierPoint.previousPoint;
@@ -159,18 +160,20 @@ public class FoxRails : MonoBehaviour
 							bezierPoint.position, 
 							(1 + c.x) / 2
 						).magnitude;
-					railLength += segArcLength / 2.0f;
-					float arcLength = railLength;
+					arcLength += segArcLength / 2.0f;
 					WriteFoxVector3(seg.transform.position); writer.Write(arcLength);
 
+					//Tangent:
 					Vector3 tangent = bezierPoint.followingControlPointLocalPosition;
 					tangent *= 3.0f;
 					WriteFoxVector3(tangent); writer.Write(tangent.magnitude);
+
 					jndex += 1;
 				}
 				long endOfAllRailCurves = writer.BaseStream.Position;
 				nextRailPos = endOfAllRailCurves;
 
+				//Go back upstream and write offsets in definitions:
 				jndex = 0;
 				foreach (long offset in WriteLater_offsetToSec2)
                 {
@@ -180,117 +183,7 @@ public class FoxRails : MonoBehaviour
 					writer.Write((int)endOfAllRailCurves);
 					jndex += 1;
 				}
-				index = +1;
-			}
-		}
-	}
-
-	[MenuItem("FoxKit/Rail/Import FoxRail")]
-	private static void OnImportRail()
-	{
-        bool useUntitledRailNames = false;
-        var railDataPath = EditorUtility.OpenFilePanel("Import .frld Rail Data (found in .fpkd, optional)", "", "frld");
-        if (string.IsNullOrEmpty(railDataPath))
-            useUntitledRailNames = true;
-
-        uint[] railIDs = null;
-        if (!useUntitledRailNames)
-        {
-            using (BinaryReader reader = new BinaryReader(new FileStream(railDataPath, FileMode.Open)))
-            {
-                uint signature = reader.ReadUInt32();
-                Debug.Assert(signature == 1279869266, "Invalid signature.");
-
-                ushort version = reader.ReadUInt16();
-
-                ushort railCount = reader.ReadUInt16();
-                railIDs = new uint[railCount];
-                for (int i = 0; i < railCount; i++)
-                    railIDs[i] = reader.ReadUInt32();
-            }
-        }
-
-        var railPath = EditorUtility.OpenFilePanel("Import .frl", "", "frl");
-		if (string.IsNullOrEmpty(railPath))
-			return;
-
-		using (BinaryReader reader = new BinaryReader(new FileStream(railPath, FileMode.Open)))
-		{
-			Vector3 ReadFoxVector3()
-            {
-				return new Vector3(-reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
-			}
-			Vector3 ReadFoxPaddedVector3()
-			{
-				var result = new Vector3(-reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
-				reader.BaseStream.Position += 4;
-				return result;
-			}
-
-			// Read header
-			uint signature = reader.ReadUInt32(); 
-			Debug.Assert(signature == 1279869266, "Invalid signature.");
-
-			ushort version = reader.ReadUInt16();
-
-			ushort railCount = reader.ReadUInt16();
-			reader.BaseStream.Position += 8; //padding
-
-			long resumePos = 0;
-			for (int i = 0; i < railCount; i++)
-			{
-				reader.BaseStream.Position = 0x10 + 0x30 * i;
-
-				Vector3 boundMin = ReadFoxPaddedVector3();
-				Vector3 boundMax = ReadFoxPaddedVector3();
-
-				uint railNodeDataOffset = reader.ReadUInt32();
-				uint section2Offset = reader.ReadUInt32();
-				uint section3Offset = reader.ReadUInt32();
-
-				ushort nodeCount = reader.ReadUInt16();
-				ushort section23UnknownCount = reader.ReadUInt16();
-
-				resumePos = reader.BaseStream.Position;
-				reader.BaseStream.Position = railNodeDataOffset;
-
-				if (section23UnknownCount > 0)
-					Debug.Log("Rail has unknown sections!!!");
-
-				BezierSpline spline = new GameObject().AddComponent<BezierSpline>();
-
-				string name = "dummy";
-                if (!useUntitledRailNames)
-                    name = railIDs[i].ToString();
-                else
-                    name = "FoxRail" + i.ToString("D4");
-                spline.gameObject.name = name;
-				spline.Initialize(nodeCount);
-
-				for (int j = 0; j < nodeCount; j++)
-				{
-					Vector3 position = ReadFoxVector3();
-					float arcLength = reader.ReadSingle(); 
-					Vector3 tangent = ReadFoxVector3();
-					float tangentMagnitude = reader.ReadSingle(); 
-
-					Vector3 nextTangent = new Vector3(0, 0, 0); 
-					if (j + 1 < nodeCount)
-					{
-						reader.BaseStream.Position += 16;
-						nextTangent = ReadFoxVector3();
-						reader.BaseStream.Position -= 28;
-					}
-
-					tangent /= 3.0f;
-					nextTangent /= 3.0f;
-
-					spline[j].gameObject.name = spline.gameObject.name + "_" + j.ToString("D4");
-					spline[j].position = position;
-					spline[j].followingControlPointLocalPosition = tangent;
-					if (j + 1 < nodeCount)
-						spline[j + 1].precedingControlPointLocalPosition = -nextTangent;
-				}
+				railIndex = +1;
 			}
 		}
 	}
