@@ -7,37 +7,52 @@ using UnityEngine;
 
 public class FoxRailExport : MonoBehaviour
 {
-	[MenuItem("FoxKit/Rail/Export FoxRail")]
+	[MenuItem("FoxKit/Fox Rail/Export .frld and .frl")]
 	private static void OnExportRail()
 	{
+		uint StrCode32(string text)
+		{
+			if (uint.TryParse(text, out uint maybeHash))
+				return maybeHash;
+			else
+			{
+				if (text == null) throw new ArgumentNullException("text");
+				const ulong seed0 = 0x9ae16a3b2f90404f;
+				ulong seed1 = text.Length > 0 ? (uint)((text[0]) << 16) + (uint)text.Length : 0;
+				return (uint)(CityHash.CityHash.CityHash64WithSeeds(text + "\0", seed0, seed1) & 0xFFFFFFFFFFFF);
+			}
+		}
+
 		GameObject[] objs = Selection.gameObjects;
 		if (objs.Length < 1)
 			return;
+
+		//Sorting thanks to Joey:
+		int CompareHashes(GameObject x, GameObject y)
+		{
+			var xHash = StrCode32(x.name);
+			var yHash = StrCode32(y.name);
+			if (xHash < yHash)
+				return -1;
+			else if (xHash == yHash)
+				return 0;
+			else
+				return +1;
+		}
+		Array.Sort(objs, CompareHashes);
 
 		var frldPath = EditorUtility.SaveFilePanel("Export .frld (found in .fpkd, optional)", "", "", "frld");
 		if (!string.IsNullOrEmpty(frldPath))
 			using (BinaryWriter writer = new BinaryWriter(new FileStream(frldPath, FileMode.Create)))
 			{
-				uint StrCode32(string text)
-				{
-					if (text == null) throw new ArgumentNullException("text");
-					const ulong seed0 = 0x9ae16a3b2f90404f;
-					ulong seed1 = text.Length > 0 ? (uint)((text[0]) << 16) + (uint)text.Length : 0;
-					return (uint)(CityHash.CityHash.CityHash64WithSeeds(text + "\0", seed0, seed1) & 0xFFFFFFFFFFFF);
-				}
 				writer.Write(1279869266);
 				writer.Write((ushort)2);
 				writer.Write((ushort)objs.Length);
 				foreach (GameObject rail in objs)
 				{
-					if (rail.GetComponent<BezierSpline>()!=null)
+					if (rail.GetComponent<BezierSpline>() != null)
 					{
-						uint railId = 0;
-						if (uint.TryParse(rail.name, out uint maybeHash))
-							railId = maybeHash;
-						else
-							railId = StrCode32(rail.name);
-						writer.Write(railId);
+						writer.Write(StrCode32(rail.name));
 					}
 				}
 			}
@@ -77,7 +92,7 @@ public class FoxRailExport : MonoBehaviour
 			foreach (GameObject rail in objs)
 				if (rail.GetComponent<BezierSpline>() != null)
 				{
-					railCount += 1; 
+					railCount ++; 
 				}
 				else
 					Debug.Log($"rail {railIndex} isn't a spline!");
@@ -175,7 +190,7 @@ public class FoxRailExport : MonoBehaviour
 					tangent *= 3.0f;
 					WriteFoxVector3(tangent); writer.Write(tangent.magnitude);
 
-					curveIndex += 1;
+					curveIndex ++;
 				}
 				long endOfAllRailCurves = writer.BaseStream.Position;
 				nextRailPos = endOfAllRailCurves;
@@ -188,9 +203,9 @@ public class FoxRailExport : MonoBehaviour
 					writer.Write((int)endOfAllRailCurves);
 					writer.BaseStream.Position = WriteLater_offsetToSec3[currentRailIndex];
 					writer.Write((int)endOfAllRailCurves);
-					currentRailIndex += 1;
+					currentRailIndex ++;
 				}
-				railIndex += 1;
+				railIndex ++;
 			}
 		}
 	}

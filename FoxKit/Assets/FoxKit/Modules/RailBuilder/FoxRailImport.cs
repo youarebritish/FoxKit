@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class FoxRailImport : MonoBehaviour
 {
-	[MenuItem("FoxKit/Rail/Import FoxRail")]
+	[MenuItem("FoxKit/Fox Rail/Import .frld and .frl")]
 	private static void OnImportRail()
 	{
         bool useUntitledRailNames = false;
