@@ -76,12 +76,19 @@ public class FoxRailExport : MonoBehaviour
 			int railCount = 0;
 			foreach (GameObject rail in objs)
 				if (rail.GetComponent<BezierSpline>() != null)
-					railCount += 1;
+				{
+					railCount += 1; 
+				}
+				else
+					Debug.Log($"rail {railIndex} isn't a spline!");
 
 			foreach (GameObject rail in objs)
 			{
 				if (rail.GetComponent<BezierSpline>() == null)
-					return;
+				{
+					Debug.Log($"rail {railIndex} isn't a spline!");
+					continue;
+				}
 
 				BezierSpline spline = rail.GetComponent<BezierSpline>();
 				writer.BaseStream.Position = 0x10 + (0x30 * railIndex);
@@ -92,14 +99,14 @@ public class FoxRailExport : MonoBehaviour
 				foreach(BezierPoint seg in spline)
 				{
 					Vector3 pos = seg.position;
-					if (pos.x > boundMin.x) //fox invert
+					if (-pos.x < -boundMin.x) //fox invert
 						boundMin.x = pos.x;
 					if (pos.y < boundMin.y)
 						boundMin.y = pos.y;
 					if (pos.z < boundMin.z)
 						boundMin.z = pos.z;
 
-					if (pos.x < boundMax.x) //fox invert
+					if (-pos.x > -boundMax.x) //fox invert
 						boundMax.x = pos.x;
 					if (pos.y > boundMax.y)
 						boundMax.y = pos.y;
@@ -129,7 +136,7 @@ public class FoxRailExport : MonoBehaviour
 				//arcLength has to be the length of the entire rail so far
 				float arcLength = 0.0f;
 
-				int jndex = 0;
+				int curveIndex = 0;
 				foreach (BezierPoint seg in spline)
 				{
 					BezierPoint bezierPoint = seg.gameObject.GetComponent<BezierPoint>();
@@ -168,22 +175,22 @@ public class FoxRailExport : MonoBehaviour
 					tangent *= 3.0f;
 					WriteFoxVector3(tangent); writer.Write(tangent.magnitude);
 
-					jndex += 1;
+					curveIndex += 1;
 				}
 				long endOfAllRailCurves = writer.BaseStream.Position;
 				nextRailPos = endOfAllRailCurves;
 
 				//Go back upstream and write offsets in definitions:
-				jndex = 0;
+				int currentRailIndex = 0;
 				foreach (long offset in WriteLater_offsetToSec2)
                 {
 					writer.BaseStream.Position = offset;
 					writer.Write((int)endOfAllRailCurves);
-					writer.BaseStream.Position = WriteLater_offsetToSec3[jndex];
+					writer.BaseStream.Position = WriteLater_offsetToSec3[currentRailIndex];
 					writer.Write((int)endOfAllRailCurves);
-					jndex += 1;
+					currentRailIndex += 1;
 				}
-				railIndex = +1;
+				railIndex += 1;
 			}
 		}
 	}
